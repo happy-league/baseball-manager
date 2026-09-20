@@ -1,0 +1,3153 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>疾風馬場｜10隊聯盟 v44</title>
+<style>
+:root{--bg:#07111f;--panel:#0f1b2d;--panel2:#15273e;--line:#2b4664;--text:#eef6ff;--muted:#9fb4ca;--blue:#31a8ff;--green:#42d27d;--gold:#f3ca61;--red:#ff7272;--sand:#b88955}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#19314c,#07111f 52%,#030914);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans TC",sans-serif;min-height:100vh}.wrap{max-width:1220px;margin:auto;padding:16px}.hero,.card{background:rgba(15,27,45,.97);border:1px solid var(--line);border-radius:20px;box-shadow:0 14px 38px #0006}.hero{padding:18px 20px;margin-bottom:13px}h1{margin:0;font-size:clamp(30px,5vw,50px)}h2{margin:0 0 12px}.sub{color:#bdd0e1;line-height:1.7;margin-top:7px}.nav{display:none;gap:8px;flex-wrap:wrap;margin-top:12px}.nav.show{display:flex}.nav button{padding:9px 13px;background:#1b2e47;border:1px solid #35536f;color:#d9e9f6;border-radius:999px}.nav button.on{background:#2a5b82;border-color:#52a6dd}.screen{display:none}.screen.on{display:block}.card{padding:15px;margin-bottom:13px}.hint{background:#13243a;border:1px solid #2d4968;border-radius:12px;padding:10px 12px;color:#ccdae8;line-height:1.7}.parents{display:grid;grid-template-columns:1fr 1fr;gap:13px}@media(max-width:880px){.parents{grid-template-columns:1fr}}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}@media(max-width:640px){.grid{grid-template-columns:1fr}}.hc{background:#091626;border:1px solid #2d4865;border-radius:13px;padding:10px;cursor:pointer}.hc.sel{outline:2px solid var(--gold)}.hn{font-weight:900;font-size:18px}.blood,.small{font-size:12px;color:var(--muted)}.genes,.attrs{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:8px}.gene,.attr{background:#17273c;border-radius:8px;padding:6px 3px;text-align:center;font-size:11px} .grade{font-size:19px;font-weight:600}.S{color:#d93025;font-weight:1000}.A{color:#d93025}.B{color:#ef7d16}.C{color:#d6ad00}.D{color:#2c9a51}.E{color:#2479d8}.F{color:#4b4fb8}.G{color:#7e8790}
+button{border:0;border-radius:12px;padding:11px 15px;font-weight:900;cursor:pointer;font-size:14px}.primary{background:linear-gradient(135deg,#1889e8,#48baff);color:#fff}.secondary{background:#263c58;color:#eef7ff}.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:11px}.form{display:grid;grid-template-columns:1fr auto;gap:10px}@media(max-width:600px){.form{grid-template-columns:1fr}}input{width:100%;padding:12px 13px;border-radius:11px;border:1px solid #35516e;background:#081523;color:white;font-size:16px}
+.horseResult{display:grid;grid-template-columns:.9fr 1.1fr;gap:13px}@media(max-width:760px){.horseResult{grid-template-columns:1fr}}.horsePic{min-height:205px;border-radius:17px;background:linear-gradient(#1c3756,#081421);display:flex;justify-content:center;align-items:center;position:relative}.horsePic .horseEmoji{font-size:110px;transform:scaleX(-1)}.playerTag{position:absolute;top:11px;left:11px;background:var(--blue);padding:6px 9px;border-radius:999px;font-weight:900}.attr b{display:block;font-size:26px;font-weight:600}
+.two{display:grid;grid-template-columns:1.3fr .7fr;gap:13px}@media(max-width:850px){.two{grid-template-columns:1fr}}.stand{width:100%;border-collapse:collapse;min-width:850px}.stand th,.stand td{padding:8px 7px;border-bottom:1px solid #263d55;text-align:center}.stand th{font-size:12px;color:#bfd0e0;position:sticky;top:0;background:#0f1b2d}.standWrap{overflow:auto}.meRow{background:#12304a}.teamCell{text-align:left!important;white-space:nowrap}.teamCell b{display:block}.abilityCell{font-size:17px;font-weight:600}.roundSchedule{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}@media(max-width:760px){.roundSchedule{grid-template-columns:1fr}}.matchCard{background:#091626;border:1px solid #2b4664;border-radius:13px;padding:10px}.matchCard.player{border-color:var(--blue)}.vs{font-weight:900;font-size:16px}.resultText{margin-top:6px;font-size:13px;color:#cddbea}.watch{margin-top:7px;background:#263c58;color:white;padding:7px 10px;font-size:12px}.watch:disabled{opacity:.4}.metricGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}@media(max-width:660px){.metricGrid{grid-template-columns:1fr}}.metric{background:#091626;border:1px solid #29435f;border-radius:12px;padding:11px}.metric strong{display:block;font-size:27px}.strategy{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}@media(max-width:760px){.strategy{grid-template-columns:1fr 1fr}}.st{background:#172a43;border:1px solid #35516e;border-radius:12px;padding:10px;cursor:pointer}.st.sel{outline:2px solid var(--gold);background:#263d59}.st b{display:block}.scheduleList{display:grid;gap:10px}.roundBlock{background:#091626;border:1px solid #2b4561;border-radius:14px;padding:10px}.roundBlock.current{border-color:var(--gold)}.roundTitle{font-weight:900;margin-bottom:7px;color:#dceafa}.roundMatches{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}@media(max-width:760px){.roundMatches{grid-template-columns:1fr}}.smatch{padding:8px;border-radius:9px;background:#142238;border:1px solid #263f5a;font-size:13px}.smatch.me{border-color:var(--blue)}
+.trackWrap{overflow-x:auto}.track{min-width:980px;height:355px;position:relative;overflow:hidden;border:1px solid #35516e;border-radius:18px;background:linear-gradient(#8fc7e8 0 22%,#719f5a 22% 31%,#b58b59 31% 88%,#795e3e 88%)}.rail{position:absolute;left:0;right:0;height:5px;background:#eee;box-shadow:0 2px #777}.rail.r1{top:125px}.rail.r2{bottom:46px}.finishWrap{position:absolute;right:54px;top:91px;bottom:38px;width:34px;z-index:3}.finishFlag{position:absolute;top:-23px;left:-13px;font-weight:1000;font-size:12px;color:#fff;background:#111;padding:3px 5px;border-radius:5px}.finishLine{position:absolute;left:10px;top:0;bottom:0;width:16px;background:repeating-linear-gradient(0deg,#fff 0 12px,#111 12px 24px);border-left:2px solid #fff;border-right:2px solid #fff;box-shadow:0 0 10px #fff8}.lane{position:absolute;left:0;right:0;height:82px;border-bottom:1px dashed #fff5}.racer{position:absolute;width:120px;height:60px;display:flex;align-items:center;will-change:transform;z-index:2}.racer .horse{font-size:50px;transform:scaleX(-1);filter:drop-shadow(0 5px 3px #0008);line-height:1}.mark{flex:0 0 18px;width:18px;height:18px;border-radius:50%;border:3px solid white;margin-left:-1px;margin-right:4px;box-shadow:0 0 0 2px #0005}.racer.player .mark{background:var(--blue)}.racer.cpu .mark{background:var(--green)}.rname{font-size:11px;background:#000b;padding:3px 5px;border-radius:6px;white-space:nowrap;max-width:none;overflow:visible;text-overflow:clip}.hud{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;z-index:5}.hud span{background:#06101ddd;border:1px solid #35516e;border-radius:9px;padding:7px 10px;font-size:13px}.raceLog{height:150px;overflow:auto;background:#06101d;border:1px solid #29415d;border-radius:11px;padding:9px;font-size:13px;line-height:1.7}.raceLog div{border-bottom:1px dashed #22374e;padding:4px}.rankBox{margin-top:9px;display:grid;grid-template-columns:1fr 1fr;gap:7px}.rankItem{background:#091626;border:1px solid #29415d;border-radius:10px;padding:8px}.rankItem.me{border-color:var(--blue);box-shadow:inset 4px 0 var(--blue)}
+.crowdRow{position:absolute;left:18px;right:112px;top:68px;height:44px;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;z-index:4}
+.crowdGroup{display:flex;gap:2px;align-items:flex-end;opacity:.96}
+.crowdPerson{display:inline-flex;flex-direction:column;align-items:center;justify-content:flex-end;width:14px;height:24px;position:relative;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.crowdPerson .head{width:8px;height:8px;border-radius:50%;background:var(--skin,#f0c29a);margin-bottom:1px}
+.crowdPerson .body{width:11px;height:11px;border-radius:5px 5px 3px 3px;background:var(--shirt,#6aa8e6);position:relative}
+.crowdPerson .body:before,.crowdPerson .body:after{content:'';position:absolute;top:2px;width:3px;height:8px;border-radius:2px;background:var(--shirt,#6aa8e6)}
+.crowdPerson .body:before{left:-2px;transform:rotate(20deg)}
+.crowdPerson .body:after{right:-2px;transform:rotate(-20deg)}
+.crowdPerson .legs{width:10px;height:6px;position:relative}
+.crowdPerson .legs:before,.crowdPerson .legs:after{content:'';position:absolute;top:0;width:3px;height:6px;border-radius:2px;background:var(--pants,#3f5570)}
+.crowdPerson .legs:before{left:1px}
+.crowdPerson .legs:after{right:1px}
+.crowdPerson.cheer .body:before{transform:rotate(-35deg);top:-1px}
+.crowdPerson.cheer .body:after{transform:rotate(35deg);top:-1px}
+.crowdPerson.tall{transform:scale(1.06)}
+.crowdPerson.small{transform:scale(.92)}
+.finishJudge{position:absolute;right:86px;top:78px;width:42px;height:76px;pointer-events:none;z-index:5}
+.finishJudge .judgeWrap{position:absolute;bottom:0;left:0;width:24px;height:50px;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 2px 2px rgba(0,0,0,.28))}
+.finishJudge .head{width:11px;height:11px;border-radius:50%;background:#f0c29a;margin-bottom:1px}
+.finishJudge .body{width:16px;height:18px;border-radius:6px 6px 4px 4px;background:#4a4a58;position:relative}
+.finishJudge .body:before,.finishJudge .body:after{content:'';position:absolute;top:3px;width:4px;height:11px;border-radius:3px;background:#4a4a58}
+.finishJudge .body:before{left:-3px;transform:rotate(16deg)}
+.finishJudge .body:after{right:-3px;transform:rotate(-12deg)}
+.finishJudge .legs{width:14px;height:12px;position:relative}
+.finishJudge .legs:before,.finishJudge .legs:after{content:'';position:absolute;top:0;width:4px;height:12px;border-radius:3px;background:#2f3340}
+.finishJudge .legs:before{left:2px}
+.finishJudge .legs:after{right:2px}
+.finishJudge .flagPole{position:absolute;left:24px;top:6px;width:3px;height:32px;background:#6f5234;border-radius:2px}
+.finishJudge .flagCloth{position:absolute;left:27px;top:6px;width:15px;height:12px;background:conic-gradient(from 45deg,#fff 0 25%,#111 0 50%,#fff 0 75%,#111 0 100%);border-radius:2px 4px 2px 2px;transform:skewY(-6deg)}
+.racer .horseWrap{position:relative;display:inline-block;width:60px;height:56px;flex:0 0 60px;overflow:visible}
+.racer .horse{position:absolute;left:0;top:2px;font-size:50px;transform:scaleX(-1);filter:drop-shadow(0 5px 3px #0008);line-height:1}
+.rider{position:absolute;left:18px;top:3px;width:20px;height:24px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.28));pointer-events:none;z-index:2}
+.rider .head{position:absolute;left:5px;top:0;width:9px;height:9px;border-radius:50%;background:#f0c29a}
+.rider .cap{position:absolute;left:3px;top:-1px;width:12px;height:6px;border-radius:7px 7px 2px 2px;background:#333d52}
+.rider .body{position:absolute;left:4px;top:8px;width:11px;height:9px;border-radius:4px;background:var(--blue);transform:rotate(-8deg)}
+.rider.cpu .body{background:var(--green)}
+.rider .arm{position:absolute;left:10px;top:10px;width:10px;height:3px;border-radius:2px;background:#f0c29a;transform:rotate(6deg)}
+.rider .leg1,.rider .leg2{position:absolute;top:15px;width:3px;height:9px;border-radius:2px;background:#394559}
+.rider .leg1{left:7px;transform:rotate(42deg)}
+.rider .leg2{left:11px;transform:rotate(18deg)}
+body.theme-dark .crowdPerson,body.theme-dark .finishJudge .judgeWrap,body.theme-dark .rider{filter:drop-shadow(0 2px 2px rgba(0,0,0,.55))}
+@media(max-width:760px){
+  .crowdRow{left:8px;right:82px;top:76px;height:38px}
+  .crowdPerson{width:11px;height:20px}
+  .crowdPerson .head{width:6px;height:6px}
+  .crowdPerson .body{width:9px;height:9px}
+  .crowdPerson .legs{width:8px;height:5px}
+  .finishJudge{right:70px;top:84px;transform:scale(.88);transform-origin:top right}
+  .rider{left:17px;top:3px;transform:scale(.92);transform-origin:center}
+}
+
+.modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:14px;z-index:20}.modal.show{display:flex}.modalBox{width:min(920px,96vw);background:#0f1b2d;border:1px solid #395875;border-radius:18px;padding:15px;box-shadow:0 20px 70px #000}.replayTrack{height:230px;position:relative;overflow:hidden;background:linear-gradient(#91c6e3 0 25%,#72a05c 25% 35%,#b58b59 35% 90%,#775d3f 90%);border:1px solid #3a5875;border-radius:14px}.replayFinish{position:absolute;right:42px;top:55px;bottom:20px;width:14px;background:repeating-linear-gradient(0deg,#fff 0 10px,#111 10px 20px)}.replayR{position:absolute;left:10px;font-size:38px;display:flex;align-items:center;gap:4px;will-change:transform}.replayR span:first-child{transform:scaleX(-1)}.blueDot,.greenDot{flex:0 0 18px;width:18px;height:18px;border-radius:50%;border:3px solid white;margin-left:-1px;box-shadow:0 0 0 2px #0005}.blueDot{background:var(--blue)}.greenDot{background:var(--green)}
+
+/* v4 light theme */
+:root{--bg:#eef4f8;--panel:#ffffff;--panel2:#f4f8fb;--line:#c7d6e2;--text:#243746;--muted:#718696;--blue:#218ee8;--green:#35b66d;--gold:#d7a52d;--red:#d75f5f;--sand:#c99b60}
+body{background:linear-gradient(180deg,#eef6fb 0%,#f7f4ee 100%);color:var(--text)}
+.hero,.card{background:rgba(255,255,255,.97);border-color:var(--line);box-shadow:0 10px 28px #71889b24}.sub{color:#5f7587}.nav button{background:#f0f6fa;border-color:#bfd0dc;color:#3b566a}.nav button.on{background:#dceffc;border-color:#6ab2e3;color:#195b88}.hint{background:#f5f9fc;border-color:#ccdae5;color:#4c6577}.hc{background:#f8fbfd;border-color:#d1dee7}.blood,.small{color:var(--muted)}.gene,.attr{background:#eef4f8}.secondary{background:#e3ebf1;color:#334c5e}.form input,input{background:#fff;color:#263d4c;border-color:#bfd0dc}.horsePic{background:linear-gradient(#e6f3fb,#f8fbfd);border:1px solid #cadce8}.stand th{color:#577084;background:#fff}.stand td,.stand th{border-bottom-color:#dbe4ea}.meRow{background:#e9f5ff}.matchCard,.metric,.roundBlock,.smatch,.rankItem{background:#f8fbfd;border-color:#d0dde6}.matchCard.player,.smatch.me{border-color:#4aa7e4}.resultText{color:#60788b}.watch{background:#dce8f0;color:#355164}.st{background:#f4f8fb;border-color:#c8d9e5}.st.sel{outline-color:#d8a72c;background:#fff7df}.roundTitle{color:#405b6e}.hud span{background:#ffffffdf;color:#294457;border-color:#b9cbd7}.raceLog{background:#fff;color:#334d5e;border-color:#ccdbe5}.raceLog div{border-bottom-color:#e5edf2}.rankItem.me{border-color:var(--blue);box-shadow:inset 4px 0 var(--blue)}.modal{background:#29435680}.modalBox{background:#fff;color:#263d4c;border-color:#bfd1de;box-shadow:0 18px 60px #3d536c35}.rname{background:#ffffffdf;color:#304b5e;border:1px solid #c9d7e0}.S{color:#d93025;font-weight:1000}.A{color:#d93025}.B{color:#ef7d16}.C{color:#d6ad00}.D{color:#2c9a51}.E{color:#2479d8}.F{color:#4b4fb8}.G{color:#7e8790}
+/* horse actually gallops instead of sliding rigidly */
+@keyframes gallopHorse{0%,100%{transform:scaleX(-1) translateY(0) rotate(-1deg)}25%{transform:scaleX(-1) translateY(-6px) rotate(2deg)}50%{transform:scaleX(-1) translateY(1px) rotate(-2deg)}75%{transform:scaleX(-1) translateY(-4px) rotate(1deg)}}
+@keyframes dustPuff{0%{opacity:0;transform:translate(0,2px) scale(.5)}35%{opacity:.55}100%{opacity:0;transform:translate(-24px,-5px) scale(1.35)}}
+.racer.running .horse{animation:gallopHorse .30s cubic-bezier(.45,0,.55,1) infinite;transform-origin:55% 75%}.racer.running:before{content:'···';position:absolute;left:5px;bottom:3px;color:#e8d4b9;font-weight:900;letter-spacing:1px;animation:dustPuff .42s linear infinite}.replayR.running span:first-child{animation:gallopHorse .30s cubic-bezier(.45,0,.55,1) infinite;transform-origin:55% 75%}
+.recentList{display:grid;gap:7px}.recentItem{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;background:#f8fbfd;border:1px solid #d3e0e8;border-radius:11px;padding:8px 10px}.recentWL{font-weight:1000;font-size:16px}.recentWL.win{color:#168649}.recentWL.lose{color:#c85050}.navRow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+
+/* v6：大廳的個人主頁入口特別醒目 */
+.nav button[data-go="profile"]{
+  background:linear-gradient(135deg,#177fd2,#42b5ef)!important;
+  color:#fff!important;
+  border-color:#177fc9!important;
+  padding:10px 18px!important;
+  font-size:15px!important;
+  box-shadow:0 6px 15px rgba(33,142,232,.28);
+}
+.nav button[data-go="profile"].on{
+  background:linear-gradient(135deg,#116cae,#248fcf)!important;
+  box-shadow:0 4px 11px rgba(24,110,176,.28);
+}
+
+
+/* v9：完賽後強制完全靜止 */
+.racer.finished .horse{
+  animation:none!important;
+  transform:scaleX(-1)!important;
+}
+.racer.finished:before{
+  content:none!important;
+  display:none!important;
+  animation:none!important;
+}
+.racer.finished{
+  animation:none!important;
+}
+.lobbyHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.lobbyHeader h2{margin:0}
+.resetSeasonBtn{
+  background:#fff0f0!important;
+  color:#b33b3b!important;
+  border:1px solid #e4a5a5!important;
+  box-shadow:0 4px 12px rgba(190,70,70,.12);
+}
+.resetSeasonBtn:hover{
+  background:#ffe3e3!important;
+}
+
+
+/* v16：最擅長能力標誌 */
+.bestAbility{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  margin-left:7px;
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.bestDot{
+  width:13px;
+  height:13px;
+  border-radius:50%;
+  display:inline-block;
+  flex:0 0 13px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.12);
+}
+.best-speed .bestDot{background:#e53935}
+.best-burst .bestDot{background:#f28c28}
+.best-temper .bestDot{background:#f2c94c}
+.best-stamina .bestDot{background:#35a853}
+.best-guts .bestDot{background:#2f80ed}
+.profileBest{
+  margin:8px 0 3px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#f7fbff;
+  border:1px solid #d5e3ee;
+  width:max-content;
+  max-width:100%;
+}
+
+
+/* v17：馬匹狀況與騎師 */
+.nameFields{
+  display:grid;
+  grid-template-columns:1fr 1fr auto;
+  gap:10px;
+  margin-top:10px;
+}
+.nameFields input{
+  min-width:0;
+  padding:12px 14px;
+  border:1px solid #c5d6e3;
+  border-radius:12px;
+  background:#fff;
+  font-size:15px;
+  color:#203446;
+}
+.conditionRow{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+  margin:9px 0;
+  padding:9px 11px;
+  border:1px solid #d5e3ee;
+  border-radius:13px;
+  background:#f8fbfd;
+}
+.conditionFace{
+  width:35px;height:35px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:900;
+  border:2px solid rgba(0,0,0,.08);
+}
+.cond-excellent{background:#ff8fbd;color:#6d173c}
+.cond-good{background:#ef5b5b;color:#fff}
+.cond-normal{background:#f4d84d;color:#55480a}
+.cond-bad{background:#67a9e8;color:#fff}
+.cond-terrible{background:#8650b6;color:#fff}
+.jockeyPanel{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:minmax(180px,260px) 1fr;
+  gap:10px;
+  align-items:stretch;
+}
+.jockeyPanel select{
+  width:100%;
+  border:1px solid #bfd2e0;
+  border-radius:12px;
+  background:white;
+  padding:11px 12px;
+  font-size:15px;
+  font-weight:800;
+  color:#203446;
+}
+.jockeyInfo{
+  border:1px solid #d6e3ec;
+  border-radius:12px;
+  background:#f8fbfd;
+  padding:10px 12px;
+  line-height:1.65;
+  font-size:13px;
+}
+.jockeyGood{color:#148443;font-weight:800}
+.jockeyBad{color:#c44848;font-weight:800}
+@media(max-width:720px){
+  .nameFields{grid-template-columns:1fr}
+  .jockeyPanel{grid-template-columns:1fr}
+}
+
+
+/* v18：勝率分級 */
+.winPct{white-space:nowrap}
+.pct-under40{color:#111;font-weight:900}
+.pct-40to50{color:#111;font-weight:400}
+.pct-50to60{color:#69b7f3;font-weight:900}
+.pct-60to70{color:#66bd78;font-weight:900}
+.pct-70to80{color:#f08a24;font-weight:900;font-size:1.08em}
+.pct-80plus{color:#df3b3b;font-weight:1000;font-size:1.08em}
+
+/* v18：精緻季賽進度 */
+.seasonProgressCard{
+  border:1px solid #cfdee8;
+  border-radius:16px;
+  background:linear-gradient(180deg,#fafdff,#f2f8fc);
+  padding:14px;
+  box-shadow:inset 0 1px 0 #fff;
+}
+.seasonProgressTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:10px;
+}
+.seasonProgressTop strong{
+  display:block;
+  margin-top:2px;
+  font-size:30px;
+  color:#214965;
+}
+.progressPct{
+  padding:6px 10px;
+  border-radius:999px;
+  background:#dceffc;
+  color:#176b9f;
+  font-weight:1000;
+  font-size:15px;
+}
+.seasonProgressBar{
+  height:13px;
+  border-radius:999px;
+  background:#dfe9ef;
+  margin:11px 0 12px;
+  overflow:hidden;
+  box-shadow:inset 0 1px 2px #8ea5b633;
+}
+#seasonProgressFill{
+  height:100%;
+  width:0;
+  border-radius:999px;
+  background:linear-gradient(90deg,#56b7ef,#2c8fd2);
+  transition:width .3s ease;
+}
+.seasonProgressStats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.progressStat{
+  border:1px solid #d7e3eb;
+  border-radius:12px;
+  background:#fff;
+  padding:9px 10px;
+}
+.progressStat span{
+  display:block;
+  font-size:11px;
+  color:#758a99;
+  margin-bottom:3px;
+}
+.progressStat strong{
+  font-size:16px;
+  color:#273f50;
+}
+@media(max-width:660px){
+  .seasonProgressStats{grid-template-columns:1fr}
+}
+
+/* v18：馬況「顏色＋表情＋文字」整合成單一徽章 */
+.conditionRow{
+  gap:8px;
+  background:#f8fbfd;
+}
+.conditionBadge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 11px 6px 8px;
+  border-radius:999px;
+  font-weight:1000;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 2px 5px rgba(54,78,96,.10);
+}
+.conditionEmoji{
+  font-size:19px;
+  line-height:1;
+}
+.conditionBadge.cond-excellent{background:#ff9bc4;color:#6a153b}
+.conditionBadge.cond-good{background:#ef6565;color:#fff}
+.conditionBadge.cond-normal{background:#f2d94f;color:#55480a}
+.conditionBadge.cond-bad{background:#69aee8;color:#fff}
+.conditionBadge.cond-terrible{background:#8653b5;color:#fff}
+
+
+/* v21：賽道與天候資訊 */
+.raceMeta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:7px;
+}
+.raceTag{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#eef6fb;
+  border:1px solid #cbdce8;
+  color:#38586e;
+  font-size:12px;
+  font-weight:800;
+}
+.track-short{background:#fff0dc;border-color:#efd0a0;color:#9a5b10}
+.track-medium{background:#e8f5ff;border-color:#bcdcf2;color:#236a9c}
+.track-long{background:#ebf7eb;border-color:#bfdcbe;color:#2d7440}
+.weather-rain{background:#e9eefb;border-color:#c4cee8;color:#4d5f9c}
+.weather-cloudy{background:#f0f2f4;border-color:#d0d5da;color:#59636b}
+.weather-sunny{background:#fff8d8;border-color:#eadb8f;color:#8a6b00}
+
+
+/* v22：手機版主頁／個人頁／賽事轉播 */
+.rotateHint{
+  display:none;
+  margin:0 0 10px;
+  padding:9px 12px;
+  border-radius:12px;
+  background:#fff5cc;
+  border:1px solid #ead27a;
+  color:#6e5a10;
+  font-weight:800;
+  font-size:13px;
+  text-align:center;
+}
+
+/* 桌面也限制內容寬度，手機會再進一步壓縮 */
+.tableWrap{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+#standingsTable{
+  min-width:920px;
+}
+
+/* ===== 手機直向：主頁與個人頁一目了然 ===== */
+@media (max-width: 760px){
+  body{font-size:14px}
+  .wrap{padding:8px}
+  .hero,.card{
+    border-radius:15px;
+    padding:12px;
+    margin-bottom:9px;
+    box-shadow:0 6px 18px rgba(44,74,96,.10);
+  }
+  .hero h1{
+    font-size:30px;
+    line-height:1.15;
+  }
+  .nav{
+    gap:6px!important;
+    flex-wrap:wrap!important;
+  }
+  .nav button{
+    flex:1 1 auto;
+    min-height:42px;
+    padding:9px 11px!important;
+    font-size:14px!important;
+  }
+
+  /* 大廳：上下排列 */
+  .two{
+    grid-template-columns:1fr!important;
+    gap:9px!important;
+  }
+  .metricGrid{
+    grid-template-columns:1fr 1fr!important;
+    gap:7px!important;
+  }
+  .seasonProgressStats{
+    grid-template-columns:1fr 1fr!important;
+    gap:7px;
+  }
+  .seasonProgressStats .progressStat:last-child{
+    grid-column:1 / -1;
+  }
+  .seasonProgressTop strong{font-size:24px}
+  .progressPct{font-size:13px}
+
+  /* 戰績表在直向手機改成固定首兩欄 + 可滑能力/戰績 */
+  .tableWrap{
+    margin-left:-4px;
+    margin-right:-4px;
+  }
+  #standingsTable{
+    min-width:850px;
+    font-size:12px;
+  }
+  #standingsTable th,#standingsTable td{
+    padding:6px 5px!important;
+  }
+  #standingsTable th:first-child,
+  #standingsTable td:first-child{
+    position:sticky;
+    left:0;
+    z-index:3;
+    background:#fff;
+    min-width:42px;
+  }
+  #standingsTable th:nth-child(2),
+  #standingsTable td:nth-child(2){
+    position:sticky;
+    left:42px;
+    z-index:3;
+    background:#fff;
+    min-width:120px;
+    box-shadow:4px 0 7px rgba(70,97,116,.08);
+  }
+  #standingsTable tr.meRow td:first-child,
+  #standingsTable tr.meRow td:nth-child(2){
+    background:#eef8ff;
+  }
+  .teamCell b{font-size:13px}
+  .teamCell .small{font-size:10px}
+  .bestAbility{font-size:10px;margin-left:0}
+  .bestDot{width:10px;height:10px;flex-basis:10px}
+
+  /* 近九場與本輪賽事 */
+  .recentGrid,.currentMatches{
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+  }
+  .matchCard,.recentCard{
+    padding:9px!important;
+  }
+  .raceMeta{gap:4px}
+  .raceTag{
+    font-size:11px;
+    padding:3px 6px;
+  }
+
+  /* 個人頁：馬匹資料改成上下排列 */
+  .horseResult{
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+  }
+  .horsePic{
+    min-height:145px!important;
+  }
+  .horseEmoji{font-size:78px!important}
+  .playerTag{
+    font-size:11px!important;
+    padding:5px 8px!important;
+  }
+  .attrs{
+    grid-template-columns:repeat(5,1fr)!important;
+    gap:4px!important;
+  }
+  .attr{
+    padding:7px 2px!important;
+  }
+  .attr b{font-size:21px!important}
+  .attr .small{font-size:9px!important}
+  .profileBest{
+    font-size:12px;
+    margin:7px 0;
+  }
+  .conditionRow{
+    padding:7px 8px;
+    line-height:1.4;
+  }
+  .conditionRow .small{
+    flex-basis:100%;
+    font-size:10px;
+  }
+  .conditionBadge{
+    padding:5px 9px 5px 7px;
+  }
+
+  /* 策略 2x2；騎師資訊上下 */
+  .strategy{
+    grid-template-columns:1fr 1fr!important;
+    gap:7px!important;
+  }
+  .st{
+    min-height:86px;
+    padding:9px!important;
+  }
+  .jockeyPanel{
+    grid-template-columns:1fr!important;
+  }
+  .jockeyInfo{
+    font-size:12px;
+  }
+  #profileRaceInfo{
+    font-size:13px;
+    line-height:1.7;
+  }
+  #profileStartRace{
+    width:100%;
+    min-height:48px;
+    font-size:16px;
+  }
+
+  /* 賽程表 */
+  .round{
+    padding:9px!important;
+  }
+  .roundTitle{
+    display:block!important;
+  }
+  .roundTitle .raceMeta{
+    margin-top:6px;
+  }
+  .roundMatches{
+    grid-template-columns:1fr!important;
+  }
+
+  /* 直向手機比賽：提示橫向，可左右滑作備援 */
+  #race.on .rotateHint{display:block}
+  #race .trackWrap{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  #race .track{
+    min-width:900px;
+  }
+  #race .card{
+    padding:8px;
+  }
+  #raceTitle{
+    font-size:20px;
+  }
+}
+
+/* ===== 手機橫向：整條賽道一次看完 ===== */
+@media (orientation: landscape) and (max-height: 620px){
+  body{overflow-x:hidden}
+  .wrap{
+    max-width:none;
+    width:100%;
+    padding:4px;
+  }
+  #race.on{
+    width:100%;
+  }
+  #race.on > .card:first-child{
+    padding:5px 6px 7px;
+    margin-bottom:5px;
+    border-radius:10px;
+  }
+  #race.on .rotateHint{display:none}
+  #race.on #raceTitle{
+    font-size:17px;
+    margin:0 0 4px;
+  }
+  #race.on #preRace{
+    font-size:11px;
+    line-height:1.35;
+    padding:5px 7px!important;
+    margin-bottom:4px!important;
+  }
+  #race.on #preRace .raceMeta{
+    display:inline-flex;
+    margin:0 6px 0 0;
+    vertical-align:middle;
+  }
+  #race.on .raceTag{
+    font-size:9px;
+    padding:2px 4px;
+  }
+  #race.on .trackWrap{
+    overflow:hidden;
+    width:100%;
+    padding:0;
+  }
+  #race.on .track{
+    /* 關鍵：橫向手機直接用螢幕可用寬度，不再保留 900px 最小寬 */
+    min-width:0!important;
+    width:100%!important;
+    height:min(62vh,420px)!important;
+    border-radius:10px;
+  }
+  #race.on .lane{
+    height:38px;
+  }
+  #race.on .racer{
+    width:96px;
+  }
+  #race.on .horse{font-size:30px}
+  #race.on .rname{
+    max-width:54px;
+    font-size:9px;
+  }
+  #race.on .mark{
+    width:13px;
+    height:13px;
+  }
+  #race.on .hud{
+    top:5px;
+    left:5px;
+    right:5px;
+  }
+  #race.on .hud span{
+    padding:4px 7px;
+    font-size:10px;
+  }
+  #race.on .ranks{
+    grid-template-columns:1fr 1fr;
+    gap:4px;
+    margin-top:4px;
+  }
+  #race.on .ri{
+    padding:4px 7px;
+    font-size:11px;
+  }
+  #race.on .row{
+    margin-top:5px;
+  }
+  #race.on #returnLobby{
+    min-height:36px;
+    padding:6px 12px;
+    font-size:12px;
+  }
+
+  /* 轉播文字放在賽道下方但壓縮高度 */
+  #race.on + .card,
+  #race.on .card:last-child{
+    padding:6px;
+  }
+  #race.on .log{
+    height:82px;
+    font-size:10px;
+    line-height:1.35;
+  }
+}
+
+/* 很窄的手機再縮能力字 */
+@media (max-width:390px){
+  .attrs{gap:3px!important}
+  .attr b{font-size:19px!important}
+  .strategy{grid-template-columns:1fr!important}
+}
+
+
+/* ===== v23：手機直向完全不需橫向滑動 ===== */
+@media (max-width:760px){
+
+  /* ---------- 大廳戰績：由橫向表格改為隊伍卡片 ---------- */
+  .tableWrap{
+    overflow:visible!important;
+    margin:0!important;
+  }
+  #standingsTable{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    border:0!important;
+  }
+  #standingsTable thead{
+    display:none!important;
+  }
+  #standingsTable tbody{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:8px;
+    width:100%;
+  }
+  #standingsTable tr{
+    display:grid!important;
+    width:100%;
+    grid-template-columns:42px minmax(0,1fr) repeat(5,42px);
+    grid-template-areas:
+      "rank team team team team team team"
+      "best best sp bu te sta gu"
+      "gp win lose pct pct pct pct";
+    align-items:stretch;
+    gap:5px;
+    padding:9px;
+    border:1px solid #cfdee8!important;
+    border-radius:13px;
+    background:#fff;
+    box-shadow:0 3px 10px rgba(47,81,104,.07);
+  }
+  #standingsTable tr.meRow{
+    background:#eef8ff;
+    border-color:#75bae7!important;
+    box-shadow:inset 4px 0 #2f9de0,0 3px 10px rgba(47,81,104,.07);
+  }
+  #standingsTable td{
+    display:flex!important;
+    position:static!important;
+    min-width:0!important;
+    border:0!important;
+    box-shadow:none!important;
+    padding:5px!important;
+    background:transparent!important;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    border-radius:8px;
+  }
+  #standingsTable td:nth-child(1){
+    grid-area:rank;
+    font-size:20px;
+    font-weight:1000;
+    color:#31556e;
+    background:#eef4f8!important;
+  }
+  #standingsTable td:nth-child(2){
+    grid-area:team;
+    justify-content:flex-start;
+    text-align:left;
+    padding-left:9px!important;
+  }
+  #standingsTable td:nth-child(3){
+    grid-area:best;
+    justify-content:flex-start;
+    background:#f6f9fb!important;
+    padding-left:7px!important;
+  }
+  #standingsTable td:nth-child(4){grid-area:sp}
+  #standingsTable td:nth-child(5){grid-area:bu}
+  #standingsTable td:nth-child(6){grid-area:te}
+  #standingsTable td:nth-child(7){grid-area:sta}
+  #standingsTable td:nth-child(8){grid-area:gu}
+  #standingsTable td:nth-child(9){grid-area:gp}
+  #standingsTable td:nth-child(10){grid-area:win}
+  #standingsTable td:nth-child(11){grid-area:lose}
+  #standingsTable td:nth-child(12){grid-area:pct}
+
+  /* 五項能力直接顯示「速／瞬／性／體／根」 */
+  #standingsTable td:nth-child(4),
+  #standingsTable td:nth-child(5),
+  #standingsTable td:nth-child(6),
+  #standingsTable td:nth-child(7),
+  #standingsTable td:nth-child(8){
+    flex-direction:column;
+    gap:1px;
+    background:#f4f8fb!important;
+    font-size:18px;
+    font-weight:1000;
+  }
+  #standingsTable td:nth-child(4)::before{content:"速"}
+  #standingsTable td:nth-child(5)::before{content:"瞬"}
+  #standingsTable td:nth-child(6)::before{content:"性"}
+  #standingsTable td:nth-child(7)::before{content:"體"}
+  #standingsTable td:nth-child(8)::before{content:"根"}
+  #standingsTable td:nth-child(4)::before,
+  #standingsTable td:nth-child(5)::before,
+  #standingsTable td:nth-child(6)::before,
+  #standingsTable td:nth-child(7)::before,
+  #standingsTable td:nth-child(8)::before{
+    font-size:9px;
+    line-height:1;
+    color:#748a9a;
+    font-weight:700;
+  }
+
+  /* 戰績四欄一列 */
+  #standingsTable td:nth-child(9),
+  #standingsTable td:nth-child(10),
+  #standingsTable td:nth-child(11),
+  #standingsTable td:nth-child(12){
+    flex-direction:column;
+    background:#f8fafc!important;
+    font-size:14px;
+    font-weight:800;
+  }
+  #standingsTable td:nth-child(9)::before{content:"已賽"}
+  #standingsTable td:nth-child(10)::before{content:"勝"}
+  #standingsTable td:nth-child(11)::before{content:"敗"}
+  #standingsTable td:nth-child(12)::before{content:"勝率"}
+  #standingsTable td:nth-child(9)::before,
+  #standingsTable td:nth-child(10)::before,
+  #standingsTable td:nth-child(11)::before,
+  #standingsTable td:nth-child(12)::before{
+    font-size:9px;
+    color:#7b8e9c;
+    font-weight:700;
+    margin-bottom:2px;
+  }
+  #standingsTable td:nth-child(9){grid-column:1 / 2}
+  #standingsTable td:nth-child(10){grid-column:2 / 3}
+  #standingsTable td:nth-child(11){grid-column:3 / 4}
+  #standingsTable td:nth-child(12){grid-column:4 / 8}
+
+  .teamCell b{font-size:15px!important}
+  .teamCell .small{font-size:11px!important}
+  .bestAbility{font-size:11px!important}
+  .bestDot{width:11px!important;height:11px!important;flex-basis:11px!important}
+
+  /* ---------- 比賽轉播：直向手機一次看完整賽道 ---------- */
+  #race.on .trackWrap{
+    overflow:hidden!important;
+    width:100%;
+    padding:0;
+  }
+  #race.on .track{
+    min-width:0!important;
+    width:100%!important;
+    height:305px!important;
+    border-radius:12px;
+  }
+  #race.on .finishWrap{
+    right:23px!important;
+    top:80px!important;
+    bottom:28px!important;
+    width:26px!important;
+  }
+  #race.on .finishFlag{
+    left:-14px!important;
+    top:-21px!important;
+    font-size:9px!important;
+    padding:2px 4px!important;
+  }
+  #race.on .finishLine{
+    left:9px!important;
+    width:12px!important;
+  }
+  #race.on .rail.r1{top:109px!important}
+  #race.on .rail.r2{bottom:31px!important}
+
+  /* JS 仍使用兩條固定跑道位置，因此縮小馬匹本體即可完整容納 */
+  #race.on .racer{
+    width:76px!important;
+    height:48px!important;
+  }
+  #race.on .horse{
+    font-size:32px!important;
+  }
+  #race.on .mark{
+    width:12px!important;
+    height:12px!important;
+    flex-basis:12px!important;
+    border-width:2px!important;
+    margin-right:2px!important;
+  }
+  #race.on .rname{
+    max-width:38px!important;
+    font-size:8px!important;
+    padding:2px 3px!important;
+  }
+  #race.on .hud{
+    top:5px!important;
+    left:5px!important;
+    right:5px!important;
+  }
+  #race.on .hud span{
+    font-size:10px!important;
+    padding:4px 6px!important;
+  }
+  #race.on #raceTitle{
+    font-size:18px!important;
+    margin-bottom:6px!important;
+  }
+  #race.on #preRace{
+    font-size:11px!important;
+    line-height:1.45!important;
+    padding:7px!important;
+    margin-bottom:6px!important;
+  }
+  #race.on .raceTag{
+    font-size:9px!important;
+    padding:2px 4px!important;
+  }
+  #race.on .rankBox{
+    grid-template-columns:1fr 1fr!important;
+    gap:5px!important;
+    margin-top:5px!important;
+  }
+  #race.on .rankItem{
+    padding:5px 6px!important;
+    font-size:11px!important;
+  }
+  #race.on .raceLog{
+    height:120px!important;
+    font-size:11px!important;
+    line-height:1.45!important;
+  }
+  #race.on #returnLobby{
+    width:100%;
+    min-height:40px;
+  }
+}
+
+/* 超窄手機：戰績能力格再縮一點 */
+@media (max-width:380px){
+  #standingsTable tr{
+    grid-template-columns:38px minmax(0,1fr) repeat(5,36px);
+    padding:7px;
+    gap:3px;
+  }
+  #standingsTable td:nth-child(4),
+  #standingsTable td:nth-child(5),
+  #standingsTable td:nth-child(6),
+  #standingsTable td:nth-child(7),
+  #standingsTable td:nth-child(8){
+    font-size:16px;
+    padding:4px 2px!important;
+  }
+  #race.on .track{height:295px!important}
+}
+
+
+/* ===== v24：修正手機大廳真正使用的 .stand，完全取消橫向滑動 ===== */
+@media (max-width:760px){
+  html,body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden!important;
+  }
+  .wrap,
+  #lobby,
+  #lobby .two,
+  #lobby .two > div,
+  #lobby .card,
+  #lobby .standWrap,
+  #lobby .seasonProgressCard,
+  #lobby #lobbyMine{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+  #lobby .two{
+    display:block!important;
+  }
+  #lobby .two > div{
+    display:block!important;
+  }
+  #lobby .standWrap{
+    overflow:visible!important;
+  }
+
+  /* 真正的聯盟戰績表 class 是 .stand */
+  #lobby .stand{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    border-collapse:separate!important;
+  }
+  #lobby .stand thead{
+    display:none!important;
+  }
+  #lobby .stand tbody{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+    width:100%!important;
+  }
+  #lobby .stand tr{
+    display:grid!important;
+    width:100%!important;
+    min-width:0!important;
+    grid-template-columns:40px minmax(72px,1fr) repeat(5,minmax(34px,42px));
+    grid-template-areas:
+      "rank team team team team team team"
+      "best best sp bu te sta gu"
+      "gp win lose pct pct pct pct";
+    gap:4px!important;
+    padding:8px!important;
+    margin:0!important;
+    border:1px solid #cfdee8!important;
+    border-radius:13px!important;    background:#fff!important;
+    box-shadow:0 3px 10px rgba(47,81,104,.07)!important;
+  }
+  #lobby .stand tr.meRow{
+    background:#eef8ff!important;
+    border-color:#75bae7!important;
+    box-shadow:inset 4px 0 #2f9de0,0 3px 10px rgba(47,81,104,.07)!important;
+  }
+  #lobby .stand td{
+    display:flex!important;
+    min-width:0!important;
+    max-width:100%!important;
+    position:static!important;
+    border:0!important;
+    padding:4px 3px!important;
+    background:transparent!important;
+    justify-content:center;
+    align-items:center;
+    text-align:center!important;
+    white-space:normal!important;
+    border-radius:7px;
+  }
+  #lobby .stand td:nth-child(1){
+    grid-area:rank;
+    font-size:18px;
+    font-weight:1000;
+    background:#eef4f8!important;
+  }
+  #lobby .stand td:nth-child(2){
+    grid-area:team;
+    justify-content:flex-start!important;
+    text-align:left!important;
+    padding-left:7px!important;
+    overflow:hidden;
+  }
+  #lobby .stand td:nth-child(2) b,
+  #lobby .stand td:nth-child(2) span{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:100%;
+  }
+  #lobby .stand td:nth-child(3){
+    grid-area:best;
+    justify-content:flex-start!important;
+    background:#f6f9fb!important;
+    padding-left:6px!important;
+  }
+  #lobby .stand td:nth-child(4){grid-area:sp}
+  #lobby .stand td:nth-child(5){grid-area:bu}
+  #lobby .stand td:nth-child(6){grid-area:te}
+  #lobby .stand td:nth-child(7){grid-area:sta}
+  #lobby .stand td:nth-child(8){grid-area:gu}
+
+  #lobby .stand td:nth-child(4),
+  #lobby .stand td:nth-child(5),
+  #lobby .stand td:nth-child(6),
+  #lobby .stand td:nth-child(7),
+  #lobby .stand td:nth-child(8){
+    flex-direction:column;
+    gap:1px;
+    font-size:17px!important;
+    font-weight:1000;
+    background:#f4f8fb!important;
+  }
+  #lobby .stand td:nth-child(4)::before{content:"速"}
+  #lobby .stand td:nth-child(5)::before{content:"瞬"}
+  #lobby .stand td:nth-child(6)::before{content:"性"}
+  #lobby .stand td:nth-child(7)::before{content:"體"}
+  #lobby .stand td:nth-child(8)::before{content:"根"}
+  #lobby .stand td:nth-child(4)::before,
+  #lobby .stand td:nth-child(5)::before,
+  #lobby .stand td:nth-child(6)::before,
+  #lobby .stand td:nth-child(7)::before,
+  #lobby .stand td:nth-child(8)::before{
+    color:#748a9a;
+    font-size:8px;
+    line-height:1;
+    font-weight:700;
+  }
+
+  #lobby .stand td:nth-child(9),
+  #lobby .stand td:nth-child(10),
+  #lobby .stand td:nth-child(11),
+  #lobby .stand td:nth-child(12){
+    flex-direction:column;
+    font-size:13px;
+    background:#f8fafc!important;
+  }
+  #lobby .stand td:nth-child(9){grid-area:gp}
+  #lobby .stand td:nth-child(10){grid-area:win}
+  #lobby .stand td:nth-child(11){grid-area:lose}
+  #lobby .stand td:nth-child(12){grid-area:pct}
+  #lobby .stand td:nth-child(9)::before{content:"已賽"}
+  #lobby .stand td:nth-child(10)::before{content:"勝"}
+  #lobby .stand td:nth-child(11)::before{content:"敗"}
+  #lobby .stand td:nth-child(12)::before{content:"勝率"}
+  #lobby .stand td:nth-child(9)::before,
+  #lobby .stand td:nth-child(10)::before,
+  #lobby .stand td:nth-child(11)::before,
+  #lobby .stand td:nth-child(12)::before{
+    color:#7b8e9c;
+    font-size:8px;
+    font-weight:700;
+    margin-bottom:1px;
+  }
+
+  /* 我的賽駒：五能力一定塞入手機寬度 */
+  #lobby #lobbyMine .attrs{
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    width:100%!important;
+    min-width:0!important;
+    gap:4px!important;
+  }
+  #lobby #lobbyMine .attr{
+    min-width:0!important;
+    padding:6px 2px!important;
+  }
+  #lobby #lobbyMine .attr b{
+    font-size:20px!important;
+  }
+  #lobby #lobbyMine .attr .small{
+    font-size:9px!important;
+  }
+
+  /* 季賽進度固定單欄、絕不超出卡片 */
+  #lobby .seasonProgressCard{
+    overflow:hidden!important;
+  }
+  #lobby .seasonProgressTop{
+    width:100%!important;
+    min-width:0!important;
+  }
+  #lobby .seasonProgressStats{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    width:100%!important;
+    min-width:0!important;
+    gap:6px!important;
+  }
+  #lobby .seasonProgressStats .progressStat{
+    min-width:0!important;
+    overflow:hidden;
+  }
+  #lobby .seasonProgressStats .progressStat strong{
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:14px!important;
+  }
+  #lobby .seasonProgressStats .progressStat:last-child{
+    grid-column:1 / -1;
+  }
+}
+
+@media (max-width:390px){
+  #lobby .stand tr{
+    grid-template-columns:36px minmax(62px,1fr) repeat(5,minmax(29px,35px));
+    gap:3px!important;
+    padding:7px!important;
+  }
+  #lobby .stand td:nth-child(4),
+  #lobby .stand td:nth-child(5),
+  #lobby .stand td:nth-child(6),
+  #lobby .stand td:nth-child(7),
+  #lobby .stand td:nth-child(8){
+    font-size:15px!important;
+    padding:4px 1px!important;
+  }
+}
+
+
+/* ===== v25：週賽程、轉播頁選策略與醒目完賽結果 ===== */
+.weekBlock{
+  border:1px solid #cad9e4;
+  border-radius:16px;
+  background:#f8fbfd;
+  padding:12px;
+  margin-bottom:12px;
+}
+.weekBlock.currentWeek{
+  border-color:#e0b43d;
+  box-shadow:0 0 0 2px #f6dfa0 inset;
+}
+.weekHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:9px;
+}
+.weekHeader strong{font-size:20px;color:#31536b}
+.weekRange{
+  font-size:12px;
+  color:#6e8494;
+  background:#fff;
+  border:1px solid #d5e1e9;
+  border-radius:999px;
+  padding:4px 8px;
+}
+.weekRounds{
+  display:grid;
+  gap:8px;
+}
+.weekRound{
+  border:1px solid #d8e3ea;
+  border-radius:12px;
+  background:#fff;
+  padding:9px;
+}
+.weekRound.currentRound{
+  border:2px solid #e0ad2f;
+  background:#fff9e6;
+  box-shadow:0 4px 14px rgba(193,145,27,.12);
+}
+.currentProgressBadge{
+  display:inline-flex;
+  align-items:center;
+  margin-left:7px;
+  border-radius:999px;
+  padding:3px 8px;
+  background:#f3c84f;
+  color:#5d4704;
+  font-size:11px;
+  font-weight:1000;
+}
+.weekRoundHead{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:7px;
+  font-weight:900;
+  color:#405b6e;
+}
+.scheduleResult{
+  margin-top:5px;
+  line-height:1.45;
+}
+.scheduleTeams{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  align-items:center;
+}
+.scheduleWin{font-weight:1000;color:#267445}
+.scheduleLose{color:#6e7c86}
+.scheduleWL{
+  font-size:10px;
+  font-weight:1000;
+  border-radius:5px;
+  padding:1px 5px;
+  background:#e8f5ec;
+}
+.scheduleLose .scheduleWL{background:#eef1f3}
+.scheduleMargin{
+  margin-top:5px;
+  font-size:20px;
+  line-height:1.1;
+  font-weight:1000;
+  color:#d56325;
+  letter-spacing:.2px;
+}
+.schedulePending{
+  margin-top:5px;
+  color:#7b8c98;
+  font-size:12px;
+}
+
+/* 賽前未知天候，只顯示賽道 */
+.trackOnlyMeta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin:6px 0;
+}
+
+/* 轉播頁策略 */
+.raceStrategyPanel{
+  border:1px solid #c9dce9;
+  border-radius:14px;
+  background:#f5faff;
+  padding:11px;
+  margin-bottom:10px;
+}
+.raceStrategyTitle{
+  font-weight:1000;
+  margin-bottom:8px;
+  color:#31536b;
+}
+.raceStrategyPanel .strategy.locked{
+  opacity:.72;
+  pointer-events:none;
+}
+.raceStartBtn{
+  display:block;
+  width:min(260px,100%);
+  margin:10px auto 5px;
+  padding:13px 18px;
+  border:0;
+  border-radius:999px;
+  background:#dc3f3f;
+  color:white;
+  font-weight:1000;
+  font-size:22px;
+  letter-spacing:2px;
+  box-shadow:0 5px 14px rgba(176,44,44,.24);
+}
+.raceStartBtn:disabled{
+  background:#aebbc4;
+  box-shadow:none;
+  cursor:not-allowed;
+}
+.raceResultBanner{
+  display:none;
+  margin-bottom:10px;
+  padding:13px 14px;
+  border-radius:13px;
+  background:linear-gradient(135deg,#fff0c8,#ffe1d5);
+  border:2px solid #ec8a47;
+  color:#8b3518;
+  font-size:23px;
+  line-height:1.3;
+  font-weight:1000;
+  text-align:center;
+  box-shadow:0 5px 16px rgba(180,90,34,.15);
+}
+.raceResultBanner.show{display:block}
+
+@media(max-width:760px){
+  .weekBlock{padding:8px}
+  .weekHeader strong{font-size:18px}
+  .weekRound{padding:8px}
+  .weekRound .roundMatches{grid-template-columns:1fr!important}
+  .scheduleMargin{font-size:21px}
+  .raceStrategyPanel{padding:8px}
+  .raceStrategyPanel .strategy{grid-template-columns:1fr 1fr!important}
+  .raceStartBtn{font-size:20px}
+  .raceResultBanner{font-size:19px;padding:11px 9px}
+}
+
+
+/* ===== v26：大型導覽按鈕 ===== */
+#nav{
+  gap:10px!important;
+}
+#nav button,
+.navRow button,
+#returnLobby,
+#scheduleToLobby,
+#scheduleToProfile{
+  min-height:48px!important;
+  padding:11px 18px!important;
+  border-radius:13px!important;
+  font-size:16px!important;
+  font-weight:1000!important;
+  letter-spacing:.2px;
+  box-shadow:0 4px 12px rgba(42,82,110,.15);
+}
+#nav button{
+  border:2px solid #b9d7e9!important;
+  background:#f1f9ff!important;
+  color:#1f638e!important;
+}
+#nav button.on{
+  background:#278fcf!important;
+  color:#fff!important;
+  border-color:#278fcf!important;
+}
+#returnLobby,
+#scheduleToLobby,
+#scheduleToProfile{
+  border:2px solid #8fc4e4!important;
+  background:#eaf7ff!important;
+  color:#246a96!important;
+}
+
+/* ===== v26：月曆式 10 週賽程 ===== */
+.scheduleList{
+  display:grid!important;
+  gap:14px!important;
+}
+.calendarWeek{
+  border:1px solid #cbdbe5;
+  border-radius:17px;
+  background:#f7fbfd;
+  overflow:hidden;
+  box-shadow:0 5px 16px rgba(44,75,98,.08);
+}
+.calendarWeek.currentWeek{
+  border:2px solid #e2b238;
+  box-shadow:0 0 0 3px #f7e7ac inset,0 5px 16px rgba(147,111,23,.12);
+}
+.calendarWeekHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 13px;
+  background:#eaf3f8;
+  border-bottom:1px solid #cedde6;
+}
+.calendarWeek.currentWeek .calendarWeekHeader{
+  background:#fff4cb;
+}
+.calendarWeekHeader strong{
+  font-size:21px;
+  color:#2d5068;
+}
+.calendarWeekHeader span{
+  font-size:12px;
+  color:#718693;
+  font-weight:800;
+}
+.calendarGrid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:1px;
+  background:#d7e3ea;
+}
+.calendarDay{
+  min-width:0;
+  background:#fff;
+  padding:8px;
+  min-height:245px;
+}
+.calendarDay.completedDay{
+  background:#fbfcfd;
+}
+.calendarDay.currentRound{
+  background:#fff8dc;
+  box-shadow:inset 0 0 0 3px #e3b433;
+  position:relative;
+  z-index:1;
+}
+.calendarDayTop{
+  display:flex;
+  justify-content:space-between;
+  gap:5px;
+  align-items:center;
+  margin-bottom:5px;
+}
+.calendarDayNo{
+  font-weight:1000;
+  font-size:14px;
+  color:#34576e;
+}
+.calendarSeasonNo{
+  font-size:9px;
+  padding:2px 5px;
+  border-radius:999px;
+  background:#eef3f6;
+  color:#758895;
+  font-weight:800;
+}
+.calendarMeta .trackOnlyMeta,
+.calendarMeta .raceMeta{
+  margin:5px 0!important;
+}
+.calendarMeta .raceTag{
+  font-size:9px!important;
+  padding:2px 4px!important;
+}
+.calendarMatches{
+  display:grid;
+  gap:6px;
+}
+.calendarDay .smatch{
+  padding:6px!important;
+  font-size:11px!important;
+  border-radius:8px!important;
+  min-width:0;
+}
+.calendarDay .smatch b{
+  overflow-wrap:anywhere;
+}
+.calendarDay .watch{
+  width:100%;
+  padding:6px!important;
+}
+.calendarDay .scheduleMargin{
+  font-size:19px!important;
+  margin-top:4px!important;
+}
+.calendarDay .scheduleTeams{
+  gap:3px!important;
+  font-size:10px;
+}
+
+/* 手機仍維持月曆感，但不橫向滑動：一列 2 格 */
+@media(max-width:760px){
+  #nav button,
+  .navRow button,
+  #returnLobby,
+  #scheduleToLobby,
+  #scheduleToProfile{
+    min-height:52px!important;
+    padding:12px 15px!important;
+    font-size:16px!important;
+  }
+  .calendarGrid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:1px;
+  }
+  .calendarDay{
+    min-height:225px;
+    padding:7px;
+  }
+  .calendarWeekHeader strong{font-size:19px}
+  .calendarDay .scheduleMargin{font-size:20px!important}
+}
+@media(max-width:390px){
+  .calendarGrid{
+    grid-template-columns:1fr;
+  }
+  .calendarDay{
+    min-height:0;
+  }
+}
+
+
+/* ===== v30：全頁淺色／深色模式 ===== */
+.heroTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.themeToggle{
+  flex:0 0 auto;
+  min-height:44px;
+  padding:10px 15px;
+  border-radius:999px;
+  border:2px solid #b9d7e9;
+  background:#eef8ff;
+  color:#245e84;
+  font-size:14px;
+  font-weight:1000;
+  box-shadow:0 4px 12px rgba(42,82,110,.12);
+}
+.themeToggle:hover{transform:translateY(-1px)}
+.breedIntro{
+  font-size:15px;
+  line-height:1.85;
+}
+.breedAbilityNote{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px dashed #c8d7e1;
+  font-size:13px;
+  color:#647c8d;
+}
+
+/* 深色模式：基礎 */
+body.theme-dark{
+  --bg:#07111f;
+  --panel:#0f1b2d;
+  --panel2:#15273e;
+  --line:#2b4664;
+  --text:#eef6ff;
+  --muted:#9fb4ca;
+  --blue:#31a8ff;
+  --green:#42d27d;
+  --gold:#f3ca61;
+  --red:#ff7272;
+  --sand:#b88955;
+  background:radial-gradient(circle at top,#19314c,#07111f 52%,#030914)!important;
+  color:var(--text)!important;
+}
+body.theme-dark .hero,
+body.theme-dark .card{
+  background:rgba(15,27,45,.97)!important;
+  border-color:#2b4664!important;
+  box-shadow:0 14px 38px #0006!important;
+  color:#eef6ff!important;
+}
+body.theme-dark .themeToggle{
+  background:#172b43!important;
+  border-color:#42617d!important;
+  color:#f0f7fd!important;
+  box-shadow:0 4px 13px #0004!important;
+}
+body.theme-dark .sub{color:#bdd0e1!important}
+body.theme-dark .hint{
+  background:#13243a!important;
+  border-color:#2d4968!important;
+  color:#ccdae8!important;
+}
+body.theme-dark .breedAbilityNote{
+  border-top-color:#39506a!important;
+  color:#a9bed0!important;
+}
+body.theme-dark .nav button,
+body.theme-dark #nav button{
+  background:#1b2e47!important;
+  border-color:#35536f!important;
+  color:#d9e9f6!important;
+}
+body.theme-dark .nav button.on,
+body.theme-dark #nav button.on{
+  background:#2a5b82!important;
+  border-color:#52a6dd!important;
+  color:#fff!important;
+}
+body.theme-dark .hc{
+  background:#091626!important;
+  border-color:#2d4865!important;
+  color:#eef6ff!important;
+}
+body.theme-dark .gene,
+body.theme-dark .attr{
+  background:#17273c!important;
+}
+body.theme-dark .blood,
+body.theme-dark .small{color:#9fb4ca!important}
+body.theme-dark .secondary{
+  background:#263c58!important;
+  color:#eef7ff!important;
+}
+body.theme-dark input,
+body.theme-dark .nameFields input,
+body.theme-dark select{
+  background:#081523!important;
+  color:#eef6ff!important;
+  border-color:#35516e!important;
+}
+body.theme-dark .horsePic{
+  background:linear-gradient(#1c3756,#081421)!important;
+  border-color:#35516e!important;
+}
+body.theme-dark .stand th{
+  color:#bfd0e0!important;
+  background:#0f1b2d!important;
+}
+body.theme-dark .stand td,
+body.theme-dark .stand th{border-bottom-color:#263d55!important}
+body.theme-dark .meRow{background:#12304a!important}
+body.theme-dark .matchCard,
+body.theme-dark .metric,
+body.theme-dark .roundBlock,
+body.theme-dark .smatch,
+body.theme-dark .rankItem{
+  background:#091626!important;
+  border-color:#2b4664!important;
+  color:#eef6ff!important;
+}
+body.theme-dark .matchCard.player,
+body.theme-dark .smatch.me{border-color:#31a8ff!important}
+body.theme-dark .resultText{color:#cddbea!important}
+body.theme-dark .watch{
+  background:#263c58!important;
+  color:#fff!important;
+}
+body.theme-dark .st{
+  background:#172a43!important;
+  border-color:#35516e!important;
+  color:#eef6ff!important;
+}
+body.theme-dark .st.sel{
+  outline-color:#f3ca61!important;
+  background:#263d59!important;
+}
+body.theme-dark .roundTitle{color:#dceafa!important}
+body.theme-dark .hud span{
+  background:#06101ddd!important;
+  color:#eef6ff!important;
+  border-color:#35516e!important;
+}
+body.theme-dark .raceLog{
+  background:#06101d!important;
+  color:#d9e7f3!important;
+  border-color:#29415d!important;
+}
+body.theme-dark .raceLog div{border-bottom-color:#22374e!important}
+body.theme-dark .modal{background:#000b!important}
+body.theme-dark .modalBox{
+  background:#0f1b2d!important;
+  color:#eef6ff!important;
+  border-color:#395875!important;
+  box-shadow:0 20px 70px #000!important;
+}
+body.theme-dark .rname{
+  background:#000b!important;
+  color:#eef6ff!important;
+  border-color:#35516e!important;
+}
+
+/* 深色模式：v17+ 新增元件 */
+body.theme-dark .profileBest,
+body.theme-dark .conditionRow,
+body.theme-dark .jockeyInfo{
+  background:#13243a!important;
+  border-color:#2e4965!important;
+  color:#dce8f2!important;
+}
+body.theme-dark .jockeyPanel select{
+  background:#081523!important;
+  border-color:#35516e!important;
+  color:#eef6ff!important;
+}
+body.theme-dark .seasonProgressCard{
+  background:linear-gradient(180deg,#13243a,#0b1828)!important;
+  border-color:#2d4968!important;
+  box-shadow:inset 0 1px 0 #263d55!important;
+}
+body.theme-dark .seasonProgressTop strong{color:#e8f3fb!important}
+body.theme-dark .progressPct{
+  background:#1c4361!important;
+  color:#91d1ff!important;
+}
+body.theme-dark .seasonProgressBar{
+  background:#22364a!important;
+  box-shadow:inset 0 1px 2px #0007!important;
+}
+body.theme-dark .progressStat{
+  background:#0c1929!important;
+  border-color:#2a425a!important;
+}
+body.theme-dark .progressStat span{color:#91a8ba!important}
+body.theme-dark .progressStat strong{color:#eaf4fb!important}
+body.theme-dark .raceTag{
+  background:#17283a!important;
+  border-color:#3b5369!important;
+  color:#cbdbea!important;
+}
+body.theme-dark .track-short{background:#4c3118!important;border-color:#845a2d!important;color:#ffd28d!important}
+body.theme-dark .track-medium{background:#173a53!important;border-color:#376c8f!important;color:#9ed8ff!important}
+body.theme-dark .track-long{background:#193c28!important;border-color:#3c7350!important;color:#a6e3b6!important}
+body.theme-dark .weather-rain{background:#26314f!important;border-color:#4d5e8e!important;color:#c9d4ff!important}
+body.theme-dark .weather-cloudy{background:#2a3037!important;border-color:#505a63!important;color:#d2d8de!important}
+body.theme-dark .weather-sunny{background:#4a4219!important;border-color:#776b2d!important;color:#ffe98c!important}
+
+/* 深色模式：月曆式賽程 */
+body.theme-dark .calendarWeek{
+  background:#0d1a29!important;
+  border-color:#2d465e!important;
+  box-shadow:0 5px 16px #0004!important;
+}
+body.theme-dark .calendarWeekHeader{
+  background:#16283a!important;
+  border-bottom-color:#314a61!important;
+}
+body.theme-dark .calendarWeekHeader strong{color:#e0edf6!important}
+body.theme-dark .calendarWeekHeader span{color:#9ab0c1!important}
+body.theme-dark .calendarGrid{background:#263d52!important}
+body.theme-dark .calendarDay{
+  background:#0e1b2b!important;
+  color:#e8f2fa!important;
+}
+body.theme-dark .calendarDay.completedDay{background:#0b1725!important}
+body.theme-dark .calendarDay.currentRound{
+  background:#3b3216!important;
+  box-shadow:inset 0 0 0 3px #d7aa39!important;
+}
+body.theme-dark .calendarDayNo{color:#d8e9f6!important}
+body.theme-dark .calendarSeasonNo{
+  background:#1c2c3d!important;
+  color:#9fb4c4!important;
+}
+body.theme-dark .calendarWeek.currentWeek .calendarWeekHeader{
+  background:#3b3216!important;
+}
+body.theme-dark .weekBlock,
+body.theme-dark .weekRound{
+  background:#0d1a29!important;
+  border-color:#2b435a!important;
+}
+body.theme-dark .weekRound.currentRound{background:#3b3216!important}
+
+/* 深色模式：轉播頁控制 */
+body.theme-dark .raceStrategyPanel{
+  background:#102236!important;
+  border-color:#31506d!important;
+}
+body.theme-dark .raceStrategyTitle{color:#dcecf7!important}
+body.theme-dark .raceResultBanner{
+  background:linear-gradient(135deg,#4f3318,#51231e)!important;
+  border-color:#d97b41!important;
+  color:#ffd3ba!important;
+}
+
+/* 手機深色戰績卡 */
+@media(max-width:760px){
+  body.theme-dark #lobby .stand tr{
+    background:#0e1b2b!important;
+    border-color:#2c465f!important;
+    box-shadow:0 3px 10px #0004!important;
+  }
+  body.theme-dark #lobby .stand tr.meRow{
+    background:#12304a!important;
+    border-color:#3b9edb!important;
+  }
+  body.theme-dark #lobby .stand td:nth-child(1),
+  body.theme-dark #lobby .stand td:nth-child(3),
+  body.theme-dark #lobby .stand td:nth-child(4),
+  body.theme-dark #lobby .stand td:nth-child(5),
+  body.theme-dark #lobby .stand td:nth-child(6),
+  body.theme-dark #lobby .stand td:nth-child(7),
+  body.theme-dark #lobby .stand td:nth-child(8),
+  body.theme-dark #lobby .stand td:nth-child(9),
+  body.theme-dark #lobby .stand td:nth-child(10),
+  body.theme-dark #lobby .stand td:nth-child(11),
+  body.theme-dark #lobby .stand td:nth-child(12){
+    background:#13243a!important;
+  }
+}
+@media(max-width:600px){
+  .heroTop{
+    align-items:flex-start;
+  }
+  .themeToggle{
+    min-height:42px;
+    padding:9px 12px;
+    font-size:12px;
+  }
+}
+
+
+/* ===== v33：配種頁父母馬卡片插圖（以提供的馬匹模組為基底） ===== */
+.parentHorseArt{
+  height:88px;
+  margin:9px 0 7px;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid #cfe0ea;
+  background:linear-gradient(180deg,#123a61 0%,#07294a 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+.parentHorseArt::after{
+  content:'';
+  position:absolute;
+  inset:auto 0 0 0;
+  height:3px;
+  background:linear-gradient(90deg,transparent,#ffffff24,transparent);
+}
+.parentHorseSprite{
+  width:86px;
+  height:86px;
+  object-fit:contain;
+  image-rendering:auto;
+  transform-origin:center center;
+  filter: drop-shadow(0 5px 8px rgba(0,0,0,.34));
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.parentHorseBadge{
+  position:absolute;
+  right:8px;
+  top:8px;
+  font-size:10px;
+  font-weight:1000;
+  color:#456173;
+  background:#ffffffd9;
+  border:1px solid #9fbacc;
+  border-radius:999px;
+  padding:2px 7px;
+  line-height:1.2;
+}
+body.theme-dark .parentHorseArt{
+  border-color:#35516e;
+  background:linear-gradient(180deg,#0d2740 0%,#041120 100%);
+}
+body.theme-dark .parentHorseBadge{
+  color:#d8e9f5;
+  background:#0b1827dd;
+  border-color:#48637c;
+}
+
+
+/* ===== v36：聯盟近10場賽事 ===== */
+.recentList{
+  display:grid;
+  gap:7px;
+}
+.recentLeagueItem{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:9px;
+  align-items:center;
+  padding:9px 10px;
+  border-radius:12px;
+  border:1px solid #d9e3e9;
+  background:#f3f7fa;
+  color:#344d5f;
+}
+.recentLeagueMain{
+  min-width:0;
+}
+.recentLeagueVs{
+  font-weight:900;
+  font-size:14px;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+.recentLeagueResult{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  margin-top:4px;
+  font-size:12px;
+  color:#617788;
+}
+.recentWinner{
+  font-weight:1000;
+  color:#315e45;
+}
+.recentMargin{
+  display:inline-flex;
+  align-items:center;
+  padding:2px 7px;
+  border-radius:999px;
+  background:#e8eef2;
+  color:#4e6474;
+  font-weight:900;
+}
+.recentRound{
+  color:#8293a0;
+  font-size:10px;
+  font-weight:800;
+}
+.recentLeagueItem .watch{
+  min-width:58px;
+  padding:7px 9px!important;
+  border-radius:9px!important;
+  font-size:12px!important;
+}
+
+/* 深色模式：保持低反差，不使用突兀亮色底 */
+body.theme-dark .recentLeagueItem{
+  background:#122236!important;
+  border-color:#294057!important;
+  color:#d7e4ef!important;
+}
+body.theme-dark .recentLeagueResult{
+  color:#9fb1c1!important;
+}
+body.theme-dark .recentWinner{
+  color:#a9d4b7!important;
+}
+body.theme-dark .recentMargin{
+  background:#1b3045!important;
+  color:#c1d0dc!important;
+}
+body.theme-dark .recentRound{
+  color:#8197aa!important;
+}
+body.theme-dark .recentLeagueItem .watch{
+  background:#243a52!important;
+  color:#dbe9f4!important;
+  border-color:#35516a!important;
+}
+
+@media(max-width:760px){
+  .recentLeagueItem{
+    grid-template-columns:minmax(0,1fr) 58px;
+    padding:8px 9px;
+  }
+  .recentLeagueVs{font-size:13px}
+  .recentLeagueResult{font-size:11px}
+}
+
+</style>
+</head>
+<body><div class="wrap">
+<div class="hero"><div class="heroTop"><h1>🏇 疾風馬場</h1><button id="themeToggle" class="themeToggle" type="button" aria-label="切換淺色或深色模式">🌙 深色模式</button></div><div id="nav" class="nav"><button data-go="lobby">大廳</button><button data-go="schedule">賽程表</button><button data-go="profile">🐎 個人主頁</button></div></div>
+
+<section id="breed" class="screen on"><div class="card"><h2>① 配種</h2><div class="hint breedIntro">從公馬與母馬名單中，各挑一匹你最中意的賽駒進行配種吧！血統與五項能力會共同影響後代，有時還可能誕生出能力特別突出的驚喜型賽駒。<br><br>配種完成後，你會得到一匹真正屬於自己的馬；替牠取名、替自己的馬場命名後，就正式加入 <b>10 隊聯盟</b>，和 9 座電腦馬場展開 <b>10 週、60 場</b>的完整季賽。短、中、長距離、馬況、騎師、臨場策略與比賽當天的環境，都可能讓每一場出現不同結果。帶著你的專屬賽駒一路拚到季末吧！<div class="breedAbilityNote">五項能力：速度、瞬發、性情、體力、根性｜評級：<b>S ＞ A ＞ B ＞ C ＞ D ＞ E ＞ F ＞ G</b></div></div></div><div class="parents"><div class="card"><h2>♂ 公馬</h2><div id="sg" class="grid"></div></div><div class="card"><h2>♀ 母馬</h2><div id="mg" class="grid"></div></div></div><div class="card"><div id="breedSummary" class="hint"></div><div class="row"><button id="breedBtn" class="primary">進行配種</button><button id="randomPair" class="secondary">隨機配對</button></div></div></section>
+
+<section id="name" class="screen"><div class="card"><h2>② 取馬場與賽駒名稱</h2><div id="newHorse"></div><div class="hint" style="margin-top:12px">季賽開始後，馬場名稱、賽駒名稱與這匹馬的能力都會固定。</div><div class="nameFields"><input id="stableName" maxlength="12" placeholder="輸入馬場名稱"><input id="horseName" maxlength="12" placeholder="輸入賽駒名稱"><button id="confirmName" class="primary">成立馬場並加入聯盟</button></div></div></section>
+
+<section id="lobby" class="screen">
+<div class="card lobbyHeader">
+  <h2>聯盟大廳</h2>
+  <button id="resetSeasonBtn" class="resetSeasonBtn">↻ 重置賽季</button>
+</div>
+<div class="two"><div><div class="card"><h2>聯盟戰績</h2><div class="standWrap"><table class="stand"><thead><tr><th>排名</th><th>隊伍／賽駒</th><th>最擅長</th><th>速度</th><th>瞬發</th><th>性情</th><th>體力</th><th>根性</th><th>已賽</th><th>勝</th><th>敗</th><th>勝率</th></tr></thead><tbody id="standBody"></tbody></table></div></div><div class="card"><h2 id="roundHeader">本輪賽程</h2><div id="lobbyMatches" class="roundSchedule"></div></div><div class="card"><h2>聯盟近 10 場賽事</h2><div id="recentTen" class="recentList"></div></div></div><div><div class="card"><h2>我的賽駒</h2><div id="lobbyMine"></div></div><div class="card"><h2>季賽進度</h2>
+<div class="seasonProgressCard">
+  <div class="seasonProgressTop">
+    <div><span class="small">已完成輪次</span><strong id="roundMetric"></strong></div>
+    <div id="progressPct" class="progressPct">0%</div>
+  </div>
+  <div class="seasonProgressBar"><div id="seasonProgressFill"></div></div>
+  <div class="seasonProgressStats">
+    <div class="progressStat"><span>我的戰績</span><strong id="recordMetric"></strong></div>
+    
+    <div class="progressStat"><span>目前騎師</span><strong id="jockeyMetric"></strong></div>
+  </div>
+</div></div></div></div></section>
+
+<section id="schedule" class="screen"><div class="card"><div class="navRow"><button id="scheduleToLobby" class="secondary">回大廳</button><button id="scheduleToProfile" class="secondary">回個人頁面</button></div><h2>10 週賽程表</h2><div class="hint">每週 6 個場次，每匹馬每週出賽 6 場；全季共 10 週、60 場。短、中、長距離各 20 場。黃色標記為目前進度。</div></div><div id="scheduleList" class="scheduleList"></div></section>
+
+<section id="profile" class="screen"><div class="card"><h2>個人主頁</h2><div id="profileHorse"></div></div><div class="card"><h2>賽前騎師</h2><div class="jockeyPanel"><div><div class="small" style="margin-bottom:5px"><b>選擇騎師</b></div><select id="jockeySelect"></select></div><div id="jockeyInfo" class="jockeyInfo"></div></div><div class="hint" style="margin-top:10px">騎師必須在進入賽場前決定；天氣、氣溫與風向此時仍未知。A／B／C／D 比賽策略會在進入轉播頁後再選擇。</div></div><div class="card"><h2>下一場賽事</h2><div id="profileRaceInfo" class="hint"></div><div class="row"><button id="profileStartRace" class="primary">開始本場比賽</button></div></div></section>
+
+<section id="race" class="screen"><div class="card"><h2 id="raceTitle"></h2><div id="preRace" class="hint" style="margin-bottom:10px"></div><div id="raceStrategyPanel" class="raceStrategyPanel"><div class="raceStrategyTitle">選擇本場策略</div><div id="raceStrategyBox" class="strategy"></div><button id="raceStartBtn" class="raceStartBtn" disabled>START</button><div id="raceStrategyHint" class="small">請先選擇 A／B／C／D 其中一種策略，再按 START 起跑。</div></div><div class="trackWrap"><div id="track" class="track"><div class="rail r1"></div><div class="rail r2"></div><div class="crowdRow" aria-hidden="true">
+<div class="crowdGroup">
+  <span class="crowdPerson small" style="--shirt:#f08a7b;--pants:#4f6073;--skin:#f0c29a"><span class="head"></span><span class="body"></span><span class="legs"></span></span>  <span class="crowdPerson cheer" style="--shirt:#67a8e5;--pants:#41576d;--skin:#f1c7a8"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson tall" style="--shirt:#84c16a;--pants:#3e536a;--skin:#e9b88d"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson" style="--shirt:#d09b45;--pants:#5b6373;--skin:#efc19d"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson cheer small" style="--shirt:#b28ce1;--pants:#4d5a78;--skin:#efc6aa"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson" style="--shirt:#67c0b0;--pants:#43576f;--skin:#e6b58d"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+</div>
+<div class="crowdGroup">
+  <span class="crowdPerson cheer" style="--shirt:#5eb0dd;--pants:#43586a;--skin:#f2c7a4"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson small" style="--shirt:#e5888a;--pants:#4c5f71;--skin:#f0c19b"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson tall" style="--shirt:#8cbc57;--pants:#52606c;--skin:#deb185"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson cheer" style="--shirt:#d9a35f;--pants:#4a556a;--skin:#edc7a3"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson" style="--shirt:#798fe0;--pants:#49556d;--skin:#f0c39d"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson small" style="--shirt:#67c0b0;--pants:#42586f;--skin:#efbea0"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+</div>
+<div class="crowdGroup">
+  <span class="crowdPerson tall" style="--shirt:#eb846b;--pants:#556172;--skin:#efc6a2"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson cheer" style="--shirt:#63a5e2;--pants:#45586d;--skin:#efbe98"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson small" style="--shirt:#84c16a;--pants:#50606f;--skin:#efc39a"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson" style="--shirt:#cf8ad8;--pants:#48576f;--skin:#eab78e"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson cheer" style="--shirt:#d2a04d;--pants:#4e5a6d;--skin:#eec39f"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+  <span class="crowdPerson tall" style="--shirt:#65c1b2;--pants:#41586f;--skin:#e6b58b"><span class="head"></span><span class="body"></span><span class="legs"></span></span>
+</div>
+</div><div class="finishWrap"><div class="finishFlag">FINISH</div><div id="finishLine" class="finishLine"></div></div><div class="finishJudge" aria-hidden="true"><div class="judgeWrap"><div class="head"></div><div class="body"></div><div class="legs"></div></div><div class="flagPole"></div><div class="flagCloth"></div></div><div class="hud"><span id="raceHud">等待策略</span><span id="raceDist">0 / 1600m</span></div></div></div><div id="raceRanks" class="rankBox"></div><div class="row"><button id="returnLobby" class="secondary" style="display:none">回大廳</button></div></div><div class="card"><div id="raceResultBanner" class="raceResultBanner"></div><h2>即時轉播</h2><div id="raceLog" class="raceLog"></div></div></section>
+</div>
+
+<div id="modal" class="modal"><div class="modalBox"><h2 id="modalTitle">賽事觀看</h2><div id="modalText" class="hint" style="margin-bottom:10px"></div><div id="replayTrack" class="replayTrack"><div class="replayFinish"></div><div id="repA" class="replayR" style="top:72px"><span>🐎</span><i class="greenDot"></i><small id="repAName"></small></div><div id="repB" class="replayR" style="top:140px"><span>🐎</span><i class="greenDot"></i><small id="repBName"></small></div></div><div class="row"><button id="replayAgain" class="primary">再看一次</button><button id="closeModal" class="secondary">關閉</button></div></div></div>
+<script>
+const ATTR=["速度","瞬發","性情","體力","根性"];
+const SIRES=[
+ {name:"北斗王",line:"北辰系",g:[80, 64, 64, 88, 72]},
+ {name:"疾風皇",line:"疾風系",g:[95, 55, 55, 88, 80]},
+ {name:"長夜",line:"夜神系",g:[72, 88, 88, 88, 55]},
+ {name:"鐵壁",line:"北辰系",g:[64, 95, 72, 80, 55]},
+ {name:"銀箭",line:"疾風系",g:[88, 55, 95, 80, 72]},
+ {name:"大地戰神",line:"古峰系",g:[80, 64, 80, 64, 95]},
+ {name:"荒原王",line:"荒野系",g:[55, 95, 95, 72, 64]},
+ {name:"天際線",line:"疾風系",g:[88, 80, 55, 95, 64]},
+ {name:"海潮",line:"海原系",g:[72, 88, 88, 80, 88]},
+ {name:"玄武",line:"北辰系",g:[35, 95, 95, 88, 64]},
+ {name:"追風",line:"疾風系",g:[95, 55, 55, 80, 72]},
+ {name:"星雲",line:"星河系",g:[80, 88, 64, 64, 55]},
+ {name:"烈岩",line:"古峰系",g:[64, 72, 95, 88, 80]},
+ {name:"白狼",line:"疾風系",g:[88, 72, 88, 55, 95]},
+ {name:"山嵐",line:"風嶺系",g:[80, 64, 95, 72, 64]},
+ {name:"青雷",line:"白峰系",g:[45, 95, 95, 88, 55]},
+ {name:"飛電",line:"疾風系",g:[88, 95, 72, 80, 55]},
+ {name:"金峰",line:"古峰系",g:[72, 88, 72, 88, 88]},
+ {name:"黑曜王",line:"夜神系",g:[55, 95, 80, 95, 88]},
+ {name:"長風",line:"風嶺系",g:[80, 72, 64, 88, 64]},
+ {name:"赤嶺",line:"疾風系",g:[95, 55, 88, 55, 72]},
+ {name:"海神",line:"海原系",g:[64, 80, 64, 95, 72]},
+ {name:"冬雷",line:"月影系",g:[80, 64, 55, 64, 80]},
+ {name:"蒼岳",line:"古峰系",g:[72, 64, 88, 88, 88]},
+ {name:"赤土",line:"荒野系",g:[45, 95, 88, 95, 64]}
+];
+const MARES=[
+ {name:"琥珀星",line:"北辰系",g:[80, 95, 64, 64, 72]},
+ {name:"疾風姬",line:"疾風系",g:[88, 55, 64, 88, 80]},
+ {name:"高原之歌",line:"古峰系",g:[72, 88, 88, 88, 95]},
+ {name:"岩雪",line:"北辰系",g:[64, 55, 88, 72, 95]},
+ {name:"白翼",line:"疾風系",g:[95, 88, 55, 55, 64]},
+ {name:"夜光",line:"夜神系",g:[80, 64, 72, 64, 88]},
+ {name:"紫苑",line:"風嶺系",g:[55, 88, 95, 64, 95]},
+ {name:"青空",line:"疾風系",g:[88, 80, 95, 55, 72]},
+ {name:"海珠",line:"海原系",g:[72, 88, 88, 55, 88]},
+ {name:"冬月",line:"月影系",g:[35, 95, 88, 55, 95]},
+ {name:"晨星",line:"疾風系",g:[95, 55, 80, 72, 55]},
+ {name:"流螢",line:"星河系",g:[80, 55, 64, 95, 64]},
+ {name:"山茶",line:"古峰系",g:[64, 95, 80, 64, 88]},
+ {name:"緋電",line:"疾風系",g:[88, 64, 55, 80, 95]},
+ {name:"青蘭",line:"風嶺系",g:[80, 64, 64, 80, 55]},
+ {name:"黑百合",line:"夜神系",g:[45, 88, 95, 72, 95]},
+ {name:"天音",line:"疾風系",g:[88, 95, 55, 72, 64]},
+ {name:"星砂",line:"星河系",g:[72, 88, 95, 88, 88]},
+ {name:"朱雀姬",line:"朱雀系",g:[55, 95, 72, 88, 95]},
+ {name:"白露",line:"白峰系",g:[80, 88, 64, 72, 64]},
+ {name:"疾羽",line:"疾風系",g:[95, 72, 55, 88, 55]},
+ {name:"鐵蘭",line:"北辰系",g:[64, 88, 55, 95, 80]},
+ {name:"月琴",line:"月影系",g:[80, 64, 95, 64, 55]},
+ {name:"風花",line:"風嶺系",g:[72, 80, 88, 88, 88]},
+ {name:"灰燼",line:"荒野系",g:[35, 88, 95, 95, 72]}
+];
+const STR=[{id:"lead",n:"A. 領先",d:"前段積極搶位，速度與性情較重要；後段較耗體力。"},{id:"sprint",n:"B. 衝刺",d:"前段保留，最後 500m 靠瞬發與根性加速。"},{id:"duel",n:"C. 拉鋸",d:"全程均衡，性情與體力帶來較穩定發揮。"},{id:"dark",n:"D. 我是黑馬",d:"波動最大，可能突然超常，也可能整場失常。"}];
+const CPU=[
+ {team:"翠風馬房",horse:"翠影",tier:"normal"},
+ {team:"赤峰馬房",horse:"赤霞",tier:"elite"},
+ {team:"北辰馬房",horse:"北斗",tier:"normal"},
+ {team:"月光馬房",horse:"月閃",tier:"elite"},
+ {team:"古原馬房",horse:"巨岩",tier:"weak"},
+ {team:"蒼海馬房",horse:"海燕",tier:"normal"},
+ {team:"雷鳴馬房",horse:"迅雷",tier:"normal"},
+ {team:"白樺馬房",horse:"白嵐",tier:"normal"},
+ {team:"星河馬房",horse:"星馳",tier:"normal"}
+];
+
+const CPU_GRADE_RANGE={S:[92,99],A:[84,91],B:[76,83],C:[68,75],D:[60,67],E:[50,59],F:[40,49],G:[28,39]};
+const CPU_GRADE_ORDER=['S','A','B','C','D','E','F','G'];
+
+function cpuGradeValue(letter){
+ const [lo,hi]=CPU_GRADE_RANGE[letter];
+ return Math.floor(lo+Math.random()*(hi-lo+1));
+}
+function randomCpuGrade(pool=CPU_GRADE_ORDER){
+ return pool[Math.floor(Math.random()*pool.length)];
+}
+function shuffleCpuGrades(a){
+ a=[...a];
+ for(let i=a.length-1;i>0;i--){
+   const j=Math.floor(Math.random()*(i+1));
+   [a[i],a[j]]=[a[j],a[i]];
+ }
+ return a;
+}
+function normalCpuGrades(){
+ // 6支中等CPU：速度每季獨立隨機抽 S～G，任何分布都有可能。
+ const speed=randomCpuGrade();
+ let rest=[randomCpuGrade(),randomCpuGrade(),randomCpuGrade(),randomCpuGrade()];
+
+ // 依速度等級套用指定的最低限制。
+ if(speed==='S'){
+   rest[Math.floor(Math.random()*4)]='G';
+ }else if(speed==='A'){
+   rest[Math.floor(Math.random()*4)]='F';
+ }else if(speed==='D'){
+   rest[Math.floor(Math.random()*4)]='A';
+ }else if(speed==='E'){
+   let idx=shuffleCpuGrades([0,1,2,3]).slice(0,2);
+   rest[idx[0]]='A';rest[idx[1]]='A';
+ }else if(speed==='F'){
+   rest[Math.floor(Math.random()*4)]='S';
+ }else if(speed==='G'){
+   rest[0]='S'; // 瞬發固定 S
+ }
+ return [speed,...rest];
+}
+function eliteCpuGrades(){
+ // 特別強：速度固定 S；其餘以強能力為主，但至少一項 E。
+ let rest=[
+   randomCpuGrade(['S','A','A','B']),
+   randomCpuGrade(['S','A','A','B']),
+   randomCpuGrade(['A','A','B','C']),
+   'E'
+ ];
+ rest=shuffleCpuGrades(rest);
+ return ['S',...rest];
+}
+function weakCpuGrades(){
+ // 特別弱：速度固定 E；其他四項必含 1 個 D 與 1 個 A。
+ // 另外兩項偏弱，以維持「特別弱」定位。
+ let rest=shuffleCpuGrades(['A','D',randomCpuGrade(['E','F','G']),randomCpuGrade(['F','G'])]);
+ return ['E',...rest];
+}
+function buildCpuRoster(){
+ return CPU.map(c=>{
+   const letters=c.tier==='elite'?eliteCpuGrades():c.tier==='weak'?weakCpuGrades():normalCpuGrades();
+   return {...c,g:letters.map(cpuGradeValue)};
+ });
+}
+const SAVE_KEY="horseRacingLeagueV44";
+let sire=0,mare=0,child=null,teams=[],schedule=[],roundIndex=0,playerStrategy="duel",playerJockey=1,playerCondition="normal",conditionRound=-1,raceBusy=false,currentMatchRef=null,currentReplay=null,seasonTargetRank=3,seasonTargetBand=null,seasonTargetWins=null,activeScreen="breed";
+
+function saveGameState(screenOverride=null){
+  try{
+    if(screenOverride)activeScreen=screenOverride;
+    const data={version:23,sire,mare,child,teams,schedule,roundIndex,playerStrategy,playerJockey,playerCondition,conditionRound,seasonTargetRank,seasonTargetBand,seasonTargetWins,activeScreen,currentMatchRef};
+    localStorage.setItem(SAVE_KEY,JSON.stringify(data));
+  }catch(e){}
+}
+function loadGameState(){
+  try{
+    const raw=localStorage.getItem(SAVE_KEY);
+    if(!raw)return false;
+    const d=JSON.parse(raw);
+    if(!d||d.version!==23)return false;
+    sire=Number.isInteger(d.sire)?d.sire:0;
+    mare=Number.isInteger(d.mare)?d.mare:0;
+    child=d.child||null;
+    teams=Array.isArray(d.teams)?d.teams:[];
+    schedule=Array.isArray(d.schedule)?d.schedule:[];
+    roundIndex=Number.isInteger(d.roundIndex)?d.roundIndex:0;
+    playerStrategy=d.playerStrategy||"duel";
+    playerJockey=Number(d.playerJockey)||1;
+    playerCondition=d.playerCondition||"normal";
+    conditionRound=Number.isInteger(d.conditionRound)?d.conditionRound:-1;
+    seasonTargetRank=d.seasonTargetRank||3;
+    seasonTargetBand=d.seasonTargetBand||null;
+    seasonTargetWins=Number.isInteger(d.seasonTargetWins)?d.seasonTargetWins:null;
+    activeScreen=d.activeScreen||((teams.length&&schedule.length)?"lobby":child?"name":"breed");
+    currentMatchRef=d.currentMatchRef||null;
+    return true;
+  }catch(e){return false}
+}
+function clearGameSave(){try{localStorage.removeItem(SAVE_KEY)}catch(e){}}
+
+const CONDITIONS={
+ excellent:{name:'極佳',face:'🤩',cls:'cond-excellent',pace:.018,win:.055},
+ good:{name:'良好',face:'😊',cls:'cond-good',pace:.009,win:.025},
+ normal:{name:'普通',face:'😐',cls:'cond-normal',pace:0,win:0},
+ bad:{name:'不好',face:'😟',cls:'cond-bad',pace:-.009,win:-.025},
+ terrible:{name:'極差',face:'😵',cls:'cond-terrible',pace:-.018,win:-.055}
+};
+function sampleCondition(){
+ const r=Math.random();
+ return r<.10?'excellent':r<.35?'good':r<.65?'normal':r<.90?'bad':'terrible';
+}
+function ensureCondition(force=false){
+ if(force||conditionRound!==roundIndex){
+   playerCondition=sampleCondition();
+   conditionRound=roundIndex;
+ }
+}
+function conditionBadge(){
+ const c=CONDITIONS[playerCondition]||CONDITIONS.normal;
+ return `<span class="conditionBadge ${c.cls}"><span class="conditionEmoji">${c.face}</span><span>${c.name}</span></span>`;
+}
+
+const JOCKEYS=[
+ {id:1,name:'1號 林先鋒',good:'領先戰術前半段搶位特別強',bad:'長距離與雨天較容易後繼無力',type:'front',fav:'短距離、晴天',weak:'長距離、雨天'},
+ {id:2,name:'2號 陳飛越',good:'衝刺戰術末段爆發力強',bad:'逆風時末段威力明顯下降',type:'sprint',fav:'中距離、順風',weak:'強逆風'},
+ {id:3,name:'3號 趙沉穩',good:'拉鋸戰術與高性情馬特別穩定',bad:'高溫時偏保守',type:'steady',fav:'陰天、雨天',weak:'28°C以上'},
+ {id:4,name:'4號 江耐久',good:'長距離與體力型馬後半段維持力佳',bad:'短距離起跑反應偏慢',type:'stamina',fav:'長距離、20°C以下',weak:'短距離、高溫'},
+ {id:5,name:'5號 吳不屈',good:'最後直線能放大根性優勢',bad:'短距離中段節奏較差',type:'guts',fav:'長距離、逆風',weak:'短距離'},
+ {id:6,name:'6號 黃疾速',good:'高速馬在短距離與順風下非常強',bad:'雨天或低體力時末段衰退較明顯',type:'speed',fav:'短距離、順風',weak:'雨天'},
+ {id:7,name:'7號 蘇巧手',good:'瞬發高的馬在中距離末段威脅大',bad:'高溫與雨天時發揮降低',type:'burst',fav:'中距離、15～22°C',weak:'雨天、高溫'},
+ {id:8,name:'8號 周逆境',good:'馬況不好、雨天時能降低負面影響',bad:'晴朗舒適環境下優勢不明顯',type:'condition',fav:'雨天、差馬況',weak:'晴天且普通以上馬況'},
+ {id:9,name:'9號 高策士',good:'中距離拉鋸的配速效率特別好',bad:'強風環境較難掌握節奏',type:'tactician',fav:'中距離、陰天',weak:'風力絕對值7以上'},
+ {id:10,name:'10號 李黑馬',good:'「我是黑馬」在惡劣環境上限非常高',bad:'一般環境使用其他策略發揮偏低',type:'dark',fav:'雨天、強風',weak:'晴天、弱風'},
+ {id:11,name:'11號 張守成',good:'長距離或雨天不容易在末段崩盤',bad:'短距離最高速度較保守',type:'safe',fav:'長距離、雨天',weak:'短距離'},
+ {id:12,name:'12號 王快閘',good:'短距離起跑與前段非常強勢',bad:'長距離最後一段續航較差',type:'start',fav:'短距離、晴天',weak:'長距離'},
+ {id:13,name:'13號 許雨燕',good:'雨天抓地與節奏判斷特別優秀',bad:'晴朗高溫時容易過度保守',type:'rain',fav:'雨天',weak:'晴天且27°C以上'},
+ {id:14,name:'14號 鄭炎夏',good:'高溫環境仍能維持馬匹節奏',bad:'低溫時起跑反應較慢',type:'heat',fav:'26～30°C',weak:'15～18°C'},
+ {id:15,name:'15號 蔡風讀',good:'強風時能利用風向調整跑線',bad:'無風時特色較難發揮',type:'wind',fav:'風力絕對值6以上',weak:'風力絕對值2以下'}
+];
+function currentJockey(){return JOCKEYS.find(j=>j.id===Number(playerJockey))||JOCKEYS[0]}
+function currentPlayerMatch(){
+ if(!schedule.length||roundIndex>=schedule.length)return null;
+ return schedule[roundIndex].find(m=>m.a===0||m.b===0)||null;
+}
+function jockeyEnvAdj(j,m){
+ if(!m||!m.race)return 0;
+ const r=m.race,w=r.weather,temp=r.temp,wind=r.wind,track=r.track;
+ let a=0;
+ if(j.type==='front'){if(track==='short')a+=.010;if(track==='long')a-=.010;if(w==='雨')a-=.006}
+ if(j.type==='sprint'){if(track==='medium')a+=.009;if(wind>=4)a+=.008;if(wind<=-5)a-=.010}
+ if(j.type==='steady'){if(w==='陰'||w==='雨')a+=.007;if(temp>=28)a-=.007}
+ if(j.type==='stamina'){if(track==='long')a+=.014;if(temp<=20)a+=.005;if(track==='short')a-=.008;if(temp>=28)a-=.006}
+ if(j.type==='guts'){if(track==='long')a+=.010;if(wind<=-4)a+=.007;if(track==='short')a-=.006}
+ if(j.type==='speed'){if(track==='short')a+=.014;if(wind>=4)a+=.007;if(w==='雨')a-=.010}
+ if(j.type==='burst'){if(track==='medium')a+=.012;if(temp<=22)a+=.005;if(w==='雨'||temp>=28)a-=.008}
+ if(j.type==='condition'){if(w==='雨')a+=.010;if(playerCondition==='bad'||playerCondition==='terrible')a+=.010;if(w==='晴'&&(playerCondition==='good'||playerCondition==='excellent'))a-=.004}
+ if(j.type==='tactician'){if(track==='medium')a+=.012;if(w==='陰')a+=.005;if(Math.abs(wind)>=7)a-=.010}
+ if(j.type==='dark'){if(w==='雨'||Math.abs(wind)>=7)a+=.014;if(w==='晴'&&Math.abs(wind)<=2)a-=.008}
+ if(j.type==='safe'){if(track==='long'||w==='雨')a+=.010;if(track==='short')a-=.006}
+ if(j.type==='start'){if(track==='short')a+=.014;if(w==='晴')a+=.005;if(track==='long')a-=.012}
+ if(j.type==='rain'){if(w==='雨')a+=.020;else if(w==='晴'&&temp>=27)a-=.012}
+ if(j.type==='heat'){if(temp>=26)a+=.018;else if(temp<=18)a-=.012}
+ if(j.type==='wind'){if(Math.abs(wind)>=6)a+=.018;else if(Math.abs(wind)<=2)a-=.010}
+ return clamp(a,-.025,.025);
+}
+function jockeyOutcomeAdj(m=currentPlayerMatch()){
+ const j=currentJockey(),g=teams[0]?.g||[72,72,72,72,72],st=playerStrategy;
+ let a=0;
+ if(j.type==='front')a=st==='lead'?.020:-.006;
+ if(j.type==='sprint')a=st==='sprint'?.024:-.008;
+ if(j.type==='steady')a=st==='duel'?.018:-.005;
+ if(j.type==='stamina')a=(g[3]-72)/1050;
+ if(j.type==='guts')a=(g[4]-72)/1000;
+ if(j.type==='speed')a=(g[0]-72)/1050-(g[3]<60?.010:0);
+ if(j.type==='burst')a=(g[1]-72)/1000-(g[4]<60?.008:0);
+ if(j.type==='condition')a=(playerCondition==='bad'||playerCondition==='terrible')?.020:(playerCondition==='excellent'?-0.004:0);
+ if(j.type==='tactician')a=st==='duel'?.022:-.010;
+ if(j.type==='dark')a=st==='dark'?.028:-.014;
+ if(j.type==='safe')a=g[3]<68?.016:-.004;
+ if(j.type==='start')a=.004;
+ if(j.type==='rain')a=0;
+ if(j.type==='heat')a=0;
+ if(j.type==='wind')a=0;
+ a+=jockeyEnvAdj(j,m);
+ return clamp(a,-.045,.045);
+}
+function jockeyPaceBonus(phase,m=currentPlayerMatch()){
+ const j=currentJockey(),g=teams[0]?.g||[72,72,72,72,72],st=playerStrategy;
+ let b=0;
+ if(j.type==='front')b=st==='lead'?(phase<.62?.012:-.008):-.003;
+ if(j.type==='sprint')b=st==='sprint'?(phase<.55?-.009:.015):-.004;
+ if(j.type==='steady')b=st==='duel'?.008+(g[2]-72)/4300:-.004;
+ if(j.type==='stamina')b=phase>.58?(g[3]-72)/2300:-.006;
+ if(j.type==='guts')b=phase>.72?(g[4]-72)/2100:-.003;
+ if(j.type==='speed')b=(g[0]-72)/2500-(phase>.74&&g[3]<60?.010:0);
+ if(j.type==='burst')b=phase>.58?(g[1]-72)/2100:(g[4]<60?-.003:0);
+ if(j.type==='condition')b=(playerCondition==='bad'||playerCondition==='terrible')?.008:(playerCondition==='excellent'?-0.002:0);
+ if(j.type==='tactician')b=st==='duel'?.010:-.005;
+ if(j.type==='dark')b=st==='dark'?.015:-.008;
+ if(j.type==='safe')b=phase>.70&&g[3]<72?.010:-.003;
+ if(j.type==='start')b=phase<.28?.014:(phase>.72?-.010:0);
+ b+=jockeyEnvAdj(j,m)*.60;
+ return clamp(b,-.025,.025);
+}
+
+function q(id){return document.getElementById(id)}
+const THEME_KEY='horseRacingThemeV1';
+function applyTheme(theme){
+ const dark=theme==='dark';
+ document.body.classList.toggle('theme-dark',dark);
+ const btn=q('themeToggle');
+ if(btn){
+   btn.textContent=dark?'☀️ 淺色模式':'🌙 深色模式';
+   btn.setAttribute('aria-pressed',dark?'true':'false');
+   btn.title=dark?'切換為淺色模式':'切換為深色模式';
+ }
+}
+function loadTheme(){
+ let theme='light';
+ try{theme=localStorage.getItem(THEME_KEY)||'light'}catch(e){}
+ applyTheme(theme);
+}
+function toggleTheme(){
+ const next=document.body.classList.contains('theme-dark')?'light':'dark';
+ try{localStorage.setItem(THEME_KEY,next)}catch(e){}
+ applyTheme(next);
+}function clamp(v,a,b){return Math.max(a,Math.min(b,v))}function avg(a){return a.reduce((x,y)=>x+y,0)/a.length}function rn(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}function grade(v){return v>=92?"S":v>=84?"A":v>=76?"B":v>=68?"C":v>=60?"D":v>=50?"E":v>=40?"F":"G"}
+
+function horsePalette(seed){
+ const coats=['#916341','#b87a50','#5b4a42','#d1c4b1','#7b6b77','#9d8f84','#6b4a35','#8f7866'];
+ const manes=['#2b2320','#4d3a31','#f0eee8','#131313','#73452a','#5e5147'];
+ const cloths=['#cf4a4a','#467ad8','#3aa867','#8d58c8','#d99327','#37a7a0'];
+ return {
+   coat:coats[seed%coats.length],
+   mane:manes[Math.floor(seed/3)%manes.length],
+   cloth:cloths[Math.floor(seed/5)%cloths.length]
+ };
+}
+function horseCardArt(h,i,t){
+ const sum=(h.g||[]).reduce((a,b)=>a+b,0);
+ const seed=((i+1)*29)+(t==='s'?11:23)+sum+((h.name||'').length*7)+((h.line||'').length*13);
+ const hue=((seed%7)-3)*6;           // -18 ~ +18 deg
+ const sat=0.92+((seed%5)*0.04);     // 0.92 ~ 1.08
+ const bright=0.92+((seed%4)*0.03);  // 0.92 ~ 1.01
+ const scale=0.95+((seed%6)*0.02);   // 0.95 ~ 1.05
+ const rotate=((seed%5)-2)*1.2;      // slight tilt
+ const flip=((seed%2)===0?-1:1);
+ const badge=t==='s'?'公馬':'母馬';
+ const style=`transform: scale(${flip*scale}, ${scale}) rotate(${rotate}deg); filter: hue-rotate(${hue}deg) saturate(${sat}) brightness(${bright}) drop-shadow(0 5px 8px rgba(0,0,0,.34));`;
+ return `<div class="parentHorseArt"><img class="parentHorseSprite" src="data:image/png;base64,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" alt="" style="${style}"><div class="parentHorseBadge">${badge}</div></div>`;
+}
+function parentCard(h,i,t){return `<div class="hc ${t==='s'&&i===sire||t==='m'&&i===mare?'sel':''}" onclick="pickParent('${t}',${i})"><div class="hn">${t==='s'?'♂':'♀'} ${h.name}</div><div class="blood">血系：${h.line}</div>${horseCardArt(h,i,t)}<div class="genes">${h.g.map((v,j)=>`<div class="gene">${ATTR[j]}<div class="grade ${grade(v)}">${grade(v)}</div></div>`).join('')}</div></div>`}
+function renderParents(){q('sg').innerHTML=SIRES.map((h,i)=>parentCard(h,i,'s')).join('');q('mg').innerHTML=MARES.map((h,i)=>parentCard(h,i,'m')).join('');const a=SIRES[sire],b=MARES[mare],near=a.line===b.line;q('breedSummary').innerHTML=`目前配對：<b>${a.name}</b> × <b>${b.name}</b> ｜ ${near?'<span style="color:#ffd36c"><b>近親／同血系：</b>後代上下限大幅放大</span>':'一般配對：後代通常落在雙親基因附近'}`}
+window.pickParent=(t,i)=>{t==='s'?sire=i:mare=i;renderParents()}
+const BREED_DIST=[["S",.08],["A",.20],["B",.18],["C",.18],["D",.16],["E",.10],["F",.07],["G",.03]];
+const GRADE_RANGE={S:[92,99],A:[84,91],B:[76,83],C:[68,75],D:[60,67],E:[50,59],F:[40,49],G:[28,39]};
+function sampleBucket(dist){let r=Math.random(),acc=0;for(const [k,p] of dist){acc+=p;if(r<acc)return k}return dist[dist.length-1][0]}
+function valueFromBucket(bucket,parentMean){const [lo,hi]=GRADE_RANGE[bucket],random=lo+Math.random()*(hi-lo),heritage=clamp(parentMean,lo,hi);return Math.round(random*.68+heritage*.32)}
+function shiftValue(v,steps){const order=['G','F','E','D','C','B','A','S'];let idx=order.indexOf(grade(v));idx=clamp(idx+steps,0,7);const [lo,hi]=GRADE_RANGE[order[idx]];const pos=(v-(GRADE_RANGE[grade(v)]?.[0]||lo))/Math.max(1,(GRADE_RANGE[grade(v)]?.[1]||hi)-(GRADE_RANGE[grade(v)]?.[0]||lo));return Math.round(clamp(lo+pos*(hi-lo),lo,hi))}
+function breed(){
+ const a=SIRES[sire],b=MARES[mare],near=a.line===b.line,g=[];
+ for(let i=0;i<5;i++){
+   const bucket=sampleBucket(BREED_DIST),parentMean=(a.g[i]+b.g[i])/2;
+   g.push(valueFromBucket(bucket,parentMean));
+ }
+ let mutation='normal';
+ if(near){
+   const r=Math.random();
+   if(r<.10){mutation='super';for(let i=0;i<5;i++)g[i]=shiftValue(g[i],Math.random()<.55?2:1)}
+   else if(r<.20){mutation='weak';for(let i=0;i<5;i++)g[i]=shiftValue(g[i],Math.random()<.55?-2:-1)}
+ }
+ child={name:"",line:a.line+'×'+b.line,g,near,mutation};renderNewHorse();saveGameState('name');show('name')
+}
+function renderNewHorse(){q('newHorse').innerHTML=`<div class="horseResult"><div class="horsePic"><span class="playerTag">你的新賽駒</span><div class="horseEmoji">🐎</div></div><div><div class="blood">血統：${child.line}${child.near?'｜近親配種':''}${child.mutation==='super'?'｜極端強化變異':child.mutation==='weak'?'｜極端弱化變異':''}</div><div class="attrs">${child.g.map((v,i)=>`<div class="attr"><span class="small">${ATTR[i]}</span><b class="${grade(v)}">${grade(v)}</b><span class="small">基因 ${v}</span></div>`).join('')}</div></div></div>`}
+function confirmName(){let stable=q('stableName').value.trim(),name=q('horseName').value.trim();if(!stable)stable='玩家馬場';if(!name)name='無名疾風';child.name=name;child.stable=stable;teams=[{team:stable,horse:name,g:[...child.g],w:0,l:0,gp:0,player:true},...buildCpuRoster().map(x=>({...x,w:0,l:0,gp:0,player:false}))];schedule=makeSchedule();seasonTargetRank=3;initSeasonDifficulty();planSeasonOutcomes();roundIndex=0;playerStrategy='duel';playerJockey=1;ensureCondition(true);q('nav').classList.add('show');renderAll();saveGameState('lobby');show('lobby')}
+const TRACK_TYPES={
+ short:{key:'short',name:'短距離',distance:1600,cls:'track-short',duration:11200},
+ medium:{key:'medium',name:'中距離',distance:2000,cls:'track-medium',duration:13000},
+ long:{key:'long',name:'長距離',distance:2400,cls:'track-long',duration:14800}
+};
+function makeRaceConditions(round){
+ const key=['short','medium','long'][round%3];
+ const weather=['晴','陰','雨'][Math.floor(Math.random()*3)];
+ return {track:key,distance:TRACK_TYPES[key].distance,weather,temp:randomInt(15,30),wind:randomInt(-10,10)};
+}
+function signedWind(v){return v>0?`+${v}`:`${v}`}
+function raceMetaHtml(m){
+ const r=m.race||{track:'medium',distance:2000,weather:'晴',temp:22,wind:0};
+ const t=TRACK_TYPES[r.track]||TRACK_TYPES.medium;
+ const wc=r.weather==='雨'?'weather-rain':r.weather==='陰'?'weather-cloudy':'weather-sunny';
+ return `<div class="raceMeta"><span class="raceTag ${t.cls}">${t.name} ${r.distance}m</span><span class="raceTag ${wc}">${r.weather}</span><span class="raceTag">${r.temp}°C</span><span class="raceTag">風向 ${signedWind(r.wind)}</span></div>`;
+}
+function raceTrackHtml(m){
+ const r=m.race||{track:'medium',distance:2000};
+ const t=TRACK_TYPES[r.track]||TRACK_TYPES.medium;
+ return `<div class="trackOnlyMeta"><span class="raceTag ${t.cls}">${t.name} ${r.distance}m</span></div>`;
+}
+function makeSchedule(){
+ // 10隊聯盟：每輪5場；玩家仍一季60場。
+ // 先建立10隊單循環的9種配對，再循環使用至60輪。
+ let arr=Array.from({length:10},(_,i)=>i),base=[];
+ for(let r=0;r<9;r++){
+   let ms=[];
+   for(let i=0;i<5;i++){
+     let a=arr[i],b=arr[9-i];
+     if((r+i)%2===1){const tmp=a;a=b;b=tmp}
+     ms.push({a,b,result:null,detail:null});
+   }
+   base.push(ms);
+   arr=[arr[0],arr[9],...arr.slice(1,9)];
+ }
+ let out=[];
+ for(let r=0;r<60;r++){
+   const rc=makeRaceConditions(r);
+   const src=base[r%9];
+   const cycle=Math.floor(r/9);
+   const ms=src.map((m,k)=>{
+     const flip=cycle%2===1;
+     return {
+       a:flip?m.b:m.a,
+       b:flip?m.a:m.b,
+       result:null,detail:null,round:r,index:k,race:{...rc}
+     };
+   });
+   out.push(ms);
+ }
+ return out;
+}
+const SEASON_WIN_BANDS=[
+ {id:'over70',weight:.05,min:43,max:60},
+ {id:'60to70',weight:.10,min:36,max:42},
+ {id:'50to60',weight:.35,min:30,max:35},
+ {id:'40to50',weight:.30,min:24,max:29},
+ {id:'30to40',weight:.15,min:18,max:23},
+ {id:'under30',weight:.05,min:0,max:17}
+];
+function weightedBandSample(list=SEASON_WIN_BANDS){
+ const total=list.reduce((s,b)=>s+b.weight,0),r=Math.random()*total;
+ let acc=0;
+ for(const b of list){acc+=b.weight;if(r<acc)return b}
+ return list[list.length-1]
+}
+function randomInt(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+function initSeasonDifficulty(){
+ const b=weightedBandSample();
+ seasonTargetBand=b.id;
+ seasonTargetWins=randomInt(b.min,b.max);
+}
+function ensureSeasonDifficulty(){
+ if(Number.isInteger(seasonTargetWins))return;
+ const me=teams[0]||{w:0,gp:0},remaining=Math.max(0,60-me.gp),low=me.w,high=me.w+remaining;
+ const feasible=SEASON_WIN_BANDS
+   .map(b=>({...b,lo:Math.max(b.min,low),hi:Math.min(b.max,high)}))
+   .filter(b=>b.lo<=b.hi);
+ const b=weightedBandSample(feasible.length?feasible:SEASON_WIN_BANDS);
+ seasonTargetBand=b.id;
+ seasonTargetWins=randomInt(b.lo??b.min,b.hi??b.max);
+}
+function planSeasonOutcomes(){
+ ensureSeasonDifficulty();
+
+ // 玩家60場預先安排恰好 seasonTargetWins 場勝利；排列順序隨機。
+ const playerFlags=Array(60).fill(false);
+ const order=Array.from({length:60},(_,i)=>i);
+ for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]]}
+ for(let i=0;i<seasonTargetWins;i++)playerFlags[order[i]]=true;
+
+ let playerGameNo=0;
+ for(let r=0;r<schedule.length;r++)for(let i=0;i<schedule[r].length;i++){
+   const m=schedule[r][i];
+   let aWin;
+   if(m.a===0||m.b===0){
+     const pWin=playerFlags[playerGameNo++];
+     aWin=m.a===0?pWin:!pWin;
+   }else{
+     const ra=avg(teams[m.a].g)+cpuTierBonus(teams[m.a]);
+     const rb=avg(teams[m.b].g)+cpuTierBonus(teams[m.b]);
+     const da=ra-rb;
+     const pa=1/(1+Math.exp(-da/7.5));
+     aWin=Math.random()<pa;
+   }
+   m.planAWin=aWin;
+ }
+}
+
+function show(id){
+ activeScreen=id;
+ ['breed','name','lobby','schedule','profile','race'].forEach(x=>q(x).classList.toggle('on',x===id));
+
+ const nav=q('nav');
+ if(nav){
+   // 轉播頁面不顯示上方導覽列；其餘頁面恢復顯示。
+   if(id==='race'){
+     nav.style.display='none';
+   }else{
+     nav.style.display=teams.length ? 'flex' : '';
+   }
+ }
+
+ document.querySelectorAll('#nav button').forEach(b=>{
+   b.classList.toggle('on',b.dataset.go===id);
+   if(id==='profile'){
+     // 個人頁只保留「大廳」與「賽程表」。
+     b.style.display=(b.dataset.go==='profile'?'none':'inline-block');
+   }else if(id==='lobby'){
+     b.style.display=(b.dataset.go==='lobby'?'none':'inline-block');
+   }else{
+     b.style.display='inline-block';
+   }
+ });
+
+ if(id==='lobby')renderLobby();
+ if(id==='schedule')renderSchedule();
+ if(id==='profile')renderProfile();
+ if(child||teams.length)saveGameState(id)
+}
+function sortedTeams(){return teams.map((t,i)=>({...t,id:i})).sort((a,b)=>b.w-a.w||a.l-b.l||avg(b.g)-avg(a.g))}
+const BEST_ABILITY=[
+ {name:'速度',cls:'best-speed'},
+ {name:'瞬發',cls:'best-burst'},
+ {name:'性情',cls:'best-temper'},
+ {name:'體力',cls:'best-stamina'},
+ {name:'根性',cls:'best-guts'}
+];
+function bestAbilityIndex(g){
+ let idx=0;
+ for(let i=1;i<g.length;i++)if(g[i]>g[idx])idx=i;
+ return idx;
+}
+function bestAbilityBadge(g,withText=true){
+ const i=bestAbilityIndex(g),b=BEST_ABILITY[i];
+ return `<span class="bestAbility ${b.cls}" title="最擅長：${b.name}"><span class="bestDot"></span>${withText?b.name:''}</span>`;
+}
+function winPctClass(p){
+ if(p<.4)return 'pct-under40';
+ if(p<.5)return 'pct-40to50';
+ if(p<.6)return 'pct-50to60';
+ if(p<.7)return 'pct-60to70';
+ if(p<.8)return 'pct-70to80';
+ return 'pct-80plus';
+}
+function renderStandings(){q('standBody').innerHTML=sortedTeams().map((t,i)=>{const pct=t.gp?t.w/t.gp:0,pctText=t.gp?pct.toFixed(3):'.000';return `<tr class="${t.player?'meRow':''}"><td>${i+1}</td><td class="teamCell"><b>${t.team}</b><span class="small">${t.horse}${t.player?' 🔵':' 🟢'}</span></td><td>${bestAbilityBadge(t.g,true)}</td>${t.g.map(v=>`<td class="abilityCell ${grade(v)}">${grade(v)}</td>`).join('')}<td>${t.gp}</td><td>${t.w}</td><td>${t.l}</td><td><span class="winPct ${winPctClass(pct)}">${pctText}</span></td></tr>`}).join('')}
+function marginLabel(x){if(x<.25)return '極小距離';if(x<.75)return '半個馬身';return `${Math.min(9,Math.max(1,Math.round(x)))}個馬身`}
+const MARGIN_DIST=[[9,.1],[8,.1],[7,.8],[6,1],[5,6],[4,15],[3,20],[2,25],[1,15],[.5,11],[.12,6]];
+function sampleMargin(){const total=MARGIN_DIST.reduce((s,x)=>s+x[1],0);let r=Math.random()*total;for(const [m,w] of MARGIN_DIST){r-=w;if(r<0)return m}return .12}
+function marginMeters(m){
+ // v35：以 1 個馬身約 50m 為基準。
+ // 為避免每場落後距離完全固定，同一馬身級別仍保留少量整數隨機差。
+ if(m<.25) return Math.round(3+Math.random()*9);       // 極小距離：約 3～12m
+ if(m<.75) return Math.round(19+Math.random()*12);     // 半個馬身：約 19～31m（中心約25m）
+ const nominal=Math.round(m*50);
+ return Math.max(1,Math.round(nominal-8+Math.random()*16)); // 各級約 ±8m
+}
+function marginSeconds(m){return m<.25?.035:m<.75?.08:.15*m}
+function matchText(m){const A=teams[m.a],B=teams[m.b];if(!m.result)return `${A.horse} vs ${B.horse}`;const W=m.result.aWin?A:B,L=m.result.aWin?B:A,mg=m.detail?.marginLabel||'';return `${W.horse} 勝 ${L.horse}${mg?`（${mg}）`:''}`}
+function renderRecentTen(){
+ const done=[];
+ for(let r=0;r<schedule.length;r++){
+   for(let i=0;i<schedule[r].length;i++){
+     const m=schedule[r][i];
+     if(!m.result)continue;
+     done.push({r,i,m,order:r*schedule[r].length+i});
+   }
+ }
+ done.sort((a,b)=>a.order-b.order);
+ const last=done.slice(-10).reverse();
+ q('recentTen').innerHTML=last.length?last.map(x=>{
+   const m=x.m,A=teams[m.a],B=teams[m.b],W=m.result.aWin?A:B;
+   const margin=m.detail?.marginLabel||'';
+   return `<div class="recentLeagueItem">
+     <div class="recentLeagueMain">
+       <div class="recentLeagueVs">${A.horse} vs ${B.horse}</div>
+       <div class="recentLeagueResult">
+         <span class="recentWinner">${W.horse} 獲勝</span>
+         ${margin?`<span class="recentMargin">${margin}</span>`:''}
+         <span class="recentRound">第 ${x.r+1} 場</span>
+       </div>
+     </div>
+     <button class="watch" onclick="watchMatch(${x.r},${x.i})">觀看</button>
+   </div>`;
+ }).join(''):'<div class="small">尚無聯盟比賽紀錄</div>';
+}
+function renderLobby(){if(!teams.length)return;renderStandings();renderRecentTen();const me=teams[0],j=currentJockey(),done=Math.min(roundIndex,60),pct=Math.round(done/60*100);q('roundMetric').textContent=`${done} / 60`;q('progressPct').textContent=`${pct}%`;q('seasonProgressFill').style.width=`${pct}%`;q('recordMetric').textContent=`${me.w}勝 ${me.l}敗`;q('jockeyMetric').textContent=j.name.replace(/^\d+號\s*/,'');q('lobbyMine').innerHTML=`<div class="hn">🔵 ${me.horse}</div><div class="blood">${me.team}</div><div class="attrs">${me.g.map((v,i)=>`<div class="attr"><span class="small">${ATTR[i]}</span><b class="${grade(v)}">${grade(v)}</b></div>`).join('')}</div>`;if(roundIndex>=60){q('roundHeader').textContent='季賽完成';const champ=sortedTeams()[0];q('lobbyMatches').innerHTML=`<div class="hint" style="grid-column:1/-1"><b>本季結束。</b> 聯盟第一名：${champ.team}／${champ.horse}，戰績 ${champ.w}勝${champ.l}敗。</div>`;return}q('roundHeader').textContent=`第 ${roundIndex+1} 輪賽程`;q('lobbyMatches').innerHTML=schedule[roundIndex].map((m,i)=>{const player=m.a===0||m.b===0;return `<div class="matchCard ${player?'player':''}"><div class="vs">${teams[m.a].horse} ${m.a===0?'🔵':'🟢'}　VS　${teams[m.b].horse} ${m.b===0?'🔵':'🟢'}</div>${m.result?raceMetaHtml(m):raceTrackHtml(m)}<div class="resultText">${m.result?matchText(m):(player?'等待玩家出賽':'將與玩家比賽同時自動進行')}</div>${m.result?`<button class="watch" onclick="watchMatch(${roundIndex},${i})">觀看</button>`:player?`<div class="small" style="margin-top:8px">請至「個人主頁」選擇騎師並進入本場比賽</div>`:''}</div>`}).join('')}
+function scheduleMatchHtml(m,r,i){
+ const isMe=m.a===0||m.b===0;
+ if(!m.result){
+   return `<div class="smatch ${isMe?'me':''}"><b>${teams[m.a].horse}</b> vs <b>${teams[m.b].horse}</b><div class="schedulePending">${r===roundIndex?'即將進行':'尚未進行'}</div></div>`;
+ }
+ const winner=m.result.aWin?teams[m.a]:teams[m.b],loser=m.result.aWin?teams[m.b]:teams[m.a];
+ return `<div class="smatch ${isMe?'me':''}">
+   <div class="scheduleResult">
+     <div class="scheduleTeams"><span class="scheduleWin">${winner.horse} <span class="scheduleWL">勝</span></span><span>vs</span><span class="scheduleLose">${loser.horse} <span class="scheduleWL">敗</span></span></div>
+     <div class="scheduleMargin">${m.detail?.marginLabel||''}</div>
+   </div>
+   <button class="watch" onclick="watchMatch(${r},${i})">觀看</button>
+ </div>`;
+}
+function renderSchedule(){
+ const weeks=[];
+ for(let w=0;w<10;w++){
+   const start=w*6,end=Math.min(start+6,60);
+   const currentWeek=roundIndex<60&&roundIndex>=start&&roundIndex<end;
+   const cells=[];
+   for(let r=start;r<end;r++){
+     const ms=schedule[r];
+     const allDone=ms.every(m=>m.result);
+     const meta=allDone?raceMetaHtml(ms[0]):raceTrackHtml(ms[0]);
+     cells.push(`<div class="calendarDay ${r===roundIndex?'currentRound':''} ${r<roundIndex?'completedDay':''}">
+       <div class="calendarDayTop">
+         <span class="calendarDayNo">第 ${r-start+1} 場</span>
+         <span class="calendarSeasonNo">全季 ${r+1}</span>
+       </div>
+       ${r===roundIndex?'<div class="currentProgressBadge">目前進度</div>':''}
+       <div class="calendarMeta">${meta}</div>
+       <div class="calendarMatches">${ms.map((m,i)=>scheduleMatchHtml(m,r,i)).join('')}</div>
+     </div>`);
+   }
+   weeks.push(`<div class="calendarWeek ${currentWeek?'currentWeek':''}">
+     <div class="calendarWeekHeader">
+       <strong>第 ${w+1} 週</strong>
+       <span>第 ${start+1}～${end} 場</span>
+     </div>
+     <div class="calendarGrid">${cells.join('')}</div>
+   </div>`);
+ }
+ q('scheduleList').innerHTML=weeks.join('');
+}
+function headToHeadRecord(teamA,teamB){
+ let aw=0,bw=0;
+ for(const round of schedule){
+   for(const m of round){
+     if(!m.result)continue;
+     const samePair=(m.a===teamA&&m.b===teamB)||(m.a===teamB&&m.b===teamA);
+     if(!samePair)continue;
+     const winner=m.result.aWin?m.a:m.b;
+     if(winner===teamA)aw++;
+     else if(winner===teamB)bw++;
+   }
+ }
+ return {aw,bw};
+}
+function renderProfile(){
+ const me=teams[0];
+ ensureCondition();
+ const c=CONDITIONS[playerCondition]||CONDITIONS.normal;
+ q('profileHorse').innerHTML=`<div class="horseResult"><div class="horsePic"><span class="playerTag">玩家賽駒｜藍色標誌</span><div class="horseEmoji">🐎</div></div><div><div class="hn" style="font-size:30px">${me.horse}</div><div class="blood">馬場：${me.team}｜${child.line}${child.near?'｜近親配種':''}</div><div class="profileBest">最擅長能力：${bestAbilityBadge(me.g,true)}</div><div class="conditionRow"><span>馬匹狀況：</span>${conditionBadge()}<span class="small">本輪狀況會實際影響配速與勝負機率</span></div><div class="attrs">${me.g.map((v,i)=>`<div class="attr"><span class="small">${ATTR[i]}</span><b class="${grade(v)}">${grade(v)}</b><span class="small">基因 ${v}</span></div>`).join('')}</div><div class="hint" style="margin-top:10px">目前戰績：${me.w}勝 ${me.l}敗｜勝率 ${me.gp?(me.w/me.gp).toFixed(3):'.000'}</div></div></div>`;
+ const js=q('jockeySelect');
+ js.innerHTML=JOCKEYS.map(j=>`<option value="${j.id}" ${j.id===Number(playerJockey)?'selected':''}>${j.name}</option>`).join('');
+ js.onchange=()=>pickJockey(js.value);
+ const j=currentJockey();
+ q('jockeyInfo').innerHTML=`<b>${j.name}</b><br><span class="jockeyGood">優點：</span>${j.good}<br><span class="jockeyBad">缺點：</span>${j.bad}<br><span class="jockeyGood">特別擅長：</span>${j.fav}<br><span class="jockeyBad">較不擅長：</span>${j.weak}`;
+
+ const btn=q('profileStartRace');
+ if(roundIndex>=60){q('profileRaceInfo').innerHTML='<b>季賽已完成。</b> 已無下一場賽事。';btn.disabled=true;btn.textContent='季賽已完成';return}
+ const ms=schedule[roundIndex],m=ms.find(x=>x.a===0||x.b===0),oppId=m.a===0?m.b:m.a,opp=teams[oppId],h2h=headToHeadRecord(0,oppId);
+ q('profileRaceInfo').innerHTML=`第 ${roundIndex+1} 輪｜<b>${me.horse} 🔵 VS ${opp.horse} 🟢</b><br>
+ <b>目前戰績：</b>${me.horse} ${me.w}勝${me.l}敗　｜　${opp.horse} ${opp.w}勝${opp.l}敗<br>
+ <b>本季直接交手：</b>${me.horse} ${h2h.aw}勝${h2h.bw}敗　｜　${opp.horse} ${h2h.bw}勝${h2h.aw}敗
+ ${raceTrackHtml(m)}
+ 騎師：<b>${j.name}</b>｜馬況：<b>${c.name}</b><br>
+ 對手能力：${opp.g.map(v=>`<span class="${grade(v)}"><b>${grade(v)}</b></span>`).join(' / ')}`;
+ btn.disabled=!!m.result;btn.textContent=m.result?'本輪已完成':'開始本場比賽';
+}
+let raceStrategyChosen=false;
+window.pickRaceStrategy=id=>{
+ if(raceBusy)return;
+ playerStrategy=id;
+ raceStrategyChosen=true;
+ q('raceStrategyBox').innerHTML=STR.map(s=>`<div class="st ${s.id===playerStrategy?'sel':''}" onclick="pickRaceStrategy('${s.id}')"><b>${s.n}</b><span class="small">${s.d}</span></div>`).join('');
+ q('raceStartBtn').disabled=false;
+ q('raceStrategyHint').textContent=`已選擇：${STR.find(s=>s.id===playerStrategy).n}。按 START 正式起跑。`;
+ saveGameState('race');
+}
+window.pickJockey=id=>{playerJockey=Number(id)||1;renderProfile();saveGameState(activeScreen)}
+function environmentPower(t,m){
+ if(!m||!m.race)return 0;
+ const [sp,bu,te,sta,gu]=t.g,r=m.race;
+ let x=0;
+ if(r.track==='short')x+=(sp-72)*.028+(bu-72)*.025-(sta-72)*.006;
+ if(r.track==='long')x+=(sta-72)*.035+(gu-72)*.018-(sp-72)*.006;
+ if(r.weather==='雨')x+=(te-72)*.026+(gu-72)*.012-(sp-72)*.008;
+ if(r.weather==='陰')x+=(te-72)*.008;
+ if(r.temp>=27)x+=(sta-72)*.014-(bu-72)*.004;
+ if(r.temp<=18)x+=(te-72)*.010+(bu-72)*.005;
+ if(r.wind>=4)x+=(sp-72)*(r.wind/10)*.010+(bu-72)*(r.wind/10)*.005;
+ if(r.wind<=-4)x+=(sta-72)*(Math.abs(r.wind)/10)*.013+(te-72)*(Math.abs(r.wind)/10)*.006;
+ return clamp(x,-4.5,4.5);
+}
+function cpuTierBonus(t){
+ if(!t||t.player)return 0;
+ if(t.tier==='elite')return 3.8;
+ if(t.tier==='weak')return -5.0;
+ return 0;
+}
+function teamPower(t,strat,phase,noise=0,m=null){
+ let [sp,bu,te,sta,gu]=t.g;
+ // 五項能力直接影響實際勝負：速度25%、瞬發25%、性情10%、體力25%、根性15%。
+ let p=sp*.25+bu*.25+te*.10+sta*.25+gu*.15;
+ if(strat==='lead')p+=phase<.45?sp*.08+te*.035:-Math.max(0,80-sta)*.10;
+ if(strat==='sprint')p+=phase<.68?-2.4:bu*.10+gu*.06;
+ if(strat==='duel')p+=te*.035+sta*.030;
+ if(strat==='dark')p+=(Math.random()-.49)*12+(phase>.7?gu*.035:0);
+ p+=environmentPower(t,m);
+ p+=cpuTierBonus(t);
+ return p+noise;
+}
+function cpuStrategy(){return STR[Math.floor(Math.random()*STR.length)].id}
+function simulateAuto(m){
+ const a=teams[m.a],b=teams[m.b],sa=cpuStrategy(),sb=cpuStrategy();
+ let scoreA=0,scoreB=0;
+ for(let seg=0;seg<8;seg++){
+   let ph=seg/7;
+   scoreA+=teamPower(a,sa,ph,rn()*1.1,m);
+   scoreB+=teamPower(b,sb,ph,rn()*1.1,m);
+ }
+ const diff=(scoreA-scoreB)/8;
+ const planBias=m.planAWin?.10:-.10;
+ const pa=clamp(1/(1+Math.exp(-diff/5.8))+planBias,.05,.95);
+ const aWin=Math.random()<pa;
+ const margin=sampleMargin(),fast=7.6+Math.random()*.45,gap=marginSeconds(margin),dramatic=Math.random()<.20;
+ let timeA,timeB;if(aWin){timeA=fast;timeB=fast+gap}else{timeB=fast;timeA=fast+gap}
+ m.result={aWin};
+ m.detail={sa,sb,timeA,timeB,margin,marginLabel:marginLabel(margin),gapMeters:marginMeters(margin),dramatic,race:m.race};
+ applyStanding(m,aWin)
+}
+function applyStanding(m,aWin){const a=teams[m.a],b=teams[m.b];a.gp++;b.gp++;if(aWin){a.w++;b.l++}else{b.w++;a.l++}}
+function preparePlayerRace(){
+ if(roundIndex>=60||raceBusy)return;
+ const ms=schedule[roundIndex],idx=ms.findIndex(m=>m.a===0||m.b===0);currentMatchRef={round:roundIndex,index:idx};
+ const m=ms[idx];if(m.result)return;
+ const opp=teams[m.a===0?m.b:m.a];
+ q('raceTitle').textContent=`第 ${roundIndex+1} 場｜${TRACK_TYPES[m.race?.track||'medium'].name}｜${teams[0].horse} VS ${opp.horse}`;
+ ensureCondition();const cj=currentJockey(),cc=CONDITIONS[playerCondition]||CONDITIONS.normal;
+
+ // 進入轉播頁後才揭曉天氣／氣溫／風向。
+ q('preRace').innerHTML=`${raceMetaHtml(m)}騎師：<b>${cj.name}</b>｜馬況：<b>${cc.name}</b><br>對手五項能力：${opp.g.map(v=>`<span class="${grade(v)}"><b>${grade(v)}</b></span>`).join(' / ')}`;
+
+ raceStrategyChosen=false;
+ q('raceStrategyBox').classList.remove('locked');
+ q('raceStrategyBox').innerHTML=STR.map(s=>`<div class="st" onclick="pickRaceStrategy('${s.id}')"><b>${s.n}</b><span class="small">${s.d}</span></div>`).join('');
+ q('raceStartBtn').disabled=true;
+ q('raceStartBtn').style.display='block';
+ q('raceStrategyHint').textContent='請先選擇 A／B／C／D 其中一種策略，再按 START 起跑。';
+ q('raceResultBanner').classList.remove('show');
+ q('raceResultBanner').innerHTML='';
+
+ setupRaceVisual(m);
+ show('race');
+}
+function setupRaceVisual(m){
+ raceBusy=false;q('returnLobby').style.display='inline-block';q('raceHud').textContent='等待策略';const dist=m.race?.distance||2000;q('raceDist').textContent=`0 / ${dist}m`;q('raceLog').innerHTML='';q('raceRanks').innerHTML='';q('track').querySelectorAll('.racer,.lane').forEach(e=>e.remove());
+ const ids=[0,m.a===0?m.b:m.a];
+ ids.forEach((tid,i)=>{const lane=document.createElement('div');lane.className='lane';lane.style.top=(142+i*90)+'px';q('track').appendChild(lane);const t=teams[tid],el=document.createElement('div');el.id='horseR'+i;el.className='racer '+(tid===0?'player':'cpu');el.style.top=(150+i*90)+'px';el.innerHTML=`<span class="horseWrap"><span class="horse">🐎</span><span class="rider ${tid===0?'player':'cpu'}"><span class="cap"></span><span class="head"></span><span class="body"></span><span class="arm"></span><span class="leg1"></span><span class="leg2"></span></span></span><span class="mark" title="${tid===0?'玩家藍色標誌':'CPU綠色標誌'}"></span><span class="rname">${t.horse}</span>`;q('track').appendChild(el)});q('raceRanks').innerHTML=ids.map((tid,i)=>`<div class="rankItem ${tid===0?'me':''}">${i+1}. ${teams[tid].horse} ${tid===0?'🔵':'🟢'}　0m</div>`).join('')
+}
+function runPlayerRace(){
+ if(raceBusy||!raceStrategyChosen)return;
+ raceBusy=true;
+ q('raceStartBtn').disabled=true;
+ q('raceStartBtn').style.display='none';
+ q('raceStrategyBox').classList.add('locked');
+ q('raceStrategyHint').textContent=`本場策略：${STR.find(s=>s.id===playerStrategy).n}｜比賽進行中`;
+ q('raceHud').textContent='起跑！';
+
+ const {round,index}=currentMatchRef;
+ const m=schedule[round][index];
+ const p=teams[0];
+ const oppId=m.a===0?m.b:m.a;
+ const o=teams[oppId];
+ const cpuSt=cpuStrategy();
+
+ const basePlayerPlan=(m.a===0?m.planAWin:!m.planAWin);
+ ensureCondition();
+ ensureSeasonDifficulty();
+ const condAdj=(CONDITIONS[playerCondition]||CONDITIONS.normal).win;
+ const jockAdj=jockeyOutcomeAdj(m);
+ const meNow=teams[0],remainingGames=60-meNow.gp;
+
+ // 馬況、策略與騎師仍可改變單場結果；但最後會收束到本季抽中的最終勝場數。
+ let desiredPlayerFirst;
+ if(meNow.w>=seasonTargetWins){
+   desiredPlayerFirst=false;
+ }else if(meNow.w+remainingGames<=seasonTargetWins){
+   desiredPlayerFirst=true;
+ }else{
+   const pScore=teamPower(p,playerStrategy,.50,0,m),oScore=teamPower(o,cpuSt,.50,0,m);
+   const abilityProb=1/(1+Math.exp(-(pScore-oScore)/5.8));
+   const planAdj=basePlayerPlan?.10:-.10;
+   const playerWinProb=clamp(abilityProb+planAdj+condAdj+jockAdj,.03,.97);
+   desiredPlayerFirst=Math.random()<playerWinProb;
+ }
+ const winnerIdx=desiredPlayerFirst?0:1;
+ const loserIdx=1-winnerIdx;
+ const dramaticLatePass=Math.random()<.20;
+ const plannedMargin=sampleMargin();
+
+ const raceDistance=m.race?.distance||2000;
+ const winnerFinal=raceDistance;
+ const loserFinal=Math.max(1,raceDistance-marginMeters(plannedMargin));
+ const finalMeters=[0,0];
+ finalMeters[winnerIdx]=winnerFinal;
+ finalMeters[loserIdx]=loserFinal;
+
+ const rs=[
+   {team:p,strat:playerStrategy,pos:0,done:false},
+   {team:o,strat:cpuSt,pos:0,done:false}
+ ];
+
+ const track=q('track');
+ const finishRect=q('finishLine').getBoundingClientRect();
+ const trackRect=track.getBoundingClientRect();
+ const finishLeft=finishRect.left-trackRect.left;
+ const startX=16;
+ const targets=[];
+
+ rs.forEach((r,i)=>{
+   const el=q('horseR'+i);
+   const mark=el.querySelector('.mark');
+   el.classList.remove('finished');
+   el.classList.add('running');
+   el.style.transform='translateX(0px)';
+   const er=el.getBoundingClientRect();
+   const mr=mark.getBoundingClientRect();
+   const frontOffset=mr.right-er.left;
+   targets[i]=finishLeft-frontOffset;
+ });
+
+ // 比賽改成分段配速，不再使用 easeOut 類「前快後慢」曲線。
+ // 各檢查點時間比例：起跑、前段、中段、後段、最後直線、終點。
+ const T=[0,.11,.30,.52,.72,.86,1];
+
+ function paceBias(r,phase){
+   const [spd,burst,temper,stamina,guts]=r.team.g;
+   let b=(teamPower(r.team,r.strat,phase,0,m)-72)/1150;
+
+   // 各策略只在適合的階段發揮，不再讓所有馬一起末段減速。
+   if(r.strat==='lead'){
+     if(phase<.48)b+=.014+(spd-72)/2600;
+     if(phase>.72)b-=Math.max(0,72-stamina)/1700;
+   }else if(r.strat==='sprint'){
+     if(phase<.58)b-=.010;
+     if(phase>.72)b+=.012+(burst-72)/1800+(guts-72)/2600;
+   }else if(r.strat==='duel'){
+     b+=(temper-72)/3200+(stamina-72)/3600;
+   }else if(r.strat==='dark'){
+     // 黑馬策略是一整場固定的未知偏差，不會每幀亂跳。
+     b+=r.darkBias;
+     if(phase>.76)b+=(guts-72)/2600;
+   }
+
+   // 真正的體力衰退只發生在體力偏低的馬，而且只在後段。
+   if(phase>.70 && stamina<68){
+     b-=(68-stamina)/1150*(phase-.70)/.30;
+   }
+   // 高體力馬末段反而較能維持。
+   if(phase>.72 && stamina>=84){
+     b+=(stamina-82)/3600;
+   }
+   // 玩家馬再套用當輪馬況與騎師特性。
+   if(r.team.player){
+     b+=(CONDITIONS[playerCondition]||CONDITIONS.normal).pace;
+     b+=jockeyPaceBonus(phase,m);
+   }
+   return clamp(b,-.050,.050);
+ }
+
+ // 黑馬的隨機性每場只抽一次，避免每幀亂變造成不自然。
+ rs.forEach(r=>r.darkBias=(Math.random()-.5)*.025);
+
+ // 基準距離接近等速，但起跑約前170m稍慢，之後進入巡航。
+ const baseFrac=[0,.075,.285,.515,.715,.858,1];
+ const curves=[[],[]];
+
+ for(let i=0;i<2;i++){
+   curves[i]=baseFrac.map((base,k)=>{
+     if(k===0)return 0;
+     if(k===baseFrac.length-1)return finalMeters[i]/raceDistance;
+     const phase=T[k];
+     return base+paceBias(rs[i],phase);
+   });
+ }
+
+ // 一般賽事在最後300m逐漸朝本季已規劃好的勝負收束。
+ if(!dramaticLatePass){
+   curves[winnerIdx][4]+=.006;
+   curves[winnerIdx][5]+=.012;
+   curves[loserIdx][5]-=.004;
+ }else{
+   // 約20%：最終落敗者前面長時間穩定領先，勝方最後直線反超。
+   curves[loserIdx][1]+=.018;
+   curves[loserIdx][2]+=.032;
+   curves[loserIdx][3]+=.038;
+   curves[loserIdx][4]+=.032;
+   curves[loserIdx][5]-=.004;
+
+   curves[winnerIdx][1]-=.010;
+   curves[winnerIdx][2]-=.020;
+   curves[winnerIdx][3]-=.022;
+   curves[winnerIdx][4]-=.012;
+   curves[winnerIdx][5]+=.018;
+ }
+
+ // 檢查點本身必須嚴格向前，徹底杜絕「倒退」或停住等候下一點。
+ for(let i=0;i<2;i++){
+   const fin=finalMeters[i]/raceDistance;
+   curves[i][0]=0;
+   curves[i][curves[i].length-1]=fin;
+   for(let k=1;k<curves[i].length-1;k++){
+     const minAllowed=curves[i][k-1]+.035;
+     const remaining=(curves[i].length-1-k);
+     const maxAllowed=fin-.035*remaining;
+     curves[i][k]=clamp(curves[i][k],minAllowed,maxAllowed);
+   }
+ }
+
+ function progressAt(curve,t){
+   if(t<=0)return 0;
+   if(t>=1)return curve[curve.length-1];
+   let k=0;
+   while(k<T.length-2 && t>T[k+1])k++;
+   const local=(t-T[k])/(T[k+1]-T[k]);
+   // 線性巡航；僅起跑第一段使用輕微加速曲線。
+   const u=k===0 ? local*local*(2-local) : local;
+   return curve[k]+(curve[k+1]-curve[k])*u;
+ }
+
+ const start=performance.now();
+ const duration=(TRACK_TYPES[m.race?.track||'medium']?.duration||11800)+Math.random()*900;
+ let lastLeader=null,lastPassLog=0,lastPhase=-1,dramaticCalled=false,raceFinished=false;
+ const prevPos=[0,0];
+
+ function log(t){
+   const d=document.createElement('div');
+   d.textContent=t;
+   q('raceLog').prepend(d);
+ }
+ function horseName(i){return rs[i].team.horse}
+ function leader(){return rs[0].pos>=rs[1].pos?0:1}
+
+ log('閘門開啟！兩匹賽駒同時起跑。');
+ if(dramaticLatePass)log('本場前段可能形成明顯領先，但真正勝負要到最後直線才會揭曉。');
+
+ function frame(now){
+   if(raceFinished)return;
+   const pnorm=clamp((now-start)/duration,0,1);
+
+   for(let i=0;i<2;i++){
+     let proposed=progressAt(curves[i],pnorm)*raceDistance;
+     proposed=Math.max(prevPos[i],proposed);
+     proposed=Math.min(finalMeters[i],proposed);
+     if(i===winnerIdx && pnorm<1)proposed=Math.min(proposed,raceDistance-.6);
+
+     rs[i].pos=proposed;
+     prevPos[i]=proposed;
+
+     const x=startX+(rs[i].pos/raceDistance)*(targets[i]-startX);
+     q('horseR'+i).style.transform=`translateX(${x}px)`;
+   }
+
+   const lead=Math.max(rs[0].pos,rs[1].pos);
+   const L=leader();
+   const gap=Math.abs(rs[0].pos-rs[1].pos);
+
+   if(lastLeader===null){
+     if(lead>20){
+       lastLeader=L;
+       lastPassLog=now;
+       log(`${horseName(L)}率先取得領先，${horseName(1-L)}緊追在後。`);
+     }
+   }else if(L!==lastLeader && gap>7 && now-lastPassLog>600){
+     if(dramaticLatePass && L===winnerIdx && pnorm>.68 && !dramaticCalled){
+       log(`最後直線風雲變色！${horseName(winnerIdx)}從後方強勢追上，逆轉超越一路領先的${horseName(loserIdx)}！`);
+       dramaticCalled=true;
+     }else{
+       log(`${horseName(L)}追了上來，超越${horseName(lastLeader)}取得領先！`);
+     }
+     lastLeader=L;
+     lastPassLog=now;
+   }
+
+   const ph=Math.floor((lead/raceDistance)*4);
+   if(ph!==lastPhase){
+     lastPhase=ph;
+     if(ph===1)log(`${Math.round(raceDistance*.25)}m通過，${horseName(L)}暫居前方。`);
+     if(ph===2)log(gap<55?`${Math.round(raceDistance*.50)}m通過，兩駒幾乎並駕齊驅。`:`${Math.round(raceDistance*.50)}m通過，${horseName(L)}仍保持領先。`);
+     if(ph===3){
+       if(dramaticLatePass && L===loserIdx){
+         log(`最後${Math.round(raceDistance*.25)}m！${horseName(loserIdx)}仍在前方，但${horseName(winnerIdx)}正在快速縮小差距！`);
+       }else{
+         const loser=1-L;
+         log(gap<45?`最後${Math.round(raceDistance*.25)}m！兩匹馬都開始加速，勝負仍難預料！`:`最後${Math.round(raceDistance*.25)}m！${horseName(L)}領先進入最後直線，${horseName(loser)}全力追趕！`);
+       }
+     }
+   }
+
+   const sorted=[...rs].sort((a,b)=>b.pos-a.pos);
+   q('raceHud').textContent=(pnorm>=1?'完賽：':'領先：')+sorted[0].team.horse;
+   q('raceDist').textContent=Math.round(Math.min(raceDistance,lead))+` / ${raceDistance}m`;
+   q('raceRanks').innerHTML=sorted.map((r,i)=>`<div class="rankItem ${r.team.player?'me':''}">${i+1}. ${r.team.horse} ${r.team.player?'🔵':'🟢'}　${Math.round(Math.min(raceDistance,r.pos))}m</div>`).join('');
+
+   if(pnorm<1){
+     requestAnimationFrame(frame);
+     return;
+   }
+
+   // 勝方碰線的同一瞬間，兩匹馬全部凍結。
+   raceFinished=true;   rs[winnerIdx].pos=winnerFinal;
+   rs[loserIdx].pos=loserFinal;
+
+   rs.forEach((r,i)=>{
+     const x=startX+(r.pos/raceDistance)*(targets[i]-startX);
+     const el=q('horseR'+i);
+     el.style.transform=`translateX(${x}px)`;
+     el.classList.remove('running');
+     el.classList.add('finished');
+     r.done=true;
+   });
+
+   if(dramaticLatePass && !dramaticCalled){
+     log(`終點前最後一刻，${horseName(winnerIdx)}完成逆轉！`);
+   }
+   log(`${horseName(winnerIdx)}的前端標誌率先碰到終點線，兩匹馬同時停止。`);
+   log(`依停止位置計算，勝負差為：${marginLabel(plannedMargin)}。`);
+
+   q('raceHud').textContent=`完賽：${horseName(winnerIdx)}`;
+   q('raceDist').textContent=`${raceDistance} / ${raceDistance}m`;
+
+   finishPlayerRace(rs,[winnerIdx,loserIdx],cpuSt,plannedMargin,dramaticLatePass);
+ }
+ requestAnimationFrame(frame)
+}
+function finishPlayerRace(rs,order,cpuSt,margin,dramatic=false){
+ raceBusy=false;
+ const {round,index}=currentMatchRef,m=schedule[round][index],playerFirst=(order[0]===0),aWin=(m.a===0?playerFirst:!playerFirst);
+ const fast=7.7+Math.random()*.35,gap=marginSeconds(margin),timePlayer=playerFirst?fast:fast+gap,timeOpp=playerFirst?fast+gap:fast;
+ m.result={aWin};
+ const exactGapMeters=Math.round(Math.abs(rs[0].pos-rs[1].pos));
+ m.detail={sa:m.a===0?playerStrategy:cpuSt,sb:m.a===0?cpuSt:playerStrategy,timeA:m.a===0?timePlayer:timeOpp,timeB:m.a===0?timeOpp:timePlayer,margin,marginLabel:marginLabel(margin),gapMeters:exactGapMeters,dramatic,jockey:currentJockey().name,condition:(CONDITIONS[playerCondition]||CONDITIONS.normal).name,race:m.race};
+ applyStanding(m,aWin);
+ schedule[round].forEach((x,i)=>{if(i!==index&&!x.result)simulateAuto(x)});
+ q('raceHud').textContent=(playerFirst?`WIN｜${teams[0].horse}`:`LOSE｜${teams[0].horse}`)+`｜${marginLabel(margin)}`;
+ const winnerHorse=rs[order[0]].team.horse,loserHorse=rs[order[1]].team.horse,marginText=marginLabel(margin);
+ q('raceResultBanner').innerHTML=`${winnerHorse} 以 <span>${marginText}</span> 之差擊敗 ${loserHorse}`;
+ q('raceResultBanner').classList.add('show');
+ q('raceStrategyHint').textContent=`本場策略：${STR.find(s=>s.id===playerStrategy).n}｜比賽結束`;
+ q('returnLobby').style.display='inline-block';
+ q('raceLog').insertAdjacentHTML('afterbegin',`<div><b>${playerFirst?'玩家獲勝！':'玩家落敗。'}</b> 勝負差：<b>${marginLabel(margin)}</b>${dramatic?'｜本場為最後直線逆轉賽局':''}。本輪另外四場也已同步完成。</div>`);
+ q('track').querySelectorAll('.racer').forEach(e=>{e.classList.remove('running');e.classList.add('finished')});
+ roundIndex++;if(roundIndex<60)ensureCondition(true);renderAll();saveGameState('race')
+}
+function renderAll(){if(!teams.length)return;renderLobby();renderSchedule();renderProfile()}
+window.watchMatch=(r,i)=>{const m=schedule[r][i];if(!m.result)return;currentReplay={r,i};q('modal').classList.add('show');q('modalTitle').textContent=`第 ${r+1} 輪｜${teams[m.a].horse} VS ${teams[m.b].horse}`;q('modalText').innerHTML=`結果：<b>${m.result.aWin?teams[m.a].horse:teams[m.b].horse} 勝</b>｜勝負差：<b>${m.detail?.marginLabel||''}</b>${raceMetaHtml(m)}策略：${STR.find(s=>s.id===m.detail.sa).n} vs ${STR.find(s=>s.id===m.detail.sb).n}${m.detail?.dramatic?'｜賽況：最後直線逆轉':''}`;q('repAName').textContent=teams[m.a].horse;q('repBName').textContent=teams[m.b].horse;q('repA').querySelector('i').className=m.a===0?'blueDot':'greenDot';q('repB').querySelector('i').className=m.b===0?'blueDot':'greenDot';playReplay(m)}
+function playReplay(m){
+ q('repA').classList.add('running');q('repB').classList.add('running');
+ const tr=q('replayTrack'),finishRect=tr.querySelector('.replayFinish').getBoundingClientRect(),trRect=tr.getBoundingClientRect(),finishLeft=finishRect.left-trRect.left,start=performance.now(),ta=m.detail.timeA,tb=m.detail.timeB,winnerT=m.result.aWin?ta:tb;
+ function targetX(el){const er=el.getBoundingClientRect(),dot=el.querySelector('i').getBoundingClientRect(),frontOffset=dot.right-er.left;return finishLeft-frontOffset}
+ const aTarget=targetX(q('repA')),bTarget=targetX(q('repB')),pxPerHorse=52,loserGap=m.detail?.gapMeters!=null?(m.detail.gapMeters/100)*pxPerHorse:(m.detail.margin||.12)*pxPerHorse,aFinal=m.result.aWin?aTarget:Math.max(12,aTarget-loserGap),bFinal=m.result.aWin?Math.max(12,bTarget-loserGap):bTarget;
+ function f(now){
+   const t=(now-start)/1000,p=Math.min(1,t/winnerT),base=1-Math.pow(1-p,2.1);
+   let pa=base,pb=base;
+   if(m.detail?.dramatic){
+     const wave=Math.sin(Math.PI*p);
+     if(m.result.aWin){pa=clamp(base-.015*wave,0,1);pb=clamp(base+.085*wave,0,1)}
+     else{pb=clamp(base-.015*wave,0,1);pa=clamp(base+.085*wave,0,1)}
+   }
+   q('repA').style.transform=`translateX(${12+pa*(aFinal-12)}px)`;
+   q('repB').style.transform=`translateX(${12+pb*(bFinal-12)}px)`;
+   if(p<1)requestAnimationFrame(f);else{q('repA').classList.remove('running');q('repB').classList.remove('running')}
+ }
+ requestAnimationFrame(f)
+}
+q('replayAgain').onclick=()=>{if(currentReplay)playReplay(schedule[currentReplay.r][currentReplay.i])};q('closeModal').onclick=()=>q('modal').classList.remove('show');q('modal').onclick=e=>{if(e.target===q('modal'))q('modal').classList.remove('show')};
+q('resetSeasonBtn').onclick=()=>{
+  if(!confirm('確定要重置目前賽季嗎？目前的配種結果、賽程與戰績都會清除，並回到配種頁面。'))return;
+  clearGameSave();
+  sire=0;mare=0;child=null;teams=[];schedule=[];roundIndex=0;playerStrategy='duel';playerJockey=1;playerCondition='normal';conditionRound=-1;
+  raceBusy=false;currentMatchRef=null;currentReplay=null;seasonTargetRank=3;seasonTargetBand=null;seasonTargetWins=null;activeScreen='breed';
+  q('nav').classList.remove('show');
+  renderParents();
+  show('breed');
+};
+q('breedBtn').onclick=breed;
+q('randomPair').onclick=()=>{sire=Math.floor(Math.random()*SIRES.length);mare=Math.floor(Math.random()*MARES.length);renderParents()};
+q('confirmName').onclick=confirmName;
+q('profileStartRace').onclick=preparePlayerRace;
+q('raceStartBtn').onclick=runPlayerRace;
+q('returnLobby').onclick=()=>show('lobby');
+q('scheduleToLobby').onclick=()=>show('lobby');
+q('scheduleToProfile').onclick=()=>show('profile');
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>show(b.dataset.go));
+q('themeToggle').onclick=toggleTheme;
+loadTheme();
+
+const restored=loadGameState();
+renderParents();
+if(restored&&child){
+  renderNewHorse();
+  if(teams.length&&schedule.length){
+    q('nav').classList.add('show');
+    ensureCondition();
+    renderAll();
+    // 若重新整理時剛好在比賽頁，回到賽前等待狀態；不會自動起跑。
+    if(activeScreen==='race'&&roundIndex<60){
+      const ms=schedule[roundIndex],idx=ms.findIndex(m=>m.a===0||m.b===0);
+      if(idx>=0&&!ms[idx].result){
+        currentMatchRef={round:roundIndex,index:idx};
+        const m=ms[idx],opp=teams[m.a===0?m.b:m.a];
+        q('raceTitle').textContent=`第 ${roundIndex+1} 場｜${TRACK_TYPES[m.race?.track||'medium'].name}｜${teams[0].horse} VS ${opp.horse}`;
+        ensureCondition();const cj=currentJockey(),cc=CONDITIONS[playerCondition]||CONDITIONS.normal;
+        q('preRace').innerHTML=`${raceMetaHtml(m)}騎師：<b>${cj.name}</b>｜馬況：<b>${cc.name}</b><br>對手五項能力：${opp.g.map(v=>`<span class="${grade(v)}"><b>${grade(v)}</b></span>`).join(' / ')}`;
+        raceStrategyChosen=false;
+        q('raceStrategyBox').classList.remove('locked');
+        q('raceStrategyBox').innerHTML=STR.map(s=>`<div class="st" onclick="pickRaceStrategy('${s.id}')"><b>${s.n}</b><span class="small">${s.d}</span></div>`).join('');
+        q('raceStartBtn').disabled=true;
+        q('raceStartBtn').style.display='block';
+        q('raceStrategyHint').textContent='請重新選擇 A／B／C／D 策略，再按 START 起跑。';
+        q('raceResultBanner').classList.remove('show');
+        q('raceResultBanner').innerHTML='';
+        setupRaceVisual(m);show('race');
+      }else{
+        show('lobby');
+      }
+    }else{
+      show(['lobby','schedule','profile'].includes(activeScreen)?activeScreen:'lobby');
+    }
+  }else{
+    q('nav').classList.remove('show');
+    show('name');
+  }
+}else{
+  q('nav').classList.remove('show');
+  show('breed');
+}
+</script></body></html>
+
+<style>
+@media(max-width:760px){
+  #lobby .seasonProgressStats{
+    grid-template-columns:1fr 1fr!important;
+  }
+  #lobby .seasonProgressStats .progressStat:last-child{
+    grid-column:auto!important;
+  }
+}
+</style>
+
+<style>
+.parentHorseArt{
+  background:transparent!important;
+  border:none!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+.parentHorseArt::after{
+  display:none!important;
+  content:none!important;
+}
+body.theme-dark .parentHorseArt{
+  background:transparent!important;
+  border:none!important;
+}
+</style>
