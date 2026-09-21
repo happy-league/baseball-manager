@@ -122,6 +122,17 @@ jobs:
           playoff22_dir.mkdir(parents=True, exist_ok=True)
           (playoff22_dir / "index.html").write_bytes(playoff22_html)
 
+          # Horse racing league game at /horse-racing/.
+          horse_src = Path("horse-racing/index.html")
+          if not horse_src.exists():
+              raise SystemExit("Horse racing source not found")
+          horse_dir = out / "horse-racing"
+          horse_dir.mkdir(parents=True, exist_ok=True)
+          horse_html = horse_src.read_bytes()
+          if not horse_html.startswith(b"<!doctype html>"):
+              raise SystemExit("Unexpected horse racing HTML")
+          (horse_dir / "index.html").write_bytes(horse_html)
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
