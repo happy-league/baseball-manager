@@ -399,7 +399,12 @@ function optionImpact(eventIndex,optIndex){
 }
 function impactText(a){return a.map((v,i)=>v?`${abilityNames[i]}${v>0?"+":""}${v}`:"").filter(Boolean).join("　")}
 function startGame(){S.socialPlatformLineUsed=false;S.chiangLineageUsed=false;S.hanBeatUsed=false;S.tsaiDoctorBeatUsed=false;S.requiredNewBeatUsed=false;S.requiredGroupABeatUsed=false;S.requiredGroupBBeatUsed=false;S.shenStarBeatUsed=false;S.qianzhenBeatUsed=false;
- S.specialRaceRolls={
+ S.goalRolls={
+  gold:Math.random()<0.08,
+  silver1:Math.random()<0.10,
+  silver2:Math.random()<0.18
+ };
+ specialRaceRolls={
   "鄭朝芳":Math.random()<0.10,
   "張啟凱":Math.random()<0.10,
   "蘇清泉":Math.random()<0.50,
@@ -585,11 +590,24 @@ const breakingEvents=[
  ["地方後援會爆滿","原本只準備小型場地的後援會成立活動，實際到場人數超出預期。","工作人員臨時開放周邊空間並增加動線，候選人也延長停留時間；地方團隊開始討論如何承接這波意外出現的動能。","領導",1,true]
 ];
 function maybeBreaking(day){
+ // 「暖男」每局、不分陣營，恰好出現一次。
+ // 倒數30天仍未出現就強制觸發；在此之前保留自然隨機出現機會。
+ if(S.warmManUsed!==true && (day<=30 || Math.random()<0.09)){
+   S.warmManUsed=true;
+   let b=breakingEvents.find(x=>x[0]==="暖男");
+   let ai=abilityNames.indexOf(b[3]),delta=b[4];
+   if(S.abilities&&ai>=0)S.abilities[ai]=Math.max(0,Math.min(100,S.abilities[ai]+delta));
+   const positiveReward=delta>0 && b[5]===true;
+   return {html:`<div class="breakingBox"><span class="breakingTag">${b[0]}</span>${b[1]} <span class="breakingEffect">${b[3]}${delta>0?"+":""}${delta}</span></div>`,follow:b[2],bonus:positiveReward,title:b[0],positive:positiveReward};
+ }
  if(Math.random()>=1/3)return null;
- let b=breakingEvents[Math.floor(Math.random()*breakingEvents.length)];
+ // 暖男由上方專屬規則控制，普通突發事件池不得再次抽到。
+ let pool=breakingEvents.filter(x=>x[0]!=="暖男");
+ let b=pool[Math.floor(Math.random()*pool.length)];
  let ai=abilityNames.indexOf(b[3]),delta=b[4];
  if(S.abilities&&ai>=0)S.abilities[ai]=Math.max(0,Math.min(100,S.abilities[ai]+delta));
- return {html:`<div class="breakingBox"><span class="breakingTag">${b[0]}</span>${b[1]} <span class="breakingEffect">${b[3]}${delta>0?"+":""}${delta}</span></div>`,follow:b[2],bonus:b[5],title:b[0]};
+ const positiveReward=delta>0 && b[5]===true;
+ return {html:`<div class="breakingBox"><span class="breakingTag">${b[0]}</span>${b[1]} <span class="breakingEffect">${b[3]}${delta>0?"+":""}${delta}</span></div>`,follow:b[2],bonus:positiveReward,title:b[0],positive:positiveReward};
 }
 function fitDiaryLength(pars){
  const count=t=>t.replace(/<[^>]*>/g,"").replace(/\s/g,"").length;
@@ -597,8 +615,8 @@ function fitDiaryLength(pars){
  // Keep chronological order, but stop before the page becomes overlong.
  for(const p of pars){
    let c=count(p);
-   if(n>=250 && n+c>450) break;
-   if(n+c<=450 || n<250){out.push(p);n+=c;}
+   if(n>=250 && n+c>550) break;
+   if(n+c<=550 || n<250){out.push(p);n+=c;}
    if(n>=330 && Math.random()<0.35) break;
  }
  // If random early stop left it short, append remaining paragraphs that still fit.
@@ -606,7 +624,7 @@ function fitDiaryLength(pars){
    for(const p of pars){
      if(out.includes(p)) continue;
      let c=count(p);
-     if(n+c<=450){out.push(p);n+=c;}
+     if(n+c<=550){out.push(p);n+=c;}
      if(n>=250) break;
    }
  }
@@ -716,11 +734,11 @@ function maybeBusinessEndorsement(target){
 
 function blueOpeningStrategy(){
  if(S.camp!=="藍")return "";
- return `【藍營開局戰略】主席上任後的第一場戰情會議，藍營把中央執政表現定為地方選戰的主要攻防題材。黨內主張：賴清得政府執政下，即使股市處在高檔，許多民眾對資產上漲的體感有限；生活成本與物價壓力仍是街頭最常被反映的議題，因此藍營將以「中央施政是否真正改善一般家庭生活」向綠營候選人提出質疑。這是本局藍營的競選論述，而不是遊戲對現實執政能力的判定。戰情室接著畫出清楚的資源順序：第一主軸放在臺北市蔣萬桉與高熊市柯志摁兩場選戰，中央行程、組織、宣傳與重量級站台優先支援兩地；第二層才依各地選情，把資源投入其他縣市。至於中國國名黨沒有推出人選、但台灣民眾擋或藍白合作陣營已有主要人選的縣市，中央原則上不另闢戰線，而是以合作方式協助白營或合作對象，例如新竹市與嘉義市，避免同一支持光譜的資源彼此消耗。`;
+ return `【藍營開局戰略】主席上任後的第一場戰情會議，藍營把中央執政表現定為地方選戰的主要攻防題材。黨內主張：賴清得政府執政下，即使股市處在高檔，許多民眾對資產上漲的體感有限；生活成本與物價壓力仍是街頭最常被反映的議題，因此藍營將以「中央施政是否真正改善一般家庭生活」向綠營候選人提出質疑。戰情室接著畫出清楚的資源順序：第一主軸放在臺北市蔣萬桉與高熊市柯志摁兩場選戰，中央行程、組織、宣傳與重量級站台優先支援兩地；第二層才依各地選情，把資源投入其他縣市。至於中國國名黨沒有推出人選、但台灣民眾擋或藍白合作陣營已有主要人選的縣市，中央原則上不另闢戰線，而是以合作方式協助白營或合作對象，例如新竹市與嘉義市，避免同一支持光譜的資源彼此消耗。`;
 }
 function greenOpeningStrategy(){
  if(S.camp!=="綠")return "";
- return `【綠營開局戰略】主席上任後，綠營戰情會議先把這場選舉定調為「不只是地方選舉，也是台灣民主的保衛戰」。黨內演說以「民主富二代」形容今日享有民主制度的一代，強調現有制度來自前人長期爭取與付出；並以藍白若拿下多個縣市可能造成「民主開倒車」、甚至讓人聯想到戒嚴年代作為動員論述。這些都是本局綠營的競選主張與政治修辭，不代表遊戲判定任何選舉結果必然造成上述後果。策略上，黨中央明定「臺北帶動全台」：第一優先全力協助臺北市沈伯陽，把組織、宣傳、青年動員與中央輔選資源集中投入首都戰場，嘗試讓競選團隊所稱的「洋流」持續擴散。戰情室同時規劃跨縣市活動，希望臺北累積的聲量與支持者動能形成選戰外溢效應，再帶動其他縣市候選人的活動、曝光與地方組織；是否真的能產生外溢效果，仍由後續遊戲事件與玩家決策決定。`;
+ return `【綠營開局戰略】主席上任後，綠營戰情會議先把這場選舉定調為「不只是地方選舉，也是台灣民主的保衛戰」。黨內演說以「民主富二代」形容今日享有民主制度的一代，強調現有制度來自前人長期爭取與付出；並以藍白若拿下多個縣市可能造成「民主開倒車」、甚至讓人聯想到戒嚴年代作為動員論述。策略上，黨中央明定「臺北帶動全台」：第一優先全力協助臺北市沈伯陽，把組織、宣傳、青年動員與中央輔選資源集中投入首都戰場，嘗試讓競選團隊所稱的「洋流」持續擴散。戰情室同時規劃跨縣市活動，希望臺北累積的聲量與支持者動能形成選戰外溢效應，再帶動其他縣市候選人的活動、曝光與地方組織；是否真的能產生外溢效果，就要看個人造化了。`;
 }
 function whiteOpeningStrategy(){
  if(S.camp!=="白")return "";
@@ -851,7 +869,7 @@ function guaranteedRequiredNewBeat(){
  if(S.requiredNewBeatUsed)return "";
  S.requiredNewBeatUsed=true;
  const beats=[
-  `高熊造勢場合，中國國名黨的韓國愉陪同柯志嗯站台，重新拿出自己過去「一瓶礦泉水、一碗滷肉飯」的庶民選戰意象，鼓勵團隊用簡單、直接的方式跑遍基層。現場也把這套語言延伸到地方民生議題，希望替候選人的最後衝刺增加記憶點。`,
+  `高熊造勢場合，中國國名黨的韓國愉陪同柯志摁站台，重新拿出自己過去「一瓶礦泉水、一碗滷肉飯」的庶民選戰意象，鼓勵團隊用簡單、直接的方式跑遍基層。現場也把這套語言延伸到地方民生議題，希望替候選人的最後衝刺增加記憶點。`,
   `民煮進步黨在一場中央與地方聯合記者會上，把攻防焦點放在立法與政策推動，批評中國國名黨與台灣民眾擋經常在決策過程阻撓，使部分政策窒礙難行，並形容這會成為台灣進步的絆腳石。藍白陣營則各自提出反駁，主張監督與政策審查不能直接等同阻撓。`,
   `台灣民眾擋的柯文喆在媒體堵訪時，被連續追問與中國國名黨、民煮進步黨之間的攻防。他先停了一下，接著用一貫口語說：「我想是這樣啦，你們每天中國國名黨、民煮進步黨不煩嗎？」現場記者立刻追問，白營幕僚則把話題重新拉回地方候選人的政策。`
  ];
@@ -906,18 +924,34 @@ function namedCandidateStory(txt,target){
  const d=D.find(x=>x[0]===target.n);
  if(!d)return txt;
  const idx=S.camp==="藍"?7:S.camp==="綠"?8:9;
- let nm=d[idx];
- // If the player's camp has no nominee here, use the supported/active target already assigned by the game.
- if(!nm||nm==="—"||nm==="無"||nm==="未提名") nm=target.cand||"";
- if(!nm)return txt;
- // Whenever the paragraph is about the selected county/city, make generic candidate references explicit.
- txt=txt.replace(/地方候選人/g,`${nm}`);
- txt=txt.replace(/候選人的/g,`${nm}的`);
- txt=txt.replace(/候選人方面/g,`${nm}方面`);
- txt=txt.replace(/候選人陣營/g,`${nm}陣營`);
- txt=txt.replace(/候選人團隊/g,`${nm}團隊`);
- txt=txt.replace(/候選人/g,nm);
- return txt;
+ const own=d[idx];
+ if(!own||own==="—"||own==="無"||own==="未提名")return txt;
+
+ // Only generic, target-specific paragraphs may receive automatic candidate naming.
+ // Fixed political beats already containing a named politician/candidate are protected.
+ const rosterNames=[...new Set(D.flatMap(x=>[x[7],x[8],x[9],...(x[10]||[])])
+   .filter(x=>x&&x!=="—"&&x!=="無"&&x!=="未提名"))];
+ const protectedNames=[
+  "韓國愉","馬英玖","盧秀雁","賴清得","卓榮太","李揚","柯文喆","黃國倡","黃姍姍",
+  "蔡英雯","朱立綸","郭台名","唐湘隆","趙少慷","王瑞得","黃暐翰","黃靜螢","林珍妤",
+  "沈伯陽","蔣萬桉","柯志摁","賴瑞龍","高虹桉","張啟凱","鄭朝芳","徐新營","鍾東進"
+ ];
+ const named=[...new Set([...rosterNames,...protectedNames])];
+
+ return txt.split(/\n\n/).map(p=>{
+   // If a paragraph already names a political figure/candidate other than the intended
+   // target candidate, it is a self-contained fixed beat and must not be rewritten.
+   const hasProtectedName=named.some(n=>n!==own && p.includes(n));
+   if(hasProtectedName)return p;
+
+   p=p.replace(/地方候選人/g,own);
+   p=p.replace(/候選人的/g,`${own}的`);
+   p=p.replace(/候選人方面/g,`${own}方面`);
+   p=p.replace(/候選人陣營/g,`${own}陣營`);
+   p=p.replace(/候選人團隊/g,`${own}團隊`);
+   p=p.replace(/候選人/g,own);
+   return p;
+ }).join("\n\n");
 }
 function diaryStory(day,e,target){
  let continuity="";
@@ -1170,12 +1204,9 @@ if(S.camp==="白"){let wb=whiteCampaignBackbone(target);if(wb)pars.unshift(wb);}
  let extraCount=Math.random()<.65?2:1;
  extras.slice(0,extraCount).forEach(x=>{let p=Math.floor(Math.random()*(pars.length+1));pars.splice(p,0,x)});
  const breaking=maybeBreaking(day);
- S.breakingBonus=breaking&&breaking.bonus?breaking:null;
- if(breaking){
-   // Insert event anywhere, but always follow it immediately with a paragraph continuing that same topic.
-   const pos=Math.floor(Math.random()*(pars.length+1));
-   pars.splice(pos,0,breaking.html,breaking.follow);
- }
+ // Do not activate the reward yet. It becomes active only if the positive
+ // breaking event is actually inserted into the final visible diary page.
+ S.breakingBonus=null;
  if(!S.storyThread) S.storyThread=`${target.n}的「${e.t}」尚未完全落幕，${target.cand||"地方團隊"}的回應與媒體後續仍在延燒。`;
  pars=pars.filter(p=>{
    for(const camp of ["藍","綠","白"]){
@@ -1185,21 +1216,26 @@ if(S.camp==="白"){let wb=whiteCampaignBackbone(target);if(wb)pars.unshift(wb);}
  });
  pars=enforceOncePerGame(pars);
  pars=fitDiaryLength(pars);
- // Day 100 opening is mandatory and must never be removed by the normal 450-char trimming.
+ // Day 100 opening is mandatory and must never be removed by the normal 550-char trimming.
  const prologue=day===100?openingPrologue():"";
  // The last paragraph must bridge directly into today's decision.
  const bridge=decisionBackground(e,target);
  if(day===100){
-   // Keep the full camp-specific prologue + at least one story paragraph + decision background.
-   // Day 100 is intentionally allowed to be longer than ordinary diary pages.
    let firstStory=pars.length?pars[0]:"";
    pars=[prologue];
    if(firstStory) pars.push(firstStory);
+   // Breaking events are inserted AFTER trimming so they cannot be silently removed.
+   if(breaking){pars.push(breaking.html,breaking.follow);}
    pars.push(bridge);
  }else{
-   while(pars.length && pars.join("").replace(/<[^>]*>/g,"").replace(/\s/g,"").length+bridge.length>450) pars.pop();
+   // Reserve room for a breaking event before trimming ordinary story paragraphs.
+   const breakingLen=breaking?(breaking.html+breaking.follow).replace(/<[^>]*>/g,"").replace(/\s/g,"").length:0;
+   while(pars.length && pars.join("").replace(/<[^>]*>/g,"").replace(/\s/g,"").length+bridge.length+breakingLen>550) pars.pop();
+   if(breaking){pars.push(breaking.html,breaking.follow);}
    pars.push(bridge);
  }
+ // Reward is available only when the visible breaking event is a positive reward event.
+ if(breaking && breaking.positive===true && breaking.bonus===true) S.breakingBonus=breaking;
  return cleanDiaryText(namedCandidateStory(pars.join("\n\n"),target));
 }
 
@@ -1523,46 +1559,36 @@ function gameGoalResult(winners){
 
 
 function evaluateAchievements(winners, votePct){
- const pct=votePct||S.finalVotePct||{};
+ const pct=votePct||{};
  const wonCities=Object.keys(winners||{}).filter(k=>winners[k]===S.camp);
- const over60=wonCities.filter(k=>(pct[k]&&pct[k][S.camp]>=60));
+ const over60=wonCities.filter(k=>pct[k]&&pct[k][S.camp]>=60);
  const comebacks=wonCities.filter(k=>S.finalPollLeaders&&S.finalPollLeaders[k]&&S.finalPollLeaders[k]!==S.camp);
- let gold=false,s1=false,s2=false,goldText="",s1Text="",s2Text="";
  if(S.camp==="藍"){
-   let green=Object.values(winners||{}).filter(x=>x==="綠").length;
-   gold=green<=3; goldText="讓綠營最終只剩3席（含）以下";
-   s1=over60.length>=4;s1Text="至少4個縣市得票率超過60%";
-   s2=comebacks.length>=1;s2Text="至少1個最終民調落後縣市反敗為勝";
- }else if(S.camp==="綠"){
+   const green=Object.values(winners||{}).filter(x=>x==="綠").length;
+   const goldCount=Math.max(0,22-green);
+   return [
+    {kind:"gold",ok:green<=3,text:"讓綠營最終只剩3席（含）以下",progress:`${Math.min(goldCount,19)}/19`},
+    {kind:"silver",ok:over60.length>=4,text:"至少4個縣市得票率超過60%",progress:`${Math.min(over60.length,4)}/4`},
+    {kind:"silver",ok:comebacks.length>=1,text:"至少1個最終民調落後縣市反敗為勝",progress:`${Math.min(comebacks.length,1)}/1`}
+   ];
+ }
+ if(S.camp==="綠"){
    const base2022={臺北市:"藍",新北市:"藍",桃園市:"藍",臺中市:"藍",臺南市:"綠",高雄市:"綠",基隆市:"藍",新竹市:"白",新竹縣:"藍",苗栗縣:"無",彰化縣:"藍",南投縣:"藍",雲林縣:"藍",嘉義市:"藍",嘉義縣:"綠",屏東縣:"綠",宜蘭縣:"藍",花蓮縣:"無",臺東縣:"無",澎湖縣:"綠",金門縣:"無",連江縣:"藍"};
-   let flips=Object.keys(winners||{}).filter(k=>winners[k]==="綠"&&["藍","白"].includes(base2022[k])).length;
-   gold=flips>=3;goldText="至少3席由藍／白轉為綠營";
-   s1=over60.length>=4;s1Text="至少4個縣市得票率超過60%";
-   s2=comebacks.length>=2;s2Text="至少2個最終民調落後縣市反敗為勝";
- }else{
-   gold=winners&&winners["新竹市"]==="白"&&winners["嘉義市"]==="白";goldText="奪下新竹市與嘉義市";
-   // Hsinchu County: 鄭朝方 is green in the game candidate table.
-   s1=winners&&winners["新竹縣"]==="綠";s1Text="鄭朝芳獲勝";
-   const special=["新竹市","嘉義市"].some(k=>winners&&winners[k]==="白"&&pct[k]&&pct[k]["白"]>=60);
-   s2=special;s2Text="高虹桉或張啟凱至少一人得票率超過60%";
+   const flips=Object.keys(winners||{}).filter(k=>winners[k]==="綠"&&["藍","白"].includes(base2022[k])).length;
+   return [
+    {kind:"gold",ok:flips>=3,text:"至少3席由藍／白轉為綠營",progress:`${Math.min(flips,3)}/3`},
+    {kind:"silver",ok:over60.length>=4,text:"至少4個縣市得票率超過60%",progress:`${Math.min(over60.length,4)}/4`},
+    {kind:"silver",ok:comebacks.length>=2,text:"至少2個最終民調落後縣市反敗為勝",progress:`${Math.min(comebacks.length,2)}/2`}
+   ];
  }
- let progress=[];
- if(S.camp==="藍"){
-   let green=Object.values(winners||{}).filter(x=>x==="綠").length;
-   progress=[`${Math.max(0,22-green)}/19`,`${Math.min(over60.length,4)}/4`,`${Math.min(comebacks.length,1)}/1`];
- }else if(S.camp==="綠"){
-   const base2022b={臺北市:"藍",新北市:"藍",桃園市:"藍",臺中市:"藍",臺南市:"綠",高雄市:"綠",基隆市:"藍",新竹市:"白",新竹縣:"藍",苗栗縣:"無",彰化縣:"藍",南投縣:"藍",雲林縣:"藍",嘉義市:"藍",嘉義縣:"綠",屏東縣:"綠",宜蘭縣:"藍",花蓮縣:"無",臺東縣:"無",澎湖縣:"綠",金門縣:"無",連江縣:"藍"};
-   let flips2=Object.keys(winners||{}).filter(k=>winners[k]==="綠"&&["藍","白"].includes(base2022b[k])).length;
-   progress=[`${Math.min(flips2,3)}/3`,`${Math.min(over60.length,4)}/4`,`${Math.min(comebacks.length,2)}/2`];
- }else{
-   let gdone=(winners&&winners["新竹市"]==="白"?1:0)+(winners&&winners["嘉義市"]==="白"?1:0);
-   // correct calculation below; retained as explicit two-city count
-   gdone=(winners&&winners["新竹市"]==="白"?1:0)+(winners&&winners["嘉義市"]==="白"?1:0);
-   let zdone=(winners&&winners["新竹縣"]==="綠")?1:0;
-   let spdone=["新竹市","嘉義市"].filter(k=>winners&&winners[k]==="白"&&pct[k]&&pct[k]["白"]>=60).length;
-   progress=[`${gdone}/2`,`${zdone}/1`,`${Math.min(spdone,1)}/1`];
- }
- return [{kind:"gold",ok:gold,text:goldText,progress:progress[0]},{kind:"silver",ok:s1,text:s1Text,progress:progress[1]},{kind:"silver",ok:s2,text:s2Text,progress:progress[2]}];
+ const gdone=(winners&&winners["新竹市"]==="白"?1:0)+(winners&&winners["嘉義市"]==="白"?1:0);
+ const zdone=(winners&&winners["新竹縣"]==="綠")?1:0;
+ const spdone=["新竹市","嘉義市"].filter(k=>winners&&winners[k]==="白"&&pct[k]&&pct[k]["白"]>=60).length;
+ return [
+  {kind:"gold",ok:gdone===2,text:"奪下新竹市與嘉義市",progress:`${gdone}/2`},
+  {kind:"silver",ok:zdone===1,text:"鄭朝芳獲勝",progress:`${zdone}/1`},
+  {kind:"silver",ok:spdone>=1,text:"高虹桉或張啟凱至少一人得票率超過60%",progress:`${Math.min(spdone,1)}/1`}
+ ];
 }
 function renderAchievements(winners,votePct){
  let host=document.getElementById("achievementPanel");
@@ -1570,7 +1596,7 @@ function renderAchievements(winners,votePct){
    host=document.createElement("div");host.id="achievementPanel";host.className="achievementPanel";
    const counting=document.getElementById("counting");(counting||document.body).appendChild(host);
  }
- let a=evaluateAchievements(winners,votePct);
+ let a=(S.finalGoalAudit&&S.finalGoalAudit.length===3)?S.finalGoalAudit:evaluateAchievements(winners,votePct);
  host.innerHTML=`<h2>本屆選戰目標檢視</h2>`+a.map(x=>`<div class="achievement ${x.kind} ${x.ok?"done":"miss"}">${x.ok?`<span class="trophy">${x.kind==="gold"?"🏆":"🏆"}</span>`:""}<b>${x.kind==="gold"?"金目標":"銀目標"}</b> <span class="achievementProgress">${x.progress}</span><br>${x.text}<div>${x.ok?"達成":"未達成"}</div></div>`).join("");
  const vals=S.abilities||[0,0,0,0,0];
  const badges=vals.map((v,i)=>{
@@ -1625,6 +1651,33 @@ function finalShares(c){
      if(opp.type==="camp")raw[opp.j]=oppPct; else other=oppPct;
    }
  }
+ // White second silver goal: the hidden independent roll must be reflected in the ACTUAL vote result.
+ // Success guarantees one of the two named targets clears 60%; failure prevents either from clearing 60%.
+ if(S.camp==="白" && S.goalRolls){
+   const whiteIdx=2;
+   if(S.goalRolls.silver2===true && c.n==="新竹市" && d[9]!=="—"){
+     const target=.62, rest=1-target;
+     let currentOthers=raw[0]+raw[1]+other;
+     if(currentOthers<=0){raw[0]=rest*100;raw[1]=0;other=0;}
+     else{
+       raw[0]=raw[0]/currentOthers*rest*100;
+       raw[1]=raw[1]/currentOthers*rest*100;
+       other=other/currentOthers*rest*100;
+     }
+     raw[whiteIdx]=target*100;
+   }else if(S.goalRolls.silver2===false && (c.n==="新竹市"||c.n==="嘉義市") && d[9]!=="—"){
+     let sum0=raw.reduce((a,b)=>a+b,0)+other;
+     let wp=sum0?raw[whiteIdx]/sum0:0;
+     if(wp>=.60){
+       const target=.58, rest=1-target;
+       let currentOthers=raw[0]+raw[1]+other;
+       raw[0]=currentOthers?raw[0]/currentOthers*rest*100:rest*100;
+       raw[1]=currentOthers?raw[1]/currentOthers*rest*100:0;
+       other=currentOthers?other/currentOthers*rest*100:0;
+       raw[whiteIdx]=target*100;
+     }
+   }
+ }
  let sum=raw.reduce((a,b)=>a+b,0)+other;
  return {sh:raw.map(x=>x/sum),other:other/sum}
 }
@@ -1661,6 +1714,9 @@ function finish(rows){
    if(w<3)document.getElementById(['a','b','c'][w]+i).classList.add('lead');else document.getElementById('o'+i).classList.add('lead');
  });
  S.finalVotePct=votePct;S.winners=winners;
+ // Final goal audit: every displayed goal is recalculated from the completed vote count.
+ // Hidden goal rolls may shape simulation outcomes, but never directly award a goal.
+ S.finalGoalAudit=evaluateAchievements(winners,votePct);
  countStatus.innerHTML=`<b>開票完成：</b> 🔵 ${wins[0]} 席　🟢 ${wins[1]} 席　⚪ ${wins[2]} 席　其他／無黨 ${wins[3]} 席<br><span class=sub>${S.chair}主席本局的選戰已結束。粗體為各縣市本局模擬最高票陣營；結果僅屬遊戲模擬。</span>`;
  renderAchievements(winners,votePct);
  afterDecisionTop();
