@@ -133,6 +133,17 @@ jobs:
               raise SystemExit("Unexpected horse racing HTML")
           (horse_dir / "index.html").write_bytes(horse_html)
 
+          # Political strategy game at /political-titan/.
+          political_src = Path("political-titan/index.html")
+          if not political_src.exists():
+              raise SystemExit("Political strategy source not found")
+          political_dir = out / "political-titan"
+          political_dir.mkdir(parents=True, exist_ok=True)
+          political_html = political_src.read_bytes()
+          if not political_html.startswith(b"<!doctype html>") or not political_html.rstrip().endswith(b"</html>"):
+              raise SystemExit("Unexpected political strategy HTML")
+          (political_dir / "index.html").write_bytes(political_html)
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
