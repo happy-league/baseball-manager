@@ -1,0 +1,1779 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>政壇巨擘：席次爭奪戰</title><style>
+:root{--bg:#080d1b;--panel:#141c31;--panel2:#0d1426;--line:#2b385e;--text:#f7f8ff;--muted:#aeb8d5;--gold:#ffd166;--blue:#3777ff;--green:#2fb06f;--white:#e9edf5;--gray:#667085}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 30% 0,#18264d 0,#090e1c 38%,#060a14 100%);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif}.wrap{max-width:1250px;margin:auto;padding:18px}.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.title{font-size:clamp(30px,6vw,55px);font-weight:950;letter-spacing:-2px}.sub{color:var(--muted)}.card{background:#141c31ef;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 14px 40px #0006}.hidden{display:none!important}button{border:0;border-radius:12px;padding:12px 16px;font-weight:850;cursor:pointer}.blue{background:var(--blue);color:#fff}.green{background:var(--green);color:#fff}.white{background:var(--white);color:#15203c}.gold{background:var(--gold);color:#342800}.ghost{background:#263352;color:#fff}input{width:100%;max-width:360px;background:#0c1326;border:1px solid #405078;border-radius:12px;color:#fff;padding:13px;font-size:16px}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:14px}.stat{background:#0d1428;border:1px solid #263354;border-radius:12px;padding:10px}.big{font-size:21px;font-weight:900}.grid{display:grid;grid-template-columns:1.12fr .88fr;gap:14px;margin-top:14px}.event{font-size:18px;line-height:1.9}.diary{background:#f3e6c7;color:#3b2d20;border:1px solid #cdb98c;border-radius:10px;padding:28px 30px;min-height:470px;box-shadow:inset 0 0 35px #8b6a3520,0 12px 30px #0005;font-family:"Noto Serif TC",serif}.diary .pageTitle{text-align:center;font-size:26px;font-weight:900;margin-bottom:20px}.diary .story{text-indent:2em;white-space:pre-line}.diary .balance{margin-top:18px;border-top:1px dashed #9c8358;padding-top:12px;font-weight:800}.choices{display:grid;gap:8px;margin-top:12px}.choices button{background:#253154;color:#fff;text-align:left}.choices button:hover{background:#35466f}.cities{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-height:560px;overflow:auto}.city{background:#0d1427;border:1px solid #273555;border-radius:12px;padding:9px}.city.off{opacity:.52}.bar{height:7px;background:#26304d;border-radius:9px;overflow:hidden;margin-top:6px}.fill{height:100%;background:var(--gold)}.log{height:180px;overflow:auto;background:#090e1c;padding:10px;border-radius:12px;color:#ccd4ef}.pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:12px;background:#293655;margin-right:4px}.formula{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.formula div{background:#0c1325;padding:8px;border-radius:9px;text-align:center}.countGrid{display:grid;grid-template-columns:1.35fr .65fr;gap:14px}.voteRows{max-height:690px;overflow:auto}.results{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:4px}.vote{font-variant-numeric:tabular-nums;font-size:16px}.lead{font-weight:950;text-shadow:0 0 10px #fff5}.mapCard{position:sticky;top:10px}.taiwanMap{height:650px;max-width:430px;margin:auto;background:linear-gradient(165deg,#15213d,#0b1121);border-radius:18px;border:1px solid #405078;padding:10px}.taiwanMap svg{width:100%;height:100%}.region{stroke:#fff;stroke-width:1.2;transition:.3s}.mapLabel{font-size:10px;font-weight:900;fill:#111;pointer-events:none;text-anchor:middle}.legend{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block}.disclaimer{font-size:12px;color:#8f9abc;margin-top:12px;line-height:1.5}@media(max-width:850px){.grid,.countGrid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.cities{grid-template-columns:1fr}.formula{grid-template-columns:repeat(2,1fr)}.mapCard{position:static}.taiwanMap{height:560px}}
+
+.abilityCards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.abilityCard{background:#0d1426;border:1px solid #2b385e;border-radius:14px;padding:14px;cursor:pointer}
+.abilityCard:hover{border-color:#ffd166;transform:translateY(-1px)}
+.abilityCard.selected{outline:2px solid #ffd166}
+.abrow{display:grid;grid-template-columns:52px 1fr 38px;gap:8px;align-items:center;margin:7px 0;font-size:13px}
+.abtrack{height:11px;background:#26314e;border-radius:999px;overflow:hidden}.abfill{height:100%;border-radius:999px;background:#7f8aa8}
+.lv90{background:#ef4444!important;color:#ffb4b4}.lv81{background:#f59e0b!important;color:#ffd79a}.lv71{background:#eab308!important;color:#fff29a}.lv61{background:#22c55e!important;color:#a9f5bd}
+.abilityPanel{margin-top:12px;padding:12px;background:#0d1426;border-radius:12px}.choiceImpact{font-size:12px;color:#ffd166;margin-left:8px}
+@media(max-width:700px){.abilityCards{grid-template-columns:1fr}}
+
+.breakingBox{margin:18px 0;padding:4px 0;line-height:1.9;background:transparent;border:0;color:inherit}
+.breakingTag{display:inline-block;background:#d9273e;color:white;font-weight:950;padding:3px 9px;border-radius:7px;margin-right:7px}
+.breakingEffect{font-weight:900;color:#b91c1c}
+
+.diceZone{margin-top:16px;padding:18px;border:1px solid #d6b45d;border-radius:14px;background:#fff7df;color:#3a2a19}
+.diceRow{display:flex;gap:16px;justify-content:center;margin:14px 0}
+.die{width:72px;height:72px;border-radius:14px;background:#fff;border:2px solid #44372b;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:950;box-shadow:0 5px 12px #0003}
+.die.rolling{animation:diceRoll .12s linear infinite}
+@keyframes diceRoll{0%{transform:rotate(-10deg) scale(.96)}50%{transform:rotate(12deg) scale(1.06)}100%{transform:rotate(-10deg) scale(.96)}}
+.allocGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}.allocBox{text-align:center;background:#fff;border-radius:10px;padding:8px}.allocBtns{display:flex;gap:5px;justify-content:center;margin-top:6px}.allocBtns button{padding:4px 9px;min-width:auto}
+@media(max-width:650px){.allocGrid{grid-template-columns:repeat(2,1fr)}}
+
+.diceAbility{margin-top:14px;padding:12px;background:#fff;border-radius:12px}
+.diceAbRow{display:grid;grid-template-columns:52px 1fr 54px;gap:8px;align-items:center;margin:8px 0}
+.diceTrack{position:relative;height:14px;background:#e5e7eb;border-radius:999px;overflow:hidden}
+.diceBase{position:absolute;left:0;top:0;height:100%;background:#64748b;border-radius:999px}
+.diceGain{position:absolute;top:0;height:100%;background:#8b5cf6}
+
+body.light{background:#eef2f7;color:#172033}
+body.light .card,body.light .panel,body.light .city,body.light .stat{background:#fff;color:#172033;border-color:#cbd5e1}
+body.light .sub,body.light .muted{color:#64748b}
+body.light .story{color:#3a2a19}
+.themeToggle{position:fixed;right:14px;top:12px;z-index:9999;border-radius:999px;padding:8px 12px;background:#fff;color:#172033;border:1px solid #94a3b8;font-weight:900}
+body.light .themeToggle{background:#172033;color:#fff}
+.polls{margin-top:8px;padding-top:7px;border-top:1px dashed #475569;font-size:11px;line-height:1.55}
+.pollLine{display:flex;justify-content:space-between;gap:6px}.pollMedia{font-weight:800}.pollNums{white-space:nowrap}
+
+/* Complete light/dark theme coverage */
+body.light{
+ --bg:#eef2f7;--panel:#ffffff;--panel2:#f8fafc;--line:#cbd5e1;
+ --text:#172033;--muted:#64748b;
+ background:#eef2f7;color:#172033
+}
+body.light .card,body.light .panel,body.light .city,body.light .stat,
+body.light .abilityCard,body.light .abilityPanel,body.light .log,
+body.light .formula div,body.light .taiwanMap,body.light input{
+ background:#fff!important;color:#172033!important;border-color:#cbd5e1!important;
+ box-shadow:0 8px 22px #0f172a12
+}
+body.light .diary{
+ background:#fff!important;color:#172033!important;border-color:#cbd5e1!important;
+ box-shadow:0 8px 22px #0f172a12!important
+}
+body.light .diary .story,body.light .diary .pageTitle{color:#172033!important}
+body.light .choices button{background:#e7edf6!important;color:#172033!important}
+body.light .choices button:hover{background:#dbe5f1!important}
+body.light .ghost,body.light .pill{background:#e2e8f0!important;color:#172033!important}
+body.light .bar,body.light .abtrack{background:#dbe3ee!important}
+body.light .sub,body.light .muted,body.light .disclaimer{color:#64748b!important}
+body.light .polls{border-color:#cbd5e1!important}
+body.light .diceZone,body.light .diceAbility,body.light .allocBox{
+ background:#fff!important;color:#172033!important;border-color:#cbd5e1!important
+}
+body.light .die{background:#fff!important;color:#172033!important;border-color:#475569!important}
+body.light .diceTrack{background:#e2e8f0!important}
+body.light .breakingBox{color:#172033!important}
+body.light .countGrid .card,body.light .voteRows{color:#172033!important}
+
+body:not(.light) .card,body:not(.light) .panel,body:not(.light) .city,
+body:not(.light) .stat,body:not(.light) .abilityCard,body:not(.light) .abilityPanel{
+ background:#141c31!important;color:#f7f8ff!important;border-color:#2b385e!important
+}
+body:not(.light) .diary{
+ background:#101827!important;color:#f7f8ff!important;border-color:#334155!important;
+ box-shadow:0 12px 30px #0007!important
+}
+body:not(.light) .diary .story,body:not(.light) .diary .pageTitle{color:#f7f8ff!important}
+body:not(.light) .choices button{background:#253154!important;color:#fff!important}
+body:not(.light) .choices button:hover{background:#35466f!important}
+body:not(.light) input{background:#0c1326!important;color:#fff!important;border-color:#405078!important}
+body:not(.light) .log{background:#090e1c!important;color:#ccd4ef!important}
+body:not(.light) .diceZone,body:not(.light) .diceAbility,body:not(.light) .allocBox{
+ background:#111a2d!important;color:#f7f8ff!important;border-color:#405078!important
+}
+body:not(.light) .die{background:#172033!important;color:#fff!important;border-color:#94a3b8!important}
+body:not(.light) .diceTrack{background:#26314e!important}
+body:not(.light) .formula div{background:#0c1325!important;color:#f7f8ff!important}
+body:not(.light) .taiwanMap{background:#0b1121!important;border-color:#405078!important}
+body:not(.light) .polls{border-color:#475569!important}
+
+
+/* v33 stable layout: diary is visually last without DOM mutation loops */
+#game .layout,#game .grid,#game .mainGrid{display:flex!important;flex-wrap:wrap!important}
+#game .diary{order:999!important;flex:0 0 100%!important;width:100%!important;max-width:none!important;margin-top:18px!important}
+
+
+#game .right,#game .warRoom,#game .cities{order:20}
+
+/* v38 main game order:
+   abilities -> chair log -> 22-city war room -> diary */
+#game .layout,#game .grid,#game .mainGrid{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:flex-start!important;
+}
+#abilities,#abilityPanel,.abilities,.abilityPanel{order:10!important}
+#log,.log,.chairLog{order:20!important}
+#warRoom,.warRoom,.cities,.cityRoom{order:30!important}
+#event,.diary{order:40!important}
+#game .diary{flex:0 0 100%!important;width:100%!important;max-width:none!important;margin-top:18px!important}
+
+
+#logCard,#warRoom,#diaryCard{width:100%;box-sizing:border-box}
+#diaryCard .diary{width:100%;max-width:none}
+
+.achievementPanel{margin-top:18px}
+.achievement{padding:14px 16px;margin:10px 0;border:1px solid #475569;border-radius:14px}
+.achievement.done{border-width:3px}
+.achievement.gold.done{border-color:#d4a514;box-shadow:0 0 0 2px #d4a51433 inset}
+.achievement.silver.done{border-color:#aab4c4;box-shadow:0 0 0 2px #cbd5e133 inset}
+.achievement .trophy{font-size:30px;margin-right:8px}
+.achievement.gold.done .trophy{filter:sepia(1) saturate(4)}
+.achievement.silver.done .trophy{filter:grayscale(1) brightness(1.6)}
+body.light .achievement{background:#fff;color:#172033}
+body:not(.light) .achievement{background:#141c31;color:#f7f8ff}
+
+
+#mainGoal .goalLine{margin-top:8px;line-height:1.55}
+#mainGoal .goalBadge{display:inline-block;min-width:58px;margin-right:8px;padding:2px 8px;border-radius:999px;font-size:.82em;font-weight:800;text-align:center}
+#mainGoal .goalGold .goalBadge{border:1px solid #d4a514;color:#d4a514;background:#d4a51418}
+#mainGoal .goalSilver .goalBadge{border:1px solid #aab4c4;color:#aab4c4;background:#aab4c418}
+body.light #mainGoal .goalSilver .goalBadge{color:#667085;border-color:#98a2b3;background:#f2f4f7}
+
+
+.polls{margin-top:8px;display:grid;gap:5px}
+.pollRow{display:flex;flex-direction:column;gap:2px;padding:6px 8px;border-radius:8px;font-size:.82em}
+.pollRow b{font-size:.92em}
+.pollAverage{border:1px solid currentColor;font-weight:700;margin-top:3px}
+body.light .pollRow{background:#f5f7fb}
+body:not(.light) .pollRow{background:#0e1729}
+body.light .pollAverage{background:#eef2f8}
+body:not(.light) .pollAverage{background:#19243a}
+
+
+/* v48 compact poll layout */
+.polls{margin-top:4px!important;gap:2px!important}
+.pollRow{
+ display:grid!important;
+ grid-template-columns:minmax(92px,125px) 1fr!important;
+ align-items:center!important;
+ gap:6px!important;
+ padding:3px 7px!important;
+ min-height:0!important;
+ border-radius:6px!important;
+ line-height:1.25!important;
+ font-size:.78em!important;
+}
+.pollRow b{font-size:.94em!important;white-space:nowrap}
+.pollRow span{line-height:1.25!important}
+.pollAverage{margin-top:2px!important;padding:4px 7px!important}
+@media(max-width:620px){
+ .pollRow{grid-template-columns:88px 1fr!important;font-size:.75em!important}
+}
+
+
+.achievementProgress{float:right;font-weight:900;font-size:1.05em;padding:2px 8px;border-radius:999px;border:1px solid currentColor}
+
+#diaryCard .choices{margin-top:8px!important}
+#diaryCard .eveFinishBtn{margin-top:0!important;width:100%}
+</style></head><body><button class="themeToggle" onclick="toggleTheme()">☀ / ☾</button><div class="wrap">
+<div class="top"><div><div class="title">政壇巨擘：席次爭奪戰</div><div class="sub">地方選戰策略模擬・文字冒險</div></div><button class="ghost" onclick="resetGame()">重新開局</button></div>
+<div id="select" class="card" style="margin-top:18px"><h2>第一步：選擇陣營</h2><p class="sub">黨名與人物姓名皆為戲仿改字；2026 候選人配置依中選會 115 年地方選舉登記資料；歷史基本盤取材自 2024 總統選舉與 2022 縣市長選舉。遊戲結果不是現實選舉預測。</p><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="blue" onclick="pick('藍','中國國名黨')">🔵 中國國名黨</button><button class="green" onclick="pick('綠','民煮進步黨')">🟢 民煮進步黨</button><button class="white" onclick="pick('白','台灣民眾擋')">⚪ 台灣民眾擋</button></div></div>
+<div id="nameBox" class="card hidden" style="margin-top:18px"><h2>第二步：主席就任</h2><p>你已接掌 <b id="chosenParty"></b>。請輸入你的黨主席名字：</p><input id="chairInput" maxlength="12" placeholder="例如：王大明"><div style="margin-top:12px"><button class="gold" onclick="showAbilityPick()">下一步：主席就位 →</button></div></div><div id="abilityBox" class="card hidden" style="margin-top:18px"><h2>第三步：主席就位・抽選你的政治性格</h2><p class="sub" style="line-height:1.8">黨部大門已經關上，十張能力卡整齊地攤在主席辦公桌上。有人天生適合在風暴裡拍板，有人擅長把彼此不說話的人重新拉回同一張桌子；也有人站到麥克風前，就知道該如何讓一句話被所有人聽見。<br><b style="color:#ffd166">沒有完美的主席。</b>十張卡的總能力都一樣，差別只在於——你準備用什麼方式帶領這個政黨走完選戰？選一張，從這一刻開始，它就是你的政治性格。</p><div id="abilityCards" class="abilityCards"></div><div style="margin-top:18px;text-align:center"><button id="confirmAbility" class="gold" disabled onclick="confirmAbilityCard()">確認這組能力，開始選戰 →</button></div></div>
+<div id="game" class="hidden"><div id="mainGoal" class="card" style="margin:10px 0;padding:12px"></div><div class="stats"><div class="stat">黨主席<div id="chair" class="big"></div></div><div class="stat">主席陣營<div id="party" class="big"></div></div><div class="stat">選舉倒數<div id="day" class="big"></div></div><div class="stat">中央資金<div id="money" class="big"></div></div></div>
+<div id="abilityPanel" class="abilityPanel"></div>
+<div class="card" id="logCard" style="margin-top:14px"><h3>主席行程紀錄</h3><div id="log" class="log"></div></div>
+<div class="card" id="warRoom" style="margin-top:14px"><h3>22縣市戰情室</h3><div id="cities" class="cities"></div></div>
+<div class="card" id="diaryCard" style="margin-top:14px"><div id="event" class="event diary"></div><div id="choices" class="choices"></div></div>
+</div>
+<div id="counting" class="hidden" style="margin-top:14px"><div class="countGrid"><div class="card"><h2>🗳️ 投票日・全台開票中心</h2><p id="countStatus"></p><div id="voteRows" class="voteRows"></div></div><div class="card mapCard"><h2 style="text-align:center">即時領先版圖</h2><div id="taiwanMap" class="taiwanMap"></div><div class="legend"><span><i class="dot" style="background:#3777ff"></i> 藍</span><span><i class="dot" style="background:#2fb06f"></i> 綠</span><span><i class="dot" style="background:#e9edf5"></i> 白</span><span><i class="dot" style="background:#667085"></i> 其他／未提名</span></div></div></div></div>
+<div class="disclaimer">本作品為虛構策略遊戲。2026 候選人配置依中選會截至 115/9/7 公布的登記彙總表；2024、2022 選舉資料僅作歷史基本盤。人物姓名均經戲仿諧音改字，虛構事件不代表任何現實人物曾有相同行為。</div></div>
+<script>
+const P=['藍','綠','白'], COLORS=['#3777ff','#2fb06f','#e9edf5'], days=[100,90,80,70,60,50,40,30,20,10,5,2,1,0];
+// pres = 2024總統三陣營縣市得票率（藍、綠、白）；local = 2022縣市長主要三陣營得票率。0代表該陣營沒有正式候選人。
+const D=[
+// 城市, 2024總統藍綠白, 2022地方藍綠白歷史盤, 2026藍, 2026綠, 2026白, 其他2026登記者（皆為遊戲諧音改字）
+['臺北市',38.08,43.99,23.79,42.29,31.93,0,'蔣萬桉','沈伯陽','—',['郭喜（台灣麻將最大黨）','蕭文幹（臺灣SoR無法黨）','唐新銘（三勢團結促進聯盟）','林志誠（無黨籍）']],
+['新北市',35.17,38.59,26.24,62.42,37.58,0,'李泗川','蘇巧惠','—',['蘇輝煌（無黨籍）']],
+['桃園市',34.12,35.27,30.61,52.02,40.03,5.12,'張善正','黃世傑','—',[]],
+['臺中市',32.37,37.58,30.05,59.35,38.93,0,'江啟成','何欣淳','—',['洪麗花（司法正義黨）']],
+['臺南市',25.61,50.95,23.44,43.63,48.80,0,'謝龍屆','陳亭飛','—',['蕭燐宏（臺灣SoR無法黨）','葉仁文（無黨籍）']],
+['高雄市',29.23,48.89,21.88,40.16,58.10,0,'柯志摁','賴瑞龍','—',['張靖（司法改革黨）','王肇銘（無黨籍）','洪方龍（無黨籍）']],
+['基隆市',38.63,34.77,26.60,52.92,39.01,0,'謝國良','童子偉','—',['魏造聞（無黨籍）']],
+['新竹市',34.30,34.80,30.90,18.07,35.68,45.02,'—','莊競呈','—',['高虹鞍（無黨籍）','何志泳（無黨籍）']],
+['嘉義市',36.63,38.03,25.34,63.82,34.95,0,'—','王美慧','張啓楷',['黃宏成台灣阿成世界偉人財神總銅（無黨籍）','陳愷黃（無黨籍）','王義誠（無黨籍）']],
+['新竹縣',38.24,27.42,35.55,63.36,32.40,0,'徐新營','鄭朝坊','—',['朱定宇（無黨籍）']],
+['苗栗縣',41.49,28.81,30.01,10.96,31.24,0,'鍾東進','陳品桉','—',[]],
+['彰化縣',38.04,32.93,28.96,56.75,41.94,0,'魏平正','陳素玥','—',['陳重佳（無黨籍）','邱建福（無黨籍）']],
+['南投縣',38.00,35.95,26.05,55.99,42.83,0,'許淑樺','温世正','—',[]],
+['雲林縣',44.54,29.33,26.13,56.57,41.60,0,'張嘉俊','劉建郭','—',['吳炳暉（無黨籍）','林佳瑜（無黨籍）']],
+['嘉義縣',47.69,29.28,23.03,37.15,62.85,0,'—','蔡易餘','—',['吳品瑞（無黨籍）']],
+['屏東縣',47.51,30.84,21.65,46.59,49.09,0,'蘇清全','周春咪','—',[]],
+['宜蘭縣',44.74,28.99,26.27,50.76,41.13,6.98,'吳宗縣','林國璋','—',['陳宏義（無黨籍）','劉燦暉（無黨籍）','楊鉯庭（無黨籍）']],
+['花蓮縣',50.50,24.78,24.72,64.73,32.04,0,'游淑珍','—','—',['張峻（無黨籍）','魏嘉賢（無黨籍）','羅佩琴（台灣工黨）']],
+['臺東縣',49.31,27.41,23.28,61.22,36.65,0,'吳秀花','陳瑩','—',['李吳穎志（無黨籍）','王志維（無黨籍）']],
+['澎湖縣',38.61,36.63,24.76,33.33,36.64,0,'陳振忠','吳淑謹','—',['周倪桉（台聯黨）','許智福（無黨籍）','陳盡傳（無黨籍）','葉竹霖（無黨籍）']],
+['金門縣',61.40,10.02,28.58,41.05,0,0,'陳玉真','—','—',['洪和誠（無黨籍）','李文樑（無黨籍）','黃世糰（無黨籍）','張國葳（無黨籍）','梁文濤（無黨籍）','張火沐（無黨籍）']],
+['連江縣',62.67,10.52,26.81,93.11,6.89,0,'王忠名','—','—',['曹爾原（無黨籍）']]];
+const pos=[[54,4,24,7],[61,10,28,9],[47,18,31,8],[43,28,32,10],[37,59,32,11],[28,69,34,11],[73,7,19,6],[52,14,18,6],[34,49,18,6],[40,13,20,7],[37,20,21,7],[34,37,23,8],[38,45,22,7],[32,52,21,7],[27,57,20,7],[22,65,20,8],[66,14,20,7],[63,31,23,16],[55,62,25,15],[5,56,17,8],[5,76,17,8],[78,0,18,6]];
+let S={};
+const campBackgrounds={"藍": ["地方傳統支持者要求主席重新整合地方組織", "青年議員希望黨中央把更多舞台交給新世代", "地方企業界邀請候選人參加產業座談", "黨籍首長政績被媒體重新檢視", "地方議會黨團對競選主軸出現不同意見", "眷村與傳統社區的組織動員進入關鍵期", "地方農漁會希望候選人說明產業政策", "黨中央收到基層要求增加市場掃街的建議", "地方後援會希望重量級人物南下站台", "候選人的交通政策引發通勤族討論", "青年支持者要求加強短影音宣傳", "地方黨部反映志工人力分配不均", "傳統造勢與網路宣傳的預算分配出現爭論", "地方里長希望候選人增加小型座談", "黨內不同世代對競選語言出現歧見", "候選人參拜行程受到地方媒體關注", "地方產業園區議題突然升溫", "黨籍民代要求中央協助整合聯合競選", "競選總部收到大量民眾陳情", "地方組織希望主席親自主持誓師大會", "候選人提出都市更新政見引發討論", "地方婦女團體邀請候選人參加座談", "選區內重大建設進度成為攻防焦點", "地方支持者擔心選情過度樂觀", "黨內民調與地方體感出現落差", "候選人與地方議員聯合掃街效果受到關注", "地方商圈希望候選人承諾改善交通", "黨中央考慮調整全國競選主視覺", "地方青年團發起自主街講", "資深黨員對競選節奏提出建議", "地方社團邀請候選人參與公益活動", "候選人接受廣播專訪後引起討論", "地方團隊希望加強對中間選民溝通", "競選看板位置引起黨內討論", "地方黨部準備大型團結晚會", "候選人走訪夜市的互動影片受到關注", "地方議題與全國議題開始互相牽動", "黨中央收到選區組織鬆動的警訊", "候選人政策白皮書準備公布", "地方志工希望主席到場打氣", "黨內有人主張集中資源搶救膠著選區", "地方人士希望避免過度政黨化的競選語言", "候選人與產業代表閉門座談", "地方團隊回報對手近期活動增加", "選區內公共安全議題受到關注", "候選人家庭日常照片意外受到討論", "地方競總準備成立後援會", "黨中央評估是否增加跨縣市聯合造勢", "地方組織要求最後階段統一口徑", "距離投票愈近，黨內開始討論最後催票策略"], "綠": ["地方支持者希望主席強化基層組織與議題宣傳", "青年幕僚提出新的社群溝通方式", "地方公民團體邀請候選人參加政策座談", "執政縣市的施政成果成為媒體焦點", "地方議會黨團希望競選團隊加強協調", "傳統市場掃街的回饋開始傳回中央", "地方農漁業團體要求說明產業政策", "黨中央收到基層要求增加小型座談的建議", "地方後援會希望中央安排跨區站台", "候選人的住宅政策引起年輕家庭討論", "青年支持者自發製作競選短片", "地方黨部反映志工訓練需要加強", "大型造勢與深入巷弄的策略出現辯論", "地方里長希望候選人多聽社區意見", "黨內不同世代對競選節奏有不同看法", "候選人走訪廟口與社區受到關注", "地方產業轉型議題突然升溫", "黨籍民代希望形成聯合競選團隊", "競選總部收到交通與育兒陳情", "地方組織希望主席主持團結大會", "候選人提出社會住宅政策引發討論", "地方婦女與親子團體安排座談", "重大公共建設成為地方攻防焦點", "地方支持者提醒不能低估對手", "內部民調與街頭反應出現差異", "候選人與議員聯合車掃受到關注", "地方商圈提出振興與停車需求", "黨中央討論更新全國宣傳素材", "青年團發起校園周邊政策宣講", "資深地方人士對選戰提出建議", "公益團體邀請候選人參加活動", "候選人接受網路節目專訪後引起討論", "地方團隊希望拓展中間選民", "競選文宣風格引起內部討論", "地方黨部籌備大型晚會", "候選人走訪傳統市場的影片受到分享", "地方議題逐漸受到全國媒體關注", "黨中央收到部分選區組織需要支援的訊息", "候選人準備發布完整政策白皮書", "志工團希望主席親自到地方打氣", "黨內討論是否集中資源在膠著選區", "地方人士建議降低政黨對立語言", "候選人與科技及產業界代表座談", "地方回報對手近期活動密集", "醫療與長照議題突然成為焦點", "候選人家庭與日常形象受到討論", "地方競總準備成立新的後援組織", "黨中央評估跨縣市聯合活動", "地方組織要求最後階段訊息一致", "選戰進入尾聲，催票與固票策略成為焦點"], "白": ["地方團隊希望突破資源有限的困境", "青年支持者提出低成本社群宣傳方案", "地方公民團體邀請候選人參加政策對談", "候選人的非傳統政治風格受到媒體討論", "地方團隊對是否與其他陣營合作出現意見", "街頭掃街回饋顯示年輕選民反應熱烈", "地方產業人士希望候選人提出務實方案", "中央收到基層要求增加曝光的建議", "地方後援者希望安排知名人物站台", "候選人的交通改革主張引起討論", "青年志工自發製作迷因與短影音", "地方組織反映人力不足需要跨區支援", "大型活動與網路直播的選擇出現爭論", "地方社區希望候選人多辦小型座談", "團隊內對是否強調第三勢力定位有歧見", "候選人市場拜票意外受到媒體關注", "科技治理議題突然成為焦點", "地方民代希望建立合作平台", "競選總部收到大量市政陳情", "地方支持者希望主席親自主持誓師活動", "候選人提出數位治理方案引發討論", "親子團體邀請候選人參與座談", "地方重大建設成為選戰議題", "支持者擔心媒體曝光不足", "內部數據與街頭體感出現落差", "候選人與地方人士聯合掃街受到關注", "地方商圈提出營業與交通問題", "中央討論是否更換競選視覺", "青年志工發起街頭快閃活動", "資深地方人士建議調整組織打法", "公益團體邀請候選人參加活動", "候選人上網路節目後聲量上升", "地方團隊希望爭取更多中間選民", "有限的看板資源如何分配引起討論", "地方團隊準備小型支持者晚會", "候選人搭大眾運輸拜票影片受到分享", "地方議題開始被全國媒體注意", "中央收到選區人力吃緊的警訊", "候選人準備公布政策懶人包", "志工希望主席到地方鼓舞士氣", "團隊討論是否集中有限資源突破單一選區", "地方人士希望保持理性務實的競選風格", "候選人與新創產業代表交流", "地方回報藍綠兩方活動都在增加", "居住與薪資議題受到年輕選民關注", "候選人的日常生活片段意外受到討論", "地方團隊成立新的志工後援群", "中央評估跨縣市串聯活動", "各地團隊要求最後階段統一訊息", "選戰最後階段，如何有效催票成為最大課題"]};
+const events=[
+{t:'地方剪綵活動',d:'地方公共建設完工，候選人受邀參加剪綵。',opts:[['主席親自出席',-320,5,5],['讓候選人獨自發揮',0,3,2],['改以地方居民為主角',-60,4,3]]},
+{t:'黨內黨員失言',d:'地方黨員受訪時用詞不當，片段快速流傳。',opts:[['要求公開說明並致歉',0,4,4],['地方黨部自行處理',0,1,1],['召集危機會議',-80,5,5]]},
+{t:'黨員憤而出走',d:'地方組織因分工問題出現裂痕。',opts:[['主席親自協調',-35,5,6],['立即重整組織',0,3,4],['暫不處理',0,-1,1]]},
+{t:'候選人親民形象',d:'候選人與攤商互動的畫面大量轉傳。',opts:[['增加市場行程',-120,5,4],['維持自然曝光',0,3,2],['剪成系列短片',-55,4,4]]},
+{t:'颱風逼近',d:'颱風可能影響台灣，戶外行程面臨調整。',opts:[['安全優先暫停活動',0,3,4],['依官方資訊逐區調整',0,2,5],['大型活動改室內',-45,1,2]]},
+{t:'電視辯論邀請',d:'地方電視台邀請主要候選人參加政策辯論。',opts:[['接受並密集準備',-25,5,5],['接受但保持自然',0,3,3],['婉拒改跑地方',0,-2,1]]},
+{t:'市場行程插曲',d:'候選人掃街時被民眾當面尖銳質問。',opts:[['停下完整回答',0,4,3],['簡短回應繼續行程',0,0,1],['邀請後續交換意見',0,3,4]]},
+{t:'青年活動爆紅',d:'青年團隊短影音突然成為熱門話題。',opts:[['主席加入直播',0,4,5],['讓青年自主發揮',0,5,3],['增加社群人力',-90,5,4]]},
+{t:'地方派系協調',d:'地方支持系統對競選方向出現歧見。',opts:[['召集各方重新分工',0,4,6],['增加地方自主權',0,3,4],['維持原案',0,0,2]]},
+{t:'政策說明會',d:'交通住宅與建設議題突然成為焦點。',opts:[['整理完整政策說帖',-20,4,5],['安排長篇專訪',0,3,3],['維持原定主軸',0,1,2]]},
+{t:'志工大量加入',d:'服務站突然湧入大量新志工。',opts:[['依專長重新編組',0,4,6],['投入週末掃街',0,3,3],['跨區支援',-15,2,5]]},
+{t:'行程撞期',d:'兩場重要活動安排在同一時間。',opts:[['出席產業座談',0,3,4],['出席親子活動',0,4,3],['讓候選人自己成主角',0,2,5]]},
+{t:'造勢場地臨時取消',d:'大型活動場地臨時無法使用。',opts:[['改租室內場館',-180,4,3],['改辦街頭座談',-25,3,4],['改成網路直播',-10,1,2]]},
+{t:'地方名人站台',d:'地方知名人士表示願意公開站台。',opts:[['安排共同站台',-30,4,4],['只安排私下交流',0,2,3],['維持候選人節奏',0,1,2]]},
+{t:'匿名爆料流傳',d:'未經證實的匿名說法在群組快速擴散。',opts:[['先查核再回應',-20,3,5],['立即公開反擊',0,1,1],['暫時冷處理',0,-1,2]]},
+{t:'候選人直播失控',d:'直播遭大量留言洗版，現場節奏被打亂。',opts:[['繼續並正面回答',0,4,3],['暫停整理再開',0,1,4],['結束直播',0,-2,0]]},
+{t:'政策被對手搶先',d:'其他陣營率先提出與己方相近的政策。',opts:[['公布完整版本',-30,3,4],['重新包裝主題',-60,2,3],['改打另一項政策',0,0,2]]},
+{t:'黨內初選舊怨',d:'曾在黨內競爭的地方人士受訪時語帶保留。',opts:[['邀請共同站台',0,4,4],['私下協調',0,2,5],['不特別處理',0,-1,1]]},
+{t:'民眾陳情',d:'公開行程中有民眾希望候選人當場承諾處理問題。',opts:[['完整傾聽',0,4,3],['交專人追蹤',0,2,5],['不做即席承諾',0,0,3]]},
+{t:'競選看板爭議',d:'新掛出的競選看板設計引起兩極討論。',opts:[['保留原設計',0,0,2],['立即更換',-90,2,3],['發起新版票選',-20,4,3]]},
+{t:'對手記者會攻擊',d:'其他陣營召開記者會批評己方近期表現。',opts:[['發言人逐點回應',0,3,4],['主席親自回應',0,2,2],['不隨對方起舞',0,1,4]]},
+{t:'藍白合作協商',d:'藍白地方人士再次討論站台與合作方式；白營內部也可能由柯文喆、黃國倡或黃姍姍出面交換意見。',opts:[['立即安排協商',0,4,5],['幕僚先交換意見',0,2,4],['維持各自競選',0,-1,2]]},
+{t:'社群迷因爆紅',d:'候選人的一句話被製成大量迷因。',opts:[['官方一起玩梗',0,4,2],['保持距離',0,1,3],['發布政策短片',-20,3,4]]},
+{t:'疑似網軍洗版',d:'多平台出現大量高度相似留言，來源無法確認。',opts:[['整理證據請平台處理',-10,3,5],['提醒支持者勿跟風',0,2,4],['大量回覆反制',-30,-1,0]]},
+{t:'假截圖風波',d:'一張疑似加工的候選人私訊截圖開始流傳。',opts:[['交查核團隊比對',-10,3,5],['公布原始資料澄清',0,4,4],['暫不擴大',0,-1,2]]},
+{t:'募款餐會',d:'地方團隊建議舉辦募款活動凝聚支持者。',opts:[['舉辦大型餐會',250,3,2],['小型餐敘',80,2,3],['暫不舉辦',0,0,2]]},
+{t:'地方組織倒戈傳聞',d:'媒體傳出部分地方人士可能轉向其他陣營，目前未獲確認。',opts:[['親自拜訪了解',0,4,5],['地方主委處理',0,1,3],['公開表示尊重',0,-1,2]]},
+{t:'候選人家人助選',d:'候選人家人首次公開陪同掃街。',opts:[['增加家庭式行程',-10,3,2],['維持偶爾露面',0,2,3],['回歸候選人本人',0,1,3]]},
+{t:'跨黨派地方議題',d:'地方建設議題同時獲不同陣營部分人士支持。',opts:[['尋求跨黨合作',0,4,5],['提出己方版本',-20,3,3],['暫不表態',0,-1,2]]},
+{t:'政論節目邀約',d:'熱門政論節目邀請競選團隊與其他陣營交鋒，白營方面柯文喆、黃國倡、黃姍姍的公開動向也可能成為節目話題。',opts:[['派主力發言人',0,4,3],['派政策幕僚',0,2,5],['婉拒邀請',0,-1,2]]},
+{t:'媒體追問黨內分歧',d:'記者堵在主席行程出口，連續追問黨內不同聲音是否代表選戰失控。',opts:[['正面承認意見不同並強調整合',0,4,5],['把焦點拉回地方政策',0,2,4],['反問媒體為何只關注內鬥',0,3,1]]},
+{t:'媒體追問對手攻擊',d:'對手陣營上午猛烈批評，下午媒體把麥克風直接遞到主席面前。',opts:[['逐點回應對方說法',0,3,4],['只談己方政策不接戰',0,2,5],['用一句簡短反擊結束訪問',0,4,1]]},
+{t:'突發記者堵訪',d:'沒有排定聯訪，但十多支麥克風突然圍上來，要求主席立即評論最新事件。',opts:[['停下接受完整聯訪',0,4,3],['只回答三個問題',0,2,5],['交由發言人統一回應',0,1,4]]},
+{t:'主席專訪尖銳提問',d:'主持人拋出事前未提供的尖銳問題，直播鏡頭正對著主席。',opts:[['直接回答核心爭議',0,4,4],['先說明背景再回答',0,2,5],['幽默化解後轉回主題',0,5,1]]}
+,
+{t:'地方交通突然癱瘓',d:'重要造勢活動前，附近交通因事故嚴重壅塞。',opts:[['延後活動等待支持者',0,2,4],['準時開始並同步直播',0,3,2],['縮小規模改街頭互動',0,1,5]]},
+{t:'競選總部停電',d:'晚間活動前總部突然停電，現場一片混亂。',opts:[['改用戶外臨時舞台',-20,4,2],['等待供電恢復',0,-1,3],['改成手機直播',0,2,4]]},
+{t:'候選人忘詞',d:'候選人在大型活動演說時突然忘詞，現場短暫安靜。',opts:[['主席上台自然接話',0,4,3],['讓候選人自行完成',0,2,4],['事後用幽默短片化解',-10,3,2]]},
+{t:'地方市場拒絕政治活動',d:'原定掃街市場臨時表示不希望政治活動影響營業。',opts:[['尊重市場取消行程',0,2,4],['改在市場外圍拜票',0,1,3],['另找附近商圈',0,3,2]]},
+{t:'青年支持者公開質疑',d:'一名原本支持己方的青年在公開場合質疑政策不夠具體。',opts:[['邀請上台直接對談',0,4,3],['安排政策團隊後續回覆',0,2,5],['主席簡短說明後離場',0,1,2]]},
+{t:'候選人與地方議員不同調',d:'候選人與同黨地方議員對一項建設議題公開說法不同。',opts:[['立即召開協調會',0,3,5],['允許各自保留立場',0,1,4],['由主席提出共同版本',-10,4,2]]},
+{t:'競選歌曲意外爆紅',d:'競選歌曲被網友大量二創，甚至傳到原本不關心政治的社群。',opts:[['推出官方舞蹈版',-20,4,1],['讓網友自由發揮',0,2,4],['把流量導向政策內容',0,3,3]]},
+{t:'錯誤文宣印出',d:'地方團隊發現一批文宣印錯政策數字，部分已經發出。',opts:[['全部回收重印',-60,3,4],['公開更正並說明',0,4,2],['只修正網路版本',0,-1,3]]},
+{t:'競選車擦撞事故',d:'競選車途中發生輕微擦撞，無人受傷，但現場已有媒體。',opts:[['立即停下處理並致意',0,3,4],['交保險與幕僚處理',0,0,3],['取消後續行程',0,1,2]]},
+{t:'地方社團臨時邀約',d:'大型地方社團突然邀請候選人參加晚間座談。',opts:[['臨時改行程出席',0,3,3],['派政策代表參加',0,1,5],['維持既定行程',0,0,2]]},
+{t:'支持者自製看板惹議',d:'熱情支持者自費製作的看板內容過於挑釁，引發討論。',opts:[['請支持者撤下',0,3,5],['公開說明非官方文宣',0,2,3],['不干涉支持者創作',0,-1,1]]},
+{t:'對手候選人臨時邀辯',d:'對手候選人在公開場合突然邀請己方進行一對一辯論。',opts:[['當場接受挑戰',0,4,2],['提出正式辯論規則',0,2,5],['表示依媒體既定安排',0,1,3]]},
+{t:'地方建設突然完工',d:'選戰期間一項等待多年的地方工程突然宣布完工。',opts:[['強調延續建設',0,3,2],['把焦點放在居民需求',0,2,4],['提出下一階段計畫',-10,1,5]]},
+{t:'候選人被認錯',d:'掃街時民眾把候選人認成另一位政治人物，現場氣氛微妙。',opts:[['幽默自我介紹',0,4,2],['認真介紹政策',0,2,4],['與民眾合照帶過',0,3,1]]},
+{t:'黨部內部文件外流',d:'一份內部行程草案被傳到媒體群組，內容本身沒有違法但引起猜測。',opts:[['說明只是工作草案',0,3,4],['調查外流流程',0,1,5],['不評論內部文件',0,-1,2]]},
+{t:'地方論壇臨時改題',d:'候選人到場後才知道主辦單位臨時更換論壇主題。',opts:[['即席應戰',0,4,2],['要求先確認題目範圍',0,1,5],['以地方經驗延伸回答',0,3,3]]},
+{t:'競選小物缺貨',d:'熱門競選小物突然缺貨，服務站每天都有人詢問。',opts:[['緊急追加製作',-50,3,2],['改發電子素材',0,1,4],['把預算留給地方活動',0,2,3]]},
+{t:'地方活動兩黨狹路相逢',d:'不同陣營候選人的掃街路線意外在同一個路口交會。',opts:[['主動握手致意',0,4,3],['各走各的行程',0,1,4],['邀請短暫公開對談',0,3,2]]},
+{t:'選戰謠言波及家人',d:'社群開始流傳涉及候選人家人的未經證實說法。',opts:[['要求停止散布並查核',0,3,5],['只澄清可驗證事實',0,2,4],['避免讓家人捲入攻防',0,1,3]]},
+{t:'深夜臨時戰情會議',d:'多個選區同時傳來變化，幕僚建議主席深夜召開跨區戰情會議。',opts:[['親自主持到深夜',0,4,3],['授權區域召集人處理',0,1,5],['只處理最急迫選區',0,3,2]]}
+
+,
+ {t:"候選人炒股疑雲",opts:[
+   ["立即要求候選人公開交易說明與可揭露資料",0,2,2],
+   ["由黨中央成立查核小組後統一說明",0,1,1],
+   ["先要求候選人自行回應，中央暫不介入",0,-1,0]
+ ]},
+ {t:"論文抄襲風波",opts:[
+   ["公開論文與比對資料，主動接受檢視",0,2,2],
+   ["邀請學術與法律人士釐清爭議",0,1,1],
+   ["主張選戰操作，不再擴大回應",0,-1,0]
+ ]}
+];
+function toggleTheme(){document.body.classList.toggle("light");localStorage.setItem("chairTheme",document.body.classList.contains("light")?"light":"dark")}
+if(localStorage.getItem("chairTheme")==="light")document.body.classList.add("light");
+const $=id=>document.getElementById(id);
+function pick(c,p){S.camp=c;S.party=p;select.classList.add('hidden');nameBox.classList.remove('hidden');chosenParty.textContent=p;chairInput.focus()}
+
+const abilitySets=[
+[80,68,65,60,57],[66,80,64,62,58],[68,63,80,61,58],[67,60,64,80,59],[62,64,61,63,80],
+[78,70,66,60,56],[64,79,68,61,58],[65,62,79,66,58],[63,59,67,79,62],[60,64,65,62,79]
+];
+const abilityNames=["領導","決策","協調","溝通","組織"];
+const abilityTitles=["號令型領袖","鐵腕決策者","圓桌協調家","麥克風高手","組織操盤手","前線總司令","閃電拍板者","派系黏著劑","輿論領航員","地面戰總管"];
+let pendingChair="",selectedAbility=-1;
+function abilityClass(v){return v>=90?"lv90":v>=81?"lv81":v>=71?"lv71":v>=61?"lv61":""}
+function abilityBars(vals){
+ return vals.map((v,i)=>`<div class="abrow"><b>${abilityNames[i]}</b><div class="abtrack"><div class="abfill ${abilityClass(v)}" style="width:${v}%"></div></div><b class="${abilityClass(v)}" style="background:transparent!important">${v}</b></div>`).join("");
+}
+function showAbilityPick(){
+ let nm=chairInput.value.trim();if(!nm){alert("請先輸入黨主席名字");return}
+ pendingChair=nm; nameBox.classList.add("hidden"); abilityBox.classList.remove("hidden");
+ abilityCards.innerHTML=abilitySets.map((a,i)=>`<div class="abilityCard" onclick="selectAbility(${i})"><b style="font-size:17px">${abilityTitles[i]}</b>${abilityBars(a)}</div>`).join("");
+}
+function selectAbility(i){selectedAbility=i;document.querySelectorAll(".abilityCard").forEach((x,j)=>x.classList.toggle("selected",j===i));let b=document.getElementById("confirmAbility");if(b)b.disabled=false
+ 
+}
+function confirmAbilityCard(){if(selectedAbility<0)return;window._jumpDiary=true;startGame()
+ 
+
+ 
+
+ setTimeout(afterDecisionTop,20);
+}
+function renderAbilities(){
+ if(!S.abilities)return;
+ abilityPanel.innerHTML=`<b>主席五大能力</b>${abilityBars(S.abilities)}`;
+}
+const impactPatterns=[
+ [[5,-4,3,-2,1],[3,-5,4,2,-1],[-4,2,-3,5,1]],
+ [[4,-2,-5,3,1],[-3,5,2,-4,1],[2,-5,1,-3,4]],
+ [[1,5,-3,-4,2],[-5,1,4,3,-2],[3,-2,5,1,-4]],
+ [[-2,3,5,-4,1],[5,1,-4,-3,2],[-5,4,-2,1,3]],
+ [[3,-4,5,-2,1],[-2,5,-4,1,3],[5,-3,1,2,-4]]
+];
+
+
+const fundActions=[
+ {t:"粉絲小額募款",amt:180,story:"競選團隊在合法政治獻金專戶架起小額募款頁面，支持者從幾百元到數千元陸續匯入，財務組忙著核對資料與開立收據。"},
+ {t:"政治獻金募款餐會",amt:420,story:"財務組安排一場政治獻金募款餐會，會前先逐筆確認捐贈資格、額度與專戶流程，避免募款熱度變成帳務風險。"},
+ {t:"線上募款直播",amt:260,story:"候選人開啟線上募款直播，支持者一邊留言一邊響應小額政治獻金；幕僚同時提醒所有款項仍須依法進入專戶並留下紀錄。"}
+];
+const rallyBackers={
+ "藍":["馬英玖","盧秀雁"],
+ "綠":["賴清得","卓榮太","李揚"],
+ "白":["黃國倡","黃姍姍"]
+};
+
+const diverseFinanceEvents=[
+ {delta:-1000,title:"重量級人士大型站台",story:"競選團隊臨時敲定重量級人士跨區大型站台，舞台、轉播、交通、安全與動員規模全面升級。"},
+ {delta:-720,title:"大型造勢設備緊急重整",story:"主舞台設備臨時出現重大問題，團隊只能緊急更換大型 LED 牆、音響與備援發電設備。"},
+ {delta:-480,title:"全區宣傳車隊故障與替換",story:"數輛主力宣傳車接連出現狀況，團隊緊急維修並租用替代車輛，才保住原定行程。"},
+ {delta:-350,title:"大規模志工物資追加",story:"活動人數遠超預估，中央臨時追加飲水、餐食、雨具、接駁與識別物資。"},
+ {delta:-650,title:"臨時更換大型場地",story:"原大型活動場地臨時無法使用，團隊緊急改租備用場地並重新安排交通與設備。"},
+ {delta:900,title:"小額捐款爆量",story:"一段候選人街頭互動影片意外受到高度關注，支持者的小額捐款在數小時內大量湧入。"},
+ {delta:1600,title:"大型募款餐會超額達標",story:"大型募款餐會反應遠超預期，扣除場地與餐飲成本後仍替中央選戰帶回大筆資金。"},
+ {delta:700,title:"支持者募款活動挹注",story:"各地支持者同步舉辦合規募款活動，結算後形成一筆可觀的中央選戰資源。"},
+ {delta:-420,title:"全國直播系統緊急升級",story:"直播系統測試時發生大規模斷訊，團隊只能臨時租用備援網路、攝影與轉播設備。"},
+ {delta:-1200,title:"重大活動臨時事故",story:"大型活動在最後準備階段發生突發狀況，場地、設備、交通與違約處理同時產生高額額外成本。"}
+];
+function maybeDiverseFinanceEvent(){
+ if(Math.random()>=.24)return "";
+ const f=diverseFinanceEvents[Math.floor(Math.random()*diverseFinanceEvents.length)];
+ updateMoney(f.delta,`倒數${days[S.idx]}天｜${f.title}`);
+ if(S.bankrupt)return "";
+ return `${f.story}這件事使中央選戰資金${f.delta>0?"增加":"減少"} ${fmt(Math.abs(f.delta))}，最新餘額為 ${fmt(S.money)}。`;
+}
+function maybeFinanceBeat(target){
+ let r=Math.random();
+ if(r<.18){
+   let f=fundActions[Math.floor(Math.random()*fundActions.length)];
+   updateMoney(f.amt,`募款｜${f.t}`);
+   return `${f.story}這一波最後替中央選戰資金增加約 ${f.amt} 萬元。`;
+ }
+ if(r<.34){
+   let who=(rallyBackers[S.camp]||[])[Math.floor(Math.random()*(rallyBackers[S.camp]||["黨內要角"]).length)];
+   let cost=[600,800,1000][Math.floor(Math.random()*3)];
+   if(S.money>=cost){
+     updateMoney(-cost,`造勢｜${target.n}大型造勢邀請${who}站台`);
+     return `${target.n}團隊決定把資源集中到一場大型造勢，舞台、交通、宣傳與志工調度合計投入約 ${cost} 萬元，並邀請${who}站台。這筆支出讓現場聲量明顯升高，但也壓縮了後續可運用的選戰資金。`;
+   }
+ }
+ return "";
+}
+
+
+
+function fundingIsLow(){return S.money<1000}
+
+function financeQuestion(ei){return !fundingIsLow() && ei>=0 && ei%7===3}
+function financeChoice(i){
+ const opts=[
+  {label:"加碼地方宣傳與組織動員",cost:900,gain:0},
+  {label:"控制支出，保留最後衝刺資金",cost:180,gain:0},
+  {label:"同步發動粉絲小額募款",cost:0,gain:"randomFundraise"}
+ ];
+ return opts[i]||opts[0];
+}
+
+function questionMode(eventIndex){return eventIndex%3===1?"chance":"fixed"}
+function chanceImpact(eventIndex,optIndex){
+ let imp=optionImpact(eventIndex,optIndex), pos=imp.findIndex(x=>x>0), neg=imp.findIndex(x=>x<0);
+ if(pos<0)pos=optIndex%5;if(neg<0||neg===pos)neg=(pos+1)%5;
+ let up=1+((eventIndex*3+optIndex*2)%5), down=-(1+((eventIndex*2+optIndex*3+1)%5));
+ return {p:50+((eventIndex+optIndex)%3)*10,pos,neg,up,down};
+}
+function optionImpact(eventIndex,optIndex){
+ return impactPatterns[eventIndex%impactPatterns.length][optIndex%3].slice();
+}
+function impactText(a){return a.map((v,i)=>v?`${abilityNames[i]}${v>0?"+":""}${v}`:"").filter(Boolean).join("　")}
+function startGame(){S.socialPlatformLineUsed=false;S.chiangLineageUsed=false;S.hanBeatUsed=false;S.tsaiDoctorBeatUsed=false;S.requiredNewBeatUsed=false;S.requiredGroupABeatUsed=false;S.requiredGroupBBeatUsed=false;S.shenStarBeatUsed=false;S.qianzhenBeatUsed=false;
+ S.specialRaceRolls={
+  "鄭朝芳":Math.random()<0.10,
+  "張啓凱":Math.random()<0.10,
+  "蘇清泉":Math.random()<0.50,
+  "魏平政":Math.random()<0.40,
+  "柯志恩":Math.random()<0.30,
+  "謝龍介":Math.random()<0.10
+ };let nm=pendingChair||chairInput.value.trim();if(!nm){alert('請先輸入黨主席名字');return}if(selectedAbility<0){showAbilityPick();return}S={...S,chair:nm,abilities:abilitySets[selectedAbility].slice(),idx:0,money:10000,skill:50,eventScore:0,cities:D.map((d,i)=>{let pi=P.indexOf(S.camp),pres=d[1+pi],local=d[4+pi],cand=d[7+pi],status=cand==='—'?'未提名':'正式提名';let supported=(S.camp==='白'&&({'新竹市':'高虹桉','嘉義市':'張啓凱','新北市':'李泗川','宜蘭縣':'吳宗憲'})[d[0]])||null;let active=cand!=='—'||!!supported;if(cand==='—'&&supported){cand=supported;status=d[0]==='新竹市'?'合作支持・無黨籍':'合作支持・藍營'}let base=active?(pres+(local||pres))/2:0;return {n:d[0],pres,local,status,active,cand,base,charm:active?42+Math.random()*28:0,event:0,strategy:0}}),log:[]};nameBox.classList.add('hidden');abilityBox.classList.add('hidden');game.classList.remove('hidden');renderAbilities();nextEvent()
+ afterDecisionTop();
+}
+
+function updateMoney(delta,label){
+ const before=S.money||0;
+ S.money=before+delta;
+ const sign=delta>=0?"+":"-";
+ S.log.push(`${label}：資金 ${sign}${fmt(Math.abs(delta))}；餘額 ${fmtRaw(S.money)}。`);
+ renderChairLog();
+ const moneyEl=document.getElementById("money");
+ if(moneyEl)moneyEl.textContent=fmtRaw(S.money);
+ if(S.money<0){
+   bankruptGame(label,Math.abs(delta),before);
+   return false;
+ }
+ return true;
+}
+function fmtRaw(n){return '$'+Math.round(n).toLocaleString()+'萬'}
+function bankruptGame(reason,loss,before){
+ S.bankrupt=true;
+ game.classList.remove('hidden');
+ counting.classList.add('hidden');
+ $('day').textContent=days[S.idx]+' 天';
+ $('event').innerHTML=`<div class=pageTitle>中央選戰資金破產</div>
+ <div class=story>中央選戰資金原本只剩 <b>${fmtRaw(before)}</b>，但本頁發生「${reason}」，產生 <b>${fmtRaw(loss)}</b> 的重大支出。資金因此降為 <b>${fmtRaw(S.money)}</b>。<br><br>
+ 黨中央已無法支付後續場地、宣傳、交通與組織動員費用，競選總部被迫停止後續中央選戰行程。<br><br><b>本局遊戲提前結束。</b></div>`;
+ $('choices').innerHTML='<button onclick="location.reload()">重新開始遊戲</button>';
+ renderChairLog();
+ goNextPageTop();
+}
+
+function fmt(n){return '$'+Math.max(0,Math.round(n)).toLocaleString()+'萬'}
+function score(c){if(!c.active)return 0;let ab=S.abilities||[66,66,66,66,66];let chairman=ab.reduce((sum,v)=>sum+0.06*v,0);return 0.50*c.base+0.10*c.charm+0.10*(50+c.event)+chairman}
+
+
+const campaignGoals={
+ "藍":"主要目標：讓綠營最終只剩 3 席（含）以下。",
+ "綠":"主要目標：相較2022縣市長選舉，至少有 3 席由藍營或白營轉為綠營。",
+ "白":"主要目標：奪下新竹市與嘉義市。"
+};
+
+function renderChairLog(){
+ const el=document.getElementById("log");
+ if(!el)return;
+ const items=(S.log||[]);
+ if(!items.length){
+   el.innerHTML='<div class="muted">尚無行程紀錄。完成選戰決策後，紀錄會依時間加入。</div>';
+   return;
+ }
+ el.innerHTML=items.slice().reverse().map(x=>`<div class="logItem">${x}</div>`).join("");
+}
+
+function renderMainGoal(){
+ const box=document.getElementById("mainGoal");
+ if(!box)return;
+ const goals={
+  "藍":[
+   ["金目標","讓綠營最終只剩 3 席（含）以下。"],
+   ["銀目標","至少 4 個縣市得票率超過 60%。"],
+   ["銀目標","原本直到最後一次民調仍落後的縣市，至少有 1 個縣市反敗為勝。"]
+  ],
+  "綠":[
+   ["金目標","相較 2022 地方選舉，至少有 3 席由藍營或白營轉為綠營。"],
+   ["銀目標","至少 4 個縣市得票率超過 60%。"],
+   ["銀目標","原本直到最後一次民調仍落後的縣市，至少有 2 個縣市反敗為勝。"]
+  ],
+  "白":[
+   ["金目標","拿下新竹市與嘉義市。"],
+   ["銀目標","鄭朝芳獲勝。"],
+   ["銀目標","高虹桉或張啓凱當中至少 1 人得票率超過 60%。"]
+  ]
+ };
+ const arr=goals[S.camp]||[];
+ box.innerHTML=`<b>本屆主要目標</b>`+
+   arr.map((g,i)=>`<div class="goalLine ${i===0?"goalGold":"goalSilver"}"><span class="goalBadge">${g[0]}</span>${g[1]}</div>`).join("");
+}
+
+const pollMedia=[
+ ["TVBS民條","藍",6.5],
+ ["聯合抱","藍",4.5],
+ ["三粒民調","綠",6.0],
+ ["美麗鳥電子報","綠",4.0],
+ ["菱傳煤","白",5.5],
+ ["匯流紐聞網","白",3.5]
+];
+function cityPolls(c){
+ const d=D.find(x=>x[0]===c.n); if(!d)return "";
+ const entries=[
+  {camp:"藍",name:d[7],base:d[1]||33},
+  {camp:"綠",name:d[8],base:d[2]||33},
+  {camp:"白",name:d[9],base:d[3]||15}
+ ].filter(x=>x.name&&x.name!=="—"&&x.name!=="無"&&x.name!=="未提名");
+ if(entries.length<2)return "";
+ let houseRows=[], candidateSums={};
+ entries.forEach(x=>candidateSums[x.name]=0);
+
+ pollMedia.forEach((pm,mi)=>{
+   let vals=entries.map((x,ki)=>{
+     // Deliberately larger house-to-house variation for game simulation.
+     let seed=(c.n.charCodeAt(0)*11+c.n.charCodeAt(c.n.length-1)*7+mi*31+ki*17+(S.idx||0)*13)%23;
+     let jitter=(seed-11)*0.58; // substantial house variation, but not enough to erase the house lean
+     let house=(x.camp===pm[1]?pm[2]+2.8:0);
+     let v=Math.max(4,x.base+house+jitter);
+     // Taipei: most houses favor Chiang, but an occasional house can show the opposite.
+     if((c.n==="臺北市"||c.n==="台北市")){
+       if(x.camp==="藍")v+=mi===2?-4:5.5;
+       if(x.camp==="綠")v+=mi===2?7:-1.5;
+     }
+     return v;
+   });
+   let total=vals.reduce((a,b)=>a+b,0);
+   vals=vals.map(v=>v/total*100);
+   vals.forEach((v,i)=>candidateSums[entries[i].name]+=v);
+   houseRows.push(`<div class="pollRow"><b>${pm[0]}</b><span>${entries.map((x,i)=>`${x.name} ${vals[i].toFixed(1)}%`).join("　")}</span></div>`);
+ });
+ let avgs=entries.map(x=>candidateSums[x.name]/pollMedia.length);
+ houseRows.push(`<div class="pollRow pollAverage"><b>六家民調算術平均</b><span>${entries.map((x,i)=>`${x.name} ${avgs[i].toFixed(1)}%`).join("　")}</span></div>`);
+ return `<div class="polls">${houseRows.join("")}</div>`;
+}
+
+
+
+function afterDecisionTop(){
+ goNextPageTop();
+ setTimeout(()=>{tagMainSections();goNextPageTop()},20);
+}
+
+function tagMainSections(){
+ const hs=[...document.querySelectorAll("#game h1,#game h2,#game h3")];
+ for(const h of hs){
+   const t=h.textContent||"";
+   let box=h.closest(".panel,.card,.log,.abilityPanel")||h.parentElement;
+   if(!box)continue;
+   if(t.includes("主席行程紀錄")) box.id="log";
+   if(t.includes("22縣市戰情室")) box.id="warRoom";
+   if(t.includes("五大能力")||t.includes("主席能力")) box.id="abilityPanel";
+ }
+ const ev=document.getElementById("event")||document.querySelector("#game .diary");
+ if(ev)ev.id="event";
+}
+
+function goNextPageTop(){
+ const top=()=>{
+   document.documentElement.scrollTop=0;
+   document.body.scrollTop=0;
+   window.scrollTo(0,0);
+ };
+ top();
+ requestAnimationFrame(()=>{top();requestAnimationFrame(top)});
+ setTimeout(top,30);
+ setTimeout(top,120);
+}
+
+function render(){renderMainGoal();renderChairLog();setTimeout(tagMainSections,0);chair.textContent=S.chair;party.textContent=S.party;day.textContent=days[S.idx]+' 天';money.textContent=fmt(S.money);cities.innerHTML=S.cities.map(c=>{let d=D.find(x=>x[0]===c.n);let names=`<div class=sub style="margin-top:5px;line-height:1.55">🔵 ${d[7]==='—'?'未提名':d[7]}　🟢 ${d[8]==='—'?'未提名':d[8]}　⚪ ${d[9]==='—'?'未提名':d[9]}${d[10].length?'<br>其他：'+d[10].join('、'):''}</div>`;return `<div class="city ${c.active?'':'off'}"><b>${c.n}</b> <span class=pill>${c.status}</span>${names}<div class=sub>${c.active?'本陣營候選人：'+c.cand:'本陣營未派候選人'}</div>${c.active?`<div class=bar><div class=fill style="width:${Math.min(100,score(c))}%"></div></div>`:''}<div class="polls"><b>各媒體模擬民調</b>${cityPolls(c)}</div></div>`}).join('');log.innerHTML=S.log.slice().reverse().map(x=>'• '+x).join('<br>')}
+
+const breakingEvents=[
+ ["暖男","颱風逼近，地方首長連續宣布三天停班停課，網路討論快速升溫。","颱風外圍環流持續影響行程，競選團隊接著把戶外活動、安全提醒與地方救災資訊全部重新排序。主席要求各地服務站先確認志工與民眾安全，原定造勢是否延期也成為當晚會議的主題。","溝通",2,false],
+ ["神救援","候選人在記者會卡住時，主席臨場接話成功把焦點拉回政策。","媒體隨即追問主席剛才的說法，團隊順勢把政策資料送到記者手上；原本可能失焦的記者會，後半段反而變成完整的政策攻防。","領導",2,true],
+ ["麥克風沒關","活動結束後麥克風意外仍開著，一小段私下談話被現場收音。","幕僚立刻調閱完整錄音，確認上下文並討論是否公開原始片段。接下來幾個小時，所有媒體應對都圍繞著這段收音展開。","溝通",-2,false],
+ ["雨神同行","大型造勢遇上暴雨，支持者仍留在現場，畫面迅速登上新聞。","雨勢沒有立刻減弱，舞台組開始加固設備，地方團隊也逐區確認交通與散場安全；候選人的後續發言因此改以天候與現場民眾為主。","領導",1,true],
+ ["一句成梗","候選人的臨場回答被剪成迷因，在社群一夜大量流傳。","團隊沒有立刻硬推下一個議題，而是先觀察迷因如何擴散，再決定哪些內容適合延伸成短影音與政策解釋。","溝通",2,true],
+ ["臨門換將","地方重要幹部突然請辭，競選團隊必須在一天內重新分工。","請辭消息讓地方行程、志工調度與媒體窗口同時出現空缺，中央只好連夜重排責任區，接下來整天都在處理組織銜接。","組織",-2,false],
+ ["握手言和","原本互有心結的地方派系突然共同現身，公開表示選前先團結。","雙方接著討論聯合行程與志工調度，地方總部趁氣氛正好重新安排站台名單，原本卡住的幾項協調也開始鬆動。","協調",2,true],
+ ["站台撞車","兩場重量級站台活動時間完全重疊，地方團隊互相搶人。","兩邊都不願意取消，中央只得重新計算交通時間與人物出場順序，整個下午的選戰都圍繞如何拆解撞期問題。","協調",-2,false],
+ ["直播逆轉","原本氣氛冷清的直播因一段即席問答突然湧入大量觀眾。","直播團隊延長節目時間，候選人繼續沿著同一題回答，幕僚則把觀眾最常問的問題整理成下一輪內容。","溝通",2,true],
+ ["錯字風暴","競選團隊發布的主視覺出現明顯錯字，截圖快速傳遍社群。","設計團隊緊急撤換素材，地方服務站也開始清查已印製文宣；當晚所有社群回應都必須先處理這個錯字風波。","組織",-2,false],
+ ["凌晨危機","深夜突然出現未經證實的爆料，戰情室被迫全員回到總部。","查核小組先比對來源，發言團隊則準備數種回應版本。在資訊尚未完整前，主席必須決定哪些內容能說、哪些仍要等待確認。","決策",2,false],
+ ["意外同框","不同陣營候選人在地方活動意外碰面，握手畫面成為當天焦點。","雙方短暫寒暄後各自繼續行程，但媒體一路追問這次同框是否代表合作訊號，地方團隊只好持續處理後續解讀。","協調",1,true],
+ ["金句出圈","主席受訪的一句回答突破同溫層，在非政治社群也被大量討論。","幕僚發現流量來自許多平常不追政治的帳號，因此接下來的內容不急著攻擊對手，而是延伸原本回答背後的議題。","溝通",2,true],
+ ["救場成功","原定主講人臨時缺席，主席即席上台完成整場活動。","現場反應比預期熱烈，地方團隊趁勢安排媒體短訪，原本可能中斷的活動因此完整收尾，後續行程也圍繞這次救場展開。","領導",2,true],
+ ["政策急轉彎","新資訊出現後，團隊必須在數小時內決定是否調整原有主張。","政策組立即重做資料比較，地方幕僚同步回報選民反應，整個下午的會議都集中在是否修正原有方案。","決策",2,false],
+ ["假消息突襲","社群突然流傳錯誤資訊，查核與澄清速度成為當晚焦點。","數位團隊開始追查最早來源並整理可驗證資料，發言系統則暫停其他議題，優先處理澄清與媒體詢問。","決策",1,false],
+ ["志工海嘯","一場活動後服務站突然湧入大量新志工報名。","地方團隊立刻增加培訓場次，並把新志工分到掃街、電話與活動組；這股意外增加的人力成為接下來幾天的主要資源。","組織",2,true],
+ ["跨派系大合照","幾位過去少有同台的地方人物突然共同出席活動。","大合照在地方群組快速流傳，團隊接著安排共同掃街與座談，希望把一次性的同框延伸成更穩定的合作。","協調",2,true],
+ ["即席答題滿堂彩","主席面對媒體連續追問，沒有看稿就完整回答數個政策問題。","記者繼續沿著政策內容追問，幕僚也趁機補上數據資料，整場聯訪從攻防逐漸轉成政策說明。","決策",1,true],
+ ["地方後援會爆滿","原本只準備小型場地的後援會成立活動，實際到場人數超出預期。","工作人員臨時開放周邊空間並增加動線，候選人也延長停留時間；地方團隊開始討論如何承接這波意外出現的動能。","領導",1,true]
+];
+function maybeBreaking(day){
+ if(Math.random()>=1/3)return null;
+ let b=breakingEvents[Math.floor(Math.random()*breakingEvents.length)];
+ let ai=abilityNames.indexOf(b[3]),delta=b[4];
+ if(S.abilities&&ai>=0)S.abilities[ai]=Math.max(0,Math.min(100,S.abilities[ai]+delta));
+ return {html:`<div class="breakingBox"><span class="breakingTag">${b[0]}</span>${b[1]} <span class="breakingEffect">${b[3]}${delta>0?"+":""}${delta}</span></div>`,follow:b[2],bonus:b[5],title:b[0]};
+}
+function fitDiaryLength(pars){
+ const count=t=>t.replace(/<[^>]*>/g,"").replace(/\s/g,"").length;
+ let out=[], n=0;
+ // Keep chronological order, but stop before the page becomes overlong.
+ for(const p of pars){
+   let c=count(p);
+   if(n>=250 && n+c>450) break;
+   if(n+c<=450 || n<250){out.push(p);n+=c;}
+   if(n>=330 && Math.random()<0.35) break;
+ }
+ // If random early stop left it short, append remaining paragraphs that still fit.
+ if(n<250){
+   for(const p of pars){
+     if(out.includes(p)) continue;
+     let c=count(p);
+     if(n+c<=450){out.push(p);n+=c;}
+     if(n>=250) break;
+   }
+ }
+ return out;
+}
+function enforceOncePerGame(pars){
+ let hit=false;
+ pars=pars.filter(p=>{
+   let special=p.includes("臉輸")&&p.includes("脆德")&&p.includes("You吐");
+   if(!special)return true;
+   if(S.socialPlatformLineUsed||hit)return false;
+   hit=true; return true;
+ });
+ if(hit)S.socialPlatformLineUsed=true;
+ return pars;
+}
+function cleanDiaryText(txt){
+ txt=txt.replace(/\\n/g,"\n").replace(/\\r/g,"");
+ // Remove impossible candidate-action sentences generated for camps with no nominee/support target.
+ for(const city of (S.cities||[])){
+   for(const camp of ["藍","綠","白"]){
+     if(hasCampCandidate(city,camp))continue;
+     const esc=city.n.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+     const patterns=[
+       new RegExp(esc+"方面，"+camp+"營(?:的)?候選人[^。！？]*[。！？]","g"),
+       new RegExp(esc+"的"+camp+"營(?:的)?候選人[^。！？]*[。！？]","g"),
+       new RegExp(esc+"，"+camp+"營(?:的)?候選人[^。！？]*[。！？]","g")
+     ];
+     patterns.forEach(r=>txt=txt.replace(r,""));
+   }
+ }
+
+ const names=new Set();
+ D.forEach(d=>{for(let i=7;i<=9;i++){if(d[i]&&d[i]!=="—")names.add(d[i])}});
+ ["賴清得","卓榮太","李揚","馬英玖","盧秀雁","柯文喆","黃國倡","黃姍姍","蔣萬桉","沈伯陽"].forEach(n=>names.add(n));
+ names.forEach(n=>{txt=txt.split(n+n).join(n)});
+ return txt;
+}
+function hasCampCandidate(city,camp){
+ const d=D.find(x=>x[0]===city.n);
+ if(!d)return false;
+ const idx=camp==="藍"?7:camp==="綠"?8:9;
+ const name=d[idx];
+ return !!(name && name!=="—" && name!=="無" && name!=="未提名");
+}
+
+
+
+
+const extraLocalElectionBeats=[
+ "地方後援會臨時通知，原本答應站台的一名地方人士因行程衝突無法到場。競選團隊只剩幾個小時重新安排流程，幕僚爭論究竟該縮小活動規模，還是乾脆把舞台改成候選人與民眾直接問答。",
+ "一場地方說明會結束後，幾名原本立場不同的居民一起留下來向競選團隊反映交通與停車問題。幕僚發現現場關心的焦點和網路熱門議題完全不同，開始討論是否調整接下來幾天的政策宣傳順序。",
+ "競選總部收到一批支持者自行設計的文宣圖卡，但其中一句標語被發現可能產生兩種解讀。社群組擔心發布後遭對手截圖攻擊，地方幹部卻認為現在撤回反而會錯失擴散機會，雙方把決定送到主席桌上。"
+];
+function maybeExtraLocalElectionBeat(){
+ if(Math.random()>=.20)return "";
+ return extraLocalElectionBeats[Math.floor(Math.random()*extraLocalElectionBeats.length)];
+}
+
+const talkShowGuests={
+ "藍":[
+  ["唐湘隆","名嘴"],
+  ["趙少慷","節目主持人"]
+ ],
+ "綠":[
+  ["王瑞得","名嘴"],
+  ["黃暐翰","媒體人"]
+ ],
+ "白":[
+  ["黃靜螢","市議員"],
+  ["林珍妤","市議員"]
+ ]
+};
+function maybeTalkShowBeat(target){
+ if(Math.random()>=.18)return "";
+ let side=["藍","綠","白"][Math.floor(Math.random()*3)];
+ let g=talkShowGuests[side][Math.floor(Math.random()*talkShowGuests[side].length)];
+ let shows=["《少康戰情房》","《新聞大白化》","《頭條開講了》","《新台灣加油站》"];
+ let show=shows[Math.floor(Math.random()*shows.length)];
+ return `${show}邀請${g[1]}${g[0]}上節目談地方選戰。節目把焦點放在${target.n}近期攻防，${g[0]}從偏${side}營的觀點評論候選人表現與選戰策略；其他陣營來賓隨即提出不同看法，讓同一議題在政論節目上形成交鋒。`;
+}
+function maybeLaiSlipBeat(){
+ if(Math.random()>=.09)return "";
+ return `前台北市長柯文喆先前在造勢場合喊話時，一度把賴清得喊成「賴祥德」，相關片段又被網友翻出並製成迷因。有人把它當成口誤趣聞，也有人趁勢延伸政治攻防，幕僚則評估這波網路話題是否會外溢到地方選戰。`;
+}
+
+const historicalCampaignBeats=[
+ {text:"前總統馬英玖過去把「鹿茸」說成鹿耳朵裡的毛的舊片段，又被網友翻出來做成迷因，成為茶餘飯後話題。有人把它當成政治人物口誤趣聞，也有人藉機討論政治人物的公開表達；地方幕僚則準備把記者提問拉回本次選戰。"},
+ {text:"前台北市長柯文喆過去評論女性政治人物「年輕漂亮、適合坐櫃檯」的爭議言論，再度被剪成短片流傳。性別議題隨即延燒，各陣營支持者各自解讀，競選團隊也開始準備面對記者追問。"},
+ {text:"總統賴清得過去談長照服務員工作時引發的「做功德」爭議，再次被對手與網路社群翻出。舊聞重新成為話題，幕僚提醒，當年的完整談話脈絡與後續澄清也可能同時被媒體引用。"}
+];
+function maybeHistoricalBeat(){
+ if(Math.random()>=.17)return "";
+ return historicalCampaignBeats[Math.floor(Math.random()*historicalCampaignBeats.length)].text;
+}
+function maybeBusinessEndorsement(target){
+ if(Math.random()>=.13)return "";
+ // 以下企業站台均為本遊戲虛構選戰事件，不代表現實政治支持。
+ if(S.camp==="綠")return `企業界站台消息傳來：義鎂集團代表出席${target.n}造勢場合，替綠營候選團隊加油。現場聚焦產業、就業與地方發展，媒體也開始追問企業人物投入選戰的影響。`;
+ if(S.camp==="藍"||S.camp==="白"){
+   let side=Math.random()<.5?"藍":"白";
+   if(side!==S.camp)return "";
+   return `企業界站台消息傳來：鴻海創辦人郭台名這一波選擇替${side}營站台。現場話題集中在產業與地方經濟，相關畫面很快成為媒體焦點。`;
+ }
+ return "";
+}
+
+function whiteOpeningStrategy(){
+ if(S.camp!=="白")return "";
+ return `【白營開局戰略】本屆選戰中央將新竹市與嘉義市列為最優先搶攻區，組織、宣傳與主席行程都會積極投入；在部分藍白合作縣市，白營則不另開競爭戰線，改以站台、地方組織與輔選資源協助中國國名黨候選人。新竹縣另採特殊戰略：白營原先曾與中國國名黨徐新營陣營協調合作，但因竹北市長布局、合作承諾與互信問題產生齟齬，因此不再協助徐新營，轉而投入其對手鄭朝芳陣營。`;
+}
+
+function openingPrologue(){
+ const campName={藍:"中國國名黨",綠:"民煮進步黨",白:"台灣民眾擋"}[S.camp]||"你的政黨";
+ return `${whiteOpeningStrategy()}${S.camp==="白"?"\n\n":""}【前言】2026地方選戰進入最後100天。你剛接下${campName}主席位置，手上握著中央競選資金，也得同時面對22縣市候選布局、媒體攻防、地方組織與黨內不同聲音。從今天起，每一次公開回應、資源分配與臨場決策，都可能改變投票日的版圖。第一份選情簡報已經送進主席辦公室，真正的選戰現在才開始。`;
+}
+
+
+function guaranteedChiangLineageBeat(){
+ if(S.chiangLineageUsed)return "";
+ // 遊戲事件以「爭議再被提出」呈現，不把尚有爭議的血緣主張當成既定事實。
+ S.chiangLineageUsed=true;
+ return `臺北選戰出現一波「蔣萬桉身世之謎」攻防。有人再次拿蔣經國日記、章孝嚴改姓經過與是否應以 DNA 釐清血緣等舊爭議做文章；相關歷史資料本身存在不同解讀，因此競選團隊沒有把任何一種血緣說法當成已證實事實，而是把焦點放在如何回應這波重新升高的討論。`;
+}
+
+function whiteCampaignBackbone(target){
+ if(S.camp!=="白"||!target)return "";
+ if(["新竹市","嘉義市"].includes(target.n))
+   return `白營中央把${target.n}列為本屆最優先搶攻區，主席要求組織、宣傳與地方行程全力集中，選戰主軸就是把這一席拿下。`;
+ if(target.n==="新竹縣")
+   return `新竹縣採取特殊輔選戰略：白營把地方輔選重心放在鄭朝芳，主席要求能調度的組織與行程全力協助。`;
+ const alliance=["新北市","宜蘭縣","嘉義縣"];
+ if(alliance.includes(target.n))
+   return `${target.n}屬於本局藍白合作區域，白營中央把地方動員、站台與組織協調資源投入合作的藍營／在野候選人，不另開一條競爭戰線。`;
+ return `白營今天仍維持三條總體戰線：全力搶下新竹市與嘉義市；藍白合作區域全力協助合作候選人；新竹縣則集中資源支持鄭朝芳。遊戲設定中，白營原先曾與中國國名黨徐新營陣營協調新竹縣合作，但雙方先前因竹北市長布局、合作承諾與互信問題產生齟齬，因此新竹縣改採特殊戰略，不再協助徐新營，轉而把地方組織與部分輔選力量投入其對手鄭朝芳陣營。`;
+}
+
+function decisionBackground(e,target){
+ const city=target&&target.n?target.n:"地方";
+ const eventBackgrounds={
+  "地方剪綵活動":`地方團隊原本只把這場剪綵當成一般地方行程，但活動開始前，主辦方突然希望候選人上台致詞並與多名地方人士同框。部分幕僚認為能增加曝光，另一些人擔心活動被批評成選舉造勢。媒體已經到場，地方幹部也在等中央決定參與尺度。`,
+  "黨內黨員失言":`一名黨內人士受訪時臨時脫稿，說出容易引發爭議的內容，片段很快被剪成短影音流傳。候選人接下來還有公開行程，記者已準備追問是否認同這番話。地方團隊希望中央立刻決定切割、澄清或降低事件熱度的方式。`,
+  "黨員憤而出走":`地方黨部內部因提名與資源分配累積不滿，一名具有組織基礎的黨員公開宣布退出團隊，並表示可能帶走部分支持者。地方幹部擔心其他不滿者跟進，候選人則希望避免公開互罵。中央必須決定要挽留、協調或重新整隊。`,
+  "候選人親民形象":`候選人在市場與民眾互動的一段畫面意外受到關注，不少人稱讚自然親切，但幕僚也擔心過度操作會讓原本自然的形象變得刻意。地方團隊提出不同宣傳方式，希望趁熱度仍在時決定要擴大曝光、維持原節奏或轉成政策內容。`,
+  "颱風逼近":`氣象資訊顯示颱風可能影響接下來的地方行程，原定戶外活動、車隊與造勢都面臨調整。地方團隊已開始確認場地與交通，支持者也不斷詢問活動是否照常。安全、曝光與既定行程彼此衝突，中央必須盡快決定應變方案。`,
+  "電視辯論邀請":`電視台臨時提出候選人辯論邀請，時間正好與既定地方行程重疊。參加可以增加全國曝光，但準備不足也可能放大失誤；拒絕則可能被對手解讀為迴避。候選人與幕僚對是否出席意見不同，節目製作單位正在等待答覆。`,
+  "市場行程插曲":`候選人原本按照既定路線在市場掃街，途中卻因攤商、支持者與反對者同時聚集而打亂節奏。現場攝影機越來越多，任何反應都可能被剪成短影音。地方團隊希望中央立即決定，是繼續互動、縮短行程還是改變路線。`,
+  "青年活動爆紅":`一場原本規模不大的青年座談被參加者剪成短片後快速擴散，候選人的一段回應意外成為社群熱門內容。團隊想趁熱增加青年行程，但也有人擔心過度複製會失去新鮮感。中央需要決定如何把短期聲量轉成穩定支持。`,
+  "地方派系協調":`地方幾個長期合作又彼此競爭的組織，對站台順序、資源與活動主導權出現歧見。若處理不好，可能有人消極動員；若偏向其中一方，又可能讓另一方反彈。候選人不希望公開介入，地方黨部因此把協調方案送到中央。`,
+  "政策說明會":`候選人即將舉行重要政策說明會，但幕僚對內容深度與傳播方式意見分歧。一派希望完整提出數據與財源，一派主張用簡單口號讓選民快速理解。媒體已預告會追問細節，中央必須決定這場說明會採取哪種呈現策略。`,
+  "志工大量加入":`近期聲量上升後，大批新志工突然向地方競選總部報到，原有人力配置反而一時無法消化。有人可以投入掃街，有人適合電話與網路工作，也有人完全沒有選舉經驗。地方團隊擔心安排失當造成混亂，希望中央決定如何快速分流與訓練。`,
+  "行程撞期":`候選人的兩場重要活動被排在幾乎相同的時間，一邊是地方組織期待已久的場合，另一邊則有高曝光媒體與重要支持者。兩邊都不希望被取消，交通時間又不允許全部出席。幕僚已提出取捨與替代方案，需要立即拍板。`,
+  "造勢場地臨時取消":`原定造勢場地在活動前突然通知無法使用，舞台、音響、接駁與宣傳都已完成部分準備。地方團隊正聯絡備用場地，但不同方案的容量、交通與成本差異很大。活動時間無法大幅延後，中央必須決定是否換場、縮小或改變形式。`,
+  "地方名人站台":`一名在地方具有知名度的人士主動表示願意替候選人站台，能帶來關注，但其過往發言也曾引起不同評價。地方團隊認為機會難得，公關幕僚則擔心焦點被轉移。站台時間已接近，中央需要決定合作程度與活動安排。`,
+  "匿名爆料流傳":`媒體與地方群組開始流傳一份匿名爆料，內容涉及候選人或競選團隊，但來源與真實性都尚未確認。記者已要求回應，支持者也在詢問。若完全不理可能讓說法擴散，過度回應又可能替未證實內容增加聲量，中央必須決定處理方式。`,
+  "候選人直播失控":`候選人原本安排輕鬆直播與支持者互動，卻因即時留言與臨場追問逐漸偏離主題，其中一段回答已被觀眾截取轉傳。直播尚未完全結束，團隊可以立即介入，也可以讓候選人自行收尾。幕僚正在評估如何降低後續風險。`,
+  "政策被對手搶先":`團隊準備多日的新政策尚未正式公布，主要對手卻先提出高度相似的主張，媒體已開始比較兩邊內容。若照原計畫發布，可能被說成跟進；若臨時修改，又可能破壞完整規劃。政策與宣傳團隊各有意見，需要中央決定下一步。`,
+  "黨內初選舊怨":`地方初選留下的競爭關係在選戰後期重新浮上檯面，部分原本應該歸隊的人士對資源與角色安排仍有不滿。候選人需要這些地方力量協助，但公開處理又可能讓外界看到內部分裂。中央準備了協調、分工與冷處理等方案。`,
+  "民眾陳情":`候選人行程途中遇到民眾攔下陳情，內容涉及地方長期未解決的問題，現場已有媒體與手機直播。若停下來深入處理可能打亂整天行程，若快速離開又容易留下負面畫面。地方幕僚正在確認資料，希望主席決定候選人如何回應。`,
+  "競選看板爭議":`一面新掛出的競選看板因文字、設計或設置位置引發地方討論，有人認為醒目有效，也有人批評不妥。照片已開始在社群流傳，地方團隊若要更換必須立刻處理。宣傳與組織部門意見不同，需要中央決定是否保留、修改或撤下。`,
+  "對手記者會攻擊":`主要對手突然召開記者會，集中攻擊候選人的政策或過往言行，相關畫面已成為媒體即時新聞。地方候選人接下來就有公開行程，記者勢必追問。中央必須在短時間內決定，是正面反擊、提出資料澄清，還是把焦點拉回地方議題。`,
+  "藍白合作協商":`地方選情進入關鍵階段，藍白雙方開始討論站台、組織與候選人互相支援的範圍，但地方支持者對合作深度看法不一。合作太少可能浪費整合機會，合作太深又可能引發自身支持者疑慮。雙方代表都在等待中央最後態度。`,
+  "社群迷因爆紅":`候選人的一句話或一個表情被網友製成大量迷因，短時間內快速擴散。多數內容偏向娛樂，但其中也混有嘲諷版本。社群團隊認為可以順勢互動，地方幕僚則擔心候選人形象被單一梗綁住，需要決定是否加入這波話題。`,
+  "疑似網軍洗版":`候選人的社群頁面突然湧入大量格式相近的留言，支持與批評內容同時快速增加，目前無法確認是否有人組織操作。團隊擔心正常討論被淹沒，也怕誤刪真實選民留言。數位幕僚提出不同處理方式，需要中央決定管理尺度。`,
+  "假截圖風波":`社群平台突然流傳一張疑似候選人或黨部對話的截圖，內容具有爭議性，但初步檢查發現格式與來源都有疑點。截圖已被大量轉傳，記者開始詢問真假。團隊正在保存證據並比對原始資料，需要中央決定澄清速度與方式。`,
+  "募款餐會":`地方後援會準備舉辦大型募款餐會，希望替最後階段補充資源，但席次安排、出席人士與候選人停留時間都需要協調。部分幕僚希望擴大規模，另一些人擔心影響其他行程。主辦方即將確認場地與桌數，需要中央決定投入程度。`,
+  "地方組織倒戈傳聞":`地方開始傳出某個原本合作的組織可能轉向支持對手，但目前只有零星人士放話，尚未正式宣布。若傳聞成真可能影響動員，若反應過度又可能把小事放大。地方黨部要求中央決定，是主動拜會、公開穩定軍心或暫時觀察。`,
+  "候選人家人助選":`候選人家人願意在最後階段加入部分公開行程，希望呈現較生活化的一面，但幕僚擔心家人因此成為媒體與對手攻防焦點。地方團隊已排出幾種低風險活動，是否正式投入仍需中央決定曝光程度與行程範圍。`,
+  "跨黨派地方議題":`一項地方建設或民生議題同時獲得不同政黨民代支持，候選人若加入合作有機會展現務實，但也可能被自身支持者質疑立場模糊。地方人士希望盡快共同表態，媒體也已注意到這項議題，中央需要決定合作尺度。`,
+  "政論節目邀約":`熱門政論節目臨時邀請候選人或主席上節目，播出時間接近選戰關鍵期。參加可以直接面對大量觀眾，但節目議題與來賓組合具有高度不確定性。幕僚已整理可能被問到的問題，需要決定是否接受邀請及由誰出席。`,
+  "媒體追問黨內分歧":`記者掌握黨內不同人士對同一議題說法不一致，開始追問是否代表內部分裂。地方候選人希望不要被中央爭議拖累，黨部發言系統則需要統一口徑。下一場公開行程即將開始，中央必須決定如何說明彼此差異。`,
+  "媒體追問對手攻擊":`對手陣營連續幾天針對同一議題攻擊，媒體今天再度要求候選人正面回答。原本的簡短回應已無法讓新聞降溫，但繼續糾纏也可能讓對手掌握議題節奏。幕僚整理了不同程度的反擊與澄清方案，需要主席決定。`,
+  "突發記者堵訪":`候選人剛結束行程，大批記者突然堵在出口追問一項正在延燒的爭議，原本沒有安排正式受訪。現場空間狹窄、直播已經開始，候選人若立即回答可能準備不足，若完全離開又可能被解讀為迴避。幕僚正在等待指示。`,
+  "主席專訪尖銳提問":`主席接受原定專訪時，主持人突然把問題轉向黨內最敏感的爭議，並要求立即給出明確答案。訪談正在錄製，任何停頓或回答都可能成為新聞片段。幕僚無法代答，只能透過休息空檔提供資料，接下來的回應策略需要拍板。`,
+  "地方交通突然癱瘓":`重要造勢活動開始前，會場周邊因交通事故與大量車流突然嚴重壅塞，部分遊覽車和支持者卡在外圍。舞台已準備開始，延後可能影響直播與後續行程，照常舉行又可能讓大量人來不及進場。現場團隊急需中央決定。`,
+  "競選總部停電":`地方競選總部原本正進行晚間戰情會議，工作人員同時整理民調、隔日行程與直播素材，沒想到供電突然中斷，電腦、燈光與部分通訊設備一度無法使用。工程人員正在檢查原因，但宣傳工作不能停擺，幕僚因此提出幾套臨時方案。`,
+  "候選人忘詞":`候選人在大型活動演說進行到一半時突然忘記原定內容，現場短暫安靜，攝影機仍持續直播。主持人與主席都在舞台附近，可以立即協助，也可以讓候選人自行找回節奏。這段畫面很可能被剪成短片，團隊必須決定當下如何處理。`,
+  "地方市場拒絕政治活動":`原定掃街市場在行程開始前臨時表示，不希望政治活動影響攤商營業與顧客動線。候選人與支持者已在附近集合，媒體也已到場。若堅持進入可能引發衝突，直接取消又會打亂整天安排，地方團隊希望中央立即決定替代方案。`,
+  "青年支持者公開質疑":`一名過去曾公開支持候選人的青年在活動中直接提出尖銳質疑，現場影片很快被上傳社群。問題本身涉及年輕選民關心的政策，若回應得當可能轉為正面討論，若處理失誤則可能擴大反彈。團隊正在決定候選人是否進一步公開回應。`,
+  "候選人與地方議員不同調":`候選人與同黨地方議員對一項地方政策公開說法不同，媒體開始追問是否代表團隊內部沒有共識。兩邊都有各自支持者，強行要求其中一方改口可能造成不滿。地方黨部希望中央協調出共同說法，避免爭議繼續擴大。`,
+  "競選歌曲意外爆紅":`原本只是活動暖場使用的競選歌曲突然在短影音平台爆紅，不少網友開始翻唱與改編。宣傳團隊希望立刻推出更多版本，政策幕僚則擔心選戰焦點被娛樂內容取代。熱度可能只有幾天，中央需要決定如何利用這波意外聲量。`,
+  "錯誤文宣印出":`地方團隊發現一批已印製完成的文宣出現文字、日期或政策資訊錯誤，其中部分可能已送往據點。若全部重印會增加成本並延誤發送，若只局部更正又可能被對手抓到錯誤。宣傳部門已提出補救方式，需要中央決定。`,
+  "競選車擦撞事故":`競選車在移動途中發生輕微擦撞，現場人員正在確認是否有人受傷以及車輛狀況。行程表上下一站活動即將開始，媒體也可能很快得知消息。團隊必須先兼顧安全與責任處理，再決定候選人是否延後或調整後續行程。`,
+  "地方社團臨時邀約":`一個在地方具有影響力的社團臨時邀請候選人參加活動，但時間與原定掃街部分重疊。出席有機會接觸新的選民群體，不去又可能讓主辦方失望。地方幹部對哪一邊更重要看法不同，需要中央決定是否調整行程。`,
+  "支持者自製看板惹議":`熱情支持者自行製作大型看板替候選人助選，但文案與圖像並非競選團隊設計，其中部分內容已引發批評。支持者認為只是表達熱情，幕僚卻擔心外界誤認為官方文宣。照片正在擴散，中央需要決定是否要求修改或公開說明。`,
+  "對手候選人臨時邀辯":`主要對手突然公開邀請候選人進行辯論，並要求短時間內表態是否接受。若應戰可以正面比較政策，但準備時間有限；若拒絕又可能被對方拿來攻擊。媒體已開始倒數等待回覆，團隊需要主席決定是否接下挑戰。`,
+  "地方建設突然完工":`一項延宕已久的地方建設在選戰期間突然宣布完工，各方都想爭取成果話語權。候選人可以前往現場談政策，也可能被批評搶功。地方團隊已收到活動邀請，對手也準備表態，中央需要決定候選人如何參與這個議題。`,
+  "候選人被認錯":`候選人在公開行程中被民眾認成另一名政治人物，現場一度尷尬，但旁邊已有攝影機完整拍下過程。有人認為可以幽默處理增加親和力，也有人擔心繼續放大會傷害候選人辨識度。社群團隊正在等中央決定如何回應。`,
+  "黨部內部文件外流":`一份原本只供黨內討論的選戰文件被外界取得，其中包含尚未定案的策略與內部評估。媒體開始逐頁詢問，地方團隊擔心對手利用內容反制。黨部正在確認外流範圍與版本真偽，中央必須決定公開說明到什麼程度。`,
+  "地方論壇臨時改題":`候選人原本準備參加地方論壇，但主辦單位在活動前臨時更換主要討論題目，新的議題並非團隊原先準備重點。取消出席可能引發批評，直接上場又增加失言風險。政策幕僚正快速補資料，需要中央決定應對方式。`,
+  "競選小物缺貨":`熱門競選小物的需求突然超過預估，多個地方據點回報庫存即將用完。追加生產需要時間與經費，不追加則可能讓後續活動缺乏物資。宣傳團隊也提出改用其他形式替代，中央需要決定是否追單以及優先供應哪些地區。`,
+  "地方活動兩黨狹路相逢":`兩個不同陣營的候選人行程意外排到同一場地方活動，雙方支持者與媒體同時聚集，現場氣氛逐漸升高。主辦方希望活動不要變成政治衝突，兩邊幕僚也在協調動線。中央必須決定候選人是主動互動、保持距離或調整時間。`,
+  "選戰謠言波及家人":`社群開始流傳涉及候選人家人的說法，內容與選舉議題混在一起，但來源與真實性尚未確認。候選人本人希望保護家人，媒體卻已開始詢問。團隊必須在澄清謠言與避免擴大私人議題之間拿捏，中央需要決定回應尺度。`,
+  "深夜臨時戰情會議":`多個縣市在同一天回報選情變化，原定工作已結束，中央仍臨時召集幕僚開深夜戰情會議。資源有限，不可能同時支援所有地方；民調、組織與候選人需求又互相衝突。幕僚把優先順序方案攤在桌上，等待最後決定。`,
+  "候選人炒股疑雲":`媒體收到一份與候選人過去股票交易有關的資料，社群隨即出現交易時間是否異常的質疑。目前公開資訊不足以直接證實指控，候選人也否認涉及不法。記者持續追問，地方團隊希望中央決定查核、公開資料與回應的程度。`,
+  "論文抄襲風波":`候選人的學位論文突然遭人製成多張比對圖卡，在媒體與社群快速流傳，有人質疑部分文字引用方式不當。候選人否認抄襲，現階段也不能僅憑網路圖卡定論。幕僚已整理論文原文與可查核資料，需要決定如何對外說明。`
+ };
+ let bg=eventBackgrounds[e.t]||`${city}團隊回報「${e.t}」出現新的狀況，原定行程與選戰部署因此需要調整。幕僚已把目前資訊與可行方案整理完成。`;
+ // Add location naturally without changing the dedicated event cause.
+ if(!bg.includes(city) && !["候選人炒股疑雲","論文抄襲風波"].includes(e.t)) bg=`${city}方面傳回消息：`+bg;
+ return bg+"所有人都等著主席做選擇";
+}
+
+function guaranteedHanBeat(){
+ if(S.camp!=="藍"||S.hanBeatUsed)return "";
+ S.hanBeatUsed=true;
+ const beats=[
+ `立法院院長韓國愉加入藍營輔選行程。談到地方經濟與觀光時，他笑著重提昔日高雄市長選戰最具代表性的口號「貨出得去、人進得來、高雄發大財」，台下支持者立刻跟著接話，現場氣氛被帶了起來。幕僚也趁勢把話題接回這次地方候選人的產業與民生政見。`,
+ `藍營造勢場合上，立法院院長韓國愉談到自己過去遭遇媒體與對手攻防的經驗，批評惡意抹黑，並重提2019年總統大選辯論時那句「要不要問我幾歲之前還是處男？」現場先是一陣笑聲，隨後他把話題拉回候選人，希望支持者把注意力放在地方選戰。`,
+ `立法院院長韓國愉站台時沒有只談選舉攻防，而是把話題轉向基層生活。他重提自己多年來常說的「莫忘世上苦人多」，表示政治人物應該記得生活辛苦的民眾。地方候選人接著從物價、工作與社福談起，讓這場活動的基調從口號轉向民生。`
+ ];
+ return beats[Math.floor(Math.random()*beats.length)];
+}
+
+function guaranteedTsaiDoctorBeat(){
+ if(S.tsaiDoctorBeatUsed)return "";
+ S.tsaiDoctorBeatUsed=true;
+ return `選戰談到政治人物的學經歷與過往軼事時，民進黨前總統蔡英雯早年的一段自述又被翻出來。她曾以較口語的方式回憶博士口試，說委員會討論後「決定給我1.5個學位」，意指法學博士之外，論文在國際貿易領域也獲高度肯定。幕僚同時提醒，正式校方紀錄仍是1984年取得一個法學博士學位，避免把這段趣談誤寫成真的頒發兩張或1.5張博士證書。`;
+}
+
+function optionalNewPoliticalBeat(){
+ const pool=[];
+ if(!S.shenStarBeatUsed){
+  pool.push(()=>{S.shenStarBeatUsed=true;return `台北選戰出現一段較輕鬆的宣傳話題。民煮進步黨的沈伯陽陣營在內部與支持者活動中，形容自家候選人有「台灣版木村拓也、張孝泉」的明星感，希望強化親和力與辨識度。對手陣營則把焦點拉回政策與治理，讓這段形象宣傳成為短暫的選戰插曲。`;});
+ }
+ if(!S.qianzhenBeatUsed){
+  pool.push(()=>{S.qianzhenBeatUsed=true;return `高熊選戰談到公共建設效益時，中國國名黨把矛頭指向前陣漁港相關建設，強調投入經費所費不貲，若後續招商、人流與實際使用效益沒有達標，可能淪為「蚊子館」。執政方則主張應把漁業作業、船員服務與整體港區改善一併評估，雙方因此展開攻防。`;});
+ }
+ if(!pool.length)return "";
+ return pool[Math.floor(Math.random()*pool.length)]();
+}
+function guaranteedRequiredNewBeat(){
+ if(S.requiredNewBeatUsed)return "";
+ S.requiredNewBeatUsed=true;
+ const beats=[
+  `高熊造勢場合，中國國名黨的韓國愉陪同柯志嗯站台，重新拿出自己過去「一瓶礦泉水、一碗滷肉飯」的庶民選戰意象，鼓勵團隊用簡單、直接的方式跑遍基層。現場也把這套語言延伸到地方民生議題，希望替候選人的最後衝刺增加記憶點。`,
+  `民煮進步黨在一場中央與地方聯合記者會上，把攻防焦點放在立法與政策推動，批評中國國名黨與台灣民眾擋經常在決策過程阻撓，使部分政策窒礙難行，並形容這會成為台灣進步的絆腳石。藍白陣營則各自提出反駁，主張監督與政策審查不能直接等同阻撓。`,
+  `台灣民眾擋的柯文喆在媒體堵訪時，被連續追問與中國國名黨、民煮進步黨之間的攻防。他先停了一下，接著用一貫口語說：「我想是這樣啦，你們每天中國國名黨、民煮進步黨不煩嗎？」現場記者立刻追問，白營幕僚則把話題重新拉回地方候選人的政策。`
+ ];
+ return beats[Math.floor(Math.random()*beats.length)];
+}
+
+function guaranteedGroupABeat(){
+ if(S.requiredGroupABeatUsed)return "";
+ S.requiredGroupABeatUsed=true;
+ const beats=[
+  `台灣民眾擋的黃靜螢登上政論節目，被問到柯文喆過去提出的「兩岸一家親」。她把白營的論述重點放在降低敵意、維持溝通與處理民生交流，強調這不代表放棄台灣自身立場。其他來賓則從國安與兩岸政治風險提出不同看法，現場形成一輪交鋒。`,
+  `台灣民眾擋的黃國倡在議會質詢時，對政府部門的答覆相當不滿，情緒提高後連喊「太離譜了！太離譜了！」片段很快被媒體剪出，在支持者與批評者之間引發不同反應，也讓白營擅長監督與攻防的形象再次成為選戰話題。`,
+  `中國國名黨前主席、新北市前市長朱立綸替台北市長蔣萬桉站台，呼籲支持者全力支持蔣萬桉連任，並以「做好做滿」強調地方任期承諾。談到外界對2028的聯想時，他把焦點拉回台北市政，表示這場選舉首先就是市長選舉。`
+ ];
+ return beats[Math.floor(Math.random()*beats.length)];
+}
+function guaranteedGroupBBeat(){
+ if(S.requiredGroupBBeatUsed)return "";
+ S.requiredGroupBBeatUsed=true;
+ const beats=[
+  `中國國名黨的盧秀雁被媒體追問2028總統大選規劃，她沒有正面談參選問題，而是強調現階段要專心市政、把市長工作做好。幕僚隨後也把焦點拉回地方治理，避免2028話題蓋過正在進行的地方選戰。`,
+  `台灣民眾擋主席黃國倡被問到2028是否親自參選，以及屆時是否仍會採取藍白合作。他笑著表示現在談2028還太早，當前應先把2026地方選舉與既有合作做好，再看後續政治情勢發展。媒體仍持續追問，但他沒有進一步設定人選。`
+ ];
+ return beats[Math.floor(Math.random()*beats.length)];
+}
+
+function diaryStory(day,e,target){
+ let continuity="";
+ if(S.storyThread){
+   const bridges=[
+    `前幾天留下的餘波並沒有隨著日曆翻頁消失。${S.storyThread} 今天一早，戰情室第一件事仍是追蹤後續。`,
+    `選戰沒有真正的「隔天重新開始」。${S.storyThread} 幕僚把前幾天的紀錄重新攤在桌上，今天的行程因此被迫接著往下走。`,
+    `前幾天的新聞到了今天仍在發酵。${S.storyThread} 無論候選人走到哪裡，記者與地方幹部都還在追問同一條線。`,
+    `前幾天最後幾通電話談的事情，今天又成了重要議題。${S.storyThread} 團隊沒有另起爐灶，而是直接從前幾天尚未解決的地方繼續。`
+   ];
+   continuity=bridges[Math.floor(Math.random()*bridges.length)];
+ }
+
+
+
+ if(e.t==="候選人炒股疑雲"){
+   continuity+=` 今天一早，媒體收到一份指稱候選人過去股票交易時間點異常的資料，網路隨即出現「是否涉及炒股」的質疑；目前公開資訊不足以直接證實指控，候選人也否認有不法。戰情室真正要處理的是，要公開到什麼程度、由誰查核，以及如何避免未查證說法繼續擴散。`;
+ }
+ if(e.t==="論文抄襲風波"){
+   continuity+=` 一份針對候選人學位論文的比對資料突然在媒體與社群流傳，有人據此質疑論文涉及不當引用或抄襲；候選人方面否認抄襲，現階段也不能僅憑網路比對圖就把爭議當成既定事實。幕僚因此把論文原文、引用方式與可供查證的資料全部攤開，準備決定回應方式。`;
+ }
+ const labels={藍:"藍營",綠:"綠營",白:"白營"}, self=S.camp;
+ const rivals=P.filter(x=>x!==self);
+ const politicalContext={
+  "藍":[
+   `臺北市的攻防又繞回蔣萬桉的家族身世。對手與部分評論者重提「究竟該姓蔣、章，還是郭」的爭論；蔣萬桉陣營則把它視為多年來反覆出現的身世攻防，試圖把話題拉回市政與選舉本身。`,
+   `一場兩岸政策記者會上，藍營因主張維持交流，被對手質疑對中國過度友善，甚至有人丟出「中共同路人」的標籤；黨內則強調交流與國安可以同時討論。這讓地方候選人必須在兩岸論述與地方議題之間拿捏距離。`
+  ],
+  "綠":[
+   `臺北市的媒體攻防集中到沈伯陽身上。部分對手與網路評論者批評他的論述「空洞、言不及義」，支持者則認為這是把較長的政策說明切成片段後形成的標籤。幕僚開始討論，是否要讓沈伯陽用更短、更具體的方式回應。`,
+   `地方座談裡，有民眾質疑綠營在兩岸議題上容不下不同聲音，甚至把主張交流的人都貼上「不愛台灣」標籤；綠營人士則主張國安疑慮與一般交流應分開看待。爭論一路延燒到地方候選人的記者會。`,
+   `中央執政的賴清得再次成為地方選戰背景。從兩岸、民生、經濟到建設，支持與批評的聲音同時出現；地方候選人無法完全切割中央施政，好的評價可能形成助力，負面的不滿也可能被對手直接帶進地方攻防。`
+  ],
+  "白":[
+   `記者會上有人再次追問柯文喆涉貪案件。案件一審已有有罪判決、目前仍處於後續司法程序，柯文喆否認相關犯行；「究竟是否貪污」因此持續成為白營無法迴避的政治攻防，而不是戰情室能自行下結論的問題。`,
+   `藍白合作的議題再度浮上檯面。部分評論者質疑白營會不會在合作中失去主體性、最後成為藍營附庸；白營內部則強調合作不代表每件事立場一致。地方幹部開始盤算，哪些地方該合作、哪些地方必須拉開距離。`
+  ]
+ };
+
+ const mediaContext=[
+  {lean:"藍白",name:"TVBS紐聞",kind:"電視",lines:[
+   `晚間的TVBS紐聞把今天的攻防剪成頭條，棚內政論節目《少康戰情房》幾名來賓從藍白角度質疑綠營說法；另一名來賓則提醒，地方選舉不能只靠中央議題判斷。`,
+   `TVBS紐聞的跑馬燈連續追蹤選戰，晚間《新聞大白化》來賓把焦點放在藍白合作與執政黨施政，但節目中也有人提出不同解讀。`
+  ]},
+  {lean:"藍白",name:"中夭YT",kind:"網路影音",lines:[
+   `中夭YT平台的政治直播突然湧入大量留言，節目《頭條開講了》幾位名嘴從偏藍白的角度猛攻綠營，相關短影音很快被支持者剪成數段轉傳。`,
+   `中夭YT晚間直播把白天事件做成大幅縮圖，評論者對藍白陣營較為友善；對手陣營則在社群上逐條反駁，形成第二波攻防。`
+  ]},
+  {lean:"綠",name:"三粒紐聞",kind:"電視",lines:[
+   `三粒紐聞晚間用另一個角度處理同一事件，政論節目《新台灣加油站》的來賓多從偏綠觀點解讀，並把問題延伸到藍白合作與兩岸路線。`,
+   `三粒紐聞把候選人的一段發言拉出來反覆播放，棚內評論者從偏綠立場提出質疑；藍白陣營隨即指控報導只截取部分內容。`
+  ]},
+  {lean:"綠",name:"民是紐聞",kind:"電視",lines:[
+   `民是紐聞的晚間政論把今天事件放進中央與地方的整體選戰解讀，幾位評論者的論述明顯較接近綠營；藍白陣營則在記者群組發布完整說法反擊。`,
+   `民是紐聞連線地方記者後，棚內名嘴把焦點拉到執政路線與地方治理，支持與反對的聲音在節目播出後繼續延燒。`
+  ]},
+  {lean:"藍白",name:"聯合抱",kind:"報紙",lines:[
+   `隔天一早，聯合抱社論從較偏藍白的視角評論這場攻防，質疑執政陣營的處理方式；綠營幕僚則認為社論忽略了另一部分背景。`,
+   `聯合抱的評論版把地方事件提升到全國政治層次，專欄作者提出對藍白較有利的解讀，迫使綠營候選人一早就面對記者追問。`
+  ]},
+  {lean:"藍白",name:"中國食報",kind:"報紙",lines:[
+   `中國食報社論以較偏藍白的角度批評綠營選戰策略，文章刊出後被多個政治群組轉貼，地方候選人的幕僚不得不準備回應。`,
+   `中國食報專欄作者把今天事件與兩岸、民生議題串在一起，評論方向對藍白較為友善；綠營支持者隨即在網路上提出反駁。`
+  ]},
+  {lean:"綠",name:"自由食報",kind:"報紙",lines:[
+   `自由食報社論從較偏綠的角度解讀事件，對藍白陣營提出尖銳質疑；藍營地方幹部則批評文章預設立場，要求候選人正面回應。`,
+   `自由食報評論版把焦點放在國安與地方治理，專欄觀點較接近綠營，文章很快被綠營支持者大量轉傳。`
+  ]},
+  {lean:"綠",name:"鏡週刋",kind:"雜誌",lines:[
+   `鏡週刋刊出一篇選戰觀察，評論角度較接近綠營，並引述匿名幕僚分析藍白策略；被點名的陣營隨即質疑匿名消息是否完整。`,
+   `鏡週刋的政治專欄把幾個看似無關的地方事件串成一條選戰敘事，文章偏向綠營的解讀方式，也引發另一邊支持者反擊。`
+  ]}
+ ];
+ const cyberLines={
+  "藍":`到了深夜，疑似支持藍營的帳號群開始大量轉貼同一組論點；來源與彼此是否協調無法確認，但相似貼文很快占滿留言區。綠營支持者隨即整理反駁圖卡回擊。`,
+  "綠":`社群上出現大量偏綠帳號同步放大今天的議題，是否存在組織協調無從確認；藍白支持者則截圖比對發文時間，反過來質疑是「網軍操作」。`,
+  "白":`白營支持者經營的社群帳號開始密集剪輯短影音，部分內容迅速擴散；外界有人質疑背後有組織操作，但目前無法確認帳號之間是否真的受統一指揮。`
+ };
+ const campaignContext={
+  "綠":[
+   `總統賴清得的輔選行程再度與地方選戰交會，行政院長卓榮太也透過政策說明與地方建設議題加入戰線；幕僚把中央施政如何轉譯成地方語言列為今天的工作重點。`,
+   `運動部長李揚出現在地方運動設施行程，現場原本談場館與全民運動，媒體卻很快把問題帶回選舉。團隊只能一面說明政策，一面避免行政行程完全被選戰吞沒。`,
+   `造勢舞台再次打出「台灣好生活，團結拚未來」的主軸。候選人沒有只喊口號，而是被要求把加薪、福利、地方建設等內容接到自己的縣市政見上。`
+  ],
+  "藍":[
+   `前總統馬英玖的一段公開發言被媒體帶進今天的選戰討論，地方團隊立刻評估這番話在不同年齡層可能引起的反應，並決定是否讓候選人正面接球。`,
+   `盧秀雁連日站台，把矛頭指向綠營執政並呼籲選民不要只接受執政黨的說法。對手隨即反擊，於是原本的地方議題又被拉進藍綠中央攻防。`,
+   `藍營活動現場反覆出現「顧民生、愛人民、拚和平、台灣贏」的主軸，地方幕僚則努力把四句話拆成物價、建設、兩岸與地方治理等具體題目。`
+  ],
+  "白":[
+   `白營把「2026，為台灣，一起上場！」掛上舞台主視覺。地方幹部特別強調，即使部分縣市與藍營合作，仍要讓選民看見白營自己的議題與組織，而不是只剩聯合站台。`,
+   `黃國倡與黃姍姍的行程訊息先後傳進地方群組，幕僚討論的是如何在藍白合作的大框架下保留自己的辨識度；「合作」與「被吸收」再次成為同一場會議的兩面。`
+  ]
+ };
+
+
+ const publicFigures={
+   藍:{
+     "臺中市":["盧秀雁"],"彰化縣":["王惠梅"],
+     "default":["盧秀雁","王惠梅"]
+   },
+   綠:{"default":[]},
+   白:{
+     "default":["柯文喆","黃國倡","黃姍姍"],
+     "臺北市":["柯文喆","黃國倡","黃姍姍"],
+     "新竹市":["柯文喆","黃國倡","黃姍姍"]
+   }
+ };
+ const cameoFor=camp=>{
+   let pool=(publicFigures[camp]&&publicFigures[camp][target.n])||(publicFigures[camp]&&publicFigures[camp].default)||[];
+   return pool.length?pool[Math.floor(Math.random()*pool.length)]:null;
+ };
+ const whiteAlliance={
+   "新竹市":"高虹桉",
+   "嘉義市":"張啓凱",
+   "新北市":"李泗川",
+   "宜蘭縣":"吳宗憲"
+ };
+ const whiteSupportText=()=>{
+   if(self!=="白" || !whiteAlliance[target.n])return "";
+   const ally=whiteAlliance[target.n];
+   if(target.n==="新竹市")return ` 白營雖沒有以本黨名義推出市長候選人，但把無黨籍的${ally}視為合作支持對象，地方組織因此把不少行程與資源協調圍繞在她的選戰上。`;
+   return ` 白營在${target.n}沒有另推市長人選，地方選戰主軸改為支持藍營推出的${ally}；幕僚因此必須同時處理合作與維持本黨辨識度兩件事。`;
+ };
+ let order=[self,self,rivals[0],rivals[1]];
+ for(let i=order.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]]}
+ const openers=[
+ "清晨的第一通電話，比預定行程更早響起。","上午八點不到，戰情室裡已經沒有人坐得住。",
+ "故事是從地方群組的一張截圖開始的。","原本平靜的早晨，被一場臨時記者會打斷。",
+ "今天一開始，看起來和前幾天沒有太大不同。","媒體還沒到齊，消息就先傳開了。",
+ "候選人的車隊才剛出發，新的狀況就追了上來。","雨勢漸大的同時，地方回報也一封接一封送進總部。",
+ "上午行程尚未開始，三黨已經隔空交火。","第一個異常訊號，來自一個原本不受注意的地方。",
+ "真正讓事情變複雜的，是接近中午時的另一個消息。","然而，事情並沒有照幕僚原先預想的方向發展。",
+ "與此同時，另一個陣營也開始動作。","沒過多久，戰場又從地方轉到了網路。",
+ "到了中午，原本單純的地方事件已經變成全國話題。","就在大家以為風波即將過去時，新的影片出現了。",
+ "下午的情況完全換了一個方向。","三點過後，媒體焦點突然轉向另一個陣營。",
+ "另一方面，地方組織傳來的消息卻截然不同。","但真正讓幕僚皺眉的，還不是檯面上的攻防。",
+ "幾乎在同一時間，合作陣營也傳來新的要求。","社群上的討論開始失去原本的節奏。",
+ "接下來兩個小時，三個陣營各自做出了反應。","事情到這裡，本來應該告一段落。",
+ "沒想到傍晚又出現新的轉折。","天色暗下來後，選戰反而更加熱鬧。",
+ "晚間新聞一播出，白天的事件有了完全不同的解讀。","到了晚上，總部終於把三方動作放在同一張白板上。",
+ "夜深後，仍有一件事沒有答案。","這一天最後留下的，不是結論，而是一道必須由主席回答的選擇題。"
+ ,'雨還沒真正落下，競選總部裡的電話卻先像驟雨一樣響成一片。','宣傳車才剛轉進市場口，遠處已經有人舉著手機等著捕捉候選人的第一句話。','下午三點，戰情室的白板被擦掉重寫第三次，沒有人敢說今天已經定局。','捷運出口的人潮一波接一波，候選人握到手發酸，幕僚卻仍盯著手機上的即時新聞。','夜色壓下來時，總部窗戶還亮得像白天，外送咖啡一杯接一杯送進會議室。','市場裡的叫賣聲蓋過麥克風，候選人乾脆放下講稿，直接鑽進人群。','一張不到十秒的短影片突然衝上熱門，原本排好的整日議題瞬間全部讓位。','車隊卡在紅燈前，幕僚從後座遞來手機：新的政治話題已經燒進每個群組。','記者群原本只是例行等候，直到其中一人拋出問題，所有麥克風同時往前伸。','總部電梯門一開，地方幹部的表情就讓人知道，事情和電話裡說的不一樣。','掃街隊伍走到一半突然停住，前方支持者與反對者的聲音隔著街口交錯。','午餐便當還沒拆，戰情群組已經跳出上百則未讀訊息，主席只好把筷子放回桌上。','攝影棚倒數燈亮起前十秒，幕僚仍貼在候選人耳邊補最後一句提醒。','原本平靜的地方行程，在一名民眾高聲提問後突然變成全國媒體的直播現場。','清晨五點半，第一批市場攤商才拉起鐵門，競選背心已經出現在巷口。','晚會音樂還在試音，後台卻傳來完全不同的消息，幾名幕僚立刻圍成一圈。','主席辦公室門外沒有人說話，只有印表機不停吐出剛更新的輿情摘要。','候選人剛坐進車裡，車門都還沒關上，地方主委便把另一支正在響的手機遞了過來。','一場原本只安排二十分鐘的座談，因為台下接連舉手，最後一路談到天色變暗。','凌晨十二點過後，社群聲量沒有降溫，反而像第二場選戰才剛開打。'];
+ const extraOpeners=[
+ "早餐才吃到一半，幕僚的手機就同時響了起來。","今天的第一則新聞，並不是任何一方原先準備好的。",
+ "一輛採訪車停到總部門口後，氣氛立刻變得不一樣。","地方電台早上的一段訪問，意外成了全天攻防的起點。",
+ "原訂十分鐘的晨會，最後開了將近一個小時。","今天先傳回來的不是民調，而是一段現場錄音。",
+ "競選行程表上沒有這件事，但所有人最後都在處理它。","候選人還在車上，地方團隊就要求中央立即回覆。",
+ "一名志工的觀察，讓原本準備好的戰術被重新檢視。","總部白板上的第一個紅圈，今天落在一個意想不到的地方。",
+ "市場還沒完全開市，三方人馬已經先後抵達。","早上的新聞標題看似平淡，內文卻讓幕僚警覺起來。",
+ "一場原本不會上新聞的小活動，突然聚集了大量媒體。","今天的戰火不是從舞台開始，而是從留言區開始。",
+ "沒有人料到，上午最受關注的竟是一句臨場回答。","原先被排在新聞末段的消息，中午前就衝上熱門。",
+ "事情的源頭很小，小到一開始甚至沒有人通報中央。","地方辦公室的一通求援電話，讓總部臨時改了行程。",
+ "一份剛送到的內部簡報，和地方幹部的感受完全相反。","候選人臨時多停留的十五分鐘，成了今天第一個轉折。",
+ "中午以前，三方都還刻意保持沉默。","正午時分，第一個正式回應終於出現。",
+ "午餐會議才剛開始，電視牆上的跑馬燈就換了標題。","原本互不相干的兩件事，在下午突然被媒體連在一起。",
+ "午後的記者追問愈來愈尖銳，原先的回答已經不夠用了。","下午兩點，一個地方議題突然跨出原本的選區。",
+ "就在中央準備定調時，地方團隊提出完全不同的建議。","同一件事到了不同陣營口中，已經變成三個版本。",
+ "原本只是政策討論，下午卻逐漸變成候選人個人攻防。","一張沒有文字說明的照片，讓三方各自開始解讀。",
+ "社群小編最先察覺不對勁，因為留言速度突然快了數倍。","下午的第二場行程，比第一場多了許多不在名單上的人。",
+ "一位民眾在現場提出的問題，讓候選人停頓了幾秒。","媒體本來追著另一個議題跑，卻在半路全部轉向。",
+ "三方原本各說各話，到了下午第一次正面碰撞。","一場地方座談結束後，真正的討論才在場外開始。",
+ "原本準備冷處理的議題，因為對手加碼而無法再忽略。","競選團隊第一次發現，今天的節奏已不在任何一方手上。",
+ "傍晚前，一則沒有預警的公開聲明改變了局面。","太陽快下山時，地方傳來一個足以改變晚間新聞的消息。",
+ "原本已經排好的晚間受訪，被臨時要求更換主題。","傍晚的車流塞住了行程，也讓候選人意外多了一段街頭互動。",
+ "晚餐時間，三個陣營的發言人幾乎同時更新了說法。","新聞台開始倒帶早上的畫面，新的解讀隨之出現。",
+ "白天沒被注意的一句話，到了晚上突然被大量轉傳。","一場直播結束後，幕僚才發現真正引發討論的是留言而不是內容。",
+ "晚間政論節目還沒開播，預告片就先挑起新一輪爭論。","總部原以為可以收工，地方卻要求再開一次視訊會議。",
+ "晚上九點，戰情室把今天的數據重新跑了一遍。","支持者群組開始出現焦躁情緒，地方幹部要求中央給出明確方向。",
+ "原本互相競爭的議題，到了晚間只剩下一個成為焦點。","三方都在等待對手先出手，結果是網路社群先替大家定了題目。",
+ "午夜前最後一份地方報告，比白天任何一份都更令人意外。","燈已經關掉一半，主席辦公室卻還留著幾名核心幕僚。",
+ "今天沒有戲劇性的爆點，卻有許多小變化悄悄累積。","回頭看整天行程，真正重要的轉折竟然發生在最不起眼的時刻。",
+ "表面上三方都沒有改變策略，內部的盤算卻已經不同。","這不是一場誰先犯錯的競爭，而是誰能先看懂風向。",
+ "同一個地方議題，今天第一次被拉到全國層次討論。","候選人的個人風格，在今天意外壓過了政黨標籤。",
+ "黨中央與地方組織今天看到的，彷彿是兩場不同的選舉。","原本被認為穩定的安排，開始出現第一道裂縫。",
+ "沒有任何一方取得明顯優勢，反而讓下一步更加難選。","今天最棘手的地方，是每一種回應都有支持者也有反對者。",
+ "一個看似有利的消息，經過幾小時後卻開始產生反作用。","對手原本的攻擊沒有奏效，卻意外帶起另一個話題。",
+ "三方今天都試圖主導議題，但最後沒有任何一方完全成功。","選戰像被同時推向幾個方向，主席必須決定哪一條才值得追。",
+ "這一頁日記寫到最後，幕僚仍對明天的第一步爭論不休。","一天的喧鬧逐漸沉下來，但新的問題已經排在明早會議桌上。"
+ ];
+ openers.push(...extraOpeners);
+ const cityData=D.find(x=>x[0]===target.n);
+ const candFor=camp=>{let j=P.indexOf(camp),nm=cityData&&cityData[7+j];return nm&&nm!=="—"?nm:null};
+ const banks={
+ 藍:["安排市場掃街，候選人與攤商長談的畫面開始流傳","地方幹部要求中央調整戰略，黨內出現兩種不同聲音","召開政策記者會，反擊其他陣營上午的質疑","地方黨員受訪時措辭引起爭論，發言系統緊急討論是否澄清","青年團隊推出短影音，希望把議題拉回候選人的地方政見"],
+ 綠:["召開記者會，要求另外兩個陣營說明近期爭議","候選人密集跑地方行程，試圖把媒體焦點拉回政策","地方組織傳出路線爭論，中央開始協調下一階段打法","青年團隊推出短影音，在『脆德』與『You吐』快速擴散","地方人士公開評論對手策略，三方很快展開隔空攻防"],
+ 白:["舉行臨時記者會，把議題轉向改革與第三勢力","候選人直播突然湧入大量觀眾，留言區成為三方支持者交鋒場所","地方幹部對合作方式提出新條件，藍白協調再次成為媒體焦點","青年志工發起街頭活動，希望用低成本方式增加能見度","發言系統同時回應藍綠兩方攻擊，媒體追問是否代表策略轉變"]
+ };
+ let used=new Set(), pars=[];
+ order.forEach((camp,i)=>{
+   let oi=Math.floor(Math.random()*openers.length); while(used.has(oi))oi=(oi+1)%openers.length; used.add(oi);
+   let action=banks[camp][Math.floor(Math.random()*banks[camp].length)];
+   const nm=candFor(camp);
+   if(nm) action=action.replaceAll("候選人",nm).replace("地方人士",nm+"陣營的地方人士").replace("地方幹部",nm+"的地方團隊");
+   const cameo=cameoFor(camp);
+   let cameoText="";
+   if(cameo && Math.random()<0.48){
+     const cameoForms=[
+       ` ${cameo}也被媒體問到這場地方選戰，相關談話讓現場記者繼續追問。`,
+       ` 稍晚，${cameo}出現在另一場公開行程，媒體自然把話題帶回${target.n}選情。`,
+       ` 地方團隊同時討論是否邀請${cameo}加入後續公開活動，黨內意見並不完全一致。`,
+       ` 新聞台把${cameo}過去的公開談話與今天事件放在同一個討論框架中，讓議題又多了一層。`
+     ];
+     cameoText=cameoForms[Math.floor(Math.random()*cameoForms.length)];
+   }
+   let social=i===2?" 同一時間，『臉輸』、『脆德』與『You吐』上也出現大量討論；數位幕僚提醒，熱門聲量不等於整體選民態度。":"";
+   pars.push(`${openers[oi]} ${target.n}方面，${labels[camp]}${nm?"的"+nm:""}${action}。${cameoText}${social}`);
+ });
+ const allianceNote=whiteSupportText();
+ pars.push(`${openers[Math.floor(Math.random()*openers.length)]} ${S.chair}把今天三個陣營的動作重新整理。${labels[self]}的兩條戰線與另外兩黨的攻防彼此牽動，而「${e.t}」又讓原本的安排多了一個變數。${allianceNote} 幕僚提出數個方案，真正的效果不會預先顯示，只能由主席判斷下一步。`);
+ if(continuity) pars.unshift(continuity);
+ if(false){
+   let m=mediaContext[Math.floor(Math.random()*mediaContext.length)];
+   let ml=m.lines[Math.floor(Math.random()*m.lines.length)];
+   let p=Math.floor(Math.random()*(pars.length+1));pars.splice(p,0,ml);
+ }
+ if(false){
+   let p=Math.floor(Math.random()*(pars.length+1));pars.splice(p,0,cyberLines[self]);
+ }
+ if(false){
+   let ac=campaignContext[self]||[];
+   if(ac.length){let p=Math.floor(Math.random()*(pars.length+1));pars.splice(p,0,ac[Math.floor(Math.random()*ac.length)]);}
+ }
+ if(false){
+   let ctx=politicalContext[self]||[];
+   let extra=self!=="綠" ? [`中央執政的賴清得也被拉進地方戰場。從兩岸、民生、經濟到建設，社會上同時存在肯定與批評；地方候選人趁勢把中央施政與縣市選舉連在一起，好的評價與不滿都可能外溢到地方。`] : [];
+   let all=ctx.concat(extra);
+   if(all.length){let pos=Math.floor(Math.random()*(pars.length+1));pars.splice(pos,0,all[Math.floor(Math.random()*all.length)]);}
+ }
+ // At most two extra narrative elements on one diary page.
+ 
+ if(!S.chiangLineageUsed && (days[S.idx]<=60 || Math.random()<.16)){ pars.unshift(guaranteedChiangLineageBeat()); }
+if(S.camp==="白"){let wb=whiteCampaignBackbone(target);if(wb)pars.unshift(wb);}
+ if(S.camp==="藍"&&!S.hanBeatUsed&&(day<=60||Math.random()<.16)){let hb=guaranteedHanBeat();if(hb)pars.unshift(hb);}
+ if(!S.tsaiDoctorBeatUsed&&(day<=60||Math.random()<.14)){let tb=guaranteedTsaiDoctorBeat();if(tb)pars.unshift(tb);}
+ if(!S.requiredNewBeatUsed&&(day<=50||Math.random()<.13)){let rb=guaranteedRequiredNewBeat();if(rb)pars.unshift(rb);}
+ if(!S.requiredGroupABeatUsed&&(day<=40||Math.random()<.11)){let ga=guaranteedGroupABeat();if(ga)pars.unshift(ga);}
+ if(!S.requiredGroupBBeatUsed&&(day<=30||Math.random()<.11)){let gb=guaranteedGroupBBeat();if(gb)pars.unshift(gb);}
+ if((!S.shenStarBeatUsed||!S.qianzhenBeatUsed)&&Math.random()<.10){let nb=optionalNewPoliticalBeat();if(nb)pars.unshift(nb);}
+ let extras=[,
+  maybeDiverseFinanceEvent()];
+ extras=extras.filter(Boolean);
+ let financeBeat=maybeFinanceBeat(target); if(financeBeat) extras.push(financeBeat);
+ let historicalBeat=maybeHistoricalBeat(); if(historicalBeat) extras.push(historicalBeat);
+ let businessBeat=maybeBusinessEndorsement(target); if(businessBeat) extras.push(businessBeat);
+ let talkShowBeat=maybeTalkShowBeat(target); if(talkShowBeat) extras.push(talkShowBeat);
+ let laiSlipBeat=maybeLaiSlipBeat(); if(laiSlipBeat) extras.push(laiSlipBeat);
+ let extraLocalBeat=maybeExtraLocalElectionBeat(); if(extraLocalBeat) extras.push(extraLocalBeat);
+ let ac=campaignContext[self]||[]; if(ac.length) extras.push(ac[Math.floor(Math.random()*ac.length)]);
+ let pc=politicalContext[self]||[]; if(pc.length) extras.push(pc[Math.floor(Math.random()*pc.length)]);
+ let mm=mediaContext[Math.floor(Math.random()*mediaContext.length)]; extras.push(mm.lines[Math.floor(Math.random()*mm.lines.length)]);
+ extras.push(cyberLines[self]);
+ if(self!=="綠") extras.push(`中央執政的賴清得也被拉進地方戰場。從兩岸、民生、經濟到建設，社會上同時存在肯定與批評，地方候選人也必須承受中央施政的外溢效果。`);
+ extras.sort(()=>Math.random()-.5);
+ let extraCount=Math.random()<.65?2:1;
+ extras.slice(0,extraCount).forEach(x=>{let p=Math.floor(Math.random()*(pars.length+1));pars.splice(p,0,x)});
+ const breaking=maybeBreaking(day);
+ S.breakingBonus=breaking&&breaking.bonus?breaking:null;
+ if(breaking){
+   // Insert event anywhere, but always follow it immediately with a paragraph continuing that same topic.
+   const pos=Math.floor(Math.random()*(pars.length+1));
+   pars.splice(pos,0,breaking.html,breaking.follow);
+ }
+ S.storyThread=`${target.n}的「${e.t}」尚未完全落幕，${target.cand||"地方團隊"}的回應與媒體後續仍在延燒。`;
+ pars=pars.filter(p=>{
+   for(const camp of ["藍","綠","白"]){
+     if(!hasCampCandidate(target,camp) && (p.includes(`${target.n}方面，${camp}營候選人`) || p.includes(`${target.n}方面，${camp}營的候選人`) || p.includes(`${target.n}的${camp}營候選人`))) return false;
+   }
+   return true;
+ });
+ pars=enforceOncePerGame(pars);
+ pars=fitDiaryLength(pars);
+ if(day===100) pars.unshift(openingPrologue());
+ // The last paragraph must bridge directly into today's decision.
+ const bridge=decisionBackground(e,target);
+ while(pars.length && pars.join("").replace(/<[^>]*>/g,"").replace(/\s/g,"").length+bridge.length>450) pars.pop();
+ pars.push(bridge);
+ return cleanDiaryText(pars.join("\n\n"));
+}
+
+function cityFocusWeight(c){
+ // This is a narrative-frequency weight only, not an election forecast.
+ // Priority: Taipei/Kaohsiung > in-game close races > other municipalities > others.
+ if(c.n==="臺北市"||c.n==="台北市"||c.n==="高雄市") return 18;
+ // "55波" is based only on the game's internal simulated closeness.
+ let d=D.find(x=>x[0]===c.n), vals=[];
+ if(d){
+   for(let j=0;j<3;j++){
+     let v=d[1+j]||0, local=d[4+j]||v;
+     if(d[7+j]!=="—") vals.push((v+local)/2);
+   }
+ }
+ vals.sort((a,b)=>b-a);
+ let close=vals.length>=2 && Math.abs(vals[0]-vals[1])<=5;
+ if(close) return 11;
+ if(["新北市","桃園市","臺中市","台中市","臺南市","台南市"].includes(c.n)) return 6;
+ return 2;
+}
+function weightedCity(pool){
+ let weights=pool.map(cityFocusWeight), total=weights.reduce((a,b)=>a+b,0), r=Math.random()*total;
+ for(let i=0;i<pool.length;i++){r-=weights[i];if(r<=0)return pool[i]}
+ return pool[pool.length-1];
+}
+
+let diceTotal=0,diceLeft=0,diceAlloc=[0,0,0,0,0];
+function diceFace(n){return ["","⚀","⚁","⚂","⚃","⚄","⚅"][n]}
+function showDiceBonus(){
+ $('choices').innerHTML=`<div class="diceZone"><b>🎲 突發事件獎勵</b><div class="sub" style="color:#6b5844;margin-top:5px">這次正面突發事件讓主席獲得額外成長機會。擲兩顆骰子，點數總和可自由分配到五項能力。</div><div class="diceAbility"><b>目前主席能力</b>${abilityNames.map((n,i)=>`<div class="diceAbRow"><b>${n}</b><div class="diceTrack"><div class="diceBase" style="width:${S.abilities[i]}%"></div></div><b>${S.abilities[i]}</b></div>`).join("")}</div><div class="diceRow"><div id="die1" class="die">?</div><div id="die2" class="die">?</div></div><button class="gold" id="rollBtn" onclick="rollBonusDice()">擲兩顆骰子</button><div id="allocArea"></div></div>`;
+}
+function rollBonusDice(){
+ let btn=document.getElementById("rollBtn"),d1=document.getElementById("die1"),d2=document.getElementById("die2");btn.disabled=true;d1.classList.add("rolling");d2.classList.add("rolling");
+ let ticks=0,anim=setInterval(()=>{d1.textContent=diceFace(1+Math.floor(Math.random()*6));d2.textContent=diceFace(1+Math.floor(Math.random()*6));if(++ticks>13){clearInterval(anim);let a=1+Math.floor(Math.random()*6),b=1+Math.floor(Math.random()*6);d1.classList.remove("rolling");d2.classList.remove("rolling");d1.textContent=diceFace(a);d2.textContent=diceFace(b);diceTotal=diceLeft=a+b;diceAlloc=[0,0,0,0,0];renderAllocation()}},90);
+}
+function renderAllocation(){
+ let area=document.getElementById("allocArea");if(!area)return;
+ let live=S.abilities.map((v,i)=>Math.min(100,v+diceAlloc[i]));
+ let bars=abilityNames.map((n,i)=>{
+   let base=S.abilities[i],gain=Math.max(0,live[i]-base);
+   return `<div class="diceAbRow"><b>${n}</b><div class="diceTrack"><div class="diceBase" style="width:${base}%"></div><div class="diceGain" style="left:${base}%;width:${gain}%"></div></div><b>${live[i]}${gain?` <span style="color:#8b5cf6">(+${gain})</span>`:""}</b></div>`;
+ }).join("");
+ area.innerHTML=`<div style="margin-top:12px;font-weight:900">骰子總和：${diceTotal}　尚可分配：<span style="color:#b91c1c">${diceLeft}</span></div><div class="diceAbility"><b>目前主席能力</b>${bars}</div><div class="allocGrid">${abilityNames.map((n,i)=>`<div class="allocBox"><b>${n}</b><div style="font-size:22px;font-weight:950">+${diceAlloc[i]}</div><div class="allocBtns"><button onclick="allocPoint(${i},-1)">−</button><button onclick="allocPoint(${i},1)">＋</button></div></div>`).join("")}</div><button class="gold" style="margin-top:12px" ${diceLeft!==0?"disabled":""} onclick="finishDiceBonus()">確認分配，翻到下一頁 →</button>`;
+}
+function allocPoint(i,d){
+ if(d>0&&diceLeft<=0)return;if(d<0&&diceAlloc[i]<=0)return;
+ diceAlloc[i]+=d;diceLeft-=d;renderAllocation();
+}
+function finishDiceBonus(){
+ if(diceLeft!==0)return;
+ S.abilities=S.abilities.map((v,i)=>Math.min(100,v+diceAlloc[i]));renderAbilities();
+ S.log.push(`倒數${days[S.idx]}天｜正面突發事件「${S.breakingBonus?S.breakingBonus.title:"額外成長"}」：骰得 ${diceTotal} 點並完成能力分配。`); renderChairLog();
+ S.breakingBonus=null;S.idx++;window._jumpDiary=true;nextEvent();
+
+
+ afterDecisionTop();
+}
+
+function nextEvent(){
+ if(S.bankrupt)return;
+ const currentDay=days[S.idx];
+ if(currentDay===1){electionEve();return}
+ if(currentDay===0){finishElectionEve();return}
+ render();
+ let pool=S.cities.filter(c=>c.active),target=weightedCity(pool),e=events[Math.floor(Math.random()*events.length)];
+ S.current={e,target};
+ $('event').innerHTML=`<div class=pageTitle>選戰倒數 <span style="color:#ef4444;font-size:1.22em;font-weight:950">${days[S.idx]}</span> 天</div><div class=story>${diaryStory(days[S.idx],e,target)}</div>`;renderAbilities();
+ if(S.breakingBonus){showDiceBonus()}else{$('choices').innerHTML=e.opts.map((x,i)=>{let ei=events.indexOf(e),imp=optionImpact(ei,i),mode=questionMode(ei);let txt=mode==="chance"?(()=>{let q=chanceImpact(ei,i);return `${q.p}%機率 ${abilityNames[q.pos]}+${q.up}；失敗 ${abilityNames[q.neg]}${q.down}`})():impactText(imp);let fq=financeQuestion(ei),fc=fq?financeChoice(i):null;
+ let fl="";
+ if(fc){
+   if(fc.gain==="randomFundraise")fl="｜募款";
+   else if(fc.cost)fl=`｜資金 -${fc.cost}萬`;
+ }
+ return `<button onclick="choose(${i})">${String.fromCharCode(65+i)}. ${x[0]}${fq?`；${fc.label}`:""} <span class="choiceImpact">（${txt}${fl}）</span></button>`}).join('')}if(window._jumpDiary){window._jumpDiary=false;goNextPageTop()}
+}
+function choose(i){
+ let preview=S.current&&S.current.e&&S.current.e.opts?S.current.e.opts[i]:null;
+ if(fundingIsLow() && preview && preview[1]<0){alert("中央資金已低於 $1,000萬，無法再選擇投入資金的方案。");return;}
+
+ let {e,target:c}=S.current,o=e.opts[i],eventIndex=events.indexOf(e);
+ let baseDelta=o[1]||0;
+ let fq=financeQuestion(eventIndex),fc=fq?financeChoice(i):null;
+ let fundraiser=(fc&&fc.gain==="randomFundraise");
+ let raised=fundraiser?(100+Math.floor(Math.random()*601)):0; // 100~700萬
+ let financeDelta=fc?((fundraiser?raised:(fc.gain||0))-(fc.cost||0)):0;
+ let totalDelta=baseDelta+financeDelta;
+ if(S.money+totalDelta<0){alert('中央資金不足，無法執行這個方案');return}
+
+ // Resolve the ability effect that the player actually receives.
+ let mode=questionMode(eventIndex),appliedImp;
+ let resultNote="";
+ if(mode==="chance"){
+   let q=chanceImpact(eventIndex,i),success=Math.random()*100<q.p;
+   appliedImp=[0,0,0,0,0];
+   if(success){appliedImp[q.pos]=q.up;resultNote=`成功（${q.p}%機率）`;}
+   else{appliedImp[q.neg]=q.down;resultNote=`失敗（原成功機率${q.p}%）`;}
+ }else{
+   appliedImp=optionImpact(eventIndex,i);
+ }
+ const beforeAbilities=S.abilities.slice();
+ S.abilities=S.abilities.map((v,k)=>Math.max(0,Math.min(100,v+appliedImp[k])));
+ const actualChanges=S.abilities.map((v,k)=>v-beforeAbilities[k]);
+ const abilityLog=actualChanges.map((v,k)=>v?`${abilityNames[k]} ${v>0?"+":""}${v}`:"").filter(Boolean).join("、");
+
+ // Money is resolved now; next page will show the updated balance and log.
+ if(baseDelta!==0){
+   if(updateMoney(baseDelta,`倒數${days[S.idx]}天｜${c.n}・${e.t}｜${o[0]}`)===false)return;
+ }
+ if(fc){
+   if(fc.cost && updateMoney(-fc.cost,`倒數${days[S.idx]}天｜${c.n}｜${fc.label}支出`)===false)return;
+   if(fundraiser){
+     if(updateMoney(raised,`倒數${days[S.idx]}天｜${c.n}｜募款實收`)===false)return;
+   }else if(fc.gain){
+     if(updateMoney(fc.gain,`倒數${days[S.idx]}天｜${c.n}｜${fc.label}收入`)===false)return;
+   }
+ }
+
+ // Every decision that changes an ability must be visible in Chairman Itinerary.
+ let decisionLine=`倒數${days[S.idx]}天｜${c.n}・${e.t}：${o[0]}`;
+ if(resultNote)decisionLine+=`；${resultNote}`;
+ if(abilityLog)decisionLine+=`；主席能力變化：${abilityLog}`;
+ if(fundraiser)decisionLine+=`；本次募款實收 ${fmt(raised)}`;
+ decisionLine+=`。`;
+ S.log.push(decisionLine);
+ renderChairLog();
+ renderAbilities();
+
+ let swing=(o[2]+Math.random()*4-2)*(Math.random()<.82?1:-.45);
+ c.event+=swing;c.strategy+=o[3];
+ if(e.t.includes('親民')||e.t.includes('市場'))c.charm+=Math.max(0,o[2]/2);
+ S.skill=Math.max(20,Math.min(90,S.skill+o[3]*.35+(Math.random()*1.4-.7)));
+
+ S.idx++;window._jumpDiary=true;nextEvent();
+ afterDecisionTop();
+}
+
+function electionEve(){
+ // Force BOTH top status and diary title to day 1.
+ $('day').textContent="1 天";
+ S.eveStage="choice";
+
+ const opts=S.camp==="白"
+   ?["新竹市選前之夜造勢晚會","嘉義市選前之夜造勢晚會"]
+   :["北部選前之夜造勢晚會","中部選前之夜造勢晚會","南部選前之夜造勢晚會"];
+
+ const attack={
+  藍:"上午仍是正常的選戰攻防。對手陣營針對藍營近期談話與地方政策提出批評，記者一路追問到中央黨部。主席與幕僚決定做最後一次集中回應：該澄清的立即澄清，但不再把最後一天耗在無止盡的口水戰。",
+  綠:"上午仍是正常的選戰攻防。藍白陣營持續把中央施政與地方選情綁在一起攻擊，媒體也要求黨中央回應。主席拍板由發言團隊完成最後一輪說明，候選人則照常跑市場、車隊與街頭行程。",
+  白:"上午仍是正常的選戰攻防。藍綠兩邊都對白營提出質疑，媒體焦點也集中在合作與政黨自主性。主席要求幕僚完成最後一輪回應後就停止延長戰線，把剩下的時間全部留給晚間動員。"
+ }[S.camp];
+
+ const rallyPrep=S.camp==="白"
+  ?"中午過後，戰情室的畫面開始從攻防新聞切換成今晚的造勢現場。新竹市與嘉義市兩個選前之夜會場都已開始搭舞台，音響、燈光、直播車、進場動線與志工報到同步進行。兩邊地方團隊都要求主席親自壓軸，中央幕僚因此把兩場晚會的最新準備情況並排放到你面前。"
+  :"中午過後，戰情室的畫面開始從攻防新聞切換成今晚的造勢現場。北部、中部、南部三場選前之夜都已開始搭舞台，音響、燈光、直播車、遊覽車停靠區與支持者進場動線同步準備。三區地方黨部都要求主席親自壓軸，中央幕僚因此把三場晚會的最新準備情況並排放到你面前。";
+
+ const evening=S.camp==="白"
+  ?"下午五點左右，新竹市與嘉義市現場陸續傳回第一批支持者抵達的畫面。白天的選戰攻防到此逐漸退居次要位置，最後一夜的主角已經變成造勢晚會。"
+  :"下午五點左右，北、中、南三個會場陸續傳回第一批支持者抵達的畫面。白天的選戰攻防到此逐漸退居次要位置，最後一夜的主角已經變成造勢晚會。";
+
+ $('event').innerHTML=`<div class=pageTitle>選戰倒數 <span style="color:#ef4444;font-size:1.22em;font-weight:950">1</span> 天</div>
+ <div class=story>${attack}<br><br>${rallyPrep}<br><br>${evening}<br><br>
+ <b>今晚要把主席、中央黨部與最後動員的最主力放在哪一場造勢晚會？</b></div>`;
+
+ $('choices').innerHTML=opts.map((x,i)=>`<button onclick="selectElectionEveRally(${i})">${String.fromCharCode(65+i)}. ${x}</button>`).join("");
+ renderAbilities();renderChairLog();
+ goNextPageTop();
+}
+
+function selectElectionEveRally(i){
+ S.eveChoice=i;
+ S.eveStage="transition";
+ const diaryEl=document.getElementById("event");
+ const choicesEl=document.getElementById("choices");
+ if(diaryEl)diaryEl.innerHTML='<div class=pageTitle>選戰倒數 <span style="color:#ef4444">1</span> 天</div><div class=story>主席行程已拍板，車隊正前往今晚的選前之夜造勢會場……</div>';
+ if(choicesEl)choicesEl.innerHTML="";
+ // Deliberately render on the next task so no previous click/render can overwrite the rally page.
+ setTimeout(()=>renderElectionEveRally(i),0);
+}
+
+function renderElectionEveRally(i){
+ const opts=S.camp==="白"
+   ?["新竹市選前之夜造勢晚會","嘉義市選前之夜造勢晚會"]
+   :["北部選前之夜造勢晚會","中部選前之夜造勢晚會","南部選前之夜造勢晚會"];
+ const chosen=opts[i]||opts[0];
+ const diaryEl=document.getElementById("event");
+ const choicesEl=document.getElementById("choices");
+ // Hard-clear the first day-1 page before constructing the rally diary.
+ diaryEl.innerHTML="";
+ choicesEl.innerHTML="";
+
+ // 選完場次後仍固定是倒數1天。
+ $('day').textContent="1 天";
+ S.eveStage="rally";
+
+ // 選定區域獲得最後動員效果。
+ S.cities.forEach(c=>{
+   if(!c.active)return;
+   let hit=false;
+   if(S.camp==="白"){
+     hit=(i===0&&c.n==="新竹市")||(i===1&&c.n==="嘉義市");
+   }else{
+     const north=["臺北市","台北市","新北市","桃園市","基隆市","新竹市","新竹縣","宜蘭縣"].includes(c.n);
+     const central=["臺中市","台中市","苗栗縣","彰化縣","南投縣","雲林縣"].includes(c.n);
+     const south=["嘉義市","嘉義縣","臺南市","台南市","高雄市","屏東縣","澎湖縣"].includes(c.n);
+     hit=(i===0&&north)||(i===1&&central)||(i===2&&south);
+   }
+   c.strategy+=hit?7:1;
+ });
+
+ const arrival=[
+  `傍晚，主席車隊抵達「${chosen}」會場外圍。入口前已排起人龍，志工一邊發放旗幟與手舉牌，一邊引導支持者進場。舞台上的燈光與音響完成最後測試，主持人不時拿起麥克風帶著已入場的群眾試喊口號。`,
+  `天色剛暗，主席抵達「${chosen}」。遊覽車陸續在外圍下客，支持者從不同入口湧入；舞台後方則忙著確認登台順序、麥克風與影片播放時間。原本還看得到空隙的會場，很快被旗幟與人潮填滿。`,
+  `「${chosen}」在傍晚正式進入最後準備。主席抵達時，舞台兩側大螢幕正在播放暖場影片，志工拿著對講機來回確認動線。前排支持者已開始揮旗，後方仍有人持續進場。`
+ ];
+ const opening=[
+  "晚會正式開始，競選歌曲響起，主持人從舞台中央登場，第一輪口號立刻帶動全場。地方候選人與地方幹部依序上台，每一次介紹名字，台下便跟著揮動旗幟。攝影機沿著伸展台移動，大螢幕同步播放現場特寫。",
+  "開場倒數結束後，舞台燈光瞬間全亮。主持人先帶全場連喊三次口號，接著安排地方候選人輪番登台。候選人走到伸展台前端向四周揮手，前排支持者紛紛舉起手機拍攝。",
+  "暖場表演結束，主持人宣布選前之夜正式開始。地方候選人先後登台，舞台後方工作人員拿著流程表逐段確認時間；台下則隨著音樂與口號一次次掀起旗海。"
+ ];
+ const incident=[
+  "進行到中段時，主舞台麥克風突然沒有聲音。主持人愣了一秒，乾脆走到舞台最前方直接帶頭喊口號，台下立刻整齊回應。工作人員不到一分鐘就恢復設備，這場意外反而成為晚會第一個小高潮。",
+  "活動進行到一半，天空突然飄起一陣雨。工作人員趕緊替器材加上防水布，台下也陸續撐起雨傘。原以為人潮會散去，沒想到不少支持者仍留在原地，主持人順勢帶起口號，現場聲量反而更大。",
+  "一名原定登台的站台人士因路上塞車遲到，後台流程臨時大亂。主持人立刻多安排一段與群眾互動，候選人也提前登台向前排握手。幾分鐘後車隊抵達，晚會才重新接回原本流程。",
+  "舞台側邊的大型布條突然被風吹鬆，工作人員衝上前重新固定。台上的主持人沒有停下節奏，還臨時請全場替工作人員鼓掌，原本的小事故反而引來一陣笑聲與歡呼。"
+ ];
+ const buildup=[
+  "時間愈晚，登台層級也愈來愈高。幾名重要站台人士接連現身，現場每一次介紹都引發更大的歡呼。後台提醒主席距離壓軸只剩十分鐘，工作人員開始清空舞台中央，燈光也逐漸轉向主舞台入口。",
+  "晚會逐漸進入高潮，主持人的語速愈來愈快，台下口號一波接一波。候選人再次回到舞台中央，站台人士也陸續集合。後台倒數主席登台時間，攝影機全部轉向舞台入口。",
+  "接近壓軸時段，會場已幾乎沒有暖場空檔。歌曲、口號與登台介紹連續接在一起，台下支持者紛紛站起來。主席在後台整理完衣服，工作人員隨即比出準備登台的手勢。"
+ ];
+ const climax=[
+  "主持人高聲介紹主席名字，主席從舞台側邊走出，全場聲量瞬間拉到最高。主席先與候選人握手，再走到伸展台最前端向四面支持者致意。壓軸談話結束後，所有候選人與站台人士一起回到台上，眾人牽手高舉，台下口號連續響了好幾輪。",
+  "主席壓軸登場時，舞台燈光全部集中到中央。主席一路走到伸展台最前方，沿途向左右兩側揮手。最後一段談話結束，主持人請全場打開手機燈光，整個會場逐漸形成一片燈海，候選人與主席站在台上一同向支持者致意。",
+  "壓軸時刻，競選歌曲前奏響起，主席與候選人一起登台。台下支持者跟著旋律揮動旗幟，前排甚至開始合唱。歌曲結束前，彩帶從舞台兩側噴出，主持人帶領全場喊出今晚最後一輪口號。"
+ ];
+ const ending=[
+  "晚會結束後，主持人請支持者依照工作人員指示分批離場。舞台燈光一盞一盞熄滅，志工開始回收旗幟、整理座椅與拆除入口指示牌。主席離開前又回到舞台側邊，向仍在收拾器材的工作人員逐一握手。直到車隊駛離，會場才真正安靜下來。",
+  "散場音樂響起，人潮慢慢往各個出口移動。候選人留在舞台旁與最後幾排支持者握手，工作人員開始整理電線、看板與音響設備。主席最後向現場志工揮手致意後搭車離開，這場選前之夜正式落幕。",
+  "最後一輪口號結束，主持人宣布晚會落幕。支持者陸續收起旗幟往外走，原本擁擠的會場逐漸露出地面。後台工作人員開始盤點設備，主席與候選人最後一次向尚未離場的人群鞠躬，隨後走下舞台，結束整個選前之夜。"
+ ];
+
+ const pick=a=>a[Math.floor(Math.random()*a.length)];
+ diaryEl.innerHTML=`<div class=pageTitle>選戰倒數 <span style="color:#ef4444;font-size:1.22em;font-weight:950">1</span> 天｜${chosen}</div>
+ <div style="font-weight:900;margin:0 0 16px 0">【選前之夜・造勢晚會現場】</div>
+ <div class=story>
+ <b>今晚最後主力確定投入「${chosen}」。以下只記錄這場造勢晚會的現場經過。</b><br><br>
+ ${pick(arrival)}<br><br>
+ ${pick(opening)}<br><br>
+ ${pick(incident)}<br><br>
+ ${pick(buildup)}<br><br>
+ ${pick(climax)}<br><br>
+ ${pick(ending)}
+ </div>`;
+
+ S.log.push(`倒數1天｜主席前往「${chosen}」壓軸，完成選前之夜最後造勢。`);
+ renderChairLog();
+ $('money').textContent=fmt(S.money);
+ choicesEl.innerHTML='<button class="gold eveFinishBtn" onclick="finishElectionEve()">結束選前之夜，即將開票</button>';
+ goNextPageTop();
+}
+
+function finishElectionEve(){
+ snapshotFinalPolls();
+ const zeroIndex=days.indexOf(0); if(zeroIndex>=0)S.idx=zeroIndex;
+ // 按下「結束選前之夜，即將開票」後，直接進入開票實況。
+ countVotes();
+ afterDecisionTop();
+}
+
+
+function snapshotFinalPolls(){
+ S.finalPollLeaders={};
+ for(const c of (S.cities||[])){
+   const d=D.find(x=>x[0]===c.n); if(!d)continue;
+   const entries=[
+    {camp:"藍",name:d[7],base:d[1]||33},
+    {camp:"綠",name:d[8],base:d[2]||33},
+    {camp:"白",name:d[9],base:d[3]||15}
+   ].filter(x=>x.name&&x.name!=="—"&&x.name!=="無"&&x.name!=="未提名");
+   if(entries.length<2)continue;
+   let sums=entries.map(()=>0);
+   pollMedia.forEach((pm,mi)=>{
+     let vals=entries.map((x,ki)=>{
+       let seed=(c.n.charCodeAt(0)*11+c.n.charCodeAt(c.n.length-1)*7+mi*31+ki*17+(S.idx||0)*13)%23;
+       let jitter=(seed-11)*.58, house=(x.camp===pm[1]?pm[2]+2.8:0);
+       let v=Math.max(4,x.base+house+jitter);
+       if(c.n==="臺北市"||c.n==="台北市"){
+         if(x.camp==="藍")v+=mi===2?-4:5.5;
+         if(x.camp==="綠")v+=mi===2?7:-1.5;
+       }
+       return v;
+     });
+     let total=vals.reduce((a,b)=>a+b,0);
+     vals.forEach((v,i)=>sums[i]+=v/total*100);
+   });
+   let best=sums.indexOf(Math.max(...sums));
+   S.finalPollLeaders[c.n]=entries[best].camp;
+ }
+}
+
+function gameGoalResult(winners){
+ let counts={藍:0,綠:0,白:0};
+ Object.values(winners||{}).forEach(x=>{if(counts[x]!=null)counts[x]++});
+ if(S.camp==="藍")return counts.綠<=3?`主要目標達成：綠營最終 ${counts.綠} 席。`:`主要目標未達成：綠營最終 ${counts.綠} 席。`;
+ if(S.camp==="綠"){
+   const base2022={臺北市:"藍",新北市:"藍",桃園市:"藍",臺中市:"藍",臺南市:"綠",高雄市:"綠",基隆市:"藍",新竹市:"白",新竹縣:"藍",苗栗縣:"無",彰化縣:"藍",南投縣:"藍",雲林縣:"藍",嘉義市:"藍",嘉義縣:"綠",屏東縣:"綠",宜蘭縣:"藍",花蓮縣:"無",臺東縣:"無",澎湖縣:"綠",金門縣:"無",連江縣:"藍"};
+   let flips=Object.keys(winners||{}).filter(k=>winners[k]==="綠"&&["藍","白"].includes(base2022[k])).length;
+   return flips>=3?`主要目標達成：共有 ${flips} 席由藍／白轉綠。`:`主要目標未達成：共有 ${flips} 席由藍／白轉綠。`;
+ }
+ let ok=winners&&winners["新竹市"]==="白"&&winners["嘉義市"]==="白";
+ return ok?"主要目標達成：新竹市與嘉義市皆拿下。":"主要目標未達成：新竹市與嘉義市未能同時拿下。";
+}
+
+
+function evaluateAchievements(winners, votePct){
+ const pct=votePct||S.finalVotePct||{};
+ const wonCities=Object.keys(winners||{}).filter(k=>winners[k]===S.camp);
+ const over60=wonCities.filter(k=>(pct[k]&&pct[k][S.camp]>=60));
+ const comebacks=wonCities.filter(k=>S.finalPollLeaders&&S.finalPollLeaders[k]&&S.finalPollLeaders[k]!==S.camp);
+ let gold=false,s1=false,s2=false,goldText="",s1Text="",s2Text="";
+ if(S.camp==="藍"){
+   let green=Object.values(winners||{}).filter(x=>x==="綠").length;
+   gold=green<=3; goldText="讓綠營最終只剩3席（含）以下";
+   s1=over60.length>=4;s1Text="至少4個縣市得票率超過60%";
+   s2=comebacks.length>=1;s2Text="至少1個最終民調落後縣市反敗為勝";
+ }else if(S.camp==="綠"){
+   const base2022={臺北市:"藍",新北市:"藍",桃園市:"藍",臺中市:"藍",臺南市:"綠",高雄市:"綠",基隆市:"藍",新竹市:"白",新竹縣:"藍",苗栗縣:"無",彰化縣:"藍",南投縣:"藍",雲林縣:"藍",嘉義市:"藍",嘉義縣:"綠",屏東縣:"綠",宜蘭縣:"藍",花蓮縣:"無",臺東縣:"無",澎湖縣:"綠",金門縣:"無",連江縣:"藍"};
+   let flips=Object.keys(winners||{}).filter(k=>winners[k]==="綠"&&["藍","白"].includes(base2022[k])).length;
+   gold=flips>=3;goldText="至少3席由藍／白轉為綠營";
+   s1=over60.length>=4;s1Text="至少4個縣市得票率超過60%";
+   s2=comebacks.length>=2;s2Text="至少2個最終民調落後縣市反敗為勝";
+ }else{
+   gold=winners&&winners["新竹市"]==="白"&&winners["嘉義市"]==="白";goldText="奪下新竹市與嘉義市";
+   // Hsinchu County: 鄭朝方 is green in the game candidate table.
+   s1=winners&&winners["新竹縣"]==="綠";s1Text="鄭朝芳獲勝";
+   const special=["新竹市","嘉義市"].some(k=>winners&&winners[k]==="白"&&pct[k]&&pct[k]["白"]>=60);
+   s2=special;s2Text="高虹桉或張啓凱至少一人得票率超過60%";
+ }
+ let progress=[];
+ if(S.camp==="藍"){
+   let green=Object.values(winners||{}).filter(x=>x==="綠").length;
+   progress=[`${Math.max(0,22-green)}/19`,`${Math.min(over60.length,4)}/4`,`${Math.min(comebacks.length,1)}/1`];
+ }else if(S.camp==="綠"){
+   const base2022b={臺北市:"藍",新北市:"藍",桃園市:"藍",臺中市:"藍",臺南市:"綠",高雄市:"綠",基隆市:"藍",新竹市:"白",新竹縣:"藍",苗栗縣:"無",彰化縣:"藍",南投縣:"藍",雲林縣:"藍",嘉義市:"藍",嘉義縣:"綠",屏東縣:"綠",宜蘭縣:"藍",花蓮縣:"無",臺東縣:"無",澎湖縣:"綠",金門縣:"無",連江縣:"藍"};
+   let flips2=Object.keys(winners||{}).filter(k=>winners[k]==="綠"&&["藍","白"].includes(base2022b[k])).length;
+   progress=[`${Math.min(flips2,3)}/3`,`${Math.min(over60.length,4)}/4`,`${Math.min(comebacks.length,2)}/2`];
+ }else{
+   let gdone=(winners&&winners["新竹市"]==="白"?1:0)+(winners&&winners["嘉義市"]==="白"?1:0);
+   // correct calculation below; retained as explicit two-city count
+   gdone=(winners&&winners["新竹市"]==="白"?1:0)+(winners&&winners["嘉義市"]==="白"?1:0);
+   let zdone=(winners&&winners["新竹縣"]==="綠")?1:0;
+   let spdone=["新竹市","嘉義市"].filter(k=>winners&&winners[k]==="白"&&pct[k]&&pct[k]["白"]>=60).length;
+   progress=[`${gdone}/2`,`${zdone}/1`,`${Math.min(spdone,1)}/1`];
+ }
+ return [{kind:"gold",ok:gold,text:goldText,progress:progress[0]},{kind:"silver",ok:s1,text:s1Text,progress:progress[1]},{kind:"silver",ok:s2,text:s2Text,progress:progress[2]}];
+}
+function renderAchievements(winners,votePct){
+ let host=document.getElementById("achievementPanel");
+ if(!host){
+   host=document.createElement("div");host.id="achievementPanel";host.className="achievementPanel";
+   const counting=document.getElementById("counting");(counting||document.body).appendChild(host);
+ }
+ let a=evaluateAchievements(winners,votePct);
+ host.innerHTML=`<h2>本屆選戰目標檢視</h2>`+a.map(x=>`<div class="achievement ${x.kind} ${x.ok?"done":"miss"}">${x.ok?`<span class="trophy">${x.kind==="gold"?"🏆":"🏆"}</span>`:""}<b>${x.kind==="gold"?"金目標":"銀目標"}</b> <span class="achievementProgress">${x.progress}</span><br>${x.text}<div>${x.ok?"達成":"未達成"}</div></div>`).join("");
+ const vals=S.abilities||[0,0,0,0,0];
+ const badges=vals.map((v,i)=>{
+   let badge=v>=90?`<span style="font-size:25px">🥇</span><b>金徽章</b>`:(v>=85?`<span style="font-size:25px">🥈</span><b>銀徽章</b>`:`<span style="opacity:.55">— 未獲徽章 —</span>`);
+   return `<div class="achievement ${v>=90?"gold":(v>=85?"silver":"")} ${v>=85?"done":"miss"}"><b>${abilityNames[i]} ${v}分</b><div style="margin-top:7px">${badge}</div></div>`;
+ }).join("");
+ host.innerHTML+=`<h2 style="margin-top:26px">主席五項能力徽章</h2><p class="sub">85–89分獲得銀徽章；90分以上獲得金徽章。每項能力最多獲得一種徽章。</p>${badges}`;
+}
+
+function buildMap(){let regions=[
+[0,'M232 42l26 8 8 18-30 8z'],[1,'M213 55l23 21-12 24-29-13z'],[2,'M195 87l29 13-8 31-36-10z'],[3,'M180 121l36 10-10 31-39-8z'],[4,'M167 154l39 8-11 29-40-7z'],[5,'M155 184l40 7-12 31-40-8z'],[6,'M143 214l40 8-13 32-40-9z'],[7,'M130 245l40 9-14 31-39-9z'],[8,'M117 276l39 9-15 31-37-10z'],[9,'M104 306l37 10-15 31-36-11z'],[10,'M90 336l36 11-16 31-34-12z'],[11,'M76 366l34 12-17 31-31-13z'],[12,'M156 254l27-32 20 19-18 40z'],[13,'M141 285l44-4-18 38-41-3z'],[14,'M126 316l41 3-19 38-38-10z'],[15,'M62 396l31 13-19 37-27-16z'],[16,'M216 131l28 9-13 38-25-16z'],[17,'M206 162l25 16-18 64-30-20z'],[18,'M183 222l30 20-20 69-37-26z'],[19,'M24 330h30v22H24z'],[20,'M15 420h34v25H15z'],[21,'M282 86h25v31h-25z']];let svg='<svg viewBox="0 0 330 540" aria-label="台灣22縣市即時選情地圖">';svg+='<path d="M234 36 C269 47 276 75 258 108 C246 132 239 158 229 186 C218 218 207 249 193 281 C178 316 161 352 142 386 C123 420 101 458 74 501 C60 487 62 466 70 443 C80 413 91 383 103 352 C116 318 129 284 142 249 C156 213 170 177 184 142 C199 105 214 67 234 36Z" fill="#101a31" stroke="#dbe5ff" stroke-width="4"/>';regions.forEach(([i,d])=>svg+=`<path id="map${i}" class="region" d="${d}" fill="#667085"/>`);svg+='<text x="39" y="325" fill="#fff" font-size="10">澎湖</text><text x="30" y="414" fill="#fff" font-size="10">金門</text><text x="294" y="80" fill="#fff" font-size="10">連江</text></svg>';$('taiwanMap').innerHTML=svg}
+function finalShares(c){
+ let d=D.find(x=>x[0]===c.n),raw=[0,0,0];
+ for(let j=0;j<3;j++){
+   let local=d[4+j],active=d[7+j]!=='—';
+   let base=active?(d[1+j]+(local||d[1+j]))/2:0;
+   if(!active){raw[j]=0;continue}
+   let own=S.camp===P[j]?c:null;
+   let charm=own?c.charm:45+Math.random()*22,event=own?c.event:(Math.random()*10-5),strategy=own?c.strategy:(Math.random()*14-2),chair=own?S.skill:50+Math.random()*10;
+   raw[j]=Math.max(1,.50*base+.10*(50+event)+.15*charm+.25*(50+strategy+(chair-50)*.4));
+ }
+ let other=Math.max(0,100-raw.reduce((a,b)=>a+b,0));
+
+ // Special game parameters requested for six named candidates.
+ // The roll is made once per game; if the candidate wins/loses, the main-opponent gap is 0.6–4.8 percentage points.
+ const aliases={
+  "鄭朝芳":["鄭朝芳","鄭朝方"],"張啓凱":["張啓凱","張啟楷"],
+  "蘇清泉":["蘇清泉"],"魏平政":["魏平政"],"柯志恩":["柯志恩"],"謝龍介":["謝龍介"]
+ };
+ let specialKey=null,sj=-1;
+ for(const [key,names] of Object.entries(aliases)){
+   let j=[d[7],d[8],d[9]].findIndex(n=>names.includes(n));
+   if(j>=0){specialKey=key;sj=j;break}
+ }
+ if(specialKey && S.specialRaceRolls && S.specialRaceRolls[specialKey]!==undefined){
+   // Find strongest actual opponent among named camps + other.
+   let oppCandidates=[];
+   for(let j=0;j<3;j++)if(j!==sj&&d[7+j]!=='—')oppCandidates.push({type:"camp",j,val:raw[j]});
+   if(other>0)oppCandidates.push({type:"other",j:3,val:other});
+   oppCandidates.sort((a,b)=>b.val-a.val);
+   let opp=oppCandidates[0];
+   if(opp){
+     const win=S.specialRaceRolls[specialKey],gap=.6+Math.random()*4.2;
+     // Keep all minor candidates modest, then set special vs main opponent to a close race.
+     let minorTotal=0;
+     for(let j=0;j<3;j++)if(j!==sj && !(opp.type==="camp"&&j===opp.j)){raw[j]=Math.min(raw[j],8);minorTotal+=raw[j]}
+     if(opp.type!=="other")other=Math.min(other,8),minorTotal+=other;
+     let pair=100-minorTotal;
+     let specialPct=(pair+(win?gap:-gap))/2;
+     let oppPct=pair-specialPct;
+     raw[sj]=specialPct;
+     if(opp.type==="camp")raw[opp.j]=oppPct; else other=oppPct;
+   }
+ }
+ let sum=raw.reduce((a,b)=>a+b,0)+other;
+ return {sh:raw.map(x=>x/sum),other:other/sum}
+}
+function countVotes(){
+ const isUnnominatedName=n=>!n||n==="—"||n==="未提名";
+
+ afterDecisionTop();game.classList.add('hidden');counting.classList.remove('hidden');buildMap();let baseTotals=[1500000,2200000,1350000,1500000,900000,1300000,180000,260000,95000,260000,290000,650000,275000,365000,270000,440000,235000,150000,112000,51000,47000,8500];let rows=S.cities.map((c,i)=>{let f=finalShares(c);return {n:c.n,total:Math.round(baseTotals[i]*(.92+Math.random()*.16)),shares:f.sh,other:f.other,p:0,done:false,duration:30000+Math.random()*10000,startedAt:performance.now()}});$('voteRows').innerHTML=rows.map((r,i)=>{let d=D.find(x=>x[0]===r.n);return `<div class=city style="margin:7px 0"><b>${r.n}</b>　<span id=p${i}>等待開票</span><div class=results><span class=vote id=a${i}>🔵 ${d[7]==='—'?'未提名':d[7]}：0</span><span class=vote id=b${i}>🟢 ${d[8]==='—'?'未提名':d[8]}：0</span><span class=vote id=c${i}>⚪ ${d[9]==='—'?'未提名':d[9]}：0</span></div><div class=sub id=o${i}>其他候選人：0</div></div>`}).join('');let tick=0,t=setInterval(()=>{tick++;let now=performance.now();rows.forEach((r,i)=>{if(r.done)return;
+ // Each county/city has its own 30–40 second finish time and a different counting curve.
+ let elapsed=Math.max(0,now-r.startedAt),base=Math.min(1,elapsed/r.duration);
+ let curvePower=.72+((i*17)%13)/20; // visibly different early/late reporting patterns
+ let curved=Math.pow(base,curvePower);
+ let wobble=base<.97?(Math.sin(tick*.41+i*1.73)*.006 + (Math.random()-.5)*.004):0;
+ r.p=Math.min(100,Math.max(r.p,(curved+wobble)*100));
+ if(elapsed>=r.duration){r.p=100;r.done=true;}let d=D.find(x=>x[0]===r.n),present=[d[7]!=='—',d[8]!=='—',d[9]!=='—'];let sh=r.shares.map((x,j)=>present[j]?Math.max(0,x+(r.p<90?(Math.random()-.5)*.012:0)):0),sum=sh.reduce((a,b)=>a+b,0)+r.other,vals=sh.map((x,j)=>present[j]?Math.round(r.total*x/sum*r.p/100):0),ov=Math.round(r.total*r.other/sum*r.p/100),nms=[d[7]==='—'?'未提名':d[7],d[8]==='—'?'未提名':d[8],d[9]==='—'?'未提名':d[9]];let shownTotal=vals.reduce((a,b)=>a+b,0)+ov;['a','b','c'].forEach((x,j)=>$(x+i).textContent=['🔵 ','🟢 ','⚪ '][j]+nms[j]+'：'+vals[j].toLocaleString()+'（'+(shownTotal?vals[j]/shownTotal*100:0).toFixed(2)+'%）');let others=d[10]||[],otherLabel='其他候選人';if(others.length){let weights=others.map((_,k)=>1/(k+1)),ws=weights.reduce((a,b)=>a+b,0),ovals=weights.map(w=>Math.round(ov*w/ws));let oi=ovals.indexOf(Math.max(...ovals));if(ovals[oi]>Math.max(...vals)*.35||r.other>.12)otherLabel=others[oi];$('o'+i).textContent=otherLabel+'：'+ovals[oi].toLocaleString()+'（'+(shownTotal?ovals[oi]/shownTotal*100:0).toFixed(2)+'%）'+(others.length>1?'；其他 '+(ov-ovals[oi]).toLocaleString():'');}else $('o'+i).textContent='其他候選人：'+ov.toLocaleString()+'（'+(shownTotal?ov/shownTotal*100:0).toFixed(2)+'%）';$('p'+i).textContent=r.done?'開票完成':'開票 '+Math.floor(r.p)+'%';let all=[...vals,ov],w=all.indexOf(Math.max(...all)),m=$('map'+i);if(m)m.setAttribute('fill',w<3?COLORS[w]:'#667085')});let done=rows.filter(r=>r.done).length;$('countStatus').textContent=`全台 22 縣市同步回報中：${done}/22 已完成開票`;if(done===22){clearInterval(t);$('countStatus').textContent='全台22縣市開票完成';setTimeout(()=>finish(rows),500)}},360)}
+function finish(rows){
+ let wins=[0,0,0,0],winners={},votePct={};
+ rows.forEach((r,i)=>{
+   let vals=[...r.shares,r.other],w=vals.indexOf(Math.max(...vals));wins[w]++;
+   let city=S.cities[i]?.n||D[i]?.[0];
+   if(city){
+     winners[city]=w<3?["藍","綠","白"][w]:"其他";
+     let total=vals.reduce((a,b)=>a+b,0)||1;
+     votePct[city]={藍:vals[0]/total*100,綠:vals[1]/total*100,白:vals[2]/total*100};
+   }
+   if(w<3)document.getElementById(['a','b','c'][w]+i).classList.add('lead');else document.getElementById('o'+i).classList.add('lead');
+ });
+ S.finalVotePct=votePct;S.winners=winners;
+ countStatus.innerHTML=`<b>開票完成：</b> 🔵 ${wins[0]} 席　🟢 ${wins[1]} 席　⚪ ${wins[2]} 席　其他／無黨 ${wins[3]} 席<br><span class=sub>${S.chair}主席本局的選戰已結束。粗體為各縣市本局模擬最高票陣營；結果僅屬遊戲模擬。</span>`;
+ renderAchievements(winners,votePct);
+ afterDecisionTop();
+}
+function resetGame(){location.reload()}
+
+
+
+</script><script>
+window.NARRATIVE_STYLES=[
+"清晨六點，競選總部的燈比早餐店更早亮起。","今天的故事從一通沒有署名的電話開始。","地方幹部把一疊剪報放到桌上，沒有人先開口。","車隊剛離開黨部，幕僚群組便連續跳出十幾則訊息。","雨從昨夜下到天亮，原定行程因此全被打亂。","你在高鐵上翻開最新戰情報告，第一頁就被紅筆圈了三次。","上午的例會異常安靜，直到組織部主管推門進來。","一場普通的市場掃街，意外成了今天新聞焦點。","中午以前，一段二十秒的影片已經傳遍各大群組。","今天沒有大型造勢，但地方上的暗潮比舞台上的聲音更大。",
+"競選總部收到三份互相矛盾的地方回報。","你才剛坐下吃早餐，發言人就把手機遞到你面前。","夜裡十一點，原本準備熄燈的黨部突然又召開臨時會議。","今天的第一個難題不是民調，而是黨內自己人。","候選人的車隊在巷口停下，一位居民的反應讓幕僚重新評估整天行程。","一份地方報紙的頭版標題，讓所有人一早就繃緊神經。","造勢舞台還沒搭完，網路上的另一場戰爭已經先開打。","選戰進入中段後，每一個微小決定都開始產生連鎖反應。","今天的行程表排得密密麻麻，但真正重要的事情並沒有寫在上面。","地方主委帶著兩名資深黨員北上，要求立刻見你。",
+"一場廟口座談原本只有數十人，最後卻擠滿整條街。","上午記者會結束後，記者們沒有散去，反而追問另一個突發議題。","今天總部收到的不是壞消息，而是一個讓人難以判斷真假的好消息。","候選人突然要求取消既定講稿，想用自己的方式說話。","前幾天的政論節目一路延燒到今天，地方支持者開始互相詢問中央態度。","競選辦公室外出現一群沒有事先通知的支持者。","原本被視為安全的選區，今天第一次亮起警示燈。","原本被認為毫無機會的地方，卻傳來意外的組織動員訊號。","所有幕僚都在談同一張截圖，但沒有人能確認它最初從哪裡流出。","下午三點，一名地方人士公開發言，瞬間改變今天的新聞節奏。",
+"你抵達活動現場時，發現合作陣營的人也已經到了。","今天的難題沒有標準答案，每個選項都可能得罪一部分人。","競選總部的白板被重新擦掉，原本的戰略箭頭全部重畫。","一場剪綵活動看似平淡，候選人與民眾的一個互動卻意外爆紅。","今天媒體關注的不是政策，而是一句只有八個字的話。","總部內部流出不同意見，記者開始追問是否出現路線之爭。","青年志工帶回一份與資深幹部完全不同的觀察。","地方組織說風向變了，但數據組認為證據還不夠。","今天沒有人犯大錯，然而對手卻成功把議題帶向你最不想談的方向。","一場臨時直播吸引大量觀看，留言區很快變成另一個戰場。",
+"候選人結束市場拜票後，堅持多留半小時聽攤商抱怨。","黨中央原本想低調處理的事情，被一名黨員公開說了出來。","一張候選人蹲下與民眾交談的照片在網路快速流傳。","對手陣營上午召開記者會，點名要求你在今晚以前回應。","今天新聞循環快得驚人，上午的危機到了下午竟被另一件事蓋過。","地方團隊要求更多自主權，中央幕僚則擔心訊息失控。","競選車上的廣播還在播放口號，總部卻傳來一項需要立即決定的消息。","一位原本保持沉默的地方重量級人物，今天突然公開表態。","社群聲量一夜暴增，但幕僚無法判斷究竟是自然討論還是刻意操作。","倒數數字愈來愈小，會議中第一次有人說：已經沒有多少修正機會了。"];
+window.CROSS_PARTY_EVENTS=[
+{c:["blue","white"],t:"合作陣營要求協調站台",b:"合作黨派地方人士希望共同站台，但兩邊基層對候選人排序與主視覺都有意見。"},
+{c:["blue","white"],t:"藍白地方整合出現雜音",b:"合作陣營地方幹部公開表示，中央談好的合作方式到了地方未必適用。"},
+{c:["blue","green","white"],t:"對手陣營公開放話",b:"其他政黨召開記者會批評己方策略。這是對手的政治攻防主張，並非遊戲認定的既定事實。"},
+{c:["blue","green","white"],t:"匿名指控在群組流傳",b:"一則不利己方的匿名說法大量轉傳，查核小組暫時找不到可靠來源。"},
+{c:["blue","green","white"],t:"疑似協同帳號洗版",b:"幕僚發現「臉輸」、「脆德」與「You吐」突然出現大量高度相似貼文，無法確認帳號背後是否受任何政黨指揮。"},
+{c:["blue","green","white"],t:"短影音風向突變",b:"「踢客托克」大量出現剪輯片段，部分內容截去前後文，青年幕僚主張立刻放出完整版。"},
+{c:["blue","green","white"],t:"假截圖瘋傳",b:"一張聲稱來自候選人私訊的截圖在「賴恩」群組擴散，數位組初判有加工痕跡，但仍待查核。"},
+{c:["blue","green","white"],t:"政論節目集中攻防",b:"多個節目把焦點放在己方候選人，幕僚必須決定是否派人回應。"}];
+window.pickNarrativeStyle=(seed)=>NARRATIVE_STYLES[Math.abs(seed||Date.now())%50];
+window.pickCrossPartyEvent=(camp,seed)=>{let p=CROSS_PARTY_EVENTS.filter(x=>x.c.includes(camp));return p[Math.abs(seed||Date.now())%p.length];};
+</script>
+
+<script>
+/* v7: 30 narrative structures + geographic agenda weighting + 50/25/25 camp share */
+window.STORY_STRUCTURES = Array.from({length:30},(_,i)=>({
+ id:i,
+ build:(ctx)=>{
+   const self=ctx.self||"己方", a=ctx.rivalA||"另一陣營", b=ctx.rivalB||"第三陣營";
+   const place=ctx.place||"地方選區", issue=ctx.issue||"選戰議題";
+   const forms=[
+    `${place}的一個小插曲先引爆討論。${a}率先出招，${b}隨後跟進；${self}內部直到午後才形成共識。事情看似降溫，晚間社群卻因${issue}再度翻盤。`,
+    `故事先從${a}的記者會開始。${self}原本不打算跟進，卻因${place}地方回報而改變節奏；${b}趁空檔切入。到了深夜，真正的問題才浮上檯面。`,
+    `今天沒有明顯的開場危機。${self}按表操課，${a}與${b}卻各自在不同戰場推進。直到一段現場影片出現，三方策略突然交會。`,
+    `先有結果、後找原因：傍晚數據異常，幕僚回頭追查才發現上午${place}的${issue}已悄悄發酵。${self}、${a}、${b}對同一件事給出完全不同解讀。`,
+    `兩條線同時進行。${self}處理地方組織，${a}主打媒體攻防，${b}轉向網路社群；午後三條線在${place}意外撞在一起。`,
+    `今天像一場誤會逐步擴大。起初只是${issue}的措辭爭議，${a}放大質疑，${b}提出另一套說法，${self}則面臨要不要正面接戰的抉擇。`
+   ];
+   let base=forms[i%forms.length];
+   const tails=[
+    "最後，幕僚把三個選項放到你面前，沒有人敢說哪個一定正確。",
+    "事情尚未定調，你必須在下一波新聞出現以前做決定。",
+    "地方與中央意見相反，今天的決定可能在數天後才看得出代價。",
+    "夜深後聲量仍在變化，這一頁日記沒有結論，只有你的選擇。",
+    "三方都宣稱掌握風向，但真正的效果仍要等選民反應。",
+   ];
+   return base+" "+tails[Math.floor(i/6)%tails.length];
+ }
+}));
+
+window.CAMP_SHARE = {self:0.50, rivalA:0.25, rivalB:0.25};
+window.AGENDA_WEIGHTS = {
+ "臺北市":12, "台北市":12, "高雄市":12,
+ "新北市":6, "桃園市":6, "臺中市":6, "台中市":6, "臺南市":6, "台南市":6
+};
+/* Toss-up counties/cities are determined dynamically from the game's internal
+   simulated margin, not from a real-world prediction. A margin <=5 points gets
+   second-highest agenda weight. */
+window.getAgendaWeight=function(city, simulatedMargin){
+ if (typeof simulatedMargin==="number" && Math.abs(simulatedMargin)<=5) return 9;
+ return AGENDA_WEIGHTS[city]||3;
+};
+window.pickWeightedCity=function(rows){
+ let bag=[];
+ rows.forEach(r=>{
+   const w=getAgendaWeight(r.city, r.simulatedMargin);
+   for(let i=0;i<w;i++) bag.push(r);
+ });
+ return bag[Math.floor(Math.random()*bag.length)];
+};
+window.getCampMentions=function(playerCamp){
+ const camps=["blue","green","white"];
+ const rivals=camps.filter(x=>x!==playerCamp);
+ /* 4 narrative beats: 2 self, 1 each rival = exact 50/25/25 */
+ return [playerCamp,playerCamp,rivals[0],rivals[1]].sort(()=>Math.random()-.5);
+};
+window.buildVariedDiary=function(ctx,seed){
+ const structure=STORY_STRUCTURES[Math.abs(seed||Date.now())%30];
+ return structure.build(ctx);
+};
+</script>
+
+
+<script>
+/* v8: actual mixed-party diary generator + varied paragraph openings */
+window.PARA_OPENERS=[
+"清晨的第一通電話，來得比預定行程更早。","上午八點不到，總部裡已經沒有人坐得住。",
+"故事是從地方群組的一張截圖開始的。","原本平靜的早晨，被一場臨時記者會打斷。",
+"這一天一開始，看起來和前幾天沒有太大不同。","媒體還沒到齊，消息就先傳開了。",
+"候選人的車隊才剛出發，新的狀況就追了上來。","雨勢漸大的同時，地方回報也一封接一封送進總部。",
+"上午的行程尚未開始，三黨已經隔空交火。","第一個異常訊號，來自一個原本不受注意的地方。",
+"真正讓事情變複雜的，是接近中午時的另一個消息。","然而，事情並沒有照幕僚原先預想的方向發展。",
+"與此同時，另一個陣營也開始動作。","沒過多久，戰場又從地方轉到了網路。",
+"到了中午，原本單純的地方事件已經變成全國話題。","就在大家以為風波即將過去時，新的影片出現了。",
+"下午的情況完全換了一個方向。","三點過後，媒體焦點突然轉向另一個陣營。",
+"另一方面，地方組織傳來的消息卻截然不同。","但真正讓幕僚皺眉的，還不是檯面上的攻防。",
+"幾乎在同一時間，合作陣營也傳來新的要求。","社群上的討論開始失去原本的節奏。",
+"接下來的兩個小時，三個陣營各自做出了反應。","事情到這裡，本來應該告一段落。",
+"沒想到傍晚又出現新的轉折。","天色暗下來後，選戰反而更加熱鬧。",
+"晚間新聞一播出，白天的事件有了完全不同的解讀。","到了晚上，總部終於把三方動作放在同一張白板上。",
+"夜深後，仍有一件事沒有答案。","這一天最後留下的，不是結論，而是一道必須由主席回答的選擇題。"
+];
+
+window.CAMP_EVENT_BANK={
+ blue:[
+ "藍營地方組織臨時調整行程，資深幹部對中央戰略提出不同意見。",
+ "藍營候選人在市場掃街時與民眾長談，相關畫面開始在地方社群流傳。",
+ "藍營地方黨部希望中央加強支援，但青年幕僚主張把資源轉往網路戰場。",
+ "藍營一名黨員受訪時措辭引發爭論，黨中央必須決定如何回應。",
+ "藍營在地方舉辦政策座談，現場支持者與反對者都有人到場提問。"
+ ],
+ green:[
+ "綠營召開記者會，針對今日選戰議題提出質疑，要求其他陣營公開回應。",
+ "綠營候選人安排密集地方行程，試圖把媒體焦點拉回政策與地方建設。",
+ "綠營地方組織傳出不同路線意見，中央與地方開始協調下一階段打法。",
+ "綠營青年團隊推出一支短影音，短時間內在社群累積大量討論。",
+ "綠營地方人士公開評論對手策略，三方陣營很快展開隔空攻防。"
+ ],
+ white:[
+ "白營舉行臨時記者會，試圖把今天的選戰主題轉向第三勢力與改革議題。",
+ "白營候選人的網路直播突然湧入大量觀眾，留言區很快成為三方支持者交鋒場所。",
+ "白營地方幹部對合作方式提出新條件，藍白之間的協調再次成為媒體焦點。",
+ "白營青年志工發起街頭活動，希望用低成本方式增加候選人能見度。",
+ "白營發言系統對其他兩黨同時開火，媒體開始追問是否代表選戰策略轉變。"
+ ]
+};
+
+window.campLabel={blue:"藍營",green:"綠營",white:"白營"};
+
+window.makeMixedDiary=function(playerCamp, city, day, seed){
+ const rivals=["blue","green","white"].filter(x=>x!==playerCamp);
+ /* exactly 2 self beats + one from each rival; shuffle order */
+ let order=[playerCamp,playerCamp,rivals[0],rivals[1]];
+ for(let i=order.length-1;i>0;i--){
+   const j=(Math.abs((seed||Date.now())+i*17))%(i+1);
+   [order[i],order[j]]=[order[j],order[i]];
+ }
+ let used=new Set(), paragraphs=[];
+ order.forEach((camp,idx)=>{
+   let oi=Math.abs((seed||Date.now())+idx*11+day)%PARA_OPENERS.length;
+   while(used.has(oi)) oi=(oi+1)%PARA_OPENERS.length;
+   used.add(oi);
+   const bank=CAMP_EVENT_BANK[camp];
+   const ev=bank[Math.abs((seed||Date.now())+idx*7+day)%bank.length];
+   let extra="";
+   if(idx===1) extra=" 對手陣營與地方媒體隨即給出不同解讀，讓原本單一的事件開始出現多條敘事線。";
+   if(idx===2) extra=" 『臉輸』、『脆德』與『You吐』上的討論也同步升溫，但幕僚提醒，熱門留言不必然代表整體選民態度。";
+   paragraphs.push(`${PARA_OPENERS[oi]} ${city||"地方"}方面，${ev}${extra}`);
+ });
+ const close=PARA_OPENERS[(Math.abs((seed||Date.now())+day*19)+29)%PARA_OPENERS.length];
+ paragraphs.push(`${close} 你必須在資訊仍不完整的情況下決定下一步；這項決定將影響遊戲內的組織、事件與選戰運籌參數。`);
+ return paragraphs;
+};
+
+/* Replace diary text at render time where possible, so this affects the live
+   game rather than merely defining unused data. */
+window.addEventListener("load",()=>{
+ const obs=new MutationObserver(()=>{
+   const title=[...document.querySelectorAll("h1,h2,h3,.day,.diary-title")].find(e=>/倒數.*天/.test(e.textContent||""));
+   if(!title) return;
+   const root=title.closest(".diary,.book,.page,.paper,.card")||title.parentElement;
+   if(!root || root.dataset.v8mixed==="1") return;
+   const m=(title.textContent||"").match(/(\d+)\s*天/);
+   const day=m?Number(m[1]):50;
+   let camp=(window.gameState&&gameState.camp)||(window.state&&state.camp)||localStorage.getItem("camp")||"blue";
+   if(!["blue","green","white"].includes(camp)) camp="blue";
+   let city="臺北市";
+   const text=root.textContent||"";
+   const cities=["臺北市","台北市","高雄市","新北市","桃園市","臺中市","台中市","臺南市","台南市","新竹市","新竹縣","基隆市","嘉義市","嘉義縣","彰化縣","雲林縣","屏東縣","宜蘭縣","花蓮縣","臺東縣","台東縣","苗栗縣","南投縣","澎湖縣","金門縣","連江縣"];
+   city=cities.find(c=>text.includes(c))||city;
+   const body=root.querySelector(".diary-body,.story,.content,.diary-content,.event-text");
+   if(body){
+     const ps=makeMixedDiary(camp,city,day,Date.now()+day);
+     body.innerHTML=ps.map(p=>`<p>${p}</p>`).join("");
+     root.dataset.v8mixed="1";
+   }
+ });
+ obs.observe(document.body,{subtree:true,childList:true});
+});
+</script>
+
+</body></html>
