@@ -144,6 +144,21 @@ jobs:
               raise SystemExit("Unexpected political strategy HTML")
           (political_dir / "index.html").write_bytes(political_html)
 
+          # Pet life game at /pet-life/.
+          pet_src = Path("pet-life/index.html")
+          if not pet_src.exists():
+              raise SystemExit("Pet life source not found")
+          pet_dir = out / "pet-life"
+          pet_dir.mkdir(parents=True, exist_ok=True)
+          pet_html = pet_src.read_bytes()
+          if not pet_html.startswith(b"<!DOCTYPE html>") or not pet_html.rstrip().endswith(b"</html>"):
+              raise SystemExit("Unexpected pet life HTML")
+          if len(pet_html) != 315640:
+              raise SystemExit(f"Unexpected pet life HTML size: {len(pet_html)}")
+          if hashlib.sha256(pet_html).hexdigest() != "da7872dcaf32d933ef2cc8afe45124d482fe9e34eefb35799c3a4919969b401c":
+              raise SystemExit("Unexpected pet life SHA256")
+          (pet_dir / "index.html").write_bytes(pet_html)
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
