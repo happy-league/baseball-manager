@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.10.9</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.11.0</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -4782,7 +4782,7 @@ body.playing .top{display:none}
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.10.9</div>
+    <div class="badge">Prototype v0.11.0</div>
   </div>
 
   <section id="setup" class="card">
@@ -5079,7 +5079,7 @@ body.playing .top{display:none}
             </div>
             <div class="researchSpeech">
               <div class="researchName">研發員・小晴</div>
-              <p>嗨！目前我們正在研發更高級、更優質的飼料、營養主食包與保健小點。目前都是原始樣貌，可透過一些方法：完成餵食任務增加實驗樣本、投入研發經費等等，讓產品的等級有大幅度地提升。等級越高，對寵物的照顧效果也會越好喔！</p>
+              <p>嗨！目前我們正在研發更高級、更優質的飼料、營養主食包與保健小點。目前都是最初階，可透過一些方法：完成餵食任務增加實驗樣本、投入研發經費等等，讓產品的等級有大幅度地提升。等級越高，對寵物的照顧效果也會越好喔！</p>
             </div>
           </div>
 
@@ -5328,7 +5328,7 @@ const shopItems = [
   {id:"rabbitMaze", category:"equipment", icon:"📦", name:"紙箱迷宮", price:560, level:1, type:"equipment", species:"rabbit", desc:"兔子專屬器具。佔地 2×2。"},
 
   {id:"school", category:"building", icon:"🏫", name:"私塾", price:500, level:2, type:"building", desc:"可以讓寵物學到各式各樣的知識與技能"},
-  {id:"capybara", category:"companion", icon:"🦫", name:"卡皮巴拉", price:1500, level:5, type:"companion", desc:"替寵物找一位溫和的新夥伴，購買後會一起出現在草地上。"}
+  {id:"capybara", category:"companion", icon:"🦫", name:"卡皮巴拉", price:1200, level:5, type:"companion", desc:"替寵物找一位溫和的新夥伴，購買後會一起出現在草地上。"}
 ];
 
 let pickedSpecies = null, pickedBreed = null, state = null;
@@ -6802,6 +6802,7 @@ function buyItem(id){
   // 飼料與器具無等級限制；建築物與夥伴可設定玩家等級門檻。
   if((item.type==="building" || item.type==="companion") && state.owner.level<item.level) return;
   if(item.type==="equipment" && state.equipment[item.id]) return;
+  // 夥伴目前採單一擁有制；卡皮巴拉最多只能購買 1 隻。
   if(item.type==="companion" && state.companions?.[item.id]) return;
   if(item.type==="building" && state.buildings[item.id]?.owned) return;
   if(state.owner.coins<item.price) return;
@@ -6874,9 +6875,8 @@ function habitatConfig(level){
   return {grid:12,width:72,height:72};
 }
 function expandCost(level){
-  // 每新增一塊 4×4 的價格。
-  const count = Math.max(0,(state?.landChunks?.length || 9)-9);
-  return 300 + count*120;
+  // 第一次擴建仍由新手機制免費；之後每次固定 300 金幣。
+  return 300;
 }
 function renderHabitat(){
   migrateState();
