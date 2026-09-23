@@ -594,6 +594,8 @@ function maybeBreaking(day){
  // 倒數30天仍未出現就強制觸發；在此之前保留自然隨機出現機會。
  if(S.warmManUsed!==true && (day<=30 || Math.random()<0.09)){
    S.warmManUsed=true;
+   if(!S.usedBreakingTitles)S.usedBreakingTitles=[];
+   if(!S.usedBreakingTitles.includes("暖男"))S.usedBreakingTitles.push("暖男");
    let b=breakingEvents.find(x=>x[0]==="暖男");
    let ai=abilityNames.indexOf(b[3]),delta=b[4];
    if(S.abilities&&ai>=0)S.abilities[ai]=Math.max(0,Math.min(100,S.abilities[ai]+delta));
@@ -601,9 +603,12 @@ function maybeBreaking(day){
    return {html:`<div class="breakingBox"><span class="breakingTag">${b[0]}</span>${b[1]} <span class="breakingEffect">${b[3]}${delta>0?"+":""}${delta}</span></div>`,follow:b[2],bonus:positiveReward,title:b[0],positive:positiveReward};
  }
  if(Math.random()>=1/3)return null;
- // 暖男由上方專屬規則控制，普通突發事件池不得再次抽到。
- let pool=breakingEvents.filter(x=>x[0]!=="暖男");
+ // 暖男由上方專屬規則控制；其他突發事件同一局也不得重複。
+ if(!S.usedBreakingTitles)S.usedBreakingTitles=[];
+ let pool=breakingEvents.filter(x=>x[0]!=="暖男"&&!S.usedBreakingTitles.includes(x[0]));
+ if(!pool.length)return null;
  let b=pool[Math.floor(Math.random()*pool.length)];
+ S.usedBreakingTitles.push(b[0]);
  let ai=abilityNames.indexOf(b[3]),delta=b[4];
  if(S.abilities&&ai>=0)S.abilities[ai]=Math.max(0,Math.min(100,S.abilities[ai]+delta));
  const positiveReward=delta>0 && b[5]===true;
@@ -1313,7 +1318,15 @@ function nextEvent(){
  if(currentDay===1){electionEve();return}
  if(currentDay===0){finishElectionEve();return}
  render();
- let pool=S.cities.filter(c=>c.active),target=weightedCity(pool),e=events[Math.floor(Math.random()*events.length)];
+ let pool=S.cities.filter(c=>c.active),target=weightedCity(pool);
+ // Main decision events are unique within a game.
+ if(!S.usedEventTitles)S.usedEventTitles=[];
+ let availableEvents=events.filter(x=>!S.usedEventTitles.includes(x.t));
+ // There are fewer diary decision pages than event definitions, so this should not exhaust.
+ // Fallback is kept only as a safety guard.
+ if(!availableEvents.length)availableEvents=events.slice();
+ let e=availableEvents[Math.floor(Math.random()*availableEvents.length)];
+ S.usedEventTitles.push(e.t);
  S.current={e,target};
  $('event').innerHTML=`<div class=pageTitle>選戰倒數 <span style="color:#ef4444;font-size:1.22em;font-weight:950">${days[S.idx]}</span> 天</div><div class=story>${diaryStory(days[S.idx],e,target)}</div>`;renderAbilities();
  if(S.breakingBonus){showDiceBonus()}else{$('choices').innerHTML=eventChoiceHtml(false)}if(window._jumpDiary){window._jumpDiary=false;goNextPageTop()}
