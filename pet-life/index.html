@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.12.0</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.12.3</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -2012,7 +2012,7 @@ body.playing .top{display:none}
 .catTower .ctPlatform.low{left:13px;bottom:66px;width:67px}.catTower .ctPlatform.high{right:6px;top:10px;width:65px}
 .catWand{width:58px;height:78px}.catWand .wandStick{position:absolute;left:18px;top:8px;width:6px;height:61px;border-radius:4px;background:linear-gradient(90deg,#8cc8ec,#5d9fca);transform:rotate(-14deg)}
 .catWand .wandString{position:absolute;left:34px;top:7px;width:1px;height:43px;background:#80766a;transform:rotate(18deg)}.catWand .wandFeather{position:absolute;right:0;bottom:4px;font-size:27px;transform:rotate(18deg)}
-.dogFrisbee{width:54px;height:24px;border-radius:50%;background:radial-gradient(ellipse at 50% 42%,#f8d2d7 0 34%,#e4687a 35% 70%,#bd465b 71% 100%);box-shadow:0 7px 6px rgba(48,63,41,.20),inset 0 -4px 5px rgba(94,38,50,.14)}
+.dogFrisbee{width:54px;height:24px;border-radius:50%;background:radial-gradient(ellipse at 50% 42%,#91acd0 0 34%,#214f86 35% 70%,#12345d 71% 100%);box-shadow:0 7px 6px rgba(48,63,41,.20),inset 0 -4px 5px rgba(10,35,67,.28)}
 .rabbitMaze{width:128px;height:92px}.rabbitMaze .mazeBox{position:absolute;background:linear-gradient(135deg,#d9ad72,#bc8750);border:2px solid #9d6e3f;box-shadow:0 6px 6px rgba(48,63,41,.16)}
 .rabbitMaze .mazeBox:after{content:"";position:absolute;border-radius:50%;background:#6e4a2e;box-shadow:inset 0 0 0 3px rgba(255,221,175,.25)}
 .rabbitMaze .mazeBox.a{left:5px;bottom:8px;width:55px;height:55px}.rabbitMaze .mazeBox.a:after{width:24px;height:24px;right:5px;bottom:6px}
@@ -4942,6 +4942,28 @@ body.resumeOnlyMode .top .badge{
 .schoolTicketUseBtn.hidden{display:none!important}
 .schoolTicketUseBtn:disabled{opacity:.46}
 
+
+/* ===== v0.12.3：通用器具－溜滑梯、鞦韆 ===== */
+.playSlide,.petSwing{position:absolute;display:none;z-index:18;pointer-events:auto!important;touch-action:none!important}
+.playSlide{width:132px;height:118px;filter:drop-shadow(0 8px 6px rgba(45,69,38,.18))}
+.playSlide .slidePlatform{position:absolute;left:24px;top:24px;width:48px;height:16px;border-radius:8px;background:linear-gradient(180deg,#ffd978,#e9ae3e);border:2px solid #c88d2f}
+.playSlide .slideRamp{position:absolute;left:58px;top:34px;width:70px;height:24px;border-radius:12px 12px 17px 17px;background:linear-gradient(180deg,#79b9e8,#397fb9);border:2px solid #2e6b9e;transform:rotate(34deg);transform-origin:left center;box-shadow:inset 0 5px 0 rgba(255,255,255,.23)}
+.playSlide .slideLadder{position:absolute;left:18px;top:36px;width:30px;height:68px;border-left:6px solid #ef8d67;border-right:6px solid #ef8d67;border-radius:4px}
+.playSlide .slideLadder span{display:block;height:5px;margin:9px 0;background:#f2b06e;border-radius:4px}
+.playSlide .slideRail{position:absolute;top:20px;width:6px;height:42px;border-radius:4px;background:#f08d68}
+.playSlide .slideRail.railA{left:25px}.playSlide .slideRail.railB{left:67px}
+.playSlide .slideFoot{position:absolute;bottom:5px;width:31px;height:10px;border-radius:50%;background:#6c875e;opacity:.45}
+.playSlide .slideFoot.footA{left:12px}.playSlide .slideFoot.footB{right:4px}
+
+.petSwing{width:138px;height:122px;filter:drop-shadow(0 8px 6px rgba(45,69,38,.18))}
+.petSwing .swingTop{position:absolute;left:18px;top:12px;width:102px;height:10px;border-radius:7px;background:linear-gradient(180deg,#d69a5c,#996236);border:1px solid #7d512f}
+.petSwing .swingLeg{position:absolute;top:18px;width:8px;height:96px;border-radius:5px;background:linear-gradient(90deg,#9e6739,#d49a61,#87552f);transform-origin:top center}
+.petSwing .legA{left:25px;transform:rotate(15deg)}.petSwing .legB{left:43px;transform:rotate(-15deg)}
+.petSwing .legC{right:43px;transform:rotate(15deg)}.petSwing .legD{right:25px;transform:rotate(-15deg)}
+.petSwing .swingRope{position:absolute;top:21px;width:2px;height:59px;background:#6f6256}
+.petSwing .ropeA{left:57px}.petSwing .ropeB{right:57px}
+.petSwing .swingSeat{position:absolute;left:44px;top:77px;width:50px;height:13px;border-radius:7px;background:linear-gradient(180deg,#6da6d0,#477da8);border:2px solid #315f84;box-shadow:0 5px 4px rgba(51,62,47,.15)}
+
 </style>
 </head>
 <body>
@@ -4950,7 +4972,7 @@ body.resumeOnlyMode .top .badge{
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.12.0</div>
+    <div class="badge">Prototype v0.12.3</div>
   </div>
 
   <section id="setup" class="card">
@@ -5098,6 +5120,22 @@ body.resumeOnlyMode .top .badge{
           <div id="chewToy" data-footprint="1×1" class="chewToy placeableItem"></div>
           <div id="deluxeBed" data-footprint="1×1" class="deluxeBed placeableItem">
             <div class="dbPillow"></div><div class="dbBase"></div>
+          </div>
+
+          <div id="playSlide" data-footprint="2×2" class="playSlide placeableItem" aria-label="溜滑梯">
+            <div class="slideLadder"><span></span><span></span><span></span><span></span></div>
+            <div class="slidePlatform"></div>
+            <div class="slideRamp"></div>
+            <div class="slideRail railA"></div><div class="slideRail railB"></div>
+            <div class="slideFoot footA"></div><div class="slideFoot footB"></div>
+          </div>
+
+          <div id="petSwing" data-footprint="2×2" class="petSwing placeableItem" aria-label="鞦韆">
+            <div class="swingTop"></div>
+            <div class="swingLeg legA"></div><div class="swingLeg legB"></div>
+            <div class="swingLeg legC"></div><div class="swingLeg legD"></div>
+            <div class="swingRope ropeA"></div><div class="swingRope ropeB"></div>
+            <div class="swingSeat"></div>
           </div>
 
           <div id="catTower" data-footprint="2×2" class="catTower placeableItem" aria-label="瞭望台">
@@ -5503,6 +5541,8 @@ const shopItems = [
   {id:"streetLamp", category:"equipment", icon:"💡", name:"路燈", price:180, level:1, type:"repeatableDecor", desc:"所有寵物都能使用。佔地 1×1，可重複購買。"},
   {id:"trafficLight", category:"equipment", icon:"🚦", name:"紅綠燈", price:260, level:1, type:"repeatableDecor", desc:"所有寵物都能使用。佔地 1×1，可重複購買。"},
   {id:"lighthouse", category:"equipment", icon:"🗼", name:"燈塔", price:520, level:1, type:"repeatableDecor", desc:"所有寵物都能使用。佔地 2×2，可重複購買。"},
+  {id:"playSlide", category:"equipment", icon:"🛝", name:"溜滑梯", price:1000, level:1, type:"equipment", desc:"所有寵物都可以使用。佔地 2×2。"},
+  {id:"petSwing", category:"equipment", icon:"🎠", name:"鞦韆", price:1000, level:1, type:"equipment", desc:"所有寵物都可以使用。佔地 2×2。"},
 
   {id:"premiumWheel", category:"equipment", icon:"🎡", name:"滾輪", price:780, level:1, type:"equipment", species:"hamster", desc:"倉鼠專屬器具。佔地 2×1。"},
   {id:"catTower", category:"equipment", icon:"🗼", name:"瞭望台", price:620, level:1, type:"equipment", species:"cat", desc:"貓咪專屬器具。佔地 2×2。"},
@@ -6081,7 +6121,7 @@ function initialState(name){
     inventory:{foodPack:0, healthSnack:0, shovel:0, schoolTicket:1},
     storage:{objects:{},decorIds:[]},
     dailyReward:{lastClaimDay:null},
-    equipment:{toyBall:false, chewToy:false, deluxeBed:false, premiumWheel:false, catTower:false, catWand:false, dogFrisbee:false, dogCastle:false, rabbitMaze:false},
+    equipment:{toyBall:false, chewToy:false, deluxeBed:false, playSlide:false, petSwing:false, premiumWheel:false, catTower:false, catWand:false, dogFrisbee:false, dogCastle:false, rabbitMaze:false},
     buildings:{
       school:{owned:false,status:"none"}
     },
@@ -6150,7 +6190,7 @@ function migrateState(){
   if(!state.dailyReward) state.dailyReward={lastClaimDay:null};
   if(state.dailyReward.lastClaimDay===undefined) state.dailyReward.lastClaimDay=null;
   if(!state.equipment) state.equipment = {toyBall:false, chewToy:false, deluxeBed:false, premiumWheel:false, catTower:false, catWand:false, dogFrisbee:false, rabbitMaze:false};
-  ["toyBall","chewToy","deluxeBed","premiumWheel","catTower","catWand","dogFrisbee","dogCastle","rabbitMaze"].forEach(k => {
+  ["toyBall","chewToy","deluxeBed","playSlide","petSwing","premiumWheel","catTower","catWand","dogFrisbee","dogCastle","rabbitMaze"].forEach(k => {
     if(state.equipment[k] == null) state.equipment[k] = false;
   });
   if(!state.buildings) state.buildings = {};
@@ -7192,6 +7232,14 @@ function buyItem(id){
       if(!state.objectCells.dogCastle) state.objectCells.dogCastle={row:4,col:7};
       if(state.objectRotations.dogCastle==null) state.objectRotations.dogCastle=0;
     }
+    if(item.id==="playSlide"){
+      if(!state.objectCells.playSlide) state.objectCells.playSlide={row:7,col:2};
+      if(state.objectRotations.playSlide==null) state.objectRotations.playSlide=0;
+    }
+    if(item.id==="petSwing"){
+      if(!state.objectCells.petSwing) state.objectCells.petSwing={row:7,col:8};
+      if(state.objectRotations.petSwing==null) state.objectRotations.petSwing=0;
+    }
 
     addLog(`<b>寵物商店</b>：妳替 ${state.name} 買了「${item.name}」。`);
   }else if(item.type==="companion"){
@@ -7472,6 +7520,8 @@ const OBJECT_FOOTPRINTS={
   roomToyBall:{w:1,h:1},
   chewToy:{w:1,h:1},
   deluxeBed:{w:1,h:1},
+  playSlide:{w:2,h:2},
+  petSwing:{w:2,h:2},
   wheel:{w:2,h:1},
   catTower:{w:2,h:2},
   catWand:{w:1,h:1},
@@ -7966,6 +8016,8 @@ const STORAGE_FIXED_OBJECTS=[
   {id:"roomToyBall",name:"玩具球",icon:"⚽",owned:()=>!!state.equipment.toyBall},
   {id:"chewToy",name:"耐咬玩具",icon:"🦴",owned:()=>!!state.equipment.chewToy},
   {id:"deluxeBed",name:"舒適睡床",icon:"🛏️",owned:()=>!!state.equipment.deluxeBed},
+  {id:"playSlide",name:"溜滑梯",icon:"🛝",owned:()=>!!state.equipment.playSlide},
+  {id:"petSwing",name:"鞦韆",icon:"🎠",owned:()=>!!state.equipment.petSwing},
   {id:"wheel",name:"滾輪",icon:"🎡",owned:()=>state.species==="hamster"&&!!state.equipment.premiumWheel},
   {id:"catTower",name:"瞭望台",icon:"🗼",owned:()=>state.species==="cat"&&!!state.equipment.catTower},
   {id:"catWand",name:"逗貓棒",icon:"🪶",owned:()=>state.species==="cat"&&!!state.equipment.catWand},
@@ -8021,7 +8073,10 @@ function toggleStorageObject(id){
 }
 function renderStorage(){
   if(!state) return;migrateState();
-  if($("storageSpecialLine")) $("storageSpecialLine").innerHTML=`<span class="storageSpecialTag">${shovelIconSvg()} 鏟子 × ${state.inventory.shovel}</span>`;
+  if($("storageSpecialLine")) $("storageSpecialLine").innerHTML=`
+    <span class="storageSpecialTag">${shovelIconSvg()} 鏟子 × ${state.inventory.shovel}</span>
+    <span class="storageSpecialTag">🎫 上課券 × ${state.inventory.schoolTicket||0}</span>
+  `;
   const grid=$("storageGrid");if(!grid)return;
   const rows=[];
   STORAGE_FIXED_OBJECTS.forEach(x=>{if(x.owned())rows.push(x)});
@@ -8036,6 +8091,8 @@ function renderEquipment(){
   $("roomToyBall").style.display = (state.equipment.toyBall&&!isObjectStored("roomToyBall")) ? "block" : "none";
   $("chewToy").style.display = (state.equipment.chewToy&&!isObjectStored("chewToy")) ? "block" : "none";
   $("deluxeBed").style.display = (state.equipment.deluxeBed&&!isObjectStored("deluxeBed")) ? "block" : "none";
+  $("playSlide").style.display = (state.equipment.playSlide&&!isObjectStored("playSlide")) ? "block" : "none";
+  $("petSwing").style.display = (state.equipment.petSwing&&!isObjectStored("petSwing")) ? "block" : "none";
 
   const wheel=$("wheel");
   if(wheel){
@@ -9035,6 +9092,7 @@ function renderDeathState(){
 }
 
 const NEGLECT_EVENT_MS=2*60*60*1000;
+const NEGLECT_DEATH_MS=24*60*60*1000;
 
 function checkNeglectEvents(){
   if(!state || state.flags.dead) return false;
@@ -9044,26 +9102,50 @@ function checkNeglectEvents(){
   const elapsed=Math.max(0,now-(state.lastCareAt||now));
   const periods=Math.floor(elapsed/NEGLECT_EVENT_MS);
   const already=Math.max(0,state.neglectPeriodsHandled||0);
-
-  if(periods<=already) return false;
-
   let triggered=false;
-  for(let n=already;n<periods;n++){
-    const thirst=Math.random()<.5;
-    if(thirst){
-      state.stats.water=Math.min(state.stats.water,45);
-      state.stats.energy=clamp(state.stats.energy-5);
-      addLog(`<b>口渴事件</b>：妳已經一段時間沒有照顧 ${state.name}，牠的水碗快見底了，正有點口渴地望著妳。`);
-    }else{
-      state.stats.hunger=Math.min(state.stats.hunger,45);
-      state.stats.mood=clamp(state.stats.mood-4);
-      state.flags.starving=state.stats.hunger<25;
-      addLog(`<b>飢餓事件</b>：妳已經一段時間沒有照顧 ${state.name}，牠的小肚子咕嚕咕嚕叫，正在等妳準備食物。`);
+
+  // 每 2 小時逐步惡化，但不會因幾個小時未照顧就直接死亡。
+  if(periods>already){
+    for(let n=already;n<periods;n++){
+      state.stats.hunger=clamp(state.stats.hunger-6);
+      state.stats.water=clamp(state.stats.water-6);
+      state.stats.clean=clamp(state.stats.clean-4);
+      state.stats.energy=clamp(state.stats.energy-3);
+      state.stats.mood=clamp(state.stats.mood-3);
+      state.stats.health=clamp(state.stats.health-1);
+
+      const hours=(n+1)*2;
+      if(hours===6){
+        addLog(`<b>需要照顧</b>：${state.name} 已經一段時間沒有被照顧，開始有些餓、有些渴了。`);
+      }else if(hours===12){
+        addLog(`<b>需要照顧</b>：${state.name} 已經半天沒有被照顧，狀態明顯下降，正在等妳回來。`);
+      }else if(hours===18){
+        addLog(`<b>需要照顧</b>：${state.name} 已經很久沒有被照顧，現在非常需要妳。`);
+      }
     }
+    state.neglectPeriodsHandled=periods;
     triggered=true;
   }
 
-  state.neglectPeriodsHandled=periods;
+  state.flags.starving=state.stats.hunger<18;
+  if(state.stats.health<35 || state.stats.clean<18){
+    state.flags.weak=true;
+  }
+
+  // 核心規則：連續超過 24 小時完全沒有照顧，才會觸發死亡。
+  if(elapsed>=NEGLECT_DEATH_MS && !state.flags.dead){
+    state.stats.hunger=0;
+    state.stats.water=0;
+    state.stats.energy=0;
+    state.stats.mood=0;
+    state.stats.health=0;
+    state.flags.starving=true;
+    state.flags.weak=true;
+    state.flags.dead=true;
+    addLog(`<b>長時間未照顧</b>：${state.name} 已經超過 24 小時沒有受到照顧，最後沒有撐過去。`);
+    triggered=true;
+  }
+
   if(triggered) saveState();
   return triggered;
 }
@@ -9086,7 +9168,7 @@ function applyOfflineProgress(){
     if(neglectTriggered) saveState();
     return;
   }
-  report.push(`妳離開了 ${years} 小時，遊戲裡相當於 ${years} 年。`);
+  report.push(`妳離開了 ${years} 小時，遊戲裡相當於 ${years} 年；照顧狀態則依實際未照顧時間逐步變化。`);
   for(let i=0;i<years;i++){
     if(state.flags.dead) break;
     passOneYear(report, true);
@@ -9096,54 +9178,13 @@ function applyOfflineProgress(){
   saveState();
 }
 function passOneYear(report, offlineMode){
+  // 年齡仍維持原本 1 小時 = 1 年的世界時間設定，
+  // 但照顧狀態與死亡改由「連續未照顧時間」獨立計算，
+  // 避免離開數個小時就讓所有狀態快速歸零。
   state.age += 1;
-  state.stats.hunger = clamp(state.stats.hunger - 30);
-  state.stats.water = clamp(state.stats.water - 30);
-  state.stats.clean = clamp(state.stats.clean - 18);
-  state.stats.energy = clamp(state.stats.energy - 16);
-  state.stats.mood = clamp(state.stats.mood - 12);
-  state.stats.health = clamp(state.stats.health - 4);
 
-  // 偶發事件
-  const events = [];
-  if(Math.random() < 0.18){
-    const eventList = [
-      {txt:"牠一度把水盆弄得亂七八糟，飲水下降更多。", f:()=> state.stats.water = clamp(state.stats.water - 12)},
-      {txt:"牠情緒有些低落，心情下降。", f:()=> state.stats.mood = clamp(state.stats.mood - 12)},
-      {txt:"牠把活動區弄得更亂了，清潔下降。", f:()=> state.stats.clean = clamp(state.stats.clean - 12)},
-      {txt:"牠食慾變差了一點。", f:()=> state.stats.hunger = clamp(state.stats.hunger - 10)}
-    ];
-    const e = rand(eventList); e.f(); events.push(e.txt);
-  }
-
-  if(state.stats.hunger < 18){
-    state.flags.starving = true;
-    state.stats.health = clamp(state.stats.health - 16);
-    state.stats.mood = clamp(state.stats.mood - 12);
-  }
-  if(state.stats.water < 18){
-    state.stats.health = clamp(state.stats.health - 16);
-    state.stats.energy = clamp(state.stats.energy - 12);
-  }
-  if(state.stats.clean < 20){
-    state.stats.health = clamp(state.stats.health - 9);
-    if(Math.random() < 0.33) state.flags.sick = true;
-  }
-  if(state.stats.health < 45 && Math.random() < 0.28) state.flags.sick = true;
-  if(state.flags.sick){
-    state.stats.health = clamp(state.stats.health - 12);
-    state.stats.mood = clamp(state.stats.mood - 8);
-    state.flags.weak = true;
-  }
-  if(state.weight > 70) state.stats.health = clamp(state.stats.health - 4);
-
-  if(state.flags.starving && offlineMode) report.push(`${state.name} 曾陷入非常飢餓的狀態。`);
-  if(state.flags.sick && offlineMode) report.push(`${state.name} 在妳不在時生病了。`);
-  events.forEach(e => report.push(e));
-
-  if(state.stats.health <= 0 || ((state.flags.sick || state.flags.starving) && state.stats.health < 10)){
-    state.flags.dead = true;
-    report.push(`${state.name} 最後沒有撐過去。`);
+  if(offlineMode){
+    report.push(`${state.name} 又長大了一歲。`);
   }
 }
 function startHeartbeat(){
