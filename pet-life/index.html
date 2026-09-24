@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.11.3</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.12.0</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -4875,6 +4875,73 @@ body.playing .top{display:none}
   }
 }
 
+
+/* ===== v0.11.6：有舊存檔時首頁只保留標題與續玩區塊 ===== */
+#setup.resumeOnly .steps,
+#setup.resumeOnly > h2,
+#setup.resumeOnly #speciesBlock{
+  display:none !important;
+}
+body.resumeOnlyMode .top .badge{
+  display:none !important;
+}
+#setup.resumeOnly{
+  margin-top:18px;
+}
+#setup.resumeOnly #resumePanel{
+  margin-top:0;
+}
+
+
+/* ===== v0.11.7：私塾共同科目隨堂測驗 ===== */
+.schoolQuizGoBtn{margin-top:10px;border:0;border-radius:12px;padding:9px 14px;background:linear-gradient(180deg,#f3bb55,#dc9236);color:#fff;font-size:13px;font-weight:1000;box-shadow:0 6px 14px rgba(109,77,34,.17)}
+.schoolQuizGoBtn.hidden{display:none!important}
+.schoolQuizOverlay{position:absolute;inset:0;z-index:172;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(49,44,37,.46);backdrop-filter:blur(5px)}
+.schoolQuizOverlay.open{display:flex}
+.schoolQuizPanel{position:relative;width:min(520px,95%);border-radius:26px;padding:24px 22px 21px;background:linear-gradient(180deg,#fffdf7,#fff4df);border:2px solid rgba(212,164,88,.35);box-shadow:0 22px 52px rgba(52,43,32,.28)}
+.schoolQuizClose{position:absolute;right:12px;top:11px;width:38px;height:38px;border:0;border-radius:50%;background:#f2e4d2;color:#725941;font-size:23px;font-weight:1000}
+.schoolQuizEyebrow{display:inline-flex;padding:5px 10px;border-radius:999px;background:#fff0bd;color:#7c602c;font-size:12px;font-weight:1000}
+.schoolQuizPanel h2{margin:9px 0 14px;color:#624c38}
+.schoolQuizQuestion{min-height:82px;display:flex;align-items:center;justify-content:center;padding:17px;border-radius:18px;background:#fff;border:1px solid rgba(187,151,108,.24);color:#5f4a37;font-size:30px;font-weight:1000;text-align:center}
+.schoolQuizQuestion .quizPicture{display:block;font-size:58px;line-height:1.1}
+.schoolQuizHint{margin:10px 0 7px;color:#8a7461;font-size:12px;line-height:1.6;text-align:center}
+.schoolQuizAnswer{width:100%;box-sizing:border-box;margin-top:5px;padding:12px 13px;border:1px solid #dbc5aa;border-radius:13px;background:#fffdf9;color:#5e4938;font-size:17px;font-weight:800;outline:none}
+.schoolQuizAnswer:focus{border-color:#d5a24e;box-shadow:0 0 0 3px rgba(222,177,83,.14)}
+.schoolQuizSubmit{width:100%;margin-top:11px;border:0;border-radius:13px;padding:11px 13px;background:#dfaa4d;color:#fff;font-size:14px;font-weight:1000}
+.schoolQuizResult{margin-top:11px;padding:10px 12px;border-radius:13px;font-size:12px;line-height:1.6;font-weight:900;text-align:center}
+.schoolQuizResult.correct{background:#e9f6e5;color:#55794e}.schoolQuizResult.wrong{background:#fff0ed;color:#9b5f59}.schoolQuizResult.hidden{display:none!important}
+.courseLockNote{margin-top:7px;min-height:30px;color:#a17c58;font-size:10px;line-height:1.4;font-weight:800}
+
+
+/* ===== v0.11.9：上課券 ===== */
+.schoolTicketCount{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  margin-top:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#fff4d5;
+  border:1px solid rgba(210,164,72,.28);
+  color:#7a5a28;
+  font-size:11px;
+  font-weight:1000;
+}
+.schoolTicketUseBtn{
+  display:block;
+  margin:10px auto 0;
+  border:0;
+  border-radius:12px;
+  padding:9px 13px;
+  background:linear-gradient(180deg,#82bce0,#5d9dc8);
+  color:#fff;
+  font-size:12px;
+  font-weight:1000;
+  box-shadow:0 6px 14px rgba(61,111,145,.18);
+}
+.schoolTicketUseBtn.hidden{display:none!important}
+.schoolTicketUseBtn:disabled{opacity:.46}
+
 </style>
 </head>
 <body>
@@ -4883,7 +4950,7 @@ body.playing .top{display:none}
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.11.3</div>
+    <div class="badge">Prototype v0.12.0</div>
   </div>
 
   <section id="setup" class="card">
@@ -5126,15 +5193,18 @@ body.playing .top{display:none}
             <div class="schoolPanelHero">
               <div class="eyebrow">📚 私塾課程</div>
               <h2>今天想學什麼呢？</h2>
-              <p>每一個科目一天只能上一次課。</p>
+              <p>每一個科目一天只安排一堂課喔！</p>
+              <div id="schoolTicketCount" class="schoolTicketCount">🎫 上課券 × 1</div>
             </div>
             <div id="schoolStudyBanner" class="schoolStudyBanner hidden">
               <div id="schoolStudyMessage"></div>
               <div id="schoolStudyCountdown" class="schoolStudyCountdown">00:00</div>
+              <button id="schoolTicketUseBtn" class="schoolTicketUseBtn hidden" type="button">🎫 使用上課券，直接進行隨堂測驗</button>
+              <button id="schoolQuizGoBtn" class="schoolQuizGoBtn hidden" type="button">隨堂測驗 GO!</button>
             </div>
             <div class="courseSection">
               <h3>共同科目</h3>
-              <div class="courseNote">所有寵物都要上・完成每科可得 🪙500</div>
+              <div class="courseNote">所有寵物都要上・隨堂測驗答對可得 🪙500</div>
               <div id="commonCourseGrid" class="courseGrid"></div>
             </div>
             <div class="courseSection">
@@ -5146,6 +5216,19 @@ body.playing .top{display:none}
         </section>
 
         
+        <section id="schoolQuizOverlay" class="schoolQuizOverlay" aria-label="隨堂測驗">
+          <div class="schoolQuizPanel">
+            <button id="schoolQuizClose" class="schoolQuizClose" type="button" aria-label="關閉隨堂測驗">×</button>
+            <div class="schoolQuizEyebrow">📝 隨堂測驗</div>
+            <h2 id="schoolQuizTitle">隨堂測驗</h2>
+            <div id="schoolQuizQuestion" class="schoolQuizQuestion"></div>
+            <div id="schoolQuizHint" class="schoolQuizHint"></div>
+            <input id="schoolQuizAnswer" class="schoolQuizAnswer" type="text" autocomplete="off" placeholder="請輸入答案">
+            <button id="schoolQuizSubmit" class="schoolQuizSubmit" type="button">送出答案</button>
+            <div id="schoolQuizResult" class="schoolQuizResult hidden"></div>
+          </div>
+        </section>
+
         <section id="houseResearchPage" class="houseResearchPage" aria-label="毛球研究中心">
           <div class="researchTopBar">
             <div>
@@ -5521,6 +5604,12 @@ function initSchoolInteractions(){
   }
   $("schoolClose")?.addEventListener("click",closeSchoolPanel);
   $("schoolOverlay")?.addEventListener("click",(e)=>{if(e.target===$("schoolOverlay")) closeSchoolPanel();});
+  $("schoolTicketUseBtn")?.addEventListener("click",useSchoolTicket);
+  $("schoolQuizGoBtn")?.addEventListener("click",openSchoolQuiz);
+  $("schoolQuizClose")?.addEventListener("click",closeSchoolQuiz);
+  $("schoolQuizOverlay")?.addEventListener("click",(e)=>{if(e.target===$("schoolQuizOverlay")) closeSchoolQuiz();});
+  $("schoolQuizSubmit")?.addEventListener("click",submitSchoolQuiz);
+  $("schoolQuizAnswer")?.addEventListener("keydown",(e)=>{if(e.key==="Enter") submitSchoolQuiz();});
 }
 
 function initGamePanels(){
@@ -5877,8 +5966,15 @@ function renderTutorial(){
 
 function checkResumePanel(){
   const saved = loadRawSave();
+  const setup=$("setup");
   if(saved){
     $("resumePanel").classList.remove("hidden");
+    setup?.classList.add("resumeOnly");
+    document.body.classList.add("resumeOnlyMode");
+  }else{
+    $("resumePanel").classList.add("hidden");
+    setup?.classList.remove("resumeOnly");
+    document.body.classList.remove("resumeOnlyMode");
   }
 }
 function loadRawSave(){
@@ -5982,7 +6078,7 @@ function initialState(name){
         care:false
       }
     },
-    inventory:{foodPack:0, healthSnack:0, shovel:0},
+    inventory:{foodPack:0, healthSnack:0, shovel:0, schoolTicket:1},
     storage:{objects:{},decorIds:[]},
     dailyReward:{lastClaimDay:null},
     equipment:{toyBall:false, chewToy:false, deluxeBed:false, premiumWheel:false, catTower:false, catWand:false, dogFrisbee:false, dogCastle:false, rabbitMaze:false},
@@ -5994,8 +6090,10 @@ function initialState(name){
     },
     schoolStudy:{
       active:null,
+      pendingQuiz:null,
       lastTaken:{},
-      completedLogged:{}
+      completedLogged:{},
+      quizResults:{}
     },
     habitatLevel:1,
     objectPositions:{},
@@ -6041,10 +6139,11 @@ function migrateState(){
   if(state.owner.level == null) state.owner.level = 1;
   if(state.owner.xp == null) state.owner.xp = 0;
   if(state.owner.coins == null) state.owner.coins = 1000;
-  if(!state.inventory) state.inventory = {foodPack:0, healthSnack:0, shovel:0};
+  if(!state.inventory) state.inventory = {foodPack:0, healthSnack:0, shovel:0, schoolTicket:1};
   if(state.inventory.foodPack == null) state.inventory.foodPack = 0;
   if(state.inventory.healthSnack == null) state.inventory.healthSnack = 0;
   if(state.inventory.shovel == null) state.inventory.shovel = 0;
+  if(state.inventory.schoolTicket == null) state.inventory.schoolTicket = 1;
   if(!state.storage) state.storage={objects:{},decorIds:[]};
   if(!state.storage.objects) state.storage.objects={};
   if(!Array.isArray(state.storage.decorIds)) state.storage.decorIds=[];
@@ -6063,9 +6162,11 @@ function migrateState(){
   if(!state.construction.school) state.construction.school = {endAt:0,completedLogged:false};
   if(state.construction.school.endAt == null) state.construction.school.endAt = 0;
   if(state.construction.school.completedLogged == null) state.construction.school.completedLogged = false;
-  if(!state.schoolStudy) state.schoolStudy={active:null,lastTaken:{},completedLogged:{}};
+  if(!state.schoolStudy) state.schoolStudy={active:null,pendingQuiz:null,lastTaken:{},completedLogged:{},quizResults:{}};
   if(!state.schoolStudy.lastTaken) state.schoolStudy.lastTaken={};
   if(!state.schoolStudy.completedLogged) state.schoolStudy.completedLogged={};
+  if(!state.schoolStudy.quizResults) state.schoolStudy.quizResults={};
+  if(state.schoolStudy.pendingQuiz===undefined) state.schoolStudy.pendingQuiz=null;
   if(state.schoolStudy.active===undefined) state.schoolStudy.active=null;
   if(!state.habitatLevel) state.habitatLevel = 1;
   if(!state.objectPositions) state.objectPositions = {};
@@ -6218,6 +6319,8 @@ function clearAndNewGame(){
   if(confirm("確定清掉先前存檔並重新開新的一局嗎？")){
     clearSave();
     $("resumePanel").classList.add("hidden");
+    $("setup")?.classList.remove("resumeOnly");
+    document.body.classList.remove("resumeOnlyMode");
     $("speciesBlock").classList.remove("hidden");
   }
 }
@@ -6226,11 +6329,13 @@ function resetAll(){
   clearInterval(roamTimer);
   roomLocked = false;
   clearSave();
-  document.body.classList.remove("playing");
+  document.body.classList.remove("playing","resumeOnlyMode");
+  $("setup")?.classList.remove("resumeOnly");
   closeAllGamePanels();
   $("tutorialOverlay").classList.remove("open");
   $("introOverlay")?.classList.remove("open");
   $("houseResearchPage")?.classList.remove("open");
+  $("schoolQuizOverlay")?.classList.remove("open");
   state = null;
   pickedSpecies = null; pickedBreed = null;
   $("petName").value = "";
@@ -6588,18 +6693,59 @@ function fastFinishSchool(){
   renderGame();
   renderShop();
 }
+function makeSchoolQuiz(courseId){
+  if(courseId==="chinese"){
+    const chars=["一","二","三","上","下","左","右","前","後"];
+    const answer=rand(chars);
+    return {courseId,kind:"chinese",prompt:answer,hint:"請照著題目中的字，在答案欄完整複寫一次。",answer};
+  }
+  if(courseId==="english"){
+    const words=[{word:"apple",icon:"🍎"},{word:"banana",icon:"🍌"},{word:"grape",icon:"🍇"}];
+    const item=rand(words);
+    return {courseId,kind:"english",prompt:item.icon,hint:"請看圖，在答案欄輸入正確的英文單字。",answer:item.word};
+  }
+  if(courseId==="math"){
+    const add=Math.random()<.5;
+    let a,b,answer,prompt;
+    if(add){
+      a=Math.floor(Math.random()*100);
+      b=Math.floor(Math.random()*(100-a));
+      answer=a+b; prompt=`${a} ＋ ${b} ＝ ？`;
+    }else{
+      a=Math.floor(Math.random()*100);
+      b=Math.floor(Math.random()*(a+1));
+      answer=a-b; prompt=`${a} － ${b} ＝ ？`;
+    }
+    return {courseId,kind:"math",prompt,hint:"請計算二位數以內的加減法，並輸入數字答案。",answer:String(answer)};
+  }
+  return null;
+}
+function hasCompletedCommonCourseToday(){
+  if(!state) return false;
+  const today=localDayKey();
+  return SCHOOL_COURSES_COMMON.some(c=>state.schoolStudy.lastTaken[c.id]===today);
+}
 function finalizeSchoolStudyIfReady(){
   if(!state) return false;
   migrateState();
   const active=state.schoolStudy.active;
   if(!active || Date.now()<active.endAt) return false;
-
+  const course=getSchoolCourse(active.courseId);
   const key=`${active.courseId}|${active.startDay}`;
-  if(!state.schoolStudy.completedLogged[key]){
-    state.schoolStudy.completedLogged[key]=true;
-    state.owner.coins+=active.reward||0;
-    gainPetXP(5);
-    addLog(`<b>課程完成</b>：${state.name} 完成「${active.courseName}」，獲得 ${active.reward} 金幣，寵物經驗值 +5 EXP！`);
+  if(course?.type==="common"){
+    delete state.schoolStudy.lastTaken[active.courseId];
+    if(!state.schoolStudy.pendingQuiz){
+      state.schoolStudy.pendingQuiz={courseId:active.courseId,courseName:active.courseName,startDay:active.startDay,reward:active.reward||0,question:makeSchoolQuiz(active.courseId)};
+      addLog(`<b>課程結束</b>：${state.name} 完成「${active.courseName}」課程，接著要進行隨堂測驗。`);
+    }
+  }else{
+    state.schoolStudy.lastTaken[active.courseId]=active.startDay;
+    if(!state.schoolStudy.completedLogged[key]){
+      state.schoolStudy.completedLogged[key]=true;
+      state.owner.coins+=active.reward||0;
+      gainPetXP(5);
+      addLog(`<b>課程完成</b>：${state.name} 完成「${active.courseName}」，獲得 ${active.reward} 金幣，寵物經驗值 +5 EXP！`);
+    }
   }
   state.schoolStudy.active=null;
   saveState();
@@ -6609,18 +6755,18 @@ function startSchoolCourse(courseId){
   if(!state || state.flags.dead) return;
   migrateState();
   finalizeSchoolStudyIfReady();
-  if(state.schoolStudy.active) return;
+  if(state.schoolStudy.active || state.schoolStudy.pendingQuiz) return;
   const course=getSchoolCourse(courseId);
   if(!course) return;
   const today=localDayKey();
   if(state.schoolStudy.lastTaken[course.id]===today) return;
-
-  state.schoolStudy.lastTaken[course.id]=today;
-  state.schoolStudy.active={
-    courseId:course.id,courseName:course.name,startDay:today,
-    startedAt:Date.now(),endAt:Date.now()+course.minutes*60*1000,
-    reward:course.reward,type:course.type
-  };
+  const commonDone=hasCompletedCommonCourseToday();
+  if(!commonDone && course.type!=="common"){
+    showCareActionHint("每天要先完成一堂共同科目，才能上其他課喔！",true);
+    return;
+  }
+  state.schoolStudy.active={courseId:course.id,courseName:course.name,startDay:today,startedAt:Date.now(),endAt:Date.now()+course.minutes*60*1000,reward:course.reward,type:course.type};
+  if(course.type==="special") state.schoolStudy.lastTaken[course.id]=today;
   addLog(`<b>私塾上課</b>：${state.name} 開始上「${course.name}」，正在努力學習中。`);
   saveState();
   renderSchoolPanel();
@@ -6649,37 +6795,144 @@ function formatElapsedTime(ms){
   return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
 }
 
+function useSchoolTicket(){
+  if(!state || state.flags.dead) return;
+  migrateState();
+  const active=state.schoolStudy.active;
+  if(!active) return;
+
+  const course=getSchoolCourse(active.courseId);
+  if(!course) return;
+  if((state.inventory.schoolTicket||0)<=0) return;
+
+  state.inventory.schoolTicket-=1;
+  active.endAt=Date.now();
+
+  if(course.type==="common"){
+    addLog(`<b>使用上課券</b>：妳使用 1 張上課券，${state.name} 的「${active.courseName}」立即完成上課，直接進入隨堂測驗。`);
+  }else{
+    addLog(`<b>使用上課券</b>：妳使用 1 張上課券，${state.name} 的「${active.courseName}」立即完成課程。`);
+  }
+
+  finalizeSchoolStudyIfReady();
+  saveState();
+  renderSchoolPanel();
+  renderLog();
+
+  if(course.type==="common"){
+    openSchoolQuiz();
+  }else{
+    renderOwner();
+  }
+}
+
+function openSchoolQuiz(){
+  if(!state) return;
+  migrateState();
+  const pending=state.schoolStudy.pendingQuiz;
+  if(!pending?.question) return;
+  const q=pending.question;
+  if($("schoolQuizTitle")) $("schoolQuizTitle").textContent=`${pending.courseName}隨堂測驗`;
+  if($("schoolQuizQuestion")) $("schoolQuizQuestion").innerHTML=q.kind==="english"?`<span class="quizPicture">${q.prompt}</span>`:q.prompt;
+  if($("schoolQuizHint")) $("schoolQuizHint").textContent=q.hint||"請輸入答案。";
+  if($("schoolQuizAnswer")){$("schoolQuizAnswer").value="";$("schoolQuizAnswer").disabled=false;}
+  if($("schoolQuizSubmit")) $("schoolQuizSubmit").disabled=false;
+  const result=$("schoolQuizResult"); if(result){result.className="schoolQuizResult hidden";result.textContent="";}
+  $("schoolQuizOverlay")?.classList.add("open");
+  setTimeout(()=>$("schoolQuizAnswer")?.focus(),80);
+}
+function closeSchoolQuiz(){$("schoolQuizOverlay")?.classList.remove("open");}
+function submitSchoolQuiz(){
+  if(!state) return;
+  migrateState();
+  const pending=state.schoolStudy.pendingQuiz;
+  if(!pending?.question) return;
+  const input=($("schoolQuizAnswer")?.value||"").trim();
+  if(!input) return;
+  const expected=String(pending.question.answer).trim();
+  const correct=pending.question.kind==="english"?input.toLowerCase()===expected.toLowerCase():input===expected;
+  const today=localDayKey();
+  state.schoolStudy.lastTaken[pending.courseId]=today;
+  state.schoolStudy.quizResults[`${pending.courseId}|${today}`]={correct,answer:input,expected};
+  const key=`${pending.courseId}|${today}`;
+  if(correct){
+    if(!state.schoolStudy.completedLogged[key]){
+      state.schoolStudy.completedLogged[key]=true;
+      state.owner.coins+=pending.reward||0;
+      gainPetXP(5);
+    }
+    addLog(`<b>隨堂測驗答對</b>：${state.name} 的「${pending.courseName}」測驗答對了，獲得 ${pending.reward} 金幣與寵物經驗值 +5 EXP！`);
+  }else{
+    state.schoolStudy.completedLogged[key]=true;
+    state.owner.coins+=300;
+    addLog(`<b>隨堂測驗答錯</b>：${state.name} 的「${pending.courseName}」今日測驗未通過，仍可獲得 300 金幣；本次沒有寵物經驗值獎勵，明天再加油！`);
+  }
+  state.schoolStudy.pendingQuiz=null;
+  saveState(); renderOwner(); renderLog(); renderSchoolPanel();
+  const result=$("schoolQuizResult");
+  if(result){
+    result.className=`schoolQuizResult ${correct?"correct":"wrong"}`;
+    result.textContent=correct?`答對了！獲得 🪙${pending.reward} 與寵物經驗值 +5 EXP。`:`答錯了，正確答案是「${expected}」。今天這堂課已修習完畢，仍可獲得 🪙300，但沒有寵物經驗值獎勵。`;
+  }
+  if($("schoolQuizAnswer")) $("schoolQuizAnswer").disabled=true;
+  if($("schoolQuizSubmit")) $("schoolQuizSubmit").disabled=true;
+  setTimeout(()=>closeSchoolQuiz(),2800);
+}
 function renderSchoolPanel(){
   if(!state) return;
   migrateState();
   finalizeSchoolStudyIfReady();
   const common=$("commonCourseGrid"),special=$("specialCourseGrid");
   if(!common||!special) return;
-
   const active=state.schoolStudy.active;
+  const pendingQuiz=state.schoolStudy.pendingQuiz;
   const today=localDayKey();
+  const commonDone=hasCompletedCommonCourseToday();
   function card(course){
     const used=state.schoolStudy.lastTaken[course.id]===today;
     const isActive=active?.courseId===course.id;
-    const blocked=!!active && !isActive;
+    const quizPending=pendingQuiz?.courseId===course.id;
+    const anotherBusy=(!!active&&!isActive)||(!!pendingQuiz&&!quizPending);
+    const prerequisiteLocked=!commonDone&&course.type!=="common";
+    const blocked=anotherBusy||prerequisiteLocked;
     let buttonText="開始上課";
     if(isActive) buttonText="上課中";
-    else if(used) buttonText="今天已上過";
-    else if(blocked) buttonText="先完成目前課程";
+    else if(quizPending) buttonText="等待隨堂測驗";
+    else if(used) buttonText="今日課程已修習完畢";
+    else if(prerequisiteLocked) buttonText="先完成一堂共同科目";
+    else if(anotherBusy) buttonText="先完成目前課程";
+    const note=prerequisiteLocked
+      ? `<div class="courseLockNote">每天至少先修完一堂共同科目，才會開放其他課程。</div>`
+      : course.type==="common"
+        ? `<div class="courseLockNote">課程結束後需完成 1 題隨堂測驗；答對可獲得完整獎勵；答錯可獲得 300 金幣，但沒有寵物經驗值。</div>`
+        : `<div class="courseLockNote">專業科目維持原本模式，課程結束即發放獎勵。</div>`;
     return `<div class="courseCard ${course.type==="special"?"special":""}">
       <div class="courseIcon">${course.icon}</div>
       <div class="courseName">${course.name}</div>
       <div class="courseMeta">上課時間：${course.minutes===60?"1 小時":course.minutes+" 分鐘"}<br>完成獎勵：🪙${course.reward}</div>
-      <button class="courseBtn" type="button" data-course="${course.id}" ${(used||blocked||isActive||state.flags.dead)?"disabled":""}>${buttonText}</button>
+      ${note}
+      <button class="courseBtn" type="button" data-course="${course.id}" ${(used||blocked||isActive||quizPending||state.flags.dead)?"disabled":""}>${buttonText}</button>
     </div>`;
   }
   common.innerHTML=SCHOOL_COURSES_COMMON.map(card).join("");
   special.innerHTML=(SCHOOL_COURSES_SPECIAL[state.species]||[]).map(card).join("");
   document.querySelectorAll("[data-course]").forEach(btn=>btn.addEventListener("click",()=>startSchoolCourse(btn.dataset.course)));
+  if($("schoolTicketCount")) $("schoolTicketCount").textContent=`🎫 上課券 × ${state.inventory.schoolTicket||0}`;
 
-  const banner=$("schoolStudyBanner"),msg=$("schoolStudyMessage"),countdown=$("schoolStudyCountdown");
+  const banner=$("schoolStudyBanner"),msg=$("schoolStudyMessage"),countdown=$("schoolStudyCountdown"),go=$("schoolQuizGoBtn"),ticketBtn=$("schoolTicketUseBtn");
   if(active){
     banner?.classList.remove("hidden");
+    go?.classList.add("hidden");
+    const activeCourse=getSchoolCourse(active.courseId);
+    const canUseTicket=!!activeCourse && (state.inventory.schoolTicket||0)>0;
+    ticketBtn?.classList.toggle("hidden",!canUseTicket);
+    if(ticketBtn){
+      ticketBtn.disabled=!canUseTicket;
+      ticketBtn.textContent=activeCourse?.type==="common"
+        ? "🎫 使用上課券，直接進行隨堂測驗"
+        : "🎫 使用上課券，直接完成課程";
+    }
+
     if(msg) msg.textContent=`${state.name}正在努力學習中`;
     if(countdown){
       const course=getSchoolCourse(active.courseId);
@@ -6687,12 +6940,19 @@ function renderSchoolPanel(){
       const elapsed=Math.max(0,Math.min(totalMs,Date.now()-(active.startedAt||Date.now())));
       countdown.textContent=formatElapsedTime(elapsed);
     }
+  }else if(pendingQuiz){
+    banner?.classList.remove("hidden");
+    ticketBtn?.classList.add("hidden");
+    if(msg) msg.textContent=`${pendingQuiz.courseName}課程結束，準備完成隨堂測驗吧！`;
+    if(countdown) countdown.textContent="";
+    go?.classList.remove("hidden");
   }else{
     banner?.classList.add("hidden");
+    go?.classList.add("hidden");
+    ticketBtn?.classList.add("hidden");
     if(countdown) countdown.textContent="";
   }
 }
-
 function schoolRemainingMs(){
   migrateState();
   if(!state.buildings.school.owned || state.buildings.school.status!=="building") return 0;
