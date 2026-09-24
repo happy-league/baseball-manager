@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.11.0</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.11.3</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -4774,6 +4774,107 @@ body.playing .top{display:none}
   }
 }
 
+
+/* ===== v0.11.1：研究員小晴更活潑生動 ===== */
+.researchIntroCard{
+  align-items:center !important;
+}
+
+.researchGirl.taiwanGirl{
+  transform-origin:center bottom;
+  animation:xiaoqingBob 2.3s ease-in-out infinite;
+  filter:drop-shadow(0 8px 14px rgba(71,52,38,.15));
+}
+
+.girlRibbon{
+  animation:xiaoqingRibbon .95s ease-in-out infinite alternate;
+}
+
+.girlArm.a1{
+  transform:rotate(28deg) !important;
+  transform-origin:70% 10%;
+  animation:xiaoqingWave 1.15s ease-in-out infinite alternate;
+}
+
+.girlArm.a2{
+  transform:rotate(-10deg) !important;
+}
+
+.girlSmile{
+  width:20px !important;
+  height:9px !important;
+  border-bottom:3px solid #c66b73 !important;
+}
+
+.girlEye{
+  width:6px !important;
+  height:7px !important;
+}
+
+.girlBlush{
+  width:12px !important;
+  height:8px !important;
+  background:rgba(243,148,160,.68) !important;
+}
+
+.researchSpeech{
+  position:relative;
+}
+
+.researchSpeech::before{
+  content:"♪";
+  position:absolute;
+  right:10px;
+  top:-4px;
+  color:#f0a4b2;
+  font-size:18px;
+  font-weight:1000;
+  transform:rotate(-8deg);
+}
+
+.researchName{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:#93634d !important;
+}
+.researchName::before{
+  content:"✨";
+  font-size:13px;
+}
+.researchName::after{
+  content:"✨";
+  font-size:13px;
+}
+
+.researchSpeech p{
+  color:#6f5b4b !important;
+  line-height:1.88 !important;
+}
+
+@keyframes xiaoqingBob{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-4px) rotate(-1deg)}
+}
+@keyframes xiaoqingWave{
+  from{transform:rotate(20deg)}
+  to{transform:rotate(38deg)}
+}
+@keyframes xiaoqingRibbon{
+  from{transform:rotate(14deg)}
+  to{transform:rotate(26deg)}
+}
+
+@media(max-width:760px){
+  .researchGirl.taiwanGirl{
+    animation:xiaoqingBobMobile 2.4s ease-in-out infinite;
+  }
+  @keyframes xiaoqingBobMobile{
+    0%,100%{transform:scale(.82) translateY(0)}
+    50%{transform:scale(.82) translateY(-3px)}
+  }
+}
+
 </style>
 </head>
 <body>
@@ -4782,7 +4883,7 @@ body.playing .top{display:none}
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.11.0</div>
+    <div class="badge">Prototype v0.11.3</div>
   </div>
 
   <section id="setup" class="card">
@@ -5010,7 +5111,7 @@ body.playing .top{display:none}
             <div id="dailyRewardStatus" class="dailyRewardStatus"></div>
             <div class="dailyRewardChoices">
               <button id="dailyCoinsReward" class="dailyRewardChoice" type="button">
-                <span>🪙</span><b>每日登入獎勵:300金幣</b><small>立即加入玩家金幣</small>
+                <span>🪙</span><b>每日登入獎勵:250金幣</b><small>立即加入玩家金幣</small>
               </button>
               <button id="dailyShovelReward" class="dailyRewardChoice" type="button">
                 <span class="dailyShovelIcon"></span><b>每日登入獎勵:鏟子</b><small>先放進儲藏箱，可免費擴增一次土地</small>
@@ -5277,7 +5378,7 @@ const YEAR_MS = 60 * 60 * 1000; // 1小時 = 1年
 const speciesData = {
   dog: {
     name:"狗狗",
-    breeds:["柴犬","柯基","玩具貴賓","黃金獵犬","拉布拉多","臘腸犬","博美犬","吉娃娃","法國鬥牛犬","薩摩耶"],
+    breeds:["柴犬","柯基","棕色貴賓","黃金獵犬","拉布拉多","臘腸犬","博美犬","吉娃娃","法國鬥牛犬","薩摩耶"],
     helper:"通常很在意陪伴感與活動量。"
   },
   cat: {
@@ -6451,11 +6552,11 @@ function openDailyReward(){if(!state)return;renderDailyReward();$("dailyRewardOv
 function closeDailyReward(){$("dailyRewardOverlay")?.classList.remove("open")}
 function claimDailyReward(type){
   if(!state||state.flags.dead||dailyRewardClaimedToday())return;
-  if(type==="coins"){state.owner.coins+=300;addLog(`<b>每日登入獎勵</b>：妳領取了 300 金幣！`)}
+  if(type==="coins"){state.owner.coins+=250;addLog(`<b>每日登入獎勵</b>：妳領取了 250 金幣！`)}
   else if(type==="shovel"){state.inventory.shovel+=1;addLog(`<b>每日登入獎勵</b>：妳獲得了 1 把鏟子，已先放進儲藏箱。`)}
   else return;
   state.dailyReward.lastClaimDay=localDayKey();saveState();renderOwner();renderDailyReward();renderStorage();
-  showCareActionHint(type==="coins"?"已領取 300 金幣！":"鏟子已放入儲藏箱！",true);
+  showCareActionHint(type==="coins"?"已領取 250 金幣！":"鏟子已放入儲藏箱！",true);
 }
 
 function localDayKey(ts=Date.now()){
@@ -8989,7 +9090,7 @@ function getBreedConfig(species, idx){
     dog: [
       {main:"#b8743a", top:"#d39255", face:"#f6d8bb", muzzle:"#fff4ea", chest:"#fff0df", spot:`<path d="M30 36 Q50 22 70 36 L70 45 Q50 39 30 45 Z" fill="#fff6ef" opacity=".96"/>`, extra:`<ellipse cx="50" cy="25" rx="8" ry="4" fill="rgba(255,255,255,.18)"/>`},
       {main:"#f0b16c", top:"#f7c381", face:"#fff1dd", muzzle:"#fff3e5", chest:"#fff3e1", shortNose:true, earType:"round"},
-      {main:"#e6e6e6", top:"#f7f7f7", face:"#fbfbfb", muzzle:"#ffffff", chest:"#ffffff", earType:"floppy", extra:`<path d="M74 75 q9 3 13 -1" stroke="#d9d9d9" stroke-width="6" fill="none" stroke-linecap="round"/>`},
+      {main:"#8a5738", top:"#a86c45", face:"#9b6240", muzzle:"#c89168", chest:"#b97850", earType:"floppy", nose:"#3d2b24", blush:"#d9958d", extra:`<path d="M74 75 q9 3 13 -1" stroke="#7a4b31" stroke-width="6" fill="none" stroke-linecap="round"/>`},
       {main:"#e0b764", top:"#f0ca79", face:"#fff0cf", muzzle:"#fff3d9", chest:"#fff3dd", earType:"floppy"},
       {main:"#ddc08e", top:"#ecd2a7", face:"#f8eed6", muzzle:"#fff5df", chest:"#fff6e3", earType:"floppy"},
       {main:"#7e5138", top:"#94644a", face:"#f0d0b6", muzzle:"#f4dcc9", chest:"#f4ddca", earType:"round", extra:`<path d="M22 74 h56" stroke="#7e5138" stroke-width="5" stroke-linecap="round"/>`},
