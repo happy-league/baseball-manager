@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.5</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.8</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -3303,113 +3303,151 @@ body.playing .top{display:none}
 /* ===== v0.8.2：卡皮巴拉好夥伴 ===== */
 .capybaraCompanion{
   position:absolute;
-  width:96px;
-  height:64px;
+  width:108px;
+  height:78px;
   display:none;
   z-index:19;
   transition:left 1.15s linear, top 1.15s linear;
   will-change:left,top;
+  pointer-events:auto!important;
 }
 .capybaraCompanion.walking{animation:bob .85s ease-in-out infinite}
 .capybaraCompanion .capyShadow{
   position:absolute;
-  left:16px;
+  left:18px;
   bottom:7px;
-  width:64px;
-  height:13px;
+  width:74px;
+  height:15px;
   border-radius:50%;
-  background:rgba(55,45,35,.16);
-  filter:blur(1px);
+  background:rgba(55,45,35,.17);
+  filter:blur(2px);
 }
 .capybaraCompanion .capyBody{
   position:absolute;
-  left:13px;
-  bottom:10px;
-  width:69px;
-  height:39px;
-  border-radius:46% 52% 42% 45%;
-  background:linear-gradient(180deg,#b88a62,#916746);
-  box-shadow:inset -7px -5px 0 rgba(74,45,29,.10),0 7px 7px rgba(48,63,41,.18);
+  left:16px;
+  bottom:14px;
+  width:74px;
+  height:42px;
+  border-radius:55% 50% 44% 48%;
+  background:
+    radial-gradient(circle at 36% 35%, rgba(255,255,255,.18) 0 14%, transparent 15%),
+    linear-gradient(180deg,#c89b71 0%,#a7754f 100%);
+  box-shadow:inset -9px -8px 0 rgba(98,63,37,.09),0 8px 8px rgba(48,63,41,.16);
+}
+.capybaraCompanion .capyBody:before{
+  content:"";
+  position:absolute;
+  left:21px;
+  bottom:5px;
+  width:30px;
+  height:18px;
+  border-radius:48%;
+  background:linear-gradient(180deg,#f2e4d3,#e1c8af);
+  opacity:.95;
 }
 .capybaraCompanion .capyHead{
   position:absolute;
-  right:6px;
-  bottom:22px;
-  width:31px;
-  height:24px;
-  border-radius:40% 48% 42% 42%;
-  background:linear-gradient(180deg,#ba8d66,#916847);
-  box-shadow:inset -4px -4px 0 rgba(80,49,30,.08);
+  right:10px;
+  bottom:26px;
+  width:38px;
+  height:30px;
+  border-radius:48% 52% 45% 45%;
+  background:linear-gradient(180deg,#cea27a 0%,#a97752 100%);
+  box-shadow:inset -4px -5px 0 rgba(92,60,38,.08);
 }
 .capybaraCompanion .capyEar{
   position:absolute;
-  top:-4px;
-  width:8px;
-  height:8px;
+  top:-5px;
+  width:9px;
+  height:9px;
   border-radius:50%;
-  background:#8b623f;
+  background:#8d633f;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
 }
-.capybaraCompanion .capyEar.e1{left:4px}
-.capybaraCompanion .capyEar.e2{right:4px}
+.capybaraCompanion .capyEar.e1{left:5px}
+.capybaraCompanion .capyEar.e2{right:5px}
 .capybaraCompanion .capyEye{
   position:absolute;
-  top:9px;
+  top:10px;
   width:4px;
-  height:4px;
-  border-radius:50%;
-  background:#36251a;
-}
-.capybaraCompanion .capyEye.a{left:7px}
-.capybaraCompanion .capyEye.b{right:7px}
-.capybaraCompanion .capyCheek{
-  position:absolute;
-  top:13px;
-  width:5px;
   height:5px;
   border-radius:50%;
-  background:rgba(255,222,210,.42);
+  background:#2e2219;
 }
-.capybaraCompanion .capyCheek.c1{left:5px}
-.capybaraCompanion .capyCheek.c2{right:5px}
+.capybaraCompanion .capyEye.a{left:9px}
+.capybaraCompanion .capyEye.b{right:9px}
+.capybaraCompanion .capyEye:after{
+  content:"";
+  position:absolute;
+  left:1px;
+  top:1px;
+  width:1.8px;
+  height:1.8px;
+  border-radius:50%;
+  background:rgba(255,255,255,.95);
+}
+.capybaraCompanion .capyCheek{
+  position:absolute;
+  top:15px;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:rgba(255,201,203,.68);
+}
+.capybaraCompanion .capyCheek.c1{left:6px}
+.capybaraCompanion .capyCheek.c2{right:6px}
 .capybaraCompanion .capySnout{
   position:absolute;
   left:7px;
   right:7px;
-  bottom:3px;
-  height:10px;
+  bottom:4px;
+  height:12px;
   border-radius:48%;
-  background:linear-gradient(180deg,#edd6bc,#d9b594);
+  background:linear-gradient(180deg,#f3dfca,#dfc0a2);
 }
 .capybaraCompanion .capyNose{
   position:absolute;
   left:50%;
-  bottom:8px;
+  bottom:10px;
   width:7px;
   height:5px;
   border-radius:50%;
-  background:#66462d;
+  background:#69482f;
   transform:translateX(-50%);
 }
 .capybaraCompanion .capyMouth{
   position:absolute;
   left:50%;
-  bottom:4px;
-  width:10px;
-  height:5px;
-  border-bottom:2px solid rgba(94,63,39,.7);
-  border-radius:0 0 10px 10px;
+  bottom:5px;
+  width:12px;
+  height:6px;
+  border-bottom:2px solid rgba(94,63,39,.72);
+  border-radius:0 0 12px 12px;
   transform:translateX(-50%);
 }
 .capybaraCompanion .capyLeg{
   position:absolute;
-  bottom:9px;
-  width:10px;
-  height:16px;
-  border-radius:6px 6px 7px 7px;
-  background:linear-gradient(180deg,#8d6342,#754d32);
+  bottom:12px;
+  width:11px;
+  height:15px;
+  border-radius:7px 7px 8px 8px;
+  background:linear-gradient(180deg,#8f6543,#765137);
+  box-shadow:0 2px 0 rgba(255,255,255,.08) inset;
 }
-.capybaraCompanion .capyLeg.l1{left:30px}
-.capybaraCompanion .capyLeg.l2{left:52px}
+.capybaraCompanion .capyLeg.l1{left:34px}
+.capybaraCompanion .capyLeg.l2{left:58px}
+.capybaraCompanion:before{
+  content:"";
+  position:absolute;
+  left:78px;
+  bottom:34px;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#a47550;
+  box-shadow:10px 3px 0 -1px #a47550;
+  opacity:.18;
+}
 
 /* 卡皮巴拉陪伴互動 */
 .capybaraCompanion.capyHappy{animation:capyHappy .46s ease-in-out 4 alternate}
@@ -5143,7 +5181,7 @@ body.resumeOnlyMode .top .badge{
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.13.5</div>
+    <div class="badge">Prototype v0.13.8</div>
   </div>
 
   <section id="setup" class="card">
