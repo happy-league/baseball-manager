@@ -1687,48 +1687,54 @@ function renderAchievements(winners,votePct){
  host.innerHTML+=`<h2 style="margin-top:26px">主席五項能力徽章</h2><p class="sub">85–89分獲得銀徽章；90分以上獲得金徽章。每項能力最多獲得一種徽章。</p>${badges}`;
 }
 
-function buildMap(){
- // Geographic Taiwan map: county/city shapes are arranged to follow their real-world
- // north/south/east/west positions while preserving map0..map21 for live vote coloring.
- const regions=[
-  [0,'M198 34 L218 43 L216 55 L199 62 L188 52 Z'],                         // 臺北
-  [1,'M180 25 L207 27 L229 42 L230 62 L218 78 L204 72 L216 55 L218 43 L198 34 L188 52 L176 47 Z'], // 新北
-  [2,'M165 57 L188 52 L199 62 L204 72 L190 91 L163 84 L153 70 Z'],          // 桃園
-  [3,'M139 111 L163 84 L190 91 L184 118 L163 134 L137 128 Z'],              // 臺中
-  [4,'M100 254 L125 242 L147 252 L151 279 L137 306 L108 306 L91 286 Z'],    // 臺南
-  [5,'M91 286 L108 306 L137 306 L132 338 L116 374 L95 404 L74 391 L73 352 Z'], // 高雄
-  [6,'M218 43 L230 42 L238 49 L236 62 L226 68 L218 78 L216 55 Z'],          // 基隆
-  [7,'M157 76 L166 69 L176 76 L169 87 L158 88 L151 82 Z'],                  // 新竹市
-  [8,'M153 70 L165 57 L188 52 L190 91 L163 84 L169 87 L158 88 L146 103 L134 94 Z'], // 新竹縣
-  [9,'M134 94 L146 103 L139 111 L137 128 L122 145 L105 136 L106 118 Z'],    // 苗栗
-  [10,'M105 136 L122 145 L137 128 L163 134 L156 164 L139 183 L112 178 L96 158 Z'], // 彰化
-  [11,'M139 183 L156 164 L177 177 L168 205 L151 224 L126 215 L112 195 Z'],   // 南投
-  [12,'M91 203 L112 195 L126 215 L125 242 L100 254 L81 242 L76 221 Z'],     // 雲林
-  [13,'M90 242 L100 238 L109 244 L104 254 L94 258 L85 252 Z'],              // 嘉義市
-  [14,'M81 242 L91 203 L112 195 L126 215 L125 242 L109 244 L100 238 L90 242 L85 252 L100 254 L91 286 L69 278 L64 257 Z'], // 嘉義縣
-  [15,'M74 391 L95 404 L86 433 L73 465 L56 493 L43 474 L47 440 L58 410 Z'], // 屏東
-  [16,'M204 72 L218 78 L213 105 L201 132 L184 153 L163 134 L184 118 L190 91 Z'], // 宜蘭
-  [17,'M184 153 L201 132 L193 166 L185 203 L177 241 L166 278 L151 279 L147 252 L151 224 L168 205 L177 177 Z'], // 花蓮
-  [18,'M151 279 L166 278 L158 318 L148 356 L134 397 L116 437 L95 465 L86 433 L95 404 L116 374 L132 338 L137 306 Z'], // 臺東
-  [19,'M28 277 L39 270 L49 278 L45 291 L32 295 L22 287 Z M51 301 L59 296 L65 304 L58 313 L48 310 Z'], // 澎湖
-  [20,'M18 383 L34 377 L47 386 L43 404 L28 412 L14 401 Z'],                 // 金門
-  [21,'M286 54 L296 47 L304 54 L301 65 L291 68 Z M307 37 L314 34 L319 41 L314 48 L307 45 Z'] // 連江
- ];
- const labels=[
-  [0,201,50,'北市'],[1,217,70,'新北'],[2,174,72,'桃園'],[3,150,121,'中市'],
-  [4,116,277,'南市'],[5,98,354,'高市'],[6,230,57,'基隆'],[7,162,82,'竹市'],
-  [8,153,94,'竹縣'],[9,119,122,'苗栗'],[10,121,159,'彰化'],[11,151,197,'南投'],
-  [12,96,222,'雲林'],[13,96,250,'嘉市'],[14,78,265,'嘉縣'],[15,61,450,'屏東'],
-  [16,198,111,'宜蘭'],[17,177,220,'花蓮'],[18,134,348,'臺東'],[19,40,287,'澎湖'],
-  [20,30,399,'金門'],[21,300,60,'連江']
- ];
- let svg='<svg viewBox="0 0 330 525" role="img" aria-label="台灣22縣市即時開票地圖">';
- svg+='<g class="twGeoMap">';
- regions.forEach(([i,d])=>svg+=`<path id="map${i}" class="region" d="${d}" fill="#667085"><title>${D[i][0]}</title></path>`);
- svg+='</g>';
- labels.forEach(([i,x,y,t])=>svg+=`<text class="mapLabel" x="${x}" y="${y}">${t}</text>`);
- svg+='</svg>';
- $('taiwanMap').innerHTML=svg;
+async function buildMap(){
+ const host=$('taiwanMap');
+ host.innerHTML='<div style="padding:24px;text-align:center">載入真實台灣行政區地圖…</div>';
+ const nameToIndex={};
+ D.forEach((d,i)=>{
+   const n=d[0].replace(/^臺/,'台');
+   nameToIndex[n]=i;
+   nameToIndex[d[0]]=i;
+ });
+ try{
+   // Government open-data polygon service. Geometry is returned as real county/city boundaries.
+   const url='https://talis.moa.gov.tw/server/rest/services/talis_location/MapServer/0/query?where=1%3D1&outFields=CITYNAME&returnGeometry=true&outSR=4326&f=geojson';
+   const res=await fetch(url);
+   if(!res.ok)throw new Error('map '+res.status);
+   const gj=await res.json();
+   const feats=(gj.features||[]).filter(x=>x.geometry&&x.properties&&x.properties.CITYNAME);
+   if(!feats.length)throw new Error('empty map');
+   let pts=[];
+   const eachRing=(g,cb)=>{
+     if(g.type==='Polygon')g.coordinates.forEach(cb);
+     else if(g.type==='MultiPolygon')g.coordinates.forEach(p=>p.forEach(cb));
+   };
+   feats.forEach(ft=>eachRing(ft.geometry,r=>r.forEach(p=>pts.push(p))));
+   // Geographic bounds include Kinmen, Matsu and Penghu, so all 22 jurisdictions are truly positioned.
+   let minX=Math.min(...pts.map(p=>p[0])),maxX=Math.max(...pts.map(p=>p[0]));
+   let minY=Math.min(...pts.map(p=>p[1])),maxY=Math.max(...pts.map(p=>p[1]));
+   const W=560,H=650,pad=20,sx=(W-pad*2)/(maxX-minX),sy=(H-pad*2)/(maxY-minY),s=Math.min(sx,sy);
+   const ox=(W-(maxX-minX)*s)/2,oy=(H-(maxY-minY)*s)/2;
+   const project=p=>[ox+(p[0]-minX)*s,H-(oy+(p[1]-minY)*s)];
+   const ringPath=r=>r.map((p,i)=>{const q=project(p);return (i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join(' ')+'Z';
+   const geomPath=g=>{
+     let d='';
+     eachRing(g,r=>{d+=ringPath(r)+' ';});
+     return d;
+   };
+   let svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="台灣22縣市真實行政區界線開票地圖">';
+   svg+='<g class="twGeoMap">';
+   feats.forEach(ft=>{
+     const raw=ft.properties.CITYNAME||'', norm=raw.replace(/^臺/,'台');
+     const idx=nameToIndex[raw]??nameToIndex[norm];
+     if(idx===undefined)return;
+     svg+='<path id="map'+idx+'" class="region" d="'+geomPath(ft.geometry)+'" fill="#667085" fill-rule="evenodd"><title>'+D[idx][0]+'</title></path>';
+   });
+   svg+='</g></svg>';
+   host.innerHTML=svg;
+ }catch(err){
+   host.innerHTML='<div style="padding:22px;line-height:1.7;text-align:center"><b>真實行政區地圖載入失敗</b><br><span class="sub">請確認網路連線後重新整理。為避免再顯示假地圖，本版不以人工示意圖替代。</span></div>';
+ }
 }
 function finalShares(c){
  let d=D.find(x=>x[0]===c.n),raw=[0,0,0];
