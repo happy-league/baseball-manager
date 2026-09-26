@@ -185,8 +185,8 @@ body:not(.light) .pollAverage{background:#19243a}
 <div class="card" id="warRoom" style="margin-top:14px"><h3>22縣市戰情室</h3><div id="cities" class="cities"></div></div>
 <div class="card" id="diaryCard" style="margin-top:14px"><div id="event" class="event diary"></div><div id="choices" class="choices"></div></div>
 </div>
-<div id="counting" class="hidden" style="margin-top:14px"><div class="countGrid"><div class="card"><h2>🗳️ 投票日・全台開票中心</h2><p id="countStatus"></p><div id="voteRows" class="voteRows"></div></div><div class="card mapCard"><h2 style="text-align:center">即時領先版圖</h2><div id="taiwanMap" class="taiwanMap"></div><div class="legend"><span><i class="dot" style="background:#3777ff"></i> 藍</span><span><i class="dot" style="background:#2fb06f"></i> 綠</span><span><i class="dot" style="background:#e9edf5"></i> 白</span><span><i class="dot" style="background:#667085"></i> 其他／未提名</span></div></div></div></div>
-<div class="disclaimer">本作品為虛構策略遊戲。2026 候選人配置依中選會截至 115/9/7 公布的登記彙總表；2024、2022 選舉資料僅作歷史基本盤。人物姓名均經戲仿諧音改字，虛構事件不代表任何現實人物曾有相同行為。</div></div>
+<div id="counting" class="hidden" style="margin-top:14px"><div class="countGrid"><div class="card"><h2>🗳️ 投票日・全台開票中心</h2><p id="countStatus"></p><div id="voteRows" class="voteRows"></div></div><div class="card mapCard"><h2 style="text-align:center">即時領先版圖</h2><div id="taiwanMap" class="taiwanMap"></div><div class="legend"><span><i class="dot" style="background:#3777ff"></i> 藍</span><span><i class="dot" style="background:#2fb06f"></i> 綠</span><span><i class="dot" style="background:#e9edf5"></i> 白</span><span><i class="dot" style="background:#667085"></i> 其他／未提名</span></div></div></div><div id="achievementPanel" class="achievementPanel"></div><div id="overallReview" class="overallReview" style="display:none"></div></div>
+<div id="buildVersion" class="sub" style="text-align:right;font-size:11px;margin-top:8px">版本 v107</div><div class="disclaimer">本作品為虛構策略遊戲。2026 候選人配置依中選會截至 115/9/7 公布的登記彙總表；2024、2022 選舉資料僅作歷史基本盤。人物姓名均經戲仿諧音改字，虛構事件不代表任何現實人物曾有相同行為。</div></div>
 <script>
 const P=['藍','綠','白'], COLORS=['#3777ff','#2fb06f','#e9edf5'], days=[100,90,80,70,60,50,40,30,20,10,5,2,1,0];
 // pres = 2024總統三陣營縣市得票率（藍、綠、白）；local = 2022縣市長主要三陣營得票率。0代表該陣營沒有正式候選人。
@@ -1701,6 +1701,7 @@ function renderOverallReview(){
    const counting=document.getElementById("counting");
    (counting||document.body).appendChild(host);
  }
+ host.style.display="block";
  const vals=(S.abilities||[0,0,0,0,0]).slice();
  const avg=vals.reduce((a,b)=>a+b,0)/Math.max(1,vals.length);
  const hi=Math.max(...vals),lo=Math.min(...vals);
