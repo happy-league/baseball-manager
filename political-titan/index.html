@@ -1387,7 +1387,7 @@ function chooseStandIn(i){
  target.strategy+=(i===1?2:1);
  S.log.push(`倒數${days[S.idx]}天｜${target.n}・站台人選決策：邀請${who}站台；主席能力變化：${imp.map((v,k)=>v?`${abilityNames[k]} +${S.abilities[k]-before[k]}`:"").filter(Boolean).join("、")}。`);
  renderChairLog();renderAbilities();
- S.storyThread=`${target.n}大型造勢的站台人選拍板由${who}出席。地方團隊隨即調整舞台流程、宣傳素材與動員安排，媒體也開始討論這次站台對選戰主軸的象徵意義。`;
+ S.storyThread=`站台人選拍板後，${target.n}的造勢舞台很快換上新的流程表。晚間活動開始，${who}依安排登台，主持人介紹名字時，台下支持者隨即舉起旗幟與手機，現場聲量明顯升高。${who}先替${target.cand||"地方候選人"}加油，接著談到地方建設、選戰團結與最後衝刺；候選人也上台握手致意，兩人短暫並肩向支持者揮手。幕僚站在舞台側邊觀察人群與媒體反應，社群組同步剪出登台片段。活動結束後，戰情室開始整理這次站台帶來的討論與後續效應。`;
  S.idx++;window._jumpDiary=true;nextEvent();afterDecisionTop();
 }
 
