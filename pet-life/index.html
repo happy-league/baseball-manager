@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.4</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.5</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -3303,96 +3303,71 @@ body.playing .top{display:none}
 /* ===== v0.8.2：卡皮巴拉好夥伴 ===== */
 .capybaraCompanion{
   position:absolute;
-  width:100px;
-  height:72px;
+  width:96px;
+  height:64px;
   display:none;
   z-index:19;
+  transition:left 1.15s linear, top 1.15s linear;
+  will-change:left,top;
 }
+.capybaraCompanion.walking{animation:bob .85s ease-in-out infinite}
 .capybaraCompanion .capyShadow{
   position:absolute;
   left:16px;
   bottom:7px;
-  width:70px;
-  height:14px;
+  width:64px;
+  height:13px;
   border-radius:50%;
-  background:rgba(48,60,42,.15);
+  background:rgba(55,45,35,.16);
   filter:blur(1px);
-}
-.capybaraCompanion .capyTail{
-  position:absolute;
-  left:12px;
-  bottom:34px;
-  width:12px;
-  height:9px;
-  border-radius:60% 40% 40% 60%;
-  background:#8f613d;
-  transform:rotate(-18deg);
-}
-.capybaraCompanion .capyBack{
-  position:absolute;
-  left:20px;
-  bottom:27px;
-  width:45px;
-  height:22px;
-  border-radius:45px 45px 20px 20px;
-  background:linear-gradient(180deg,#b8855f 0%,#9c6a44 100%);
-  transform:rotate(-2deg);
 }
 .capybaraCompanion .capyBody{
   position:absolute;
-  left:16px;
-  bottom:15px;
-  width:70px;
-  height:37px;
-  border-radius:44% 52% 40% 40%;
-  background:linear-gradient(180deg,#b8845a 0%,#9e6a43 62%,#875734 100%);
-  box-shadow:
-    inset -6px -5px 0 rgba(70,44,25,.10),
-    inset 6px 6px 0 rgba(255,237,215,.10),
-    0 5px 8px rgba(46,61,40,.14);
-}
-.capybaraCompanion .capyBelly{
-  position:absolute;
-  left:34px;
-  bottom:19px;
-  width:29px;
-  height:16px;
-  border-radius:50%;
-  background:radial-gradient(circle at 40% 35%,#ead1ad 0%,#d7b188 55%,#bf9063 100%);
-  opacity:.95;
+  left:13px;
+  bottom:10px;
+  width:69px;
+  height:39px;
+  border-radius:46% 52% 42% 45%;
+  background:linear-gradient(180deg,#b88a62,#916746);
+  box-shadow:inset -7px -5px 0 rgba(74,45,29,.10),0 7px 7px rgba(48,63,41,.18);
 }
 .capybaraCompanion .capyHead{
   position:absolute;
-  right:12px;
-  bottom:23px;
-  width:34px;
-  height:28px;
-  border-radius:46% 46% 42% 42%;
-  background:linear-gradient(180deg,#b8855d 0%,#a06d47 55%,#8a5b38 100%);
-  box-shadow:inset -4px -4px 0 rgba(66,41,23,.12), inset 4px 4px 0 rgba(255,240,220,.10);
+  right:6px;
+  bottom:22px;
+  width:31px;
+  height:24px;
+  border-radius:40% 48% 42% 42%;
+  background:linear-gradient(180deg,#ba8d66,#916847);
+  box-shadow:inset -4px -4px 0 rgba(80,49,30,.08);
 }
 .capybaraCompanion .capyEar{
   position:absolute;
-  width:9px;
-  height:9px;
+  top:-4px;
+  width:8px;
+  height:8px;
   border-radius:50%;
-  background:#835938;
-  top:-3px;
+  background:#8b623f;
 }
-.capybaraCompanion .capyEar.e1{left:5px}
-.capybaraCompanion .capyEar.e2{right:5px}
+.capybaraCompanion .capyEar.e1{left:4px}
+.capybaraCompanion .capyEar.e2{right:4px}
 .capybaraCompanion .capyEye{
   position:absolute;
-  width:4px;height:4px;border-radius:50%;
-  background:#2f2218;top:10px;
+  top:9px;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#36251a;
 }
 .capybaraCompanion .capyEye.a{left:7px}
 .capybaraCompanion .capyEye.b{right:7px}
 .capybaraCompanion .capyCheek{
   position:absolute;
-  width:5px;height:5px;border-radius:50%;
-  background:rgba(244,202,182,.40);
-  top:14px;
+  top:13px;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:rgba(255,222,210,.42);
 }
 .capybaraCompanion .capyCheek.c1{left:5px}
 .capybaraCompanion .capyCheek.c2{right:5px}
@@ -3400,38 +3375,41 @@ body.playing .top{display:none}
   position:absolute;
   left:7px;
   right:7px;
-  bottom:4px;
-  height:11px;
-  border-radius:50%;
-  background:radial-gradient(circle at 50% 25%,#efd7bb 0%,#dab58d 56%,#c59467 100%);
+  bottom:3px;
+  height:10px;
+  border-radius:48%;
+  background:linear-gradient(180deg,#edd6bc,#d9b594);
 }
 .capybaraCompanion .capyNose{
   position:absolute;
   left:50%;
-  bottom:10px;
-  width:7px;height:5px;border-radius:50%;
-  background:#5d4029;
+  bottom:8px;
+  width:7px;
+  height:5px;
+  border-radius:50%;
+  background:#66462d;
   transform:translateX(-50%);
 }
 .capybaraCompanion .capyMouth{
   position:absolute;
   left:50%;
-  bottom:5px;
-  width:10px;height:6px;
-  border-bottom:2px solid rgba(90,60,39,.58);
+  bottom:4px;
+  width:10px;
+  height:5px;
+  border-bottom:2px solid rgba(94,63,39,.7);
   border-radius:0 0 10px 10px;
   transform:translateX(-50%);
 }
 .capybaraCompanion .capyLeg{
   position:absolute;
-  bottom:11px;
-  width:10px;height:16px;
-  border-radius:6px;
-  background:linear-gradient(180deg,#8f603e,#73492d);
-  box-shadow:inset 0 -2px 0 rgba(60,37,22,.10);
+  bottom:9px;
+  width:10px;
+  height:16px;
+  border-radius:6px 6px 7px 7px;
+  background:linear-gradient(180deg,#8d6342,#754d32);
 }
-.capybaraCompanion .capyLeg.l1{left:31px}
-.capybaraCompanion .capyLeg.l2{left:53px}
+.capybaraCompanion .capyLeg.l1{left:30px}
+.capybaraCompanion .capyLeg.l2{left:52px}
 
 /* 卡皮巴拉陪伴互動 */
 .capybaraCompanion.capyHappy{animation:capyHappy .46s ease-in-out 4 alternate}
@@ -5145,6 +5123,7 @@ body.resumeOnlyMode .top .badge{
 .petFootprint.dog{border-radius:50%;box-shadow:-4px -3px 0 -1px rgba(86,72,53,.22),4px -3px 0 -1px rgba(86,72,53,.22)}
 .petFootprint.cat{border-radius:50%;box-shadow:-3px -3px 0 -1px rgba(86,72,53,.18),3px -3px 0 -1px rgba(86,72,53,.18)}
 .petFootprint.hamster{opacity:.76}
+.petFootprint.capybara{opacity:.82;border-radius:58% 58% 50% 50%;box-shadow:-4px -3px 0 -1px rgba(86,72,53,.20),4px -3px 0 -1px rgba(86,72,53,.20)}
 .petFootprint.fade{opacity:0;transition:opacity .55s ease}
 
 .albumGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -5164,7 +5143,7 @@ body.resumeOnlyMode .top .badge{
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.13.4</div>
+    <div class="badge">Prototype v0.13.5</div>
   </div>
 
   <section id="setup" class="card">
@@ -5234,10 +5213,7 @@ body.resumeOnlyMode .top .badge{
           <div id="habitatZone" class="habitatZone"></div>
           <div id="capybaraCompanion" class="capybaraCompanion placeableItem" data-footprint="2×1" aria-label="卡皮巴拉">
             <div class="capyShadow"></div>
-            <div class="capyTail"></div>
-            <div class="capyBack"></div>
             <div class="capyBody"></div>
-            <div class="capyBelly"></div>
             <div class="capyHead">
               <span class="capyEar e1"></span><span class="capyEar e2"></span>
               <span class="capyEye a"></span><span class="capyEye b"></span>
@@ -7724,6 +7700,7 @@ function buyItem(id){
   }else if(item.type==="companion"){
     if(item.id==="capybara"){
       state.companions.capybara=true;
+          setTimeout(()=>ensureCapybaraCompanionRoaming(1200),300);
       if(!state.objectCells.capybaraCompanion) state.objectCells.capybaraCompanion={row:6,col:4};
       if(state.objectRotations.capybaraCompanion==null) state.objectRotations.capybaraCompanion=0;
       addLog(`<b>新夥伴</b>：卡皮巴拉來到草地，成為 ${state.name} 的新朋友。`);
@@ -8607,6 +8584,9 @@ function renderEquipment(){
     if(state.companions?.capybara){
       if(!state.objectCells.capybaraCompanion) state.objectCells.capybaraCompanion={row:6,col:4};
       if(state.objectRotations.capybaraCompanion==null) state.objectRotations.capybaraCompanion=0;
+      ensureCapybaraCompanionRoaming();
+    }else{
+      stopCapybaraCompanionRoaming();
     }
   }
 }
@@ -8866,6 +8846,8 @@ function renderPetPosition(){
 
 const PLACEABLE_IDS = ["starterHouse","starterBall","roomToyBall","chewToy","deluxeBed","playSlide","petSwing","windmill","wheel","catTower","catWand","dogFrisbee","dogCastle","rabbitMaze","rabbitGrassBall","capybaraCompanion","schoolBuilding"];
 let objectDrag = null;
+let capybaraRoamTimer = null;
+let capybaraRoaming = false;
 
 function normalizeObjectToLeftTop(el){
   const room = $("room");
@@ -9724,6 +9706,108 @@ function runHamsterWheelImmersive(){
   },2200);
 }
 
+
+
+function maybeCreateCapybaraFootprints(fromX,fromY,toX,toY){
+  if(!state || state.flags.dead || !state.companions?.capybara) return;
+  if(Math.random()>.72) return;
+
+  const room=$("room");
+  const capy=$("capybaraCompanion");
+  if(!room || !capy) return;
+
+  const steps=3 + Math.floor(Math.random()*3);
+  const dx=(toX-fromX)/steps;
+  const dy=(toY-fromY)/steps;
+
+  for(let i=0;i<steps;i++){
+    const fp=document.createElement("div");
+    fp.className="petFootprint capybara";
+    fp.style.width="10px";
+    fp.style.height="9px";
+    fp.style.left=(fromX + dx*(i+0.5) + 18 + (i%2?5:-5))+"px";
+    fp.style.top=(fromY + dy*(i+0.5) + 40 + (i%2?-2:2))+"px";
+    fp.style.setProperty("--fp-rot", `${Math.atan2(dy,dx)*180/Math.PI+90}deg`);
+    room.appendChild(fp);
+    setTimeout(()=>fp.classList.add("fade"), 4450);
+    setTimeout(()=>fp.remove(), 5000);
+  }
+}
+
+function capybaraRandomCell(){
+  if(!state) return null;
+  const g=getHabitatGeometry();
+  const current=state.objectCells?.capybaraCompanion || {row:6,col:4};
+  const options=[];
+  for(let r=0;r<g.gridRows;r++){
+    for(let c=0;c<g.gridCols;c++){
+      if(!canPlaceObject("capybaraCompanion",r,c)) continue;
+      const dist=Math.abs(r-current.row)+Math.abs(c-current.col);
+      if(dist>=1 && dist<=6) options.push({row:r,col:c,dist});
+    }
+  }
+  if(!options.length) return current;
+  return rand(options);
+}
+
+function moveCapybaraCompanionTo(row,col){
+  if(!state || state.flags.dead || !state.companions?.capybara) return;
+  const capy=$("capybaraCompanion");
+  if(!capy || capy.offsetParent===null) return;
+
+  const current=state.objectCells?.capybaraCompanion || {row:6,col:4};
+  const from=objectPixelFromCell("capybaraCompanion", current.row, current.col);
+  const legal=nearestLegalCell("capybaraCompanion", row, col);
+  const to=objectPixelFromCell("capybaraCompanion", legal.row, legal.col);
+
+  if(current.row===legal.row && current.col===legal.col) return;
+
+  capy.classList.add("walking");
+  maybeCreateCapybaraFootprints(from.x,from.y,to.x,to.y);
+  placeObjectAtCell("capybaraCompanion", legal.row, legal.col, false);
+  saveState();
+
+  setTimeout(()=>{
+    capy.classList.remove("walking");
+  },1300);
+}
+
+function tryRoamCapybaraCompanion(){
+  if(!state || state.flags.dead || !state.companions?.capybara) return;
+  const capy=$("capybaraCompanion");
+  if(!capy || capy.offsetParent===null) return;
+  if(roomLocked || expansionMode || objectDrag || capybaraRoaming) return;
+
+  const target=capybaraRandomCell();
+  if(!target) return;
+
+  capybaraRoaming=true;
+  moveCapybaraCompanionTo(target.row,target.col);
+  setTimeout(()=>{ capybaraRoaming=false; }, 1450);
+}
+
+function stopCapybaraCompanionRoaming(){
+  if(capybaraRoamTimer){
+    clearTimeout(capybaraRoamTimer);
+    capybaraRoamTimer=null;
+  }
+  capybaraRoaming=false;
+}
+
+function ensureCapybaraCompanionRoaming(delay){
+  if(!state || !state.companions?.capybara || state.flags.dead){
+    stopCapybaraCompanionRoaming();
+    return;
+  }
+  if(capybaraRoamTimer) return;
+
+  const nextDelay = Number.isFinite(delay) ? delay : 4500 + Math.random()*3000;
+  capybaraRoamTimer=setTimeout(function loop(){
+    capybaraRoamTimer=null;
+    tryRoamCapybaraCompanion();
+    ensureCapybaraCompanionRoaming(5200 + Math.random()*3400);
+  }, nextDelay);
+}
 
 function capybaraInteraction(action){
   if(!state?.companions?.capybara) return;

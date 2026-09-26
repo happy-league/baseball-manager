@@ -153,9 +153,9 @@ jobs:
           pet_html = pet_src.read_bytes()
           if not pet_html.startswith(b"<!DOCTYPE html>") or not pet_html.rstrip().endswith(b"</html>"):
               raise SystemExit("Unexpected pet life HTML")
-          if len(pet_html) != 373627:
+          if len(pet_html) != 376445:
               raise SystemExit(f"Unexpected pet life HTML size: {len(pet_html)}")
-          if hashlib.sha256(pet_html).hexdigest() != "1ba605903002377742a5dec5cc975e8a4b46e4b19a0cf2a9b2945ff84968980e":
+          if hashlib.sha256(pet_html).hexdigest() != "edaae9feea5b3a481ce93df6a2e27199a6afd52bddeea6f84907fbefce7e5be7":
               raise SystemExit("Unexpected pet life SHA256")
           (pet_dir / "index.html").write_bytes(pet_html)
 
