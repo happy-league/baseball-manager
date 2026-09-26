@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.12.3</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.2</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -4964,6 +4964,195 @@ body.resumeOnlyMode .top .badge{
 .petSwing .ropeA{left:57px}.petSwing .ropeB{right:57px}
 .petSwing .swingSeat{position:absolute;left:44px;top:77px;width:50px;height:13px;border-radius:7px;background:linear-gradient(180deg,#6da6d0,#477da8);border:2px solid #315f84;box-shadow:0 5px 4px rgba(51,62,47,.15)}
 
+
+/* ===== v0.12.4：物件陰影、狗狗接球、貓咪互動 ===== */
+#room .placeableItem:not(.objectDragging){
+  filter:drop-shadow(0 4px 3px rgba(43,55,37,.16));
+}
+#room .placeableItem.petCaughtToy{
+  animation:caughtToyBounce .65s ease-out;
+}
+@keyframes caughtToyBounce{
+  0%{transform:translateY(0) scale(1)}
+  35%{transform:translateY(-13px) scale(1.08)}
+  70%{transform:translateY(-4px) scale(.98)}
+  100%{transform:translateY(0) scale(1)}
+}
+#pet.fetchRunning{
+  animation:fetchRunBob .16s ease-in-out infinite alternate;
+  transition:left .90s linear,top .90s linear!important;
+}
+@keyframes fetchRunBob{
+  from{margin-top:0}
+  to{margin-top:-7px}
+}
+#pet.tickled{
+  animation:catTickle .18s ease-in-out 0s 7 alternate;
+}
+@keyframes catTickle{
+  from{transform:translateX(-4px) rotate(-4deg)}
+  to{transform:translateX(4px) rotate(4deg)}
+}
+#pet.climbing{
+  transition:left .8s ease-out,top .8s ease-out!important;
+  animation:catClimbBob .24s ease-in-out 3 alternate;
+}
+@keyframes catClimbBob{
+  from{margin-top:0}
+  to{margin-top:-5px}
+}
+#pet.onCatTower{
+  filter:drop-shadow(0 3px 2px rgba(50,47,41,.18));
+}
+
+
+/* ===== v0.12.5：瞭望台攀爬、拋物飛行、兔子迷宮 ===== */
+#room .toyInFlight{
+  z-index:120!important;
+  filter:drop-shadow(0 12px 6px rgba(34,45,31,.18))!important;
+}
+#pet.climbing{
+  animation:catClimbStep .28s ease-in-out infinite alternate!important;
+}
+@keyframes catClimbStep{
+  from{margin-left:-3px;margin-top:0}
+  to{margin-left:3px;margin-top:-4px}
+}
+#pet.rabbitMazeEntering{
+  z-index:24!important;
+}
+#pet.rabbitInsideMaze{
+  opacity:0!important;
+}
+#pet.rabbitMazeExit{
+  animation:rabbitPopOut .75s ease-out;
+}
+@keyframes rabbitPopOut{
+  0%{opacity:0;transform:translateY(12px) scale(.78)}
+  45%{opacity:1;transform:translateY(-8px) scale(1.04)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+
+
+/* ===== v0.12.6：強化攀爬與兔子迷宮可視性 ===== */
+#pet.climbVisible{
+  z-index:40!important;
+  filter:drop-shadow(0 6px 4px rgba(50,44,37,.28)) brightness(1.04);
+  animation:catClimbBody .22s ease-in-out infinite alternate!important;
+}
+#pet.climbVisible #petSvg{
+  animation:catClimbPaws .32s ease-in-out infinite alternate;
+}
+#pet.climbPhase2{
+  animation-duration:.18s!important;
+}
+@keyframes catClimbBody{
+  from{margin-left:-5px;margin-top:1px}
+  to{margin-left:5px;margin-top:-5px}
+}
+@keyframes catClimbPaws{
+  from{transform:rotate(-3deg) scale(1)}
+  to{transform:rotate(3deg) scale(1.035)}
+}
+
+#pet.rabbitMazeEntering{
+  z-index:35!important;
+  filter:drop-shadow(0 5px 3px rgba(52,46,39,.22));
+}
+#pet.rabbitEnteringHole{
+  opacity:.18!important;
+  transform:scale(.68)!important;
+  transform-origin:50% 65%!important;
+}
+#pet.rabbitInsideMaze{
+  opacity:0!important;
+}
+#pet.rabbitMazeExit{
+  opacity:1!important;
+  z-index:36!important;
+  animation:rabbitClearExit 1.25s ease-out;
+}
+@keyframes rabbitClearExit{
+  0%{opacity:.1;transform:scale(.65) translateY(8px)}
+  45%{opacity:1;transform:scale(1.06) translateY(-8px)}
+  100%{opacity:1;transform:scale(1) translateY(0)}
+}
+
+
+/* ===== v0.12.8：風車與生活相簿 ===== */
+.windmill{position:absolute;display:none;width:112px;height:122px;z-index:18}
+.windmillShadow{position:absolute;left:20px;bottom:2px;width:72px;height:13px;border-radius:50%;background:rgba(47,59,42,.16)}
+.windmillPole{position:absolute;left:51px;top:42px;width:11px;height:69px;border-radius:6px;background:linear-gradient(90deg,#c58c52,#efc184,#9c6939);border:1px solid rgba(100,62,29,.28)}
+.windmillBase{position:absolute;left:32px;bottom:5px;width:49px;height:13px;border-radius:50%;background:linear-gradient(180deg,#bd9366,#936744)}
+.windmillHub{position:absolute;left:47px;top:31px;width:20px;height:20px;border-radius:50%;background:#e9b351;border:3px solid #9a6930;z-index:3}
+.windmillBlades{position:absolute;left:14px;top:0;width:86px;height:86px;transform-origin:50% 50%;animation:windmillSpin 3.4s linear infinite}
+.windmillBlades .blade{position:absolute;left:39px;top:4px;width:12px;height:37px;border-radius:9px 9px 3px 3px;background:linear-gradient(180deg,#f2f4ef,#9cc3d6);border:1px solid rgba(72,105,119,.26);transform-origin:50% 39px}
+.windmillBlades .b1{transform:rotate(0deg)}.windmillBlades .b2{transform:rotate(90deg)}.windmillBlades .b3{transform:rotate(180deg)}.windmillBlades .b4{transform:rotate(270deg)}
+@keyframes windmillSpin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.windmillBlades{animation-duration:9s}}
+
+.albumDrawer{width:min(720px,94vw)!important}
+.albumTopLine{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:3px 0 12px;padding:8px 10px;border-radius:12px;background:#fff8e8;color:#806343;font-size:11px;font-weight:900}
+.albumGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.albumThumb{border:1px solid rgba(166,137,105,.24);border-radius:15px;background:#fff;padding:7px;text-align:left;box-shadow:0 5px 12px rgba(58,48,39,.07)}
+.albumThumb:focus-visible{outline:3px solid rgba(223,174,78,.35);outline-offset:2px}
+.albumPhotoFrame{overflow:hidden;border-radius:11px;aspect-ratio:4/3;background:#efe9dc;position:relative}
+.albumPhotoScene{position:absolute;inset:0;overflow:hidden;display:flex;align-items:flex-end;justify-content:center;background:linear-gradient(180deg,var(--sky1),var(--sky2) 58%,var(--ground) 59%,var(--ground2));}
+.albumPhotoScene .albumSun{position:absolute;right:10%;top:10%;font-size:25px;opacity:.9}
+.albumPhotoScene .albumDecorL{position:absolute;left:6%;bottom:12%;font-size:27px}
+.albumPhotoScene .albumDecorR{position:absolute;right:6%;bottom:12%;font-size:27px}
+.albumPhotoScene .albumPet{position:absolute;left:50%;bottom:6%;transform:translateX(-50%);filter:drop-shadow(0 5px 3px rgba(47,42,36,.17))}
+.albumPhotoScene .albumMoment{position:absolute;left:8px;top:7px;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.78);font-size:9px;font-weight:1000;color:#6d5845}
+.albumPhotoScene .albumSpark{position:absolute;right:8px;bottom:8px;font-size:18px}
+.albumThumbMeta{margin-top:6px;display:flex;justify-content:space-between;gap:6px;font-size:9px;color:#8e7965}.albumThumbMeta b{color:#695440}
+.albumPager{display:flex;justify-content:center;gap:10px;margin-top:12px}.albumPager button{border:0;border-radius:10px;padding:8px 12px;background:#e1b369;color:#fff;font-weight:900}.albumPager button:disabled{opacity:.4}
+
+.albumViewer{position:absolute;inset:0;z-index:190;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(38,37,34,.62);backdrop-filter:blur(5px)}
+.albumViewer.open{display:flex}
+.albumViewerPanel{position:relative;width:min(720px,96%);max-height:92%;overflow:auto;border-radius:24px;padding:20px;background:#fffaf0;border:1px solid rgba(202,164,108,.3);box-shadow:0 24px 55px rgba(35,30,25,.34)}
+.albumViewerClose{position:absolute;right:10px;top:10px;width:38px;height:38px;border:0;border-radius:50%;background:#eee1cf;color:#6d5540;font-size:22px;font-weight:900;z-index:2}
+.albumViewerCanvas{overflow:auto;display:flex;align-items:center;justify-content:center;min-height:280px;padding:42px 12px 12px}
+.albumViewerCanvas .albumPhotoFrame{width:min(540px,100%);flex:0 0 auto;transition:width .2s ease}
+.albumViewerMeta{text-align:center;margin-top:9px;font-size:11px;color:#806d5a;font-weight:800}
+.albumViewerActions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-top:12px}.albumViewerActions button{border:0;border-radius:11px;padding:9px 12px;background:#d9b275;color:#fff;font-weight:900}.albumViewerActions .albumDeleteBtn{background:#c97972}
+@media(max-width:560px){.albumGrid{grid-template-columns:1fr}.albumViewerCanvas{min-height:220px}.albumDrawer{width:calc(100vw - 18px)!important}}
+
+
+/* ===== v0.12.9：相簿固定10格、照片視角、兔子草球與腳印 ===== */
+.rabbitGrassBall{position:absolute;display:none;width:52px;height:52px;z-index:18}
+.rabbitGrassBall .grassBallCore{position:absolute;left:5px;top:7px;width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#a9d46f 0 16%,#79ad4e 40%,#4f7d33 72%,#315924 100%);box-shadow:inset -7px -8px 8px rgba(30,66,23,.18),0 6px 4px rgba(45,61,38,.16)}
+.rabbitGrassBall .grassStrand{position:absolute;width:22px;height:3px;border-radius:3px;background:#d2df7e;transform-origin:left center}
+.rabbitGrassBall .s1{left:11px;top:14px;transform:rotate(28deg)}
+.rabbitGrassBall .s2{left:20px;top:12px;transform:rotate(82deg)}
+.rabbitGrassBall .s3{left:12px;top:31px;transform:rotate(-24deg)}
+.rabbitGrassBall .s4{left:27px;top:35px;transform:rotate(142deg)}
+.rabbitGrassBall.rabbitGrassBallPlaying{z-index:60!important}
+.rabbitGrassBall.rabbitGrassBallHeld{animation:rabbitBallHeld 1.6s ease-in-out infinite alternate}
+#pet.rabbitBallPlaying{z-index:59!important;animation:rabbitPlayHop .24s ease-in-out 0s 8 alternate}
+#pet.rabbitBallPlaying #petSvg{animation:rabbitPawPlay .32s ease-in-out infinite alternate}
+@keyframes rabbitBallHeld{
+  from{transform:translateY(-2px) rotate(-18deg) scale(1.08)}
+  to{transform:translateY(-15px) rotate(22deg) scale(1.16)}
+}
+@keyframes rabbitPlayHop{from{margin-top:0;transform:rotate(-3deg)}to{margin-top:-10px;transform:rotate(3deg)}}
+@keyframes rabbitPawPlay{from{transform:rotate(-2deg) scale(1)}to{transform:rotate(2deg) scale(1.05)}}
+
+.petFootprint{position:absolute;border-radius:55% 55% 48% 48%;background:rgba(86,72,53,.33);z-index:8;pointer-events:none;transform:rotate(var(--fp-rot,0deg))}
+.petFootprint::after{content:"";position:absolute;left:23%;top:-32%;width:54%;height:52%;border-radius:50%;background:rgba(86,72,53,.22)}
+.petFootprint.dog{border-radius:50%;box-shadow:-4px -3px 0 -1px rgba(86,72,53,.22),4px -3px 0 -1px rgba(86,72,53,.22)}
+.petFootprint.cat{border-radius:50%;box-shadow:-3px -3px 0 -1px rgba(86,72,53,.18),3px -3px 0 -1px rgba(86,72,53,.18)}
+.petFootprint.hamster{opacity:.76}
+.petFootprint.fade{opacity:0;transition:opacity .55s ease}
+
+.albumGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.albumEmptySlot{border:1px dashed rgba(166,137,105,.28);border-radius:15px;min-height:142px;background:rgba(255,255,255,.34);display:flex;align-items:center;justify-content:center;color:#b9a58f;font-size:10px;font-weight:800}
+.albumPhotoScene.angle-left .albumPet{left:46%;transform:translateX(-50%) rotate(-7deg) scaleX(.88)}
+.albumPhotoScene.angle-right .albumPet{left:54%;transform:translateX(-50%) rotate(7deg) scaleX(-.88)}
+.albumPhotoScene.angle-close .albumPet{bottom:-7%;transform:translateX(-50%) scale(1.28)}
+.albumPhotoScene.angle-high .albumPet{bottom:12%;transform:translateX(-50%) scale(.86) rotate(2deg)}
+.albumPhotoScene.angle-low .albumPet{bottom:0;transform:translateX(-50%) scale(1.08) rotate(-2deg)}
+@media(min-width:760px){.albumGrid{grid-template-columns:repeat(5,minmax(0,1fr))}.albumEmptySlot{min-height:110px}}
+
 </style>
 </head>
 <body>
@@ -4972,7 +5161,7 @@ body.resumeOnlyMode .top .badge{
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.12.3</div>
+    <div class="badge">Prototype v0.13.2</div>
   </div>
 
   <section id="setup" class="card">
@@ -5138,6 +5327,17 @@ body.resumeOnlyMode .top .badge{
             <div class="swingSeat"></div>
           </div>
 
+          <div id="windmill" data-footprint="2×1" class="windmill placeableItem" aria-label="風車">
+            <div class="windmillShadow"></div>
+            <div class="windmillPole"></div>
+            <div class="windmillHub"></div>
+            <div class="windmillBlades">
+              <span class="blade b1"></span><span class="blade b2"></span>
+              <span class="blade b3"></span><span class="blade b4"></span>
+            </div>
+            <div class="windmillBase"></div>
+          </div>
+
           <div id="catTower" data-footprint="2×2" class="catTower placeableItem" aria-label="瞭望台">
             <div class="ctBase"></div><div class="ctPole p1"></div><div class="ctPole p2"></div>
             <div class="ctPlatform low"></div><div class="ctPlatform high"></div>
@@ -5156,6 +5356,11 @@ body.resumeOnlyMode .top .badge{
           </div>
           <div id="rabbitMaze" data-footprint="2×2" class="rabbitMaze placeableItem" aria-label="紙箱迷宮">
             <div class="mazeBox a"></div><div class="mazeBox b"></div><div class="mazeBox c"></div>
+          </div>
+          <div id="rabbitGrassBall" data-footprint="1×1" class="rabbitGrassBall placeableItem" aria-label="草球">
+            <div class="grassBallCore"></div>
+            <span class="grassStrand s1"></span><span class="grassStrand s2"></span>
+            <span class="grassStrand s3"></span><span class="grassStrand s4"></span>
           </div>
 
           <div id="schoolBuilding" data-footprint="3×3" class="schoolBuilding placeableItem" aria-label="私塾">
@@ -5392,6 +5597,7 @@ body.resumeOnlyMode .top .badge{
             <div id="shopUnlockHint" class="nearbyHint shopUnlockHint">可購買建築物「私塾」</div>
           </div>
           <button class="toolBtn" type="button" data-panel="storagePanel"><span>📦</span><small>儲藏箱</small></button>
+          <button class="toolBtn" type="button" data-panel="albumPanel"><span>🖼️</span><small>相簿</small></button>
           <button class="toolBtn" type="button" data-panel="journalPanel"><span>📖</span><small>日記</small></button>
         </nav>
 
@@ -5430,6 +5636,36 @@ body.resumeOnlyMode .top .badge{
           <div id="storageGrid" class="storageGrid"></div>
         </section>
 
+
+
+        <section id="albumPanel" class="gameDrawer albumDrawer" aria-label="生活相簿">
+          <div class="drawerHead">
+            <div><h3>生活相簿</h3><div class="muted">每天登入會自動留下 1 張生活照片，最多保存 100 張。</div></div>
+            <button class="drawerClose" type="button" data-close-panel>×</button>
+          </div>
+          <div class="albumTopLine">
+            <div id="albumCount" class="albumCount">0 / 100 張</div>
+            <div id="albumPageLabel" class="albumPageLabel">第 1 / 1 頁</div>
+          </div>
+          <div id="albumGrid" class="albumGrid"></div>
+          <div class="albumPager">
+            <button id="albumPrev" type="button">上一頁</button>
+            <button id="albumNext" type="button">下一頁</button>
+          </div>
+        </section>
+
+        <section id="albumViewer" class="albumViewer" aria-label="照片檢視">
+          <div class="albumViewerPanel">
+            <button id="albumViewerClose" class="albumViewerClose" type="button" aria-label="關閉照片">×</button>
+            <div id="albumViewerCanvas" class="albumViewerCanvas"></div>
+            <div id="albumViewerMeta" class="albumViewerMeta"></div>
+            <div class="albumViewerActions">
+              <button id="albumZoomOut" type="button">－ 縮小</button>
+              <button id="albumZoomIn" type="button">＋ 放大</button>
+              <button id="albumDelete" class="albumDeleteBtn" type="button">刪除照片</button>
+            </div>
+          </div>
+        </section>
         <section id="journalPanel" class="gameDrawer" aria-label="生活日記">
           <div class="drawerHead">
             <div><h3>生活日記</h3><div class="muted">查看狀態摘要與妳們一起生活的紀錄。</div></div>
@@ -5543,6 +5779,7 @@ const shopItems = [
   {id:"lighthouse", category:"equipment", icon:"🗼", name:"燈塔", price:520, level:1, type:"repeatableDecor", desc:"所有寵物都能使用。佔地 2×2，可重複購買。"},
   {id:"playSlide", category:"equipment", icon:"🛝", name:"溜滑梯", price:1000, level:1, type:"equipment", desc:"所有寵物都可以使用。佔地 2×2。"},
   {id:"petSwing", category:"equipment", icon:"🎠", name:"鞦韆", price:1000, level:1, type:"equipment", desc:"所有寵物都可以使用。佔地 2×2。"},
+  {id:"windmill", category:"equipment", icon:"🌬️", name:"風車", price:1500, level:1, type:"equipment", desc:"所有寵物都可以使用。佔地 2×1，放在草地上時扇葉會持續轉動。"},
 
   {id:"premiumWheel", category:"equipment", icon:"🎡", name:"滾輪", price:780, level:1, type:"equipment", species:"hamster", desc:"倉鼠專屬器具。佔地 2×1。"},
   {id:"catTower", category:"equipment", icon:"🗼", name:"瞭望台", price:620, level:1, type:"equipment", species:"cat", desc:"貓咪專屬器具。佔地 2×2。"},
@@ -5550,6 +5787,7 @@ const shopItems = [
   {id:"dogFrisbee", category:"equipment", icon:"🥏", name:"飛盤", price:320, level:1, type:"equipment", species:"dog", desc:"狗狗專屬器具。佔地 1×1。"},
   {id:"dogCastle", category:"equipment", icon:"🏰", name:"城堡", price:860, level:1, type:"equipment", species:"dog", desc:"狗狗專屬器具。佔地 2×2。"},
   {id:"rabbitMaze", category:"equipment", icon:"📦", name:"紙箱迷宮", price:560, level:1, type:"equipment", species:"rabbit", desc:"兔子專屬器具。佔地 2×2。"},
+  {id:"rabbitGrassBall", category:"equipment", icon:"🟢", name:"草球", price:380, level:1, type:"equipment", species:"rabbit", desc:"兔子專屬器具。佔地 1×1。把兔子拖到草球旁，牠會把草球拿起來玩。"},
 
   {id:"school", category:"building", icon:"🏫", name:"私塾", price:500, level:2, type:"building", desc:"可以讓寵物學到各式各樣的知識與技能"},
   {id:"capybara", category:"companion", icon:"🦫", name:"卡皮巴拉", price:1200, level:5, type:"companion", desc:"替寵物找一位溫和的新夥伴，購買後會一起出現在草地上。"}
@@ -5661,11 +5899,20 @@ function initGamePanels(){
       if(panelId==="shopPanelOverlay") completeTutorialTask("shop");
       if(panelId==="carePanel") completeTutorialTask("care");
       if(panelId==="storagePanel") renderStorage();
+      if(panelId==="albumPanel") renderAlbum();
     });
   });
   document.querySelectorAll("[data-close-panel]").forEach(btn => {
     btn.addEventListener("click", closeAllGamePanels);
   });
+  $("albumPrev")?.addEventListener("click",()=>{if(!state)return;state.album.page=Math.max(1,(state.album.page||1)-1);renderAlbum();saveState();});
+  $("albumNext")?.addEventListener("click",()=>{if(!state)return;state.album.page=(state.album.page||1)+1;renderAlbum();saveState();});
+  $("albumViewerClose")?.addEventListener("click",closeAlbumViewer);
+  $("albumViewer")?.addEventListener("click",e=>{if(e.target===$("albumViewer"))closeAlbumViewer();});
+  $("albumZoomIn")?.addEventListener("click",()=>changeAlbumZoom(.2));
+  $("albumZoomOut")?.addEventListener("click",()=>changeAlbumZoom(-.2));
+  $("albumDelete")?.addEventListener("click",deleteSelectedAlbumPhoto);
+
   const room = $("room");
   room.addEventListener("pointerdown", (e) => {
     if(e.target === room || e.target.classList.contains("floorPlane") || e.target.classList.contains("habitatZone")){
@@ -6121,7 +6368,9 @@ function initialState(name){
     inventory:{foodPack:0, healthSnack:0, shovel:0, schoolTicket:1},
     storage:{objects:{},decorIds:[]},
     dailyReward:{lastClaimDay:null},
-    equipment:{toyBall:false, chewToy:false, deluxeBed:false, playSlide:false, petSwing:false, premiumWheel:false, catTower:false, catWand:false, dogFrisbee:false, dogCastle:false, rabbitMaze:false},
+    loginStreak:{lastLoginDay:null,streak:0,windmillGiftClaimed:false},
+    album:{lastPhotoDay:null,photos:[],serial:0,page:1},
+    equipment:{toyBall:false, chewToy:false, deluxeBed:false, playSlide:false, petSwing:false, windmill:false, premiumWheel:false, catTower:false, catWand:false, dogFrisbee:false, dogCastle:false, rabbitMaze:false, rabbitGrassBall:false},
     buildings:{
       school:{owned:false,status:"none"}
     },
@@ -6144,9 +6393,10 @@ function initialState(name){
     companions:{capybara:false},
     view:{zoom:1},
     landChunks:[
-      "-1,-1","0,-1","1,-1",
-      "-1,0","0,0","1,0",
-      "-1,1","0,1","1,1"
+      "-2,-2","-1,-2","0,-2","1,-2",
+      "-2,-1","-1,-1","0,-1","1,-1",
+      "-2,0","-1,0","0,0","1,0",
+      "-2,1","-1,1","0,1","1,1"
     ],
     stats:Math.random()<.5
       ? {hunger:52, water:80, clean:78, energy:66, mood:70, health:90}
@@ -6158,7 +6408,8 @@ function initialState(name){
     neglectPeriodsHandled:0,
     lastSeen:Date.now(),
     log:[],
-    petPos:{x:310,y:250}
+    petPos:{x:310,y:250},
+    petTowerPerched:false
   };
 }
 function startGame(){
@@ -6189,8 +6440,17 @@ function migrateState(){
   if(!Array.isArray(state.storage.decorIds)) state.storage.decorIds=[];
   if(!state.dailyReward) state.dailyReward={lastClaimDay:null};
   if(state.dailyReward.lastClaimDay===undefined) state.dailyReward.lastClaimDay=null;
+  if(!state.loginStreak) state.loginStreak={lastLoginDay:null,streak:0,windmillGiftClaimed:false};
+  if(state.loginStreak.lastLoginDay===undefined) state.loginStreak.lastLoginDay=null;
+  if(!Number.isFinite(state.loginStreak.streak)) state.loginStreak.streak=0;
+  if(state.loginStreak.windmillGiftClaimed==null) state.loginStreak.windmillGiftClaimed=false;
+  if(!state.album) state.album={lastPhotoDay:null,photos:[],serial:0,page:1};
+  if(state.album.lastPhotoDay===undefined) state.album.lastPhotoDay=null;
+  if(!Array.isArray(state.album.photos)) state.album.photos=[];
+  if(!Number.isFinite(state.album.serial)) state.album.serial=state.album.photos.length;
+  if(!Number.isFinite(state.album.page) || state.album.page<1) state.album.page=1;
   if(!state.equipment) state.equipment = {toyBall:false, chewToy:false, deluxeBed:false, premiumWheel:false, catTower:false, catWand:false, dogFrisbee:false, rabbitMaze:false};
-  ["toyBall","chewToy","deluxeBed","playSlide","petSwing","premiumWheel","catTower","catWand","dogFrisbee","dogCastle","rabbitMaze"].forEach(k => {
+  ["toyBall","chewToy","deluxeBed","playSlide","petSwing","windmill","premiumWheel","catTower","catWand","dogFrisbee","dogCastle","rabbitMaze","rabbitGrassBall"].forEach(k => {
     if(state.equipment[k] == null) state.equipment[k] = false;
   });
   if(!state.buildings) state.buildings = {};
@@ -6225,6 +6485,7 @@ function migrateState(){
       "-1,1","0,1","1,1"
     ];
   }
+  if(state.petTowerPerched==null) state.petTowerPerched=false;
   if(!Number.isFinite(state.lastCareAt)) state.lastCareAt=Date.now();
   if(!Number.isFinite(state.neglectPeriodsHandled)) state.neglectPeriodsHandled=0;
   if(!state.petProgress) state.petProgress = {level:1, xp:0};
@@ -6344,6 +6605,8 @@ function enterGame(){
   $("game").classList.remove("hidden");
   $("step4").classList.add("on");
   setSpeciesFurniture();
+  updateLoginStreakAndGift();
+  ensureDailyAlbumPhoto();
   renderGame();
   saveState();
   startRoaming();
@@ -6501,6 +6764,7 @@ function renderGame(){
   renderLog();
   renderAlerts();
   renderOwner();
+  if($("albumPanel")?.classList.contains("open")) renderAlbum();
   renderTutorial();
   renderShop();
   syncShopUnlockHint();
@@ -6519,7 +6783,7 @@ function renderGame(){
 const FIXED_CAMERA_ZOOM=0.86;
 const MAX_OWNER_LEVEL=10;
 const MAX_PET_LEVEL=10;
-const MAX_LAND_CHUNKS_PER_AXIS=5; // 5個4×4區塊 = 20×20
+const MAX_LAND_CHUNKS_PER_AXIS=6; // 6個4×4區塊 = 24×24
 
 function xpNeeded(level){
   return 10 + Math.max(0, level - 1) * 5;
@@ -6702,6 +6966,180 @@ function claimDailyReward(type){
   else return;
   state.dailyReward.lastClaimDay=localDayKey();saveState();renderOwner();renderDailyReward();renderStorage();
   showCareActionHint(type==="coins"?"已領取 250 金幣！":"鏟子已放入儲藏箱！",true);
+}
+
+
+const ALBUM_BACKGROUNDS=[
+  {name:"晨光草地",sky1:"#cfeeff",sky2:"#f7fbff",ground:"#b9dea2",ground2:"#79ae68",sun:"☀️",l:"🌼",r:"🌳"},
+  {name:"午後公園",sky1:"#bfe4ff",sky2:"#eff9ff",ground:"#a9d58d",ground2:"#6da55d",sun:"🌤️",l:"🌳",r:"🌷"},
+  {name:"黃昏散步",sky1:"#f9cba7",sky2:"#f6e1c9",ground:"#b6c780",ground2:"#7f9b5e",sun:"🌇",l:"🌾",r:"🌳"},
+  {name:"星空庭院",sky1:"#536986",sky2:"#8595aa",ground:"#8ba27b",ground2:"#536f52",sun:"🌙",l:"✨",r:"🌲"},
+  {name:"花園角落",sky1:"#d6efff",sky2:"#fff5f5",ground:"#bfe3aa",ground2:"#78af70",sun:"🌸",l:"🌺",r:"🌻"},
+  {name:"小雨過後",sky1:"#bacbd6",sky2:"#e7eef1",ground:"#9cc493",ground2:"#638b62",sun:"🌦️",l:"💧",r:"🍀"},
+  {name:"野餐日",sky1:"#c9efff",sky2:"#f8fdff",ground:"#b6dc96",ground2:"#75a95e",sun:"☀️",l:"🧺",r:"🍎"},
+  {name:"森林邊緣",sky1:"#bdddcf",sky2:"#e5f2e8",ground:"#88b47b",ground2:"#4e7d50",sun:"🌿",l:"🌲",r:"🍄"},
+  {name:"彩虹午後",sky1:"#c7eaff",sky2:"#f8f2ff",ground:"#afd797",ground2:"#6fa160",sun:"🌈",l:"🌼",r:"☁️"},
+  {name:"溫暖家園",sky1:"#f3dfbd",sky2:"#fff8ec",ground:"#b7d39c",ground2:"#789c66",sun:"🏡",l:"🪴",r:"🌷"}
+];
+const ALBUM_MOMENTS=[
+  {name:"悠閒發呆",spark:"💭"},
+  {name:"開心散步",spark:"🐾"},
+  {name:"吃飽休息",spark:"🍚"},
+  {name:"玩玩具",spark:"🎾"},
+  {name:"曬太陽",spark:"☀️"},
+  {name:"探索草地",spark:"🔎"},
+  {name:"撒嬌時間",spark:"💗"},
+  {name:"午睡片刻",spark:"💤"},
+  {name:"看風景",spark:"🌿"},
+  {name:"今天也很乖",spark:"⭐"}
+];
+let albumSelectedId=null;
+let albumZoom=1;
+
+
+function updateLoginStreakAndGift(){
+  if(!state) return;
+  migrateState();
+
+  const today=localDayKey();
+  const last=state.loginStreak.lastLoginDay;
+  if(last===today) return;
+
+  let newStreak=1;
+  if(last){
+    const prev=new Date(last+"T00:00:00");
+    const now=new Date(today+"T00:00:00");
+    const diff=Math.round((now-prev)/(24*60*60*1000));
+    if(diff===1) newStreak=(state.loginStreak.streak||0)+1;
+  }
+
+  state.loginStreak.lastLoginDay=today;
+  state.loginStreak.streak=newStreak;
+
+  if(newStreak>=2 && !state.loginStreak.windmillGiftClaimed){
+    state.loginStreak.windmillGiftClaimed=true;
+    state.equipment.windmill=true;
+    if(!state.objectCells.windmill) state.objectCells.windmill={row:2,col:8};
+    if(state.objectRotations.windmill==null) state.objectRotations.windmill=0;
+    addLog(`<b>新手連續登入獎勵</b>：連續登入第 2 天，贈送妳一架「風車」！`);
+  }
+
+  saveState();
+}
+
+function ensureDailyAlbumPhoto(){
+  if(!state || state.flags.dead) return;
+  migrateState();
+  const today=localDayKey();
+  if(state.album.lastPhotoDay===today) return;
+  state.album.lastPhotoDay=today;
+
+  if(state.album.photos.length>=100){
+    saveState();
+    return;
+  }
+
+  const template=state.album.serial%100;
+  state.album.serial+=1;
+  state.album.photos.push({
+    id:`photo_${Date.now()}_${state.album.serial}`,
+    day:today,
+    template,
+    createdAt:Date.now()
+  });
+  state.album.page=Math.ceil(state.album.photos.length/10);
+  addLog(`<b>生活相簿</b>：今天登入時，替 ${state.name} 留下了一張新的生活照片。`);
+  saveState();
+}
+
+function albumPhotoVisual(photo){
+  const template=Math.max(0,Math.min(99,Number(photo?.template)||0));
+  const bg=ALBUM_BACKGROUNDS[Math.floor(template/10)%10];
+  const moment=ALBUM_MOMENTS[template%10];
+  const angles=["angle-left","angle-right","angle-close","angle-high","angle-low"];
+  const angle=angles[template%angles.length];
+  const petArt=breedSVG(state.species,breedIndex(),116,false);
+  return `<div class="albumPhotoFrame">
+    <div class="albumPhotoScene ${angle}" style="--sky1:${bg.sky1};--sky2:${bg.sky2};--ground:${bg.ground};--ground2:${bg.ground2}">
+      <div class="albumSun">${bg.sun}</div>
+      <div class="albumDecorL">${bg.l}</div>
+      <div class="albumDecorR">${bg.r}</div>
+      <div class="albumMoment">${moment.name}</div>
+      <div class="albumPet">${petArt}</div>
+      <div class="albumSpark">${moment.spark}</div>
+    </div>
+  </div>`;
+}
+
+function renderAlbum(){
+  if(!state) return;
+  migrateState();
+  const grid=$("albumGrid");
+  if(!grid) return;
+
+  const total=state.album.photos.length;
+  const pages=Math.max(1,Math.ceil(total/10));
+  state.album.page=Math.max(1,Math.min(pages,state.album.page||1));
+  const start=(state.album.page-1)*10;
+  const items=state.album.photos.slice(start,start+10);
+
+  if($("albumCount")) $("albumCount").textContent=`${total} / 100 張`;
+  if($("albumPageLabel")) $("albumPageLabel").textContent=`第 ${state.album.page} / ${pages} 頁`;
+  if($("albumPrev")) $("albumPrev").disabled=state.album.page<=1;
+  if($("albumNext")) $("albumNext").disabled=state.album.page>=pages;
+
+  const slots=Array.from({length:10},(_,i)=>items[i]||null);
+  grid.innerHTML=slots.map((p,i)=>{
+    if(!p) return `<div class="albumEmptySlot" aria-label="空白照片欄位">空白</div>`;
+    const bg=ALBUM_BACKGROUNDS[Math.floor((p.template||0)/10)%10];
+    const m=ALBUM_MOMENTS[(p.template||0)%10];
+    return `<button class="albumThumb" type="button" data-photo-id="${p.id}">
+      ${albumPhotoVisual(p)}
+      <div class="albumThumbMeta"><b>${p.day}</b><span>${bg.name}・${m.name}</span></div>
+    </button>`;
+  }).join("");
+
+  grid.querySelectorAll("[data-photo-id]").forEach(btn=>btn.addEventListener("click",()=>openAlbumViewer(btn.dataset.photoId)));
+}
+
+function openAlbumViewer(id){
+  if(!state) return;
+  const photo=state.album.photos.find(p=>p.id===id);
+  if(!photo) return;
+  albumSelectedId=id;
+  albumZoom=1;
+  const canvas=$("albumViewerCanvas");
+  if(canvas){
+    canvas.innerHTML=albumPhotoVisual(photo);
+    const frame=canvas.querySelector(".albumPhotoFrame");
+    if(frame) frame.style.width="min(540px,100%)";
+  }
+  const bg=ALBUM_BACKGROUNDS[Math.floor((photo.template||0)/10)%10];
+  const m=ALBUM_MOMENTS[(photo.template||0)%10];
+  if($("albumViewerMeta")) $("albumViewerMeta").textContent=`${photo.day}・${bg.name}・${m.name}`;
+  $("albumViewer")?.classList.add("open");
+}
+function closeAlbumViewer(){
+  $("albumViewer")?.classList.remove("open");
+  albumSelectedId=null;
+  albumZoom=1;
+}
+function changeAlbumZoom(delta){
+  const frame=$("albumViewerCanvas")?.querySelector(".albumPhotoFrame");
+  if(!frame) return;
+  albumZoom=Math.max(.6,Math.min(2.2,albumZoom+delta));
+  frame.style.width=`${Math.round(540*albumZoom)}px`;
+}
+function deleteSelectedAlbumPhoto(){
+  if(!state || !albumSelectedId) return;
+  const idx=state.album.photos.findIndex(p=>p.id===albumSelectedId);
+  if(idx<0) return;
+  state.album.photos.splice(idx,1);
+  const pages=Math.max(1,Math.ceil(state.album.photos.length/10));
+  state.album.page=Math.min(state.album.page||1,pages);
+  saveState();
+  closeAlbumViewer();
+  renderAlbum();
 }
 
 function localDayKey(ts=Date.now()){
@@ -7240,6 +7678,14 @@ function buyItem(id){
       if(!state.objectCells.petSwing) state.objectCells.petSwing={row:7,col:8};
       if(state.objectRotations.petSwing==null) state.objectRotations.petSwing=0;
     }
+    if(item.id==="windmill"){
+      if(!state.objectCells.windmill) state.objectCells.windmill={row:2,col:8};
+      if(state.objectRotations.windmill==null) state.objectRotations.windmill=0;
+    }
+    if(item.id==="rabbitGrassBall"){
+      if(!state.objectCells.rabbitGrassBall) state.objectCells.rabbitGrassBall={row:8,col:5};
+      if(state.objectRotations.rabbitGrassBall==null) state.objectRotations.rabbitGrassBall=0;
+    }
 
     addLog(`<b>寵物商店</b>：妳替 ${state.name} 買了「${item.name}」。`);
   }else if(item.type==="companion"){
@@ -7293,7 +7739,7 @@ function renderHabitat(){
   const candidates=legalExpansionChunks();
 
   if(candidates.length===0){
-    btn.textContent="草地已達 20×20 上限";
+    btn.textContent="草地已達 24×24 上限";
     btn.disabled=true;
     return;
   }
@@ -7386,15 +7832,15 @@ function getHabitatGeometry(){
   const gridRows=chunkRows*4;
 
   /*
-    初始 12×12 在 100% 比例時仍約佔「目前可見草地」的 1/2。
-    世界草地本身則比畫面更大，所以可透過縮小比例看到更多外圍。
+    初始仍為 16×16，但提高在畫面中的佔比，讓新手草地看起來更寬廣。
+    世界草地本身仍比畫面更大，後續可繼續擴充至 24×24。
   */
-  const targetInitialArea=visible.width*visible.height*.50;
+  const targetInitialArea=visible.width*visible.height*.70;
   const targetInitialSide=Math.sqrt(targetInitialArea);
   let cellWorld=Math.min(
-    targetInitialSide/12,
-    worldGrass.width/12,
-    worldGrass.height/12
+    targetInitialSide/16,
+    worldGrass.width/16,
+    worldGrass.height/16
   );
 
   // 土地擴張到很大時，才限制在整個虛擬草地世界內。
@@ -7522,12 +7968,14 @@ const OBJECT_FOOTPRINTS={
   deluxeBed:{w:1,h:1},
   playSlide:{w:2,h:2},
   petSwing:{w:2,h:2},
+  windmill:{w:2,h:1},
   wheel:{w:2,h:1},
   catTower:{w:2,h:2},
   catWand:{w:1,h:1},
   dogFrisbee:{w:1,h:1},
   dogCastle:{w:2,h:2},
   rabbitMaze:{w:2,h:2},
+  rabbitGrassBall:{w:1,h:1},
   capybaraCompanion:{w:2,h:1},
   schoolBuilding:{w:3,h:3}
 };
@@ -7797,7 +8245,7 @@ function legalExpansionChunks(){
   const result=new Set();
   const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
 
-  // 20×20 = 5×5 個 4×4 區塊，共 25 塊。
+  // 24×24 = 6×6 個 4×4 區塊，共 36 塊。
   if(set.size>=MAX_LAND_CHUNKS_PER_AXIS*MAX_LAND_CHUNKS_PER_AXIS) return [];
 
   const existing=[...set].map(parseChunkKey);
@@ -8018,12 +8466,14 @@ const STORAGE_FIXED_OBJECTS=[
   {id:"deluxeBed",name:"舒適睡床",icon:"🛏️",owned:()=>!!state.equipment.deluxeBed},
   {id:"playSlide",name:"溜滑梯",icon:"🛝",owned:()=>!!state.equipment.playSlide},
   {id:"petSwing",name:"鞦韆",icon:"🎠",owned:()=>!!state.equipment.petSwing},
+  {id:"windmill",name:"風車",icon:"🌬️",owned:()=>!!state.equipment.windmill},
   {id:"wheel",name:"滾輪",icon:"🎡",owned:()=>state.species==="hamster"&&!!state.equipment.premiumWheel},
   {id:"catTower",name:"瞭望台",icon:"🗼",owned:()=>state.species==="cat"&&!!state.equipment.catTower},
   {id:"catWand",name:"逗貓棒",icon:"🪶",owned:()=>state.species==="cat"&&!!state.equipment.catWand},
   {id:"dogFrisbee",name:"飛盤",icon:"🥏",owned:()=>state.species==="dog"&&!!state.equipment.dogFrisbee},
   {id:"dogCastle",name:"城堡",icon:"🏰",owned:()=>state.species==="dog"&&!!state.equipment.dogCastle},
   {id:"rabbitMaze",name:"紙箱迷宮",icon:"📦",owned:()=>state.species==="rabbit"&&!!state.equipment.rabbitMaze},
+  {id:"rabbitGrassBall",name:"草球",icon:"🟢",owned:()=>state.species==="rabbit"&&!!state.equipment.rabbitGrassBall},
   {id:"schoolBuilding",name:"私塾",icon:"🏫",owned:()=>!!state.buildings.school.owned}
 ];
 function isObjectStored(id){
@@ -8093,6 +8543,7 @@ function renderEquipment(){
   $("deluxeBed").style.display = (state.equipment.deluxeBed&&!isObjectStored("deluxeBed")) ? "block" : "none";
   $("playSlide").style.display = (state.equipment.playSlide&&!isObjectStored("playSlide")) ? "block" : "none";
   $("petSwing").style.display = (state.equipment.petSwing&&!isObjectStored("petSwing")) ? "block" : "none";
+  $("windmill").style.display = (state.equipment.windmill&&!isObjectStored("windmill")) ? "block" : "none";
 
   const wheel=$("wheel");
   if(wheel){
@@ -8115,6 +8566,7 @@ function renderEquipment(){
   $("dogFrisbee").style.display = (state.species==="dog"&&state.equipment.dogFrisbee&&!isObjectStored("dogFrisbee")) ? "block" : "none";
   $("dogCastle").style.display = (state.species==="dog"&&state.equipment.dogCastle&&!isObjectStored("dogCastle")) ? "block" : "none";
   $("rabbitMaze").style.display = (state.species==="rabbit"&&state.equipment.rabbitMaze&&!isObjectStored("rabbitMaze")) ? "block" : "none";
+  $("rabbitGrassBall").style.display = (state.species==="rabbit"&&state.equipment.rabbitGrassBall&&!isObjectStored("rabbitGrassBall")) ? "block" : "none";
 
   const capy=$("capybaraCompanion");
   if(capy){
@@ -8346,13 +8798,32 @@ function breedIndex(){ return speciesData[state.species].breeds.indexOf(state.br
 function renderPetPosition(){
   if(!state) return;
   const pet = $("pet");
+
+  if(state.species==="cat" && state.petTowerPerched && state.equipment?.catTower && !isObjectStored("catTower")){
+    const tower=$("catTower"), room=$("room");
+    if(tower && tower.offsetParent!==null && room){
+      const rr=room.getBoundingClientRect();
+      const tr=tower.getBoundingClientRect();
+      const z=currentCameraZoom();
+      const x=(tr.left-rr.left + tr.width*.52) / z - pet.offsetWidth*.52;
+      const y=(tr.top-rr.top + tr.height*.10) / z - pet.offsetHeight*.58;
+      state.petPos={x:Math.round(x),y:Math.round(y)};
+      pet.style.left=state.petPos.x+"px";
+      pet.style.top=state.petPos.y+"px";
+      pet.style.setProperty("--depth-scale",(0.86*currentCameraZoom()).toFixed(3));
+      pet.style.zIndex="28";
+      pet.classList.add("onCatTower");
+      return;
+    }
+  }
+
+  pet.classList.remove("onCatTower");
   const p = clampPointToHabitat(state.petPos.x, state.petPos.y);
   state.petPos.x = Math.round(p.x);
   state.petPos.y = Math.round(p.y);
   pet.style.left = state.petPos.x + "px";
   pet.style.top = state.petPos.y + "px";
 
-  // 越靠後方越小、越靠前方越大，增加 2.5D 深度感。
   const scale = (.86 + p.depth * .18) * currentCameraZoom();
   pet.style.setProperty("--depth-scale", scale.toFixed(3));
   if(!pet.classList.contains("wheelRunning")){
@@ -8360,7 +8831,7 @@ function renderPetPosition(){
   }
 }
 
-const PLACEABLE_IDS = ["starterHouse","starterBall","roomToyBall","chewToy","deluxeBed","wheel","catTower","catWand","dogFrisbee","dogCastle","rabbitMaze","capybaraCompanion","schoolBuilding"];
+const PLACEABLE_IDS = ["starterHouse","starterBall","roomToyBall","chewToy","deluxeBed","playSlide","petSwing","windmill","wheel","catTower","catWand","dogFrisbee","dogCastle","rabbitMaze","rabbitGrassBall","capybaraCompanion","schoolBuilding"];
 let objectDrag = null;
 
 function normalizeObjectToLeftTop(el){
@@ -8388,12 +8859,16 @@ function applySavedObjectPositions(){
     roomToyBall:{row:7,col:6},
     chewToy:{row:8,col:3},
     deluxeBed:{row:9,col:1},
+    playSlide:{row:7,col:2},
+    petSwing:{row:7,col:8},
+    windmill:{row:2,col:8},
     wheel:{row:5,col:8},
     catTower:{row:4,col:8},
     catWand:{row:8,col:6},
     dogFrisbee:{row:7,col:8},
     dogCastle:{row:4,col:7},
     rabbitMaze:{row:4,col:7},
+    rabbitGrassBall:{row:8,col:5},
     capybaraCompanion:{row:6,col:4},
     schoolBuilding:{row:4,col:4}
   };
@@ -8449,6 +8924,268 @@ function beginObjectDrag(el, e){
   el.classList.add("objectDragging");
   try{ el.setPointerCapture?.(e.pointerId); }catch(_){}
   positionDragHint(el,"拖曳中");
+}
+
+
+function rectsOverlap(a,b,pad=0){
+  return !(a.right < b.left+pad || a.left > b.right-pad || a.bottom < b.top+pad || a.top > b.bottom-pad);
+}
+
+function dogFetchObject(id){
+  if(!state || state.flags.dead || state.species!=="dog") return;
+  const el=$(id), room=$("room"), pet=$("pet");
+  if(!el || !room || !pet || el.offsetParent===null) return;
+
+  roomLocked=true;
+  pet.classList.remove("happy","tickled","climbing","fetchRunning");
+
+  // 球／飛盤放開後先在空中飛約 1 秒，再落地。
+  el.classList.add("toyInFlight");
+  const spin=id==="dogFrisbee" ? 720 : 540;
+  const flight=el.animate([
+    {transform:"translate(0,0) rotate(0deg)",offset:0},
+    {transform:"translate(18px,-72px) rotate("+Math.round(spin*.45)+"deg)",offset:.48},
+    {transform:"translate(8px,-30px) rotate("+Math.round(spin*.78)+"deg)",offset:.78},
+    {transform:"translate(0,0) rotate("+spin+"deg)",offset:1}
+  ],{duration:1000,easing:"cubic-bezier(.22,.62,.35,1)",fill:"none"});
+
+  const afterLanding=()=>{
+    el.classList.remove("toyInFlight");
+
+    const rr=room.getBoundingClientRect();
+    const er=el.getBoundingClientRect();
+    const z=currentCameraZoom();
+    const targetX=(er.left-rr.left + er.width*.50)/z - pet.offsetWidth*.45;
+    const targetY=(er.top-rr.top + er.height*.38)/z - pet.offsetHeight*.45;
+
+    pet.classList.add("fetchRunning");
+    const p=clampPointToHabitat(targetX,targetY);
+    state.petPos={x:p.x,y:p.y};
+    renderPetPosition();
+
+    setTimeout(()=>{
+      pet.classList.remove("fetchRunning");
+      el.classList.add("petCaughtToy");
+      speak("接到了！");
+      createParticle("heart", state.petPos.x+32, state.petPos.y+12);
+      setTimeout(()=>el.classList.remove("petCaughtToy"),700);
+      roomLocked=false;
+      saveState();
+    },950);
+  };
+
+  if(flight && typeof flight.addEventListener==="function"){
+    flight.addEventListener("finish",afterLanding,{once:true});
+  }else{
+    setTimeout(afterLanding,1000);
+  }
+}
+
+function catTickle(){
+  if(!state || state.flags.dead || state.species!=="cat") return;
+  const pet=$("pet");
+  if(!pet) return;
+  pet.classList.remove("walking","fetchRunning","climbing");
+  pet.classList.add("tickled");
+  speak("喵～好癢！");
+  for(let i=0;i<4;i++){
+    setTimeout(()=>createParticle("heart",state.petPos.x+25+Math.random()*20,state.petPos.y+10+Math.random()*18),i*120);
+  }
+  setTimeout(()=>pet.classList.remove("tickled"),1300);
+}
+
+function perchCatOnTower(){
+  if(!state || state.species!=="cat" || !state.equipment?.catTower || isObjectStored("catTower")) return false;
+  const pet=$("pet"), tower=$("catTower"), room=$("room");
+  if(!pet || !tower || !room || tower.offsetParent===null) return false;
+
+  const pr=pet.getBoundingClientRect(), tr=tower.getBoundingClientRect();
+  if(!rectsOverlap(pr,tr,-8)) return false;
+
+  const rr=room.getBoundingClientRect();
+  const z=currentCameraZoom();
+
+  // 明確分成「底部 → 低平台 → 頂端」三段，總共約 3 秒。
+  const bottomX=(tr.left-rr.left + tr.width*.28)/z - pet.offsetWidth*.50;
+  const bottomY=(tr.top-rr.top + tr.height*.72)/z - pet.offsetHeight*.42;
+
+  const midX=(tr.left-rr.left + tr.width*.42)/z - pet.offsetWidth*.50;
+  const midY=(tr.top-rr.top + tr.height*.42)/z - pet.offsetHeight*.48;
+
+  const topX=(tr.left-rr.left + tr.width*.69)/z - pet.offsetWidth*.50;
+  const topY=(tr.top-rr.top + tr.height*.12)/z - pet.offsetHeight*.58;
+
+  state.petTowerPerched=true;
+  roomLocked=true;
+  pet.classList.remove("dragging","walking","tickled","onCatTower");
+  pet.classList.add("climbing","climbVisible");
+
+  pet.style.transition="none";
+  pet.style.left=Math.round(bottomX)+"px";
+  pet.style.top=Math.round(bottomY)+"px";
+  pet.style.zIndex="40";
+
+  // 第一段：底部爬到低平台（約 1.35 秒）
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      pet.style.transition="left 1.35s linear, top 1.35s linear";
+      pet.style.left=Math.round(midX)+"px";
+      pet.style.top=Math.round(midY)+"px";
+    });
+  });
+
+  // 第二段：低平台再爬到頂端（約 1.65 秒）
+  setTimeout(()=>{
+    pet.classList.add("climbPhase2");
+    pet.style.transition="left 1.65s linear, top 1.65s linear";
+    pet.style.left=Math.round(topX)+"px";
+    pet.style.top=Math.round(topY)+"px";
+  },1350);
+
+  setTimeout(()=>{
+    state.petPos={x:Math.round(topX),y:Math.round(topY)};
+    pet.style.transition="";
+    pet.classList.remove("climbing","climbVisible","climbPhase2");
+    pet.classList.add("onCatTower");
+    roomLocked=false;
+    saveState();
+  },3050);
+
+  return true;
+}
+
+
+function rabbitGrassBallPlay(){
+  if(!state || state.flags.dead || state.species!=="rabbit" || !state.equipment?.rabbitGrassBall || isObjectStored("rabbitGrassBall")) return false;
+  const pet=$("pet"), ball=$("rabbitGrassBall"), room=$("room");
+  if(!pet || !ball || !room || ball.offsetParent===null) return false;
+
+  const pr=pet.getBoundingClientRect(), br=ball.getBoundingClientRect();
+  if(!rectsOverlap(pr,br,-5)) return false;
+
+  roomLocked=true;
+  pet.classList.remove("dragging","walking","happy");
+  pet.classList.add("rabbitBallPlaying");
+  ball.classList.add("rabbitGrassBallPlaying");
+
+  const bubble=$("speech");
+  bubble?.classList.remove("show");
+
+  // 把草球視覺上移到兔子前腳附近，明顯呈現「拿起來玩」。
+  const rr=room.getBoundingClientRect();
+  const z=currentCameraZoom();
+  const liftX=(pr.left-rr.left + pr.width*.60)/z - ball.offsetWidth*.50;
+  const liftY=(pr.top-rr.top + pr.height*.36)/z - ball.offsetHeight*.50;
+  const originalLeft=ball.style.left, originalTop=ball.style.top, originalZ=ball.style.zIndex;
+
+  ball.style.transition="left .45s ease-out, top .45s ease-out";
+  ball.style.left=Math.round(liftX)+"px";
+  ball.style.top=Math.round(liftY)+"px";
+  ball.style.zIndex="70";
+
+  setTimeout(()=>{
+    ball.classList.add("rabbitGrassBallHeld");
+  },460);
+
+  setTimeout(()=>{
+    ball.classList.remove("rabbitGrassBallHeld");
+    ball.style.transition="left .55s ease-in, top .55s ease-in";
+    ball.style.left=originalLeft;
+    ball.style.top=originalTop;
+  },2100);
+
+  setTimeout(()=>{
+    pet.classList.remove("rabbitBallPlaying");
+    ball.classList.remove("rabbitGrassBallPlaying","rabbitGrassBallHeld");
+    ball.style.transition="";
+    ball.style.zIndex=originalZ;
+    roomLocked=false;
+    saveState();
+  },2700);
+
+  return true;
+}
+
+function rabbitMazeRun(){
+  if(!state || state.flags.dead || state.species!=="rabbit" || !state.equipment?.rabbitMaze || isObjectStored("rabbitMaze")) return false;
+  const pet=$("pet"), maze=$("rabbitMaze"), room=$("room");
+  if(!pet || !maze || !room || maze.offsetParent===null) return false;
+
+  const pr=pet.getBoundingClientRect(), mr=maze.getBoundingClientRect();
+  if(!rectsOverlap(pr,mr,-8)) return false;
+
+  const rr=room.getBoundingClientRect();
+  const z=currentCameraZoom();
+
+  // 依紙箱迷宮實際造型定位：
+  // 最左方洞約在 x=43/128，中間洞約在 x=69/128；兩洞高度皆約 y=66/92。
+  const leftHoleCX=mr.left-rr.left + mr.width*(43/128);
+  const midHoleCX =mr.left-rr.left + mr.width*(69/128);
+  const holeCY    =mr.top-rr.top  + mr.height*(66/92);
+
+  const leftX=leftHoleCX/z - pet.offsetWidth*.50;
+  const leftY=holeCY/z - pet.offsetHeight*.52;
+  const midX =midHoleCX/z  - pet.offsetWidth*.50;
+  const midY =holeCY/z     - pet.offsetHeight*.52;
+
+  // 入口前方：讓玩家先清楚看到兔子移到最左洞口。
+  const approachX=leftX-pet.offsetWidth*.20;
+  const approachY=leftY+pet.offsetHeight*.06;
+
+  roomLocked=true;
+  pet.classList.remove("dragging","walking","happy");
+  pet.classList.add("rabbitMazeEntering");
+  pet.style.zIndex="35";
+
+  // 全程不說話。
+  const bubble=$("speech");
+  bubble?.classList.remove("show");
+
+  // 第 1 段：清楚走到最左邊洞口（0.7 秒）
+  pet.style.transition="left 1.4s linear, top 1.4s linear";
+  pet.style.left=Math.round(approachX)+"px";
+  pet.style.top=Math.round(approachY)+"px";
+
+  // 第 2 段：從最左邊洞「鑽進去」（0.55 秒，縮小並消失）
+  setTimeout(()=>{
+    pet.classList.add("rabbitEnteringHole");
+    pet.style.transition="left 1.0s linear, top 1.0s linear, opacity 1.0s linear";
+    pet.style.left=Math.round(leftX)+"px";
+    pet.style.top=Math.round(leftY)+"px";
+  },1450);
+
+  // 迷宮內移動：隱藏，換到中間洞內側
+  setTimeout(()=>{
+    pet.classList.add("rabbitInsideMaze");
+    pet.style.transition="none";
+    pet.style.left=Math.round(midX)+"px";
+    pet.style.top=Math.round(midY)+"px";
+  },2500);
+
+  // 第 3 段：從中間洞清楚鑽出（約 0.8 秒）
+  setTimeout(()=>{
+    pet.classList.remove("rabbitInsideMaze","rabbitEnteringHole");
+    pet.classList.add("rabbitMazeExit");
+    pet.style.opacity="1";
+  },3300);
+
+  setTimeout(()=>{
+    state.petPos={x:Math.round(midX+pet.offsetWidth*.18),y:Math.round(midY)};
+    pet.style.transition="left .9s ease-out, top .9s ease-out";
+    pet.style.left=Math.round(state.petPos.x)+"px";
+    pet.style.top=Math.round(state.petPos.y)+"px";
+  },3360);
+
+  setTimeout(()=>{
+    pet.classList.remove("rabbitMazeEntering","rabbitMazeExit");
+    pet.style.transition="";
+    pet.style.opacity="";
+    renderPetPosition();
+    roomLocked=false;
+    saveState();
+  },4400);
+
+  return true;
 }
 
 function initPlaceableDragging(){
@@ -8546,9 +9283,23 @@ function initPlaceableDragging(){
       pressTimer=null;
 
       const wasDragging=dragging;
+      let catWandHit=false;
+      if(dragging && id==="catWand" && state?.species==="cat"){
+        const petRect=$("pet")?.getBoundingClientRect();
+        const wandRect=el.getBoundingClientRect();
+        catWandHit=!!(petRect && rectsOverlap(wandRect,petRect,-6));
+      }
+
       if(dragging){
         snapObjectToGrass(el);
         saveState();
+      }
+
+      if(wasDragging && state?.species==="dog" && ["starterBall","roomToyBall","dogFrisbee"].includes(id)){
+        setTimeout(()=>dogFetchObject(id),80);
+      }
+      if(catWandHit){
+        setTimeout(catTickle,80);
       }
 
       hidePlacementGrid();
@@ -8599,6 +9350,11 @@ function initPetDragging(){
     if(e.button!==undefined && e.button!==0) return;
 
     e.preventDefault();
+    if(state.species==="cat" && state.petTowerPerched){
+      state.petTowerPerched=false;
+      pet.classList.remove("onCatTower");
+      renderPetPosition();
+    }
     clearTimeout(timer);
     try{pet.setPointerCapture(e.pointerId)}catch(_){}
 
@@ -8646,15 +9402,25 @@ function initPetDragging(){
 
     const wasDragging=dragging;
 
+    let specialInteraction=false;
     if(dragging){
-      const p=clampPointToHabitat(state.petPos.x,state.petPos.y);
-      state.petPos={x:Math.round(p.x),y:Math.round(p.y)};
-      renderPetPosition();
-      saveState();
+      if(state.species==="cat"){
+        specialInteraction=perchCatOnTower();
+      }else if(state.species==="rabbit"){
+        specialInteraction=rabbitGrassBallPlay();
+        if(!specialInteraction) specialInteraction=rabbitMazeRun();
+      }
+
+      if(!specialInteraction){
+        const p=clampPointToHabitat(state.petPos.x,state.petPos.y);
+        state.petPos={x:Math.round(p.x),y:Math.round(p.y)};
+        renderPetPosition();
+        saveState();
+      }
     }
 
     dragging=false;
-    roomLocked=false;
+    if(!specialInteraction) roomLocked=false;
     pet.classList.remove("dragging");
     try{pet.releasePointerCapture(e.pointerId)}catch(_){}
     press=null;
@@ -8667,7 +9433,7 @@ function initPetDragging(){
   pet.addEventListener("pointerup",finish);
   pet.addEventListener("pointercancel",finish);
   pet.addEventListener("lostpointercapture",e=>{
-    if(press && dragging){
+    if(press && dragging && !pet.classList.contains("climbing") && !pet.classList.contains("rabbitMazeEntering") && !pet.classList.contains("rabbitBallPlaying")){
       const p=clampPointToHabitat(state.petPos.x,state.petPos.y);
       state.petPos={x:Math.round(p.x),y:Math.round(p.y)};
       renderPetPosition();
@@ -8676,7 +9442,7 @@ function initPetDragging(){
     clearTimeout(timer);
     timer=null;
     dragging=false;
-    roomLocked=false;
+    if(!pet.classList.contains("climbing") && !pet.classList.contains("rabbitMazeEntering") && !pet.classList.contains("rabbitBallPlaying")) roomLocked=false;
     pet.classList.remove("dragging");
     press=null;
   });
@@ -8695,12 +9461,51 @@ function roamRandom(){
   const voices = ["♪", "今天也想被稱讚", "摸摸我嘛", "我在巡邏喔", "這裡好舒服", "好像有點想玩", "妳有看到我嗎", "今天也要陪我喔", "我剛剛有乖乖的", "這裡是我的小天地", "想吃一點香香的東西", "水水喝起來最舒服", "我是不是很可愛", "再陪我一下嘛", "我想去那邊看看", "那邊好像有東西", "我今天精神很好", "剛剛做了一個好夢", "我喜歡妳在旁邊", "不要偷偷跑掉喔", "我有認真照顧自己", "外面好像很好玩", "今天的風很舒服", "我想撒嬌一下", "可以再摸一下嗎", "我現在心情很好", "我有一點點想睡", "剛剛那個好好玩", "這裡聞起來不一樣", "我要偷偷探索一下", "我找到舒服的位置了", "妳今天也辛苦了", "我會乖乖待著", "我想和妳一起玩", "今天也要開心喔", "我在等妳來陪我", "我剛剛跑得很快吧", "我的小肚子在提醒我了", "喝完水最舒服了", "乾乾淨淨真棒", "我喜歡這個地方", "我有沒有變厲害", "我今天也很努力", "我們是好朋友對吧", "我想靠近妳一點", "妳看我一下嘛", "今天也有好多新鮮事", "我最喜歡有人陪", "偷偷告訴妳，我很開心", "再玩一次好不好"];
   if(Math.random() < .35) speak(rand(voices));
 }
+
+function maybeCreatePetFootprints(fromX,fromY,toX,toY){
+  if(!state || state.flags.dead) return;
+  if(!["rabbit","dog","cat","hamster"].includes(state.species)) return;
+  if(Math.random()>.55) return;
+
+  const room=$("room");
+  if(!room) return;
+
+  const config={
+    rabbit:{w:9,h:13,cls:"rabbit",steps:[3,4]},
+    dog:{w:11,h:11,cls:"dog",steps:[3,5]},
+    cat:{w:10,h:10,cls:"cat",steps:[3,5]},
+    hamster:{w:6,h:7,cls:"hamster",steps:[4,6]}
+  }[state.species];
+
+  const steps=config.steps[0]+Math.floor(Math.random()*(config.steps[1]-config.steps[0]+1));
+
+  for(let i=1;i<=steps;i++){
+    const t=i/(steps+1);
+    setTimeout(()=>{
+      if(!state || !["rabbit","dog","cat","hamster"].includes(state.species)) return;
+      const fp=document.createElement("div");
+      fp.className=`petFootprint ${config.cls}`;
+      fp.style.left=(fromX+(toX-fromX)*t+22)+"px";
+      fp.style.top=(fromY+(toY-fromY)*t+54)+"px";
+      fp.style.width=config.w+"px";
+      fp.style.height=config.h+"px";
+      fp.style.setProperty("--fp-rot",`${Math.round(-18+Math.random()*36)}deg`);
+      room.appendChild(fp);
+
+      setTimeout(()=>fp.classList.add("fade"),4450);
+      setTimeout(()=>fp.remove(),5000);
+    },Math.round(t*1250));
+  }
+}
+
 function movePetTo(x, y, callback){
   const pet = $("pet");
+  const oldX=state?.petPos?.x||0, oldY=state?.petPos?.y||0;
   const p = clampPointToHabitat(x, y);
   x = p.x;
   y = p.y;
   pet.classList.add("walking");
+  maybeCreatePetFootprints(oldX,oldY,x,y);
   state.petPos = {x, y};
   renderPetPosition();
   setTimeout(() => {
