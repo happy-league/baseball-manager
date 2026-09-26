@@ -279,6 +279,21 @@ const events=[
    ["公開論文與比對資料，主動接受檢視",0,2,2],
    ["邀請學術與法律人士釐清爭議",0,1,1],
    ["主張選戰操作，不再擴大回應",0,-1,0]
+ ]},
+ {t:"陳水偏地方助講話題",d:"前總統陳水偏是否出席地方活動成為媒體追問焦點。",opts:[
+   ["安排公開政策座談",0,3,3],
+   ["只安排地方人士交流",0,1,4],
+   ["維持原定競選節奏",0,2,2]
+ ]},
+ {t:"陳水偏昔日市政話題",d:"選戰場合再度談起陳水偏過去擔任臺北市長與總統期間的公共政策，支持與批評聲音同時出現。",opts:[
+   ["把討論拉回本屆地方政策",0,2,5],
+   ["安排歷史政策座談",0,3,3],
+   ["不特別延伸舊議題",0,1,2]
+ ]},
+ {t:"陳幸娛診所往事",d:"地方活動談到陳水偏與女兒陳幸娛過去共同出席診所開幕的家庭往事，媒體詢問是否會安排類似親情型行程。",opts:[
+   ["強調家庭活動與選舉分開",0,2,5],
+   ["安排溫和的地方公益行程",0,3,3],
+   ["不延伸私人家庭話題",0,1,4]
  ]}
 ];
 function toggleTheme(){document.body.classList.toggle("light");localStorage.setItem("chairTheme",document.body.classList.contains("light")?"light":"dark")}
@@ -398,7 +413,7 @@ function optionImpact(eventIndex,optIndex){
  return impactPatterns[eventIndex%impactPatterns.length][optIndex%3].slice();
 }
 function impactText(a){return a.map((v,i)=>v?`${abilityNames[i]}${v>0?"+":""}${v}`:"").filter(Boolean).join("　")}
-function startGame(){S.socialPlatformLineUsed=false;S.chiangLineageUsed=false;S.hanBeatUsed=false;S.tsaiDoctorBeatUsed=false;S.requiredNewBeatUsed=false;S.requiredGroupABeatUsed=false;S.requiredGroupBBeatUsed=false;S.shenStarBeatUsed=false;S.qianzhenBeatUsed=false;
+function startGame(){S.standInDecisionUsed=false;S.socialPlatformLineUsed=false;S.chiangLineageUsed=false;S.hanBeatUsed=false;S.tsaiDoctorBeatUsed=false;S.requiredNewBeatUsed=false;S.requiredGroupABeatUsed=false;S.requiredGroupBBeatUsed=false;S.shenStarBeatUsed=false;S.qianzhenBeatUsed=false;
  S.goalRolls={
   gold:Math.random()<0.08,
   silver1:Math.random()<0.10,
@@ -805,6 +820,9 @@ function decisionBackground(e,target){
   "地方派系協調":`地方幾個長期合作又彼此競爭的組織，對站台順序、資源與活動主導權出現歧見。若處理不好，可能有人消極動員；若偏向其中一方，又可能讓另一方反彈。候選人不希望公開介入，地方黨部因此把協調方案送到中央。`,
   "政策說明會":`候選人即將舉行重要政策說明會，但幕僚對內容深度與傳播方式意見分歧。一派希望完整提出數據與財源，一派主張用簡單口號讓選民快速理解。媒體已預告會追問細節，中央必須決定這場說明會採取哪種呈現策略。`,
   "志工大量加入":`近期聲量上升後，大批新志工突然向地方競選總部報到，原有人力配置反而一時無法消化。有人可以投入掃街，有人適合電話與網路工作，也有人完全沒有選舉經驗。地方團隊擔心安排失當造成混亂，希望中央決定如何快速分流與訓練。`,
+  "陳水偏地方助講話題":`前總統陳水偏是否出席地方活動突然成為媒體焦點。團隊內部有人認為可以安排政策性交流，也有人擔心整場活動因此偏離地方候選人的主軸。幕僚把幾種行程方案送到主席面前，等待最後決定。`,
+  "陳水偏昔日市政話題":`地方座談談起陳水偏過去從臺北市長到總統任內的公共政策，現場既有人肯定，也有人提出批評。競選團隊必須決定要延伸歷史討論，還是把焦點重新拉回本屆地方選舉。`,
+  "陳幸娛診所往事":`活動中有人提起陳水偏過去曾出席女兒陳幸娛牙醫診所開幕的家庭往事。媒體隨即追問競選團隊是否也會安排親情型行程；幕僚提醒家庭生活與政治宣傳之間仍應保留界線。`,
   "行程撞期":`候選人的兩場重要活動被排在幾乎相同的時間，一邊是地方組織期待已久的場合，另一邊則有高曝光媒體與重要支持者。兩邊都不希望被取消，交通時間又不允許全部出席。幕僚已提出取捨與替代方案，需要立即拍板。`,
   "造勢場地臨時取消":`原定造勢場地在活動前突然通知無法使用，舞台、音響、接駁與宣傳都已完成部分準備。地方團隊正聯絡備用場地，但不同方案的容量、交通與成本差異很大。活動時間無法大幅延後，中央必須決定是否換場、縮小或改變形式。`,
   "地方名人站台":`一名在地方具有知名度的人士主動表示願意替候選人站台，能帶來關注，但其過往發言也曾引起不同評價。地方團隊認為機會難得，公關幕僚則擔心焦點被轉移。站台時間已接近，中央需要決定合作程度與活動安排。`,
@@ -1333,6 +1351,7 @@ function nextEvent(){
  if(currentDay===1){electionEve();return}
  if(currentDay===0){finishElectionEve();return}
  render();
+ if(currentDay===50 && S.standInDecisionUsed!==true){showStandInDecision();return}
  let pool=S.cities.filter(c=>c.active),target=weightedCity(pool);
  // Main decision events are unique within a game.
  if(!S.usedEventTitles)S.usedEventTitles=[];
@@ -1346,6 +1365,32 @@ function nextEvent(){
  $('event').innerHTML=`<div class=pageTitle>選戰倒數 <span style="color:#ef4444;font-size:1.22em;font-weight:950">${days[S.idx]}</span> 天</div><div class=story>${diaryStory(days[S.idx],e,target)}</div>`;renderAbilities();
  if(S.breakingBonus){showDiceBonus()}else{$('choices').innerHTML=eventChoiceHtml(false)}if(window._jumpDiary){window._jumpDiary=false;goNextPageTop()}
 }
+function showStandInDecision(){
+ S.standInDecisionUsed=true;
+ let pool=S.cities.filter(c=>c.active),target=weightedCity(pool);
+ const backers={
+  "藍":["馬英玖","盧秀雁","蔣萬桉"],
+  "綠":["賴清得","陳水偏","李揚"],
+  "白":["柯文喆","黃國倡","黃姍姍"]
+ }[S.camp]||["黨內資深人物","地方首長","青年代表"];
+ S.currentStandIn={target,backers};
+ $('event').innerHTML=`<div class=pageTitle>選戰倒數 <span style="color:#ef4444;font-size:1.22em;font-weight:950">${days[S.idx]}</span> 天</div><div class=story>【站台人選決策】${target.n}即將舉辦一場大型造勢，地方團隊希望中央只安排一位主要人物站台，避免舞台焦點過度分散。三位人選各有不同政治象徵與動員效果，幕僚把最後決定交給主席。<br><br><b>這一場要讓誰站台？</b></div>`;
+ $('choices').innerHTML=backers.map((x,i)=>`<button onclick="chooseStandIn(${i})">${String.fromCharCode(65+i)}. 邀請${x}站台 <span class="choiceImpact">（依人選調整主席能力與地方動能）</span></button>`).join("");
+ renderAbilities();goNextPageTop();
+}
+function chooseStandIn(i){
+ const x=S.currentStandIn,who=x.backers[i],target=x.target;
+ const impacts=[[2,0,1,2,0],[1,2,2,0,1],[0,1,1,2,2]], imp=impacts[i]||impacts[0];
+ const before=S.abilities.slice();
+ S.abilities=S.abilities.map((v,k)=>Math.min(100,v+imp[k]));
+ target.event+=(i===0?2.0:i===1?1.5:1.8);
+ target.strategy+=(i===1?2:1);
+ S.log.push(`倒數${days[S.idx]}天｜${target.n}・站台人選決策：邀請${who}站台；主席能力變化：${imp.map((v,k)=>v?`${abilityNames[k]} +${S.abilities[k]-before[k]}`:"").filter(Boolean).join("、")}。`);
+ renderChairLog();renderAbilities();
+ S.storyThread=`${target.n}大型造勢的站台人選拍板由${who}出席。地方團隊隨即調整舞台流程、宣傳素材與動員安排，媒體也開始討論這次站台對選戰主軸的象徵意義。`;
+ S.idx++;window._jumpDiary=true;nextEvent();afterDecisionTop();
+}
+
 function choose(i){
  let preview=S.current&&S.current.e&&S.current.e.opts?S.current.e.opts[i]:null;
  if(fundingIsLow() && preview && preview[1]<0){alert("中央資金已低於 $1,000萬，無法再選擇投入資金的方案。");return;}
