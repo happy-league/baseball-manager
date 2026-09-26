@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.2</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.3</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -3303,132 +3303,125 @@ body.playing .top{display:none}
 /* ===== v0.8.2：卡皮巴拉好夥伴 ===== */
 .capybaraCompanion{
   position:absolute;
-  width:96px;
-  height:64px;
+  width:106px;
+  height:74px;
   display:none;
   z-index:19;
 }
-.capybaraCompanion .capyBody{
+.capybaraCompanion .capyShadow{
+  position:absolute;
+  left:18px;
+  bottom:6px;
+  width:74px;
+  height:14px;
+  border-radius:50%;
+  background:rgba(47,59,42,.16);
+  filter:blur(1px);
+}
+.capybaraCompanion .capyTail{
   position:absolute;
   left:13px;
-  bottom:10px;
-  width:69px;
-  height:39px;
-  border-radius:46% 52% 42% 45%;
-  background:linear-gradient(180deg,#b88a62,#916746);
-  box-shadow:inset -7px -5px 0 rgba(74,45,29,.10),0 7px 7px rgba(48,63,41,.18);
+  bottom:29px;
+  width:16px;
+  height:11px;
+  border-radius:55% 35% 35% 60%;
+  background:linear-gradient(180deg,#9f7248,#785333);
+  transform:rotate(-18deg);
+}
+.capybaraCompanion .capyBody{
+  position:absolute;
+  left:18px;
+  bottom:16px;
+  width:72px;
+  height:41px;
+  border-radius:48% 54% 46% 44%;
+  background:linear-gradient(180deg,#b78357 0%,#9a6b44 52%,#825633 100%);
+  box-shadow:
+    inset -9px -7px 0 rgba(64,37,20,.14),
+    inset 8px 7px 0 rgba(255,234,210,.11),
+    0 7px 7px rgba(48,63,41,.16);
+}
+.capybaraCompanion .capyBelly{
+  position:absolute;
+  left:34px;
+  bottom:20px;
+  width:37px;
+  height:19px;
+  border-radius:48%;
+  background:radial-gradient(circle at 45% 35%,#d6b08a 0%,#c49368 58%,#b07b50 100%);
+  opacity:.9;
 }
 .capybaraCompanion .capyHead{
   position:absolute;
-  right:3px;
-  top:10px;
-  width:42px;
-  height:37px;
-  border-radius:48% 54% 46% 50%;
-  background:linear-gradient(180deg,#c1946d,#966a49);
-  box-shadow:inset -5px -3px 0 rgba(76,48,31,.09);
+  right:12px;
+  bottom:23px;
+  width:37px;
+  height:31px;
+  border-radius:50% 45% 42% 42%;
+  background:linear-gradient(180deg,#b88a61 0%,#a37248 55%,#8a5d37 100%);
+  box-shadow:inset -5px -5px 0 rgba(69,43,28,.13), inset 5px 4px 0 rgba(255,238,218,.10);
 }
 .capybaraCompanion .capyEar{
   position:absolute;
-  top:-5px;
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:#9b704e;
+  width:10px;height:11px;border-radius:50%;
+  background:linear-gradient(180deg,#896043,#68472d);
+  top:-4px;
+  box-shadow:inset 0 2px 0 rgba(255,227,202,.10);
 }
 .capybaraCompanion .capyEar.e1{left:5px}
-.capybaraCompanion .capyEar.e2{right:7px}
+.capybaraCompanion .capyEar.e2{right:5px}
 .capybaraCompanion .capyEye{
   position:absolute;
-  top:13px;
-  width:4px;
-  height:5px;
-  border-radius:50%;
-  background:#2d2420;
+  width:4px;height:4px;border-radius:50%;
+  background:#2d2015;top:12px;
 }
-.capybaraCompanion .capyEye.a{left:10px}
-.capybaraCompanion .capyEye.b{right:10px}
+.capybaraCompanion .capyEye.a{left:8px}
+.capybaraCompanion .capyEye.b{right:8px}
+.capybaraCompanion .capyCheek{
+  position:absolute;
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(231,185,154,.42);
+  top:15px;
+}
+.capybaraCompanion .capyCheek.c1{left:5px}
+.capybaraCompanion .capyCheek.c2{right:5px}
+.capybaraCompanion .capySnout{
+  position:absolute;
+  left:7px;
+  right:7px;
+  bottom:5px;
+  height:12px;
+  border-radius:50%;
+  background:radial-gradient(circle at 50% 30%,#ddbc95 0%,#cda177 62%,#b8865f 100%);
+}
 .capybaraCompanion .capyNose{
   position:absolute;
-  right:-2px;
-  bottom:8px;
-  width:12px;
-  height:9px;
-  border-radius:50%;
-  background:#5b4234;
+  left:50%;
+  bottom:11px;
+  width:7px;height:5px;border-radius:50%;
+  background:#5c3d26;
+  transform:translateX(-50%);
+}
+.capybaraCompanion .capyMouth{
+  position:absolute;
+  left:50%;
+  bottom:6px;
+  width:10px;height:6px;
+  border-bottom:2px solid rgba(90,60,40,.62);
+  border-radius:0 0 10px 10px;
+  transform:translateX(-50%);
 }
 .capybaraCompanion .capyLeg{
   position:absolute;
-  bottom:3px;
-  width:12px;
-  height:16px;
-  border-radius:5px;
-  background:linear-gradient(180deg,#98704f,#765136);
+  bottom:10px;
+  width:10px;height:18px;
+  border-radius:6px;
+  background:linear-gradient(180deg,#8d603c,#70472b);
+  box-shadow:inset 0 -3px 0 rgba(59,35,19,.12);
 }
-.capybaraCompanion .capyLeg.l1{left:27px}
-.capybaraCompanion .capyLeg.l2{left:60px}
-
-
-/* ===== v0.8.3：更明確的新手指引 + 卡皮巴拉互動 ===== */
-.tutorialBtn{position:relative}
-.tutorialBtn.tutorialTarget::before{
-  content:"";
-  position:absolute;
-  inset:-10px;
-  border-radius:18px;
-  border:4px solid rgba(255,199,55,.98);
-  animation:tutorialTargetPulse 1s ease-out infinite;
-  pointer-events:none;
-}
-@keyframes tutorialTargetPulse{
-  0%{transform:scale(.92);opacity:1;box-shadow:0 0 0 0 rgba(255,199,55,.52)}
-  70%{transform:scale(1.08);opacity:.72;box-shadow:0 0 0 15px rgba(255,199,55,0)}
-  100%{transform:scale(1.08);opacity:0;box-shadow:0 0 0 18px rgba(255,199,55,0)}
-}
-.tutorialFinger{
-  right:186px !important;
-  top:28px !important;
-  align-items:center!important;
-}
-.tutorialFingerHand{
-  font-size:82px !important;
-}
-.tutorialFingerText{
-  position:relative;
-  font-size:18px !important;
-  font-weight:1000 !important;
-  padding:13px 18px !important;
-}
-.tutorialFingerText::after{
-  content:"";
-  position:absolute;
-  right:-76px;
-  top:50%;
-  width:67px;
-  height:5px;
-  border-radius:999px;
-  background:#ffca3a;
-  transform:translateY(-50%);
-  box-shadow:0 2px 4px rgba(126,91,29,.18);
-}
-.tutorialFingerText::before{
-  content:"";
-  position:absolute;
-  right:-84px;
-  top:50%;
-  width:0;height:0;
-  border-top:10px solid transparent;
-  border-bottom:10px solid transparent;
-  border-left:16px solid #ffca3a;
-  transform:translateY(-50%);
-}
-@media(max-width:560px){
-  .tutorialFinger{right:122px !important;top:36px !important}
-  .tutorialFingerHand{font-size:66px !important}
-  .tutorialFingerText{font-size:14px !important}
-  .tutorialFingerText::after{right:-51px;width:44px;height:4px}
-  .tutorialFingerText::before{right:-59px;border-top-width:8px;border-bottom-width:8px;border-left-width:13px}
-}
+.capybaraCompanion .capyLeg.l1{left:31px}
+.capybaraCompanion .capyLeg.l2{left:49px}
+.capybaraCompanion .capyLeg.l3{right:20px}
 
 /* 卡皮巴拉陪伴互動 */
 .capybaraCompanion.capyHappy{animation:capyHappy .46s ease-in-out 4 alternate}
@@ -5161,7 +5154,7 @@ body.resumeOnlyMode .top .badge{
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.13.2</div>
+    <div class="badge">Prototype v0.13.3</div>
   </div>
 
   <section id="setup" class="card">
@@ -5230,13 +5223,19 @@ body.resumeOnlyMode .top .badge{
           <div id="starterBall" data-footprint="1×1" class="starterBall placeableItem" aria-hidden="true"></div>
           <div id="habitatZone" class="habitatZone"></div>
           <div id="capybaraCompanion" class="capybaraCompanion placeableItem" data-footprint="2×1" aria-label="卡皮巴拉">
+            <div class="capyShadow"></div>
+            <div class="capyTail"></div>
             <div class="capyBody"></div>
+            <div class="capyBelly"></div>
             <div class="capyHead">
               <span class="capyEar e1"></span><span class="capyEar e2"></span>
               <span class="capyEye a"></span><span class="capyEye b"></span>
+              <span class="capyCheek c1"></span><span class="capyCheek c2"></span>
+              <span class="capySnout"></span>
               <span class="capyNose"></span>
+              <span class="capyMouth"></span>
             </div>
-            <div class="capyLeg l1"></div><div class="capyLeg l2"></div>
+            <div class="capyLeg l1"></div><div class="capyLeg l2"></div><div class="capyLeg l3"></div>
           </div>
 
           <svg id="activityAreaOverlay" class="activityAreaOverlay" aria-hidden="true"></svg>
@@ -6979,7 +6978,12 @@ const ALBUM_BACKGROUNDS=[
   {name:"野餐日",sky1:"#c9efff",sky2:"#f8fdff",ground:"#b6dc96",ground2:"#75a95e",sun:"☀️",l:"🧺",r:"🍎"},
   {name:"森林邊緣",sky1:"#bdddcf",sky2:"#e5f2e8",ground:"#88b47b",ground2:"#4e7d50",sun:"🌿",l:"🌲",r:"🍄"},
   {name:"彩虹午後",sky1:"#c7eaff",sky2:"#f8f2ff",ground:"#afd797",ground2:"#6fa160",sun:"🌈",l:"🌼",r:"☁️"},
-  {name:"溫暖家園",sky1:"#f3dfbd",sky2:"#fff8ec",ground:"#b7d39c",ground2:"#789c66",sun:"🏡",l:"🪴",r:"🌷"}
+  {name:"溫暖家園",sky1:"#f3dfbd",sky2:"#fff8ec",ground:"#b7d39c",ground2:"#789c66",sun:"🏡",l:"🪴",r:"🌷"},
+  {name:"微風步道",sky1:"#d6f2ff",sky2:"#f6fffb",ground:"#b8dca4",ground2:"#74a066",sun:"🍃",l:"🌱",r:"🪻"},
+  {name:"湖畔午後",sky1:"#b9e2ff",sky2:"#eaf7ff",ground:"#a7d197",ground2:"#67956b",sun:"💧",l:"🪷",r:"🌿"},
+  {name:"花海漫步",sky1:"#fde0ef",sky2:"#fff8fb",ground:"#bfe0a8",ground2:"#7cab6e",sun:"🌺",l:"🌹",r:"🌼"},
+  {name:"雲朵晴空",sky1:"#d4e9ff",sky2:"#ffffff",ground:"#b4d792",ground2:"#78a55f",sun:"☁️",l:"🪁",r:"🌳"},
+  {name:"假日庭院",sky1:"#f3e1c6",sky2:"#fffaf2",ground:"#bcd7a6",ground2:"#7e9d6b",sun:"🌤️",l:"🧸",r:"🌸"}
 ];
 const ALBUM_MOMENTS=[
   {name:"悠閒發呆",spark:"💭"},
@@ -6993,6 +6997,22 @@ const ALBUM_MOMENTS=[
   {name:"看風景",spark:"🌿"},
   {name:"今天也很乖",spark:"⭐"}
 ];
+function albumCaptionByTemplate(template){
+  const bg=ALBUM_BACKGROUNDS[Math.floor(template/10)%ALBUM_BACKGROUNDS.length];
+  const moment=ALBUM_MOMENTS[template%10];
+  const starters=[
+    "今天的", "剛剛的", "軟綿綿的", "帶著笑意的", "閃閃發亮的",
+    "暖呼呼的", "圓滾滾的", "活力滿滿的", "安安靜靜的", "蹦蹦跳跳的",
+    "慢悠悠的", "甜甜地", "輕輕地", "幸福地", "舒服地"
+  ];
+  const endings=[
+    "小模樣被鏡頭悄悄記下來了。", "看起來心情特別好。", "讓人忍不住想再多看幾眼。",
+    "把日常都變得好可愛。", "像是在跟妳分享今天的小故事。", "留下了柔軟又療癒的一刻。",
+    "在風景裡顯得特別醒目。", "把平凡的日子拍得好溫柔。", "看起來就像一張值得收藏的卡片。",
+    "悄悄成了今天最可愛的瞬間。"
+  ];
+  return `${state?.name||"毛球"}在「${bg.name}」裡${moment.name}，${starters[Math.floor(template/10)%starters.length]}${endings[template%endings.length]}`;
+}
 let albumSelectedId=null;
 let albumZoom=1;
 
@@ -7039,12 +7059,16 @@ function ensureDailyAlbumPhoto(){
     return;
   }
 
-  const template=state.album.serial%100;
+  const usedTemplates=new Set(state.album.photos.map(p=>Number(p.template)).filter(n=>Number.isFinite(n)));
+  const pool=Array.from({length:150},(_,i)=>i).filter(i=>!usedTemplates.has(i));
+  const template=pool.length ? rand(pool) : Math.floor(Math.random()*150);
+
   state.album.serial+=1;
   state.album.photos.push({
     id:`photo_${Date.now()}_${state.album.serial}`,
     day:today,
     template,
+    caption:albumCaptionByTemplate(template),
     createdAt:Date.now()
   });
   state.album.page=Math.ceil(state.album.photos.length/10);
@@ -7053,8 +7077,8 @@ function ensureDailyAlbumPhoto(){
 }
 
 function albumPhotoVisual(photo){
-  const template=Math.max(0,Math.min(99,Number(photo?.template)||0));
-  const bg=ALBUM_BACKGROUNDS[Math.floor(template/10)%10];
+  const template=Math.max(0,Math.min(149,Number(photo?.template)||0));
+  const bg=ALBUM_BACKGROUNDS[Math.floor(template/10)%ALBUM_BACKGROUNDS.length];
   const moment=ALBUM_MOMENTS[template%10];
   const angles=["angle-left","angle-right","angle-close","angle-high","angle-low"];
   const angle=angles[template%angles.length];
@@ -7091,11 +7115,10 @@ function renderAlbum(){
   const slots=Array.from({length:10},(_,i)=>items[i]||null);
   grid.innerHTML=slots.map((p,i)=>{
     if(!p) return `<div class="albumEmptySlot" aria-label="空白照片欄位">空白</div>`;
-    const bg=ALBUM_BACKGROUNDS[Math.floor((p.template||0)/10)%10];
-    const m=ALBUM_MOMENTS[(p.template||0)%10];
+    const caption=p.caption || albumCaptionByTemplate(Number(p.template)||0);
     return `<button class="albumThumb" type="button" data-photo-id="${p.id}">
       ${albumPhotoVisual(p)}
-      <div class="albumThumbMeta"><b>${p.day}</b><span>${bg.name}・${m.name}</span></div>
+      <div class="albumThumbMeta"><b>${p.day}</b><span>${caption}</span></div>
     </button>`;
   }).join("");
 
@@ -7114,9 +7137,8 @@ function openAlbumViewer(id){
     const frame=canvas.querySelector(".albumPhotoFrame");
     if(frame) frame.style.width="min(540px,100%)";
   }
-  const bg=ALBUM_BACKGROUNDS[Math.floor((photo.template||0)/10)%10];
-  const m=ALBUM_MOMENTS[(photo.template||0)%10];
-  if($("albumViewerMeta")) $("albumViewerMeta").textContent=`${photo.day}・${bg.name}・${m.name}`;
+  const caption=photo.caption || albumCaptionByTemplate(Number(photo.template)||0);
+  if($("albumViewerMeta")) $("albumViewerMeta").textContent=`${photo.day}・${caption}`;
   $("albumViewer")?.classList.add("open");
 }
 function closeAlbumViewer(){
