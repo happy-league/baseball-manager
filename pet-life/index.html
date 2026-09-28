@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.11</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.18</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -330,6 +330,7 @@ body.playing .top{display:none}
   pointer-events:none;
 }
 .sceneTopBar > *{pointer-events:auto}
+
 .sceneTopBar .miniSceneBtn{
   width:46px;height:46px;border-radius:15px;border:1px solid rgba(120,91,69,.22);
   background:rgba(255,255,255,.91);color:var(--text);font-weight:900;
@@ -3301,7 +3302,7 @@ body.playing .top{display:none}
 
 
 /* ===== v0.8.2：卡皮巴拉好夥伴 ===== */
-.capybaraCompanion{
+ .capybaraCompanion{
   position:absolute;
   width:118px;
   height:88px;
@@ -5172,111 +5173,156 @@ body.resumeOnlyMode .top .badge{
 
 /* ===== v0.13.11：日期、10日連續登入、Day10 第二隻寵物、28×28 ===== */
 .todayDate{
-  position:absolute;right:150px;top:17px;z-index:78;
-  padding:8px 11px;border-radius:13px;
-  background:rgba(255,255,255,.92);border:1px solid rgba(120,91,69,.18);
-  box-shadow:0 7px 18px rgba(75,50,32,.10);
-  color:#6b584a;font-size:12px;font-weight:1000;white-space:nowrap;
-  backdrop-filter:blur(7px);pointer-events:none;
+  position:absolute;right:150px;top:17px;z-index:78;padding:8px 11px;border-radius:13px;
+  background:rgba(255,255,255,.94);border:1px solid rgba(120,91,69,.18);
+  box-shadow:0 7px 18px rgba(75,50,32,.10);color:#6b584a;font-size:12px;font-weight:1000;
+  white-space:nowrap;backdrop-filter:blur(7px);pointer-events:none
 }
 .streakRewardBtn{
-  position:absolute;left:16px;top:132px;z-index:72;
-  min-width:78px;height:52px;padding:5px 9px;border:1px solid rgba(99,132,73,.24);
-  border-radius:16px;background:linear-gradient(180deg,#f1ffe4,#bfe58e);
-  color:#4e6e37;font-weight:1000;box-shadow:0 8px 20px rgba(58,91,39,.14);
+  position:absolute;left:16px;top:132px;z-index:72;min-width:78px;height:52px;padding:5px 9px;
+  border:1px solid rgba(99,132,73,.24);border-radius:16px;background:linear-gradient(180deg,#f1ffe4,#bfe58e);
+  color:#4e6e37;font-weight:1000;box-shadow:0 8px 20px rgba(58,91,39,.14)
 }
-.streakRewardBtn span{display:block;font-size:19px;line-height:20px}
-.streakRewardBtn small{font-size:10px;font-weight:1000}
+.streakRewardBtn span{display:block;font-size:19px;line-height:20px}.streakRewardBtn small{font-size:10px;font-weight:1000}
 .streakRewardBtn.claimed{opacity:.66;filter:saturate(.62)}
-.streakRewardOverlay{
-  position:absolute;inset:0;z-index:160;display:none;align-items:center;justify-content:center;
-  padding:18px;background:rgba(38,45,34,.46);backdrop-filter:blur(6px);
-}
+.streakRewardOverlay{position:absolute;inset:0;z-index:160;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(38,45,34,.46);backdrop-filter:blur(6px)}
 .streakRewardOverlay.open{display:flex}
-.streakRewardPanel{
-  position:relative;width:min(900px,96%);max-height:90vh;overflow:auto;
-  border-radius:28px;padding:24px;
-  background:linear-gradient(180deg,#fbfff3,#edf8dd);
-  border:2px solid rgba(122,166,77,.30);box-shadow:0 22px 52px rgba(39,54,31,.26);
-}
-.streakRewardClose{
-  position:absolute;right:14px;top:12px;width:38px;height:38px;border:0;border-radius:50%;
-  background:#e2efd4;color:#4d6b3b;font-size:23px;font-weight:1000;
-}
-.streakRewardStatus{
-  margin-top:10px;padding:9px 12px;border-radius:13px;background:rgba(255,255,255,.72);
-  color:#557044;font-size:12px;font-weight:900;
-}
-.streakRewardGrid{
-  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:14px;
-}
-.streakDay{
-  position:relative;min-height:126px;padding:12px 8px 10px;border-radius:17px;
-  border:1px solid rgba(111,151,73,.23);background:rgba(255,255,255,.85);
-  color:#536244;text-align:center;overflow:hidden;
-}
-.streakDay.current{outline:3px solid rgba(117,169,73,.28);background:#fbfff4}
-.streakDay.locked{opacity:.56;filter:saturate(.55)}
-.streakDay .dayTitle{font-size:12px;font-weight:1000}
-.streakDay .dayIcon{min-height:35px;margin-top:5px;font-size:29px;display:flex;align-items:center;justify-content:center}
-.streakDay .dayReward{font-size:11px;font-weight:900;line-height:1.35;margin-top:4px}
-.streakClaimBtn{
-  margin-top:8px;border:0;border-radius:10px;padding:6px 9px;
-  background:#77ad54;color:#fff;font-size:10px;font-weight:1000;
-}
-.doneStamp{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-13deg);
-  padding:5px 9px;border:3px solid rgba(184,66,58,.82);border-radius:8px;
-  color:rgba(184,66,58,.88);font-size:17px;font-weight:1000;letter-spacing:1px;
-  background:rgba(255,255,255,.54);text-transform:uppercase;pointer-events:none;
-}
-.bonusPetPicker{
-  margin-top:16px;padding:14px;border-radius:18px;background:rgba(255,255,255,.72);
-  border:1px solid rgba(111,151,73,.20);
-}
-.bonusPetPicker h3{margin-bottom:5px}
-.bonusPetSpecies{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
-.bonusPetSpecies button,.bonusPetBreed button{
-  border:1px solid rgba(111,151,73,.23);background:#fff;border-radius:12px;padding:8px;
-  color:#536244;font-weight:900;
-}
+.streakRewardPanel{position:relative;width:min(900px,96%);max-height:90vh;overflow:auto;border-radius:28px;padding:24px;background:linear-gradient(180deg,#fbfff3,#edf8dd);border:2px solid rgba(122,166,77,.30);box-shadow:0 22px 52px rgba(39,54,31,.26)}
+.streakRewardClose{position:absolute;right:14px;top:12px;width:38px;height:38px;border:0;border-radius:50%;background:#e2efd4;color:#4d6b3b;font-size:23px;font-weight:1000}
+.streakRewardStatus{margin-top:10px;padding:9px 12px;border-radius:13px;background:rgba(255,255,255,.72);color:#557044;font-size:12px;font-weight:900}
+.streakRewardGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:14px}
+.streakDay{position:relative;min-height:126px;padding:12px 8px 10px;border-radius:17px;border:1px solid rgba(111,151,73,.23);background:rgba(255,255,255,.85);color:#536244;text-align:center;overflow:hidden}
+.streakDay.current{outline:3px solid rgba(117,169,73,.28);background:#fbfff4}.streakDay.locked{opacity:.56;filter:saturate(.55)}
+.streakDay .dayTitle{font-size:12px;font-weight:1000}.streakDay .dayIcon{min-height:35px;margin-top:5px;font-size:29px;display:flex;align-items:center;justify-content:center}.streakDay .dayReward{font-size:11px;font-weight:900;line-height:1.35;margin-top:4px}
+.streakClaimBtn{margin-top:8px;border:0;border-radius:10px;padding:6px 9px;background:#77ad54;color:#fff;font-size:10px;font-weight:1000}
+.doneStamp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-13deg);padding:5px 9px;border:3px solid rgba(184,66,58,.82);border-radius:8px;color:rgba(184,66,58,.88);font-size:17px;font-weight:1000;letter-spacing:1px;background:rgba(255,255,255,.54);text-transform:uppercase;pointer-events:none}
+.bonusPetPicker{margin-top:16px;padding:14px;border-radius:18px;background:rgba(255,255,255,.72);border:1px solid rgba(111,151,73,.20)}
+.bonusPetPicker h3{margin-bottom:5px}.bonusPetSpecies{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.bonusPetSpecies button,.bonusPetBreed button{border:1px solid rgba(111,151,73,.23);background:#fff;border-radius:12px;padding:8px;color:#536244;font-weight:900}
 .bonusPetSpecies button.active,.bonusPetBreed button.active{outline:3px solid rgba(117,169,73,.28);background:#f6ffea}
-.bonusPetBreed{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}
-.bonusPetBreed button{min-height:105px;font-size:10px}
-.bonusPetBreed .breedMini{height:70px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.bonusPetConfirm{
-  width:100%;margin-top:12px;border:0;border-radius:12px;padding:10px 12px;
-  background:#6fa64f;color:#fff;font-weight:1000;
-}
-.bonusPetConfirm:disabled{opacity:.45}
-.streakBonusPet{
-  position:absolute;display:none;width:104px;height:104px;z-index:18;pointer-events:none;
-  transition:left .95s ease,top .95s ease;filter:drop-shadow(0 6px 4px rgba(51,67,42,.14));
-}
-.streakBonusPet .bonusPetArt{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
-.streakBonusPet .bonusPetTag{
-  position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);
-  padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.88);
-  color:#5f7450;font-size:9px;font-weight:1000;white-space:nowrap;
-}
-.streakBonusPet.playing{animation:bonusPetBob .75s ease-in-out infinite alternate}
-.streakBonusPet.playing::after{
-  content:"♡";position:absolute;right:-2px;top:-10px;color:#e8838d;font-size:22px;font-weight:1000;
-  animation:bonusHeart 1.1s ease-out infinite;
-}
-@keyframes bonusPetBob{from{transform:translateY(0)}to{transform:translateY(-4px)}}
-@keyframes bonusHeart{0%{opacity:0;transform:translateY(6px) scale(.7)}40%{opacity:1}100%{opacity:0;transform:translateY(-15px) scale(1.1)}}
+.bonusPetBreed{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}.bonusPetBreed button{min-height:105px;font-size:10px}.bonusPetBreed .breedMini{height:70px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.bonusPetConfirm{width:100%;margin-top:12px;border:0;border-radius:12px;padding:10px 12px;background:#6fa64f;color:#fff;font-weight:1000}.bonusPetConfirm:disabled{opacity:.45}
+.streakBonusPet{position:absolute;display:none;width:104px;height:104px;z-index:18;pointer-events:none;transition:left .95s ease,top .95s ease;filter:drop-shadow(0 6px 4px rgba(51,67,42,.14))}
+.streakBonusPet .bonusPetArt{width:100%;height:100%;display:flex;align-items:center;justify-content:center}.streakBonusPet .bonusPetTag{position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.88);color:#5f7450;font-size:9px;font-weight:1000;white-space:nowrap}
+.streakBonusPet.playing{animation:bonusPetBob .75s ease-in-out infinite alternate}.streakBonusPet.playing::after{content:"♡";position:absolute;right:-2px;top:-10px;color:#e8838d;font-size:22px;font-weight:1000;animation:bonusHeart 1.1s ease-out infinite}
+@keyframes bonusPetBob{from{transform:translateY(0)}to{transform:translateY(-4px)}}@keyframes bonusHeart{0%{opacity:0;transform:translateY(6px) scale(.7)}40%{opacity:1}100%{opacity:0;transform:translateY(-15px) scale(1.1)}}
+@media(max-width:560px){.todayDate{right:126px;top:16px;padding:7px 8px;font-size:10px}.streakRewardBtn{left:8px;top:116px;min-width:70px;height:48px}.streakRewardGrid{gap:5px}.streakDay{min-height:112px;padding:8px 4px}.streakDay .dayReward{font-size:9px}.streakDay .dayIcon{font-size:23px}.doneStamp{font-size:13px;padding:4px 6px}.bonusPetBreed{gap:5px}.bonusPetBreed button{padding:4px;min-height:92px;font-size:9px}}
+
+/* ===== v0.13.12：手機版每日登入／連續登入按鈕防重疊 ===== */
 @media(max-width:560px){
-  .todayDate{right:126px;top:16px;padding:7px 8px;font-size:10px}
-  .streakRewardBtn{left:8px;top:116px;min-width:70px;height:48px}
-  .streakRewardGrid{gap:5px}
-  .streakDay{min-height:112px;padding:8px 4px}
-  .streakDay .dayReward{font-size:9px}
-  .streakDay .dayIcon{font-size:23px}
-  .doneStamp{font-size:13px;padding:4px 6px}
-  .bonusPetBreed{gap:5px}
-  .bonusPetBreed button{padding:4px;min-height:92px;font-size:9px}
+  .gameScreen .dailyRewardBtn{
+    left:8px !important;
+    top:118px !important;
+    min-width:68px !important;
+    height:46px !important;
+  }
+  .gameScreen .streakRewardBtn{
+    left:8px !important;
+    top:172px !important;
+    min-width:68px !important;
+    height:46px !important;
+  }
 }
+@media(max-width:560px) and (max-height:720px){
+  .gameScreen .dailyRewardBtn{top:140px !important;}
+  .gameScreen .streakRewardBtn{top:194px !important;}
+}
+
+/* ===== v0.13.13：日期最右上、排泄物清潔機制、短尾矮袋鼠 ===== */
+.todayDate{
+  right:16px !important;top:14px !important;left:auto !important;
+}
+.gameScreen .tutorialBtn{top:58px !important;right:16px !important;}
+.gameScreen .expandBtn{top:116px !important;right:16px !important;}
+.petWasteMark{
+  position:absolute;z-index:17;pointer-events:none;transform-origin:center;
+  filter:drop-shadow(0 3px 3px rgba(55,42,28,.18));
+}
+.petWasteMark.poop{width:28px;height:23px;}
+.petWasteMark.poop::before{
+  content:"";position:absolute;left:3px;bottom:1px;width:22px;height:12px;border-radius:50% 50% 46% 46%;
+  background:#735039;box-shadow:4px -7px 0 -1px #7f5940,9px -12px 0 -3px #8a6146;
+}
+.petWasteMark.pee{
+  width:46px;height:25px;border-radius:50%;background:rgba(220,194,89,.48);
+  border:2px solid rgba(181,152,50,.22);box-shadow:inset 0 3px 8px rgba(255,245,155,.28);
+}
+.quokkaCompanion{
+  position:absolute;width:106px;height:92px;display:none;z-index:19;
+  transition:left 1.05s linear,top 1.05s linear;will-change:left,top;
+  pointer-events:auto!important;filter:drop-shadow(0 6px 5px rgba(52,43,33,.15));
+}
+.quokkaCompanion.walking{animation:bob .78s ease-in-out infinite}
+.quokkaCompanion .qShadow{position:absolute;left:18px;bottom:5px;width:70px;height:13px;border-radius:50%;background:rgba(65,50,36,.18);filter:blur(2px)}
+.quokkaCompanion .qBody{position:absolute;left:18px;bottom:16px;width:65px;height:45px;border-radius:48% 52% 44% 48%;background:linear-gradient(180deg,#9a7457,#79563f);box-shadow:inset 0 4px 0 rgba(255,255,255,.13)}
+.quokkaCompanion .qBelly{position:absolute;left:35px;bottom:18px;width:31px;height:25px;border-radius:48%;background:#cbb29d;opacity:.88}
+.quokkaCompanion .qHead{position:absolute;right:7px;bottom:35px;width:43px;height:39px;border-radius:52% 52% 48% 48%;background:linear-gradient(180deg,#a47d5d,#805c43);box-shadow:inset 0 4px 0 rgba(255,255,255,.12)}
+.quokkaCompanion .qEar{position:absolute;top:-6px;width:12px;height:15px;border-radius:50% 50% 42% 42%;background:#76513b}.quokkaCompanion .qEar.a{left:5px;transform:rotate(-16deg)}.quokkaCompanion .qEar.b{right:5px;transform:rotate(16deg)}
+.quokkaCompanion .qEye{position:absolute;top:12px;width:6px;height:7px;border-radius:50%;background:#271e19}.quokkaCompanion .qEye.a{left:9px}.quokkaCompanion .qEye.b{right:9px}.quokkaCompanion .qEye::after{content:"";position:absolute;left:1px;top:1px;width:2px;height:2px;border-radius:50%;background:#fff}
+.quokkaCompanion .qNose{position:absolute;left:50%;top:21px;transform:translateX(-50%);width:7px;height:5px;border-radius:50%;background:#33241f}
+.quokkaCompanion .qSmile{position:absolute;left:50%;top:25px;transform:translateX(-50%);width:16px;height:8px;border-bottom:2px solid #3c2c25;border-radius:0 0 14px 14px}
+.quokkaCompanion .qArm{position:absolute;bottom:23px;width:8px;height:23px;border-radius:7px;background:#866248}.quokkaCompanion .qArm.a{left:31px;transform:rotate(18deg)}.quokkaCompanion .qArm.b{left:57px;transform:rotate(-18deg)}
+.quokkaCompanion .qFoot{position:absolute;bottom:7px;width:20px;height:8px;border-radius:50%;background:#69503e}.quokkaCompanion .qFoot.a{left:21px}.quokkaCompanion .qFoot.b{left:58px}
+@media(max-width:560px){
+  .todayDate{right:8px !important;top:8px !important;font-size:10px !important;padding:7px 8px !important;}
+  .gameScreen .tutorialBtn{top:48px !important;right:8px !important;}
+  .gameScreen .expandBtn{top:100px !important;right:8px !important;}
+}
+
+/* ===== v0.13.16：只改草地卡皮巴拉，商店圖示保持原樣 ===== */
+.capybaraCompanion.capybaraEmojiCompanion{
+  width:92px !important;
+  height:78px !important;
+  display:none;
+  background:none !important;
+  filter:drop-shadow(0 5px 4px rgba(54,43,31,.16));
+}
+.capybaraCompanion.capybaraEmojiCompanion .capybaraEmojiArt{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:64px;
+  line-height:1;
+  font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
+  transform-origin:50% 82%;
+  user-select:none;
+  pointer-events:none;
+}
+.capybaraCompanion.capybaraEmojiCompanion.walking .capybaraEmojiArt{
+  animation:capyEmojiWalk .42s ease-in-out infinite alternate;
+}
+@keyframes capyEmojiWalk{
+  from{transform:translateY(0) rotate(-2deg)}
+  to{transform:translateY(-4px) rotate(2deg)}
+}
+/* 排泄物痕跡維持清楚可見 */
+.petWasteMark{z-index:24 !important;opacity:1 !important}
+.petWasteMark.poop{width:38px !important;height:30px !important}
+.petWasteMark.poop::before{left:4px !important;bottom:2px !important;width:30px !important;height:17px !important;box-shadow:6px -9px 0 -1px #7f5940,13px -16px 0 -4px #8a6146 !important}
+.petWasteMark.pee{width:58px !important;height:31px !important;background:rgba(226,202,97,.55) !important;border:2px solid rgba(181,152,50,.30) !important}
+
+
+/* ===== v0.13.17：提醒避開日期、草地卡皮巴拉縮小 ===== */
+.gameScreen .sceneTopBar{
+  right:150px !important;
+}
+.gameScreen .sceneAlert{
+  max-width:min(620px,68%) !important;
+}
+.capybaraCompanion.capybaraEmojiCompanion{
+  width:78px !important;
+  height:66px !important;
+}
+.capybaraCompanion.capybaraEmojiCompanion .capybaraEmojiArt{
+  font-size:52px !important;
+}
+@media(max-width:560px){
+  .gameScreen .sceneTopBar{right:118px !important;}
+  .gameScreen .sceneAlert{max-width:calc(100% - 58px) !important;}
+}
+
 </style>
 </head>
 <body>
@@ -5285,7 +5331,7 @@ body.resumeOnlyMode .top .badge{
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.13.11</div>
+    <div class="badge">Prototype v0.13.18</div>
   </div>
 
   <section id="setup" class="card">
@@ -5311,7 +5357,6 @@ body.resumeOnlyMode .top .badge{
 
       <div id="breedSection" class="breedSection hidden">
         <h3 id="breedTitle">選擇品種</h3>
-        <div class="muted"></div>
         <div id="breedGrid" class="breedGrid" style="margin-top:10px"></div>
       </div>
 
@@ -5354,18 +5399,14 @@ body.resumeOnlyMode .top .badge{
           </div>
           <div id="starterBall" data-footprint="1×1" class="starterBall placeableItem" aria-hidden="true"></div>
           <div id="habitatZone" class="habitatZone"></div>
-          <div id="capybaraCompanion" class="capybaraCompanion placeableItem" data-footprint="2×1" aria-label="卡皮巴拉">
-            <div class="capyShadow"></div>
-            <div class="capyBody"></div>
-            <div class="capyHead">
-              <span class="capyEar e1"></span><span class="capyEar e2"></span>
-              <span class="capyEye a"></span><span class="capyEye b"></span>
-              <span class="capyCheek c1"></span><span class="capyCheek c2"></span>
-              <span class="capySnout"></span>
-              <span class="capyNose"></span>
-              <span class="capyMouth"></span>
-            </div>
-            <div class="capyLeg l1"></div><div class="capyLeg l2"></div>
+          <div id="capybaraCompanion" class="capybaraCompanion placeableItem capybaraEmojiCompanion" data-footprint="2×1" aria-label="卡皮巴拉">
+            <div class="capybaraEmojiArt" aria-hidden="true">🦫</div>
+          </div>
+
+          <div id="quokkaCompanion" class="quokkaCompanion placeableItem" data-footprint="2×1" aria-label="短尾矮袋鼠">
+            <div class="qShadow"></div><div class="qBody"></div><div class="qBelly"></div>
+            <div class="qHead"><span class="qEar a"></span><span class="qEar b"></span><span class="qEye a"></span><span class="qEye b"></span><span class="qNose"></span><span class="qSmile"></span></div>
+            <div class="qArm a"></div><div class="qArm b"></div><div class="qFoot a"></div><div class="qFoot b"></div>
           </div>
 
           <svg id="activityAreaOverlay" class="activityAreaOverlay" aria-hidden="true"></svg>
@@ -5573,13 +5614,12 @@ body.resumeOnlyMode .top .badge{
             <button id="streakRewardClose" class="streakRewardClose" type="button" aria-label="關閉連續登入獎勵">×</button>
             <div class="eyebrow">📅 連續登入送</div>
             <h2>10 天連續登入獎勵</h2>
-            <p class="muted">每天登入可領取當天獎勵；若中斷登入，連續天數會重新計算，已領過的獎勵仍會保留。</p>
+            <p class="muted">每天登入可領取當天獎勵。</p>
             <div id="streakRewardStatus" class="streakRewardStatus"></div>
             <div id="streakRewardGrid" class="streakRewardGrid"></div>
-
             <div id="bonusPetPicker" class="bonusPetPicker hidden">
               <h3>Day 10：挑選妳的新夥伴</h3>
-              <div class="muted">先選動物，再選品種。這隻新夥伴只會陪原本寵物玩，不會改動原寵物的等級、狀態、照顧或成長資料。</div>
+              <div class="muted">先選動物，再選品種。新夥伴只會陪原本寵物玩，原本寵物的等級、狀態、照顧與成長資料完全不受影響。</div>
               <div id="bonusPetSpecies" class="bonusPetSpecies"></div>
               <div id="bonusPetBreed" class="bonusPetBreed"></div>
               <button id="bonusPetConfirm" class="bonusPetConfirm" type="button" disabled>確認帶回家</button>
@@ -5947,7 +5987,8 @@ const shopItems = [
   {id:"rabbitGrassBall", category:"equipment", icon:"🟢", name:"草球", price:380, level:1, type:"equipment", species:"rabbit", desc:"兔子專屬器具。佔地 1×1。把兔子拖到草球旁，牠會把草球拿起來玩。"},
 
   {id:"school", category:"building", icon:"🏫", name:"私塾", price:500, level:2, type:"building", desc:"可以讓寵物學到各式各樣的知識與技能"},
-  {id:"capybara", category:"companion", icon:"🦫", name:"卡皮巴拉", price:1200, level:5, type:"companion", desc:"替寵物找一位溫和的新夥伴，購買後會一起出現在草地上。"}
+  {id:"capybara", category:"companion", icon:"🦫", name:"卡皮巴拉", price:1200, level:5, type:"companion", desc:"替寵物找一位溫和的新夥伴，購買後會一起出現在草地上。"},
+  {id:"quokka", category:"companion", icon:"🐾", name:"短尾矮袋鼠", price:1500, level:6, type:"companion", desc:"玩家 LV.6 解鎖。購入後會成為另一位草地夥伴，可和原本寵物及卡皮巴拉一起活動。"}
 ];
 
 let pickedSpecies = null, pickedBreed = null, state = null;
@@ -6551,7 +6592,8 @@ function initialState(name){
     objectRotations:{},
     decorItems:[],
     decorSerial:0,
-    companions:{capybara:false},
+    companions:{capybara:false,quokka:false},
+    potty:{marks:[],lastAt:0,nextAt:Date.now()+60000+Math.floor(Math.random()*120000)},
     view:{zoom:1},
     landChunks:[
       "-2,-2","-1,-2","0,-2","1,-2",
@@ -6611,6 +6653,11 @@ function migrateState(){
   if(state.streakRewards.lastClaimDay===undefined) state.streakRewards.lastClaimDay=null;
   if(!Array.isArray(state.streakRewards.claimedDays)) state.streakRewards.claimedDays=[];
   state.streakRewards.claimedDays=[...new Set(state.streakRewards.claimedDays.map(Number).filter(n=>n>=1&&n<=10))].sort((a,b)=>a-b);
+  // 舊版若已透過獨立「第2天送風車」領過，視同新的連續登入 Day 2 已完成，避免重複送。
+  if(state.loginStreak?.windmillGiftClaimed && state.equipment?.windmill && !state.streakRewards.claimedDays.includes(2)){
+    state.streakRewards.claimedDays.push(2);
+    state.streakRewards.claimedDays.sort((a,b)=>a-b);
+  }
   if(state.streakRewards.bonusPet===undefined) state.streakRewards.bonusPet=null;
   if(!state.album) state.album={lastPhotoDay:null,photos:[],serial:0,page:1};
   if(state.album.lastPhotoDay===undefined) state.album.lastPhotoDay=null;
@@ -6642,8 +6689,14 @@ function migrateState(){
   if(!state.objectRotations) state.objectRotations = {};
   if(!Array.isArray(state.decorItems)) state.decorItems=[];
   if(!Number.isFinite(state.decorSerial)) state.decorSerial=state.decorItems.length;
-  if(!state.companions) state.companions={capybara:false};
+  if(!state.companions) state.companions={capybara:false,quokka:false};
   if(state.companions.capybara==null) state.companions.capybara=false;
+  if(state.companions.quokka==null) state.companions.quokka=false;
+  if(!state.potty) state.potty={marks:[],lastAt:0,nextAt:Date.now()+60000+Math.floor(Math.random()*120000)};
+  if(!Array.isArray(state.potty.marks)) state.potty.marks=[];
+  if(!Number.isFinite(state.potty.lastAt)) state.potty.lastAt=0;
+  if(!Number.isFinite(state.potty.nextAt)) state.potty.nextAt=Date.now()+60000+Math.floor(Math.random()*120000);
+  if(state.potty.marks.length && state.stats) state.stats.clean=Math.min(59,Number(state.stats.clean)||59);
   if(!state.view) state.view={zoom:FIXED_CAMERA_ZOOM};
   state.view.zoom=FIXED_CAMERA_ZOOM;
   if(!Array.isArray(state.landChunks) || !state.landChunks.length){
@@ -6773,7 +6826,6 @@ function enterGame(){
   $("game").classList.remove("hidden");
   $("step4").classList.add("on");
   setSpeciesFurniture();
-  updateLoginStreakAndGift();
   updateStreakRewardProgress();
   ensureDailyAlbumPhoto();
   renderGame();
@@ -6801,6 +6853,7 @@ function resetAll(){
   if(!confirm("確定重新開局嗎？目前這隻寵物的存檔會被清除。")) return;
   clearInterval(roamTimer);
   clearInterval(streakPetTimer);
+  stopQuokkaCompanionRoaming();
   roomLocked = false;
   clearSave();
   document.body.classList.remove("playing","resumeOnlyMode");
@@ -7135,19 +7188,14 @@ function openDailyReward(){if(!state)return;renderDailyReward();$("dailyRewardOv
 function closeDailyReward(){$("dailyRewardOverlay")?.classList.remove("open")}
 
 function renderTodayDate(){
-  const el=$("todayDate");
-  if(!el) return;
+  const el=$("todayDate"); if(!el) return;
   const now=new Date();
-  try{
-    el.textContent=new Intl.DateTimeFormat("zh-TW",{year:"numeric",month:"2-digit",day:"2-digit",weekday:"short"}).format(now);
-  }catch(e){
-    el.textContent=`${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,"0")}/${String(now.getDate()).padStart(2,"0")}`;
-  }
+  try{el.textContent=new Intl.DateTimeFormat("zh-TW",{year:"numeric",month:"2-digit",day:"2-digit",weekday:"short"}).format(now)}
+  catch(e){el.textContent=`${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,"0")}/${String(now.getDate()).padStart(2,"0")}`}
 }
-
 const STREAK_REWARDS=[
   {day:1,kind:"coins",amount:100,icon:"🪙",label:"100 金幣"},
-  {day:2,kind:"shovel",amount:1,icon:"🪏",label:"鏟子 ×1"},
+  {day:2,kind:"windmill",amount:1,icon:"🌬️",label:"風車 ×1"},
   {day:3,kind:"ticket",amount:1,icon:"🎫",label:"上課券 ×1"},
   {day:4,kind:"coins",amount:200,icon:"🪙",label:"200 金幣"},
   {day:5,kind:"shovel",amount:1,icon:"🪏",label:"鏟子 ×1"},
@@ -7157,251 +7205,60 @@ const STREAK_REWARDS=[
   {day:9,kind:"coins",amount:500,icon:"🪙",label:"500 金幣"},
   {day:10,kind:"pet",amount:1,icon:"🐾",label:"寵物 1 隻"}
 ];
-let bonusPetPickSpecies=null;
-let bonusPetPickBreed=null;
-
-function dayDiff(fromKey,toKey){
-  if(!fromKey||!toKey) return null;
-  const a=new Date(fromKey+"T00:00:00");
-  const b=new Date(toKey+"T00:00:00");
-  return Math.round((b-a)/(24*60*60*1000));
-}
-
-function updateStreakRewardProgress(){
-  if(!state) return;
-  migrateState();
-  const r=state.streakRewards;
-  const today=localDayKey();
-  if(r.lastLoginDay===today) return;
-
-  const diff=dayDiff(r.lastLoginDay,today);
-  if(diff===1) r.streak=Math.min(10,(Number(r.streak)||0)+1);
-  else r.streak=1;
-
-  r.lastLoginDay=today;
-  saveState();
-}
-
-function nextStreakRewardDay(){
-  if(!state) return 1;
-  migrateState();
-  for(let d=1;d<=10;d++){
-    if(!state.streakRewards.claimedDays.includes(d)) return d;
-  }
-  return 11;
-}
-
-function streakRewardClaimedToday(){
-  return !!state && state.streakRewards?.lastClaimDay===localDayKey();
-}
-
-function canClaimStreakDay(day){
-  if(!state||state.flags.dead) return false;
-  migrateState();
-  if(streakRewardClaimedToday()) return false;
-  if(state.streakRewards.claimedDays.includes(day)) return false;
-  if(nextStreakRewardDay()!==day) return false;
-  return (state.streakRewards.streak||0)>=day;
-}
-
+let bonusPetPickSpecies=null,bonusPetPickBreed=null;
+function dayDiff(fromKey,toKey){if(!fromKey||!toKey)return null;const a=new Date(fromKey+"T00:00:00"),b=new Date(toKey+"T00:00:00");return Math.round((b-a)/(24*60*60*1000))}
+function updateStreakRewardProgress(){if(!state)return;migrateState();const r=state.streakRewards,today=localDayKey();if(r.lastLoginDay===today)return;const diff=dayDiff(r.lastLoginDay,today);if(diff===1)r.streak=Math.min(10,(Number(r.streak)||0)+1);else r.streak=1;r.lastLoginDay=today;saveState()}
+function nextStreakRewardDay(){if(!state)return 1;migrateState();for(let d=1;d<=10;d++)if(!state.streakRewards.claimedDays.includes(d))return d;return 11}
+function streakRewardClaimedToday(){return !!state&&state.streakRewards?.lastClaimDay===localDayKey()}
+function canClaimStreakDay(day){if(!state||state.flags.dead)return false;migrateState();if(streakRewardClaimedToday())return false;if(state.streakRewards.claimedDays.includes(day))return false;if(nextStreakRewardDay()!==day)return false;return(state.streakRewards.streak||0)>=day}
 function renderStreakRewards(){
-  if(!state) return;
-  migrateState();
-  const r=state.streakRewards;
-  const completed=r.claimedDays.length>=10;
-  const todayClaimed=streakRewardClaimedToday();
-  const btn=$("streakRewardBtn");
-  if(btn) btn.classList.toggle("claimed",todayClaimed||completed);
-
-  const status=$("streakRewardStatus");
-  if(status){
-    if(completed) status.textContent="10 天連續登入獎勵已全部完成！新夥伴已加入草地。";
-    else if(todayClaimed) status.textContent=`今天已領取完成。目前連續登入 ${r.streak} 天。`;
-    else status.textContent=`目前連續登入 ${r.streak} 天；下一個獎勵：Day ${nextStreakRewardDay()}。`;
-  }
-
-  const grid=$("streakRewardGrid");
-  if(!grid) return;
-  grid.innerHTML=STREAK_REWARDS.map(item=>{
-    const done=r.claimedDays.includes(item.day);
-    const claimable=canClaimStreakDay(item.day);
-    const locked=!done&&!claimable;
-    const icon=item.kind==="shovel" ? shovelIconSvg() : item.icon;
-    return `<div class="streakDay ${claimable?"current":""} ${locked?"locked":""}">
-      <div class="dayTitle">Day ${item.day}</div>
-      <div class="dayIcon">${icon}</div>
-      <div class="dayReward">${item.label}</div>
-      ${claimable?`<button class="streakClaimBtn" type="button" data-streak-day="${item.day}">領取</button>`:""}
-      ${done?'<div class="doneStamp">Done</div>':""}
-    </div>`;
-  }).join("");
-
-  grid.querySelectorAll("[data-streak-day]").forEach(btn=>{
-    btn.addEventListener("click",()=>claimStreakReward(Number(btn.dataset.streakDay)));
-  });
+  if(!state)return;migrateState();const r=state.streakRewards,completed=r.claimedDays.length>=10,todayClaimed=streakRewardClaimedToday();
+  const btn=$("streakRewardBtn");if(btn)btn.classList.toggle("claimed",todayClaimed||completed);
+  const status=$("streakRewardStatus");if(status){if(completed)status.textContent="10 天連續登入獎勵已全部完成！新夥伴已加入草地。";else if(todayClaimed)status.textContent=`今天已領取完成。目前連續登入 ${r.streak} 天。`;else status.textContent=`目前連續登入 ${r.streak} 天；下一個獎勵：Day ${nextStreakRewardDay()}。`}
+  const grid=$("streakRewardGrid");if(!grid)return;
+  grid.innerHTML=STREAK_REWARDS.map(item=>{const done=r.claimedDays.includes(item.day),claimable=canClaimStreakDay(item.day),locked=!done&&!claimable,icon=item.kind==="shovel"?shovelIconSvg():item.icon;return `<div class="streakDay ${claimable?"current":""} ${locked?"locked":""}"><div class="dayTitle">Day ${item.day}</div><div class="dayIcon">${icon}</div><div class="dayReward">${item.label}</div>${claimable?`<button class="streakClaimBtn" type="button" data-streak-day="${item.day}">領取</button>`:""}${done?'<div class="doneStamp">Done</div>':""}</div>`}).join("");
+  grid.querySelectorAll("[data-streak-day]").forEach(btn=>btn.addEventListener("click",()=>claimStreakReward(Number(btn.dataset.streakDay))))
 }
-
-function openStreakReward(){
-  if(!state) return;
-  updateStreakRewardProgress();
-  renderStreakRewards();
-  $("streakRewardOverlay")?.classList.add("open");
-}
-
-function closeStreakReward(){
-  $("streakRewardOverlay")?.classList.remove("open");
-  $("bonusPetPicker")?.classList.add("hidden");
-}
-
+function openStreakReward(){if(!state)return;updateStreakRewardProgress();renderStreakRewards();$("streakRewardOverlay")?.classList.add("open")}
+function closeStreakReward(){$("streakRewardOverlay")?.classList.remove("open");$("bonusPetPicker")?.classList.add("hidden")}
 function claimStreakReward(day){
-  if(!canClaimStreakDay(day)) return;
-  const item=STREAK_REWARDS.find(x=>x.day===day);
-  if(!item) return;
-
-  if(item.kind==="pet"){
-    openBonusPetPicker();
-    return;
+  if(!canClaimStreakDay(day))return;const item=STREAK_REWARDS.find(x=>x.day===day);if(!item)return;if(item.kind==="pet"){openBonusPetPicker();return}
+  if(item.kind==="coins")state.owner.coins+=item.amount;
+  if(item.kind==="shovel")state.inventory.shovel+=item.amount;
+  if(item.kind==="ticket")state.inventory.schoolTicket+=item.amount;
+  if(item.kind==="windmill"){
+    state.equipment.windmill=true;
+    if(!state.objectCells.windmill) state.objectCells.windmill={row:2,col:8};
+    if(state.objectRotations.windmill==null) state.objectRotations.windmill=0;
+    if(state.loginStreak) state.loginStreak.windmillGiftClaimed=true;
   }
-  if(item.kind==="coins") state.owner.coins+=item.amount;
-  if(item.kind==="shovel") state.inventory.shovel+=item.amount;
-  if(item.kind==="ticket") state.inventory.schoolTicket+=item.amount;
-
-  state.streakRewards.claimedDays.push(day);
-  state.streakRewards.claimedDays.sort((a,b)=>a-b);
-  state.streakRewards.lastClaimDay=localDayKey();
-
-  const logText=item.kind==="coins"
-    ? `${item.amount} 金幣`
-    : item.kind==="shovel"
-      ? "鏟子 ×1"
-      : "上課券 ×1";
-  addLog(`<b>連續登入送 Day ${day}</b>：妳領取了 ${logText}！`);
-  saveState();
-  renderOwner();
-  renderStorage();
-  renderStreakRewards();
-  showCareActionHint(`Day ${day} 獎勵領取完成！`,true);
+  state.streakRewards.claimedDays.push(day);state.streakRewards.claimedDays.sort((a,b)=>a-b);state.streakRewards.lastClaimDay=localDayKey();
+  const txt=item.kind==="coins"?`${item.amount} 金幣`:item.kind==="shovel"?"鏟子 ×1":item.kind==="windmill"?"風車 ×1":"上課券 ×1";
+  addLog(`<b>連續登入送 Day ${day}</b>：妳領取了 ${txt}！`);
+  saveState();renderOwner();renderStorage();renderEquipment();applySavedObjectPositions();renderStreakRewards();showCareActionHint(`Day ${day} 獎勵領取完成！`,true)
 }
-
-function openBonusPetPicker(){
-  if(!canClaimStreakDay(10)) return;
-  bonusPetPickSpecies=null;
-  bonusPetPickBreed=null;
-  const picker=$("bonusPetPicker");
-  if(!picker) return;
-  picker.classList.remove("hidden");
-  renderBonusPetPicker();
-  picker.scrollIntoView({behavior:"smooth",block:"nearest"});
-}
-
+function openBonusPetPicker(){if(!canClaimStreakDay(10))return;bonusPetPickSpecies=null;bonusPetPickBreed=null;const picker=$("bonusPetPicker");if(!picker)return;picker.classList.remove("hidden");renderBonusPetPicker();picker.scrollIntoView({behavior:"smooth",block:"nearest"})}
 function renderBonusPetPicker(){
-  const speciesBox=$("bonusPetSpecies");
-  const breedBox=$("bonusPetBreed");
-  const confirmBtn=$("bonusPetConfirm");
-  if(!speciesBox||!breedBox||!confirmBtn) return;
-
-  speciesBox.innerHTML=Object.entries(speciesData).map(([key,s])=>
-    `<button type="button" data-bonus-species="${key}" class="${bonusPetPickSpecies===key?"active":""}">${s.name}</button>`
-  ).join("");
-
-  speciesBox.querySelectorAll("[data-bonus-species]").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      bonusPetPickSpecies=btn.dataset.bonusSpecies;
-      bonusPetPickBreed=null;
-      renderBonusPetPicker();
-    });
-  });
-
-  if(!bonusPetPickSpecies){
-    breedBox.innerHTML='<div class="muted" style="grid-column:1/-1">請先選擇動物。</div>';
-  }else{
-    breedBox.innerHTML=speciesData[bonusPetPickSpecies].breeds.map((breed,idx)=>
-      `<button type="button" data-bonus-breed="${idx}" class="${bonusPetPickBreed===breed?"active":""}">
-        <div class="breedMini">${breedSVG(bonusPetPickSpecies,idx,72)}</div>
-        <div>${breed}</div>
-      </button>`
-    ).join("");
-    breedBox.querySelectorAll("[data-bonus-breed]").forEach(btn=>{
-      btn.addEventListener("click",()=>{
-        const idx=Number(btn.dataset.bonusBreed);
-        bonusPetPickBreed=speciesData[bonusPetPickSpecies].breeds[idx];
-        renderBonusPetPicker();
-      });
-    });
-  }
-  confirmBtn.disabled=!(bonusPetPickSpecies&&bonusPetPickBreed);
+  const speciesBox=$("bonusPetSpecies"),breedBox=$("bonusPetBreed"),confirmBtn=$("bonusPetConfirm");if(!speciesBox||!breedBox||!confirmBtn)return;
+  speciesBox.innerHTML=Object.entries(speciesData).map(([key,x])=>`<button type="button" data-bonus-species="${key}" class="${bonusPetPickSpecies===key?"active":""}">${x.name}</button>`).join("");
+  speciesBox.querySelectorAll("[data-bonus-species]").forEach(btn=>btn.addEventListener("click",()=>{bonusPetPickSpecies=btn.dataset.bonusSpecies;bonusPetPickBreed=null;renderBonusPetPicker()}));
+  if(!bonusPetPickSpecies)breedBox.innerHTML='<div class="muted" style="grid-column:1/-1">請先選擇動物。</div>';else{breedBox.innerHTML=speciesData[bonusPetPickSpecies].breeds.map((breed,idx)=>`<button type="button" data-bonus-breed="${idx}" class="${bonusPetPickBreed===breed?"active":""}"><div class="breedMini">${breedSVG(bonusPetPickSpecies,idx,72)}</div><div>${breed}</div></button>`).join("");breedBox.querySelectorAll("[data-bonus-breed]").forEach(btn=>btn.addEventListener("click",()=>{const idx=Number(btn.dataset.bonusBreed);bonusPetPickBreed=speciesData[bonusPetPickSpecies].breeds[idx];renderBonusPetPicker()}))}
+  confirmBtn.disabled=!(bonusPetPickSpecies&&bonusPetPickBreed)
 }
-
 function confirmBonusPetChoice(){
-  if(!canClaimStreakDay(10)||!bonusPetPickSpecies||!bonusPetPickBreed) return;
-  const idx=speciesData[bonusPetPickSpecies].breeds.indexOf(bonusPetPickBreed);
-  state.streakRewards.bonusPet={
-    species:bonusPetPickSpecies,
-    breed:bonusPetPickBreed,
-    breedIndex:Math.max(0,idx),
-    pos:null
-  };
-  if(!state.streakRewards.claimedDays.includes(10)) state.streakRewards.claimedDays.push(10);
-  state.streakRewards.claimedDays.sort((a,b)=>a-b);
-  state.streakRewards.lastClaimDay=localDayKey();
-  addLog(`<b>連續登入送 Day 10</b>：妳選擇了 ${speciesData[bonusPetPickSpecies].name}「${bonusPetPickBreed}」作為新夥伴，牠會在草地上陪 ${state.name} 一起玩！`);
-  saveState();
-  $("bonusPetPicker")?.classList.add("hidden");
-  renderStreakRewards();
-  renderStreakBonusPet();
-  startStreakPetPlay();
-  showCareActionHint("Day 10 新夥伴已來到草地！",true);
+  if(!canClaimStreakDay(10)||!bonusPetPickSpecies||!bonusPetPickBreed)return;const idx=speciesData[bonusPetPickSpecies].breeds.indexOf(bonusPetPickBreed);
+  state.streakRewards.bonusPet={species:bonusPetPickSpecies,breed:bonusPetPickBreed,breedIndex:Math.max(0,idx),pos:null};if(!state.streakRewards.claimedDays.includes(10))state.streakRewards.claimedDays.push(10);state.streakRewards.claimedDays.sort((a,b)=>a-b);state.streakRewards.lastClaimDay=localDayKey();
+  addLog(`<b>連續登入送 Day 10</b>：妳選擇了 ${speciesData[bonusPetPickSpecies].name}「${bonusPetPickBreed}」作為新夥伴，牠會在草地上陪 ${state.name} 一起玩！`);saveState();$("bonusPetPicker")?.classList.add("hidden");renderStreakRewards();renderStreakBonusPet();startStreakPetPlay();showCareActionHint("Day 10 新夥伴已來到草地！",true)
 }
-
-function initStreakRewards(){
-  $("streakRewardBtn")?.addEventListener("click",openStreakReward);
-  $("streakRewardClose")?.addEventListener("click",closeStreakReward);
-  $("streakRewardOverlay")?.addEventListener("click",e=>{if(e.target===$("streakRewardOverlay"))closeStreakReward()});
-  $("bonusPetConfirm")?.addEventListener("click",confirmBonusPetChoice);
-}
-
+function initStreakRewards(){$("streakRewardBtn")?.addEventListener("click",openStreakReward);$("streakRewardClose")?.addEventListener("click",closeStreakReward);$("streakRewardOverlay")?.addEventListener("click",e=>{if(e.target===$("streakRewardOverlay"))closeStreakReward()});$("bonusPetConfirm")?.addEventListener("click",confirmBonusPetChoice)}
 function renderStreakBonusPet(){
-  const el=$("streakBonusPet");
-  if(!el||!state) return;
-  migrateState();
-  const data=state.streakRewards.bonusPet;
-  if(!data){
-    el.style.display="none";
-    return;
-  }
-  const idx=Number.isFinite(data.breedIndex)
-    ? data.breedIndex
-    : Math.max(0,speciesData[data.species]?.breeds?.indexOf(data.breed)||0);
-  if($("streakBonusPetArt")) $("streakBonusPetArt").innerHTML=breedSVG(data.species,idx,100,true);
-  el.style.display="block";
-
-  if(!data.pos){
-    const base=state.petPos||{x:310,y:250};
-    const p=clampPointToHabitat(base.x+85,base.y+25);
-    data.pos={x:p.x,y:p.y};
-  }
-  el.style.left=data.pos.x+"px";
-  el.style.top=data.pos.y+"px";
+  const el=$("streakBonusPet");if(!el||!state)return;migrateState();const data=state.streakRewards.bonusPet;if(!data){el.style.display="none";return}
+  const idx=Number.isFinite(data.breedIndex)?data.breedIndex:Math.max(0,speciesData[data.species]?.breeds?.indexOf(data.breed)||0);if($("streakBonusPetArt"))$("streakBonusPetArt").innerHTML=breedSVG(data.species,idx,100,true);el.style.display="block";
+  if(!data.pos){const base=state.petPos||{x:310,y:250},p=clampPointToHabitat(base.x+85,base.y+25);data.pos={x:p.x,y:p.y}}el.style.left=data.pos.x+"px";el.style.top=data.pos.y+"px"
 }
-
 function startStreakPetPlay(){
-  clearInterval(streakPetTimer);
-  if(!state?.streakRewards?.bonusPet) return;
-  streakPetTimer=setInterval(()=>{
-    if(!state||state.flags.dead||roomLocked||!state.streakRewards?.bonusPet) return;
-    const el=$("streakBonusPet");
-    if(!el) return;
-    const main=state.petPos||{x:310,y:250};
-    const angle=Math.random()*Math.PI*2;
-    const radius=45+Math.random()*55;
-    const p=clampPointToHabitat(main.x+Math.cos(angle)*radius,main.y+Math.sin(angle)*radius);
-    state.streakRewards.bonusPet.pos={x:p.x,y:p.y};
-    el.classList.add("playing");
-    renderStreakBonusPet();
-    setTimeout(()=>el.classList.remove("playing"),1200);
-  },3200);
+  clearInterval(streakPetTimer);if(!state?.streakRewards?.bonusPet)return;streakPetTimer=setInterval(()=>{if(!state||state.flags.dead||roomLocked||!state.streakRewards?.bonusPet)return;const el=$("streakBonusPet");if(!el)return;const main=state.petPos||{x:310,y:250},angle=Math.random()*Math.PI*2,radius=45+Math.random()*55,p=clampPointToHabitat(main.x+Math.cos(angle)*radius,main.y+Math.sin(angle)*radius);state.streakRewards.bonusPet.pos={x:p.x,y:p.y};el.classList.add("playing");renderStreakBonusPet();setTimeout(()=>el.classList.remove("playing"),1200)},3200)
 }
-
 
 function claimDailyReward(type){
   if(!state||state.flags.dead||dailyRewardClaimedToday())return;
@@ -8163,6 +8020,13 @@ function buyItem(id){
       if(state.objectRotations.capybaraCompanion==null) state.objectRotations.capybaraCompanion=0;
       addLog(`<b>新夥伴</b>：卡皮巴拉來到草地，成為 ${state.name} 的新朋友。`);
     }
+    if(item.id==="quokka"){
+      state.companions.quokka=true;
+      setTimeout(()=>ensureQuokkaCompanionRoaming(1400),300);
+      if(!state.objectCells.quokkaCompanion) state.objectCells.quokkaCompanion={row:7,col:5};
+      if(state.objectRotations.quokkaCompanion==null) state.objectRotations.quokkaCompanion=0;
+      addLog(`<b>新夥伴</b>：短尾矮袋鼠來到草地，成為 ${state.name} 的新朋友。`);
+    }
   }else if(item.type==="building"){
     if(item.id==="school"){
       state.buildings.school={owned:true,status:"building"};
@@ -8445,6 +8309,7 @@ const OBJECT_FOOTPRINTS={
   rabbitMaze:{w:2,h:2},
   rabbitGrassBall:{w:1,h:1},
   capybaraCompanion:{w:2,h:1},
+  quokkaCompanion:{w:2,h:1},
   schoolBuilding:{w:3,h:3}
 };
 function baseFootprintFor(id){
@@ -9047,6 +8912,20 @@ function renderEquipment(){
       stopCapybaraCompanionRoaming();
     }
   }
+
+  const quokka=$("quokkaCompanion");
+  if(quokka){
+    quokka.style.display = state.companions?.quokka ? "block" : "none";
+    if(state.companions?.quokka){
+      if(!state.objectCells.quokkaCompanion) state.objectCells.quokkaCompanion={row:7,col:5};
+      if(state.objectRotations.quokkaCompanion==null) state.objectRotations.quokkaCompanion=0;
+      ensureQuokkaCompanionRoaming();
+    }else{
+      stopQuokkaCompanionRoaming();
+    }
+  }
+
+  renderPetWasteMarks();
 }
 
 function finalizeSchoolIfReady(){
@@ -9124,6 +9003,7 @@ function startConstructionClock(){
 }
 
 function renderStatus(){
+  enforceWasteCleanLimit();
   const needs={
     hunger:"需要餵食",
     water:"需要換新鮮水",
@@ -9256,7 +9136,8 @@ function renderAlerts(){
     if(state.flags.starving || state.stats.hunger < 20) messages.push(`<div class="alertBox">警訊：${state.name} 現在非常飢餓，必須盡快補充食物。</div>`);
     if(state.stats.water < 18) messages.push(`<div class="alertBox">警訊：${state.name} 已明顯缺水，請盡快換水。</div>`);
     if(state.flags.sick) messages.push(`<div class="alertBox">警訊：${state.name} 身體不太舒服，建議儘快看醫生。</div>`);
-    if(state.stats.clean < 25) messages.push(`<div class="alertBox">警訊：生活空間太髒了，可能讓牠狀況變差。</div>`);
+    if(petHasWaste()) messages.push(`<div class="alertBox">草地上有大小便，需要清理喔！</div>`);
+    else if(state.stats.clean < 25) messages.push(`<div class="alertBox">警訊：生活空間太髒了，可能讓牠狀況變差。</div>`);
     if(messages.length===0) messages.push(`<div class="alertBox good"></div>`);
   }
   $("alertArea").innerHTML = messages.join("");
@@ -9302,10 +9183,12 @@ function renderPetPosition(){
   }
 }
 
-const PLACEABLE_IDS = ["starterHouse","starterBall","roomToyBall","chewToy","deluxeBed","playSlide","petSwing","windmill","wheel","catTower","catWand","dogFrisbee","dogCastle","rabbitMaze","rabbitGrassBall","capybaraCompanion","schoolBuilding"];
+const PLACEABLE_IDS = ["starterHouse","starterBall","roomToyBall","chewToy","deluxeBed","playSlide","petSwing","windmill","wheel","catTower","catWand","dogFrisbee","dogCastle","rabbitMaze","rabbitGrassBall","capybaraCompanion","quokkaCompanion","schoolBuilding"];
 let objectDrag = null;
 let capybaraRoamTimer = null;
 let capybaraRoaming = false;
+let quokkaRoamTimer = null;
+let quokkaRoaming = false;
 
 function normalizeObjectToLeftTop(el){
   const room = $("room");
@@ -9343,6 +9226,7 @@ function applySavedObjectPositions(){
     rabbitMaze:{row:4,col:7},
     rabbitGrassBall:{row:8,col:5},
     capybaraCompanion:{row:6,col:4},
+    quokkaCompanion:{row:7,col:5},
     schoolBuilding:{row:4,col:4}
   };
 
@@ -9356,6 +9240,7 @@ function applySavedObjectPositions(){
     if(id==="schoolBuilding" && !state.buildings.school.owned) return;
     if(isObjectStored(id)) return;
     if(id==="capybaraCompanion" && !state.companions?.capybara) return;
+    if(id==="quokkaCompanion" && !state.companions?.quokka) return;
     if(id==="wheel" && !isPurchasedWheel) return;
     if(!isPermanentBase && !isPurchasedWheel && el.offsetParent===null) return;
 
@@ -9921,6 +9806,57 @@ function initPetDragging(){
   });
 }
 
+function petHasWaste(){return !!(state?.potty?.marks?.length);}
+function enforceWasteCleanLimit(){
+  if(state && petHasWaste()) state.stats.clean=Math.min(59,Number(state.stats.clean)||59);
+}
+function renderPetWasteMarks(){
+  const room=$("room");
+  if(!room || !state) return;
+  room.querySelectorAll(".petWasteMark").forEach(el=>el.remove());
+  (state.potty?.marks||[]).forEach(mark=>{
+    const el=document.createElement("div");
+    el.className=`petWasteMark ${mark.type==="pee"?"pee":"poop"}`;
+    el.style.left=mark.x+"px";el.style.top=mark.y+"px";
+    el.style.transform=`rotate(${mark.rot||0}deg) scale(${mark.scale||1})`;
+    room.appendChild(el);
+  });
+  enforceWasteCleanLimit();
+}
+function createPetWaste(force=false){
+  if(!state || state.flags.dead) return false;
+  migrateState();
+  const now=Date.now();
+  if(!force && now<(state.potty.nextAt||0)) return false;
+  if((state.potty.marks||[]).length>=3){
+    state.potty.nextAt=now+90000+Math.floor(Math.random()*120000);
+    return false;
+  }
+  const pos=state.petPos||{x:310,y:250};
+  const type=Math.random()<0.68?"poop":"pee";
+  state.potty.marks.push({
+    id:`waste_${now}_${Math.floor(Math.random()*9999)}`,type,
+    x:Math.round(pos.x+48+Math.random()*24-12),y:Math.round(pos.y+92+Math.random()*14-7),
+    rot:Math.round(-18+Math.random()*36),scale:Number((.85+Math.random()*.28).toFixed(2)),createdAt:now
+  });
+  state.potty.lastAt=now;
+  state.potty.nextAt=now+120000+Math.floor(Math.random()*180000);
+  state.stats.clean=Math.min(59,35+Math.floor(Math.random()*22));
+  addLog(`<b>需要整理環境</b>：${state.name} 剛剛在草地上大小便了，清潔值已降到 60 以下。請到「照顧」選擇「整理環境」。`);
+  saveState();
+  renderPetWasteMarks();
+  renderStatus();renderAlerts();
+  return true;
+}
+function clearPetWaste(){
+  if(!state?.potty) return 0;
+  const count=state.potty.marks.length;
+  state.potty.marks=[];
+  state.potty.nextAt=Date.now()+120000+Math.floor(Math.random()*180000);
+  $("room")?.querySelectorAll(".petWasteMark").forEach(el=>el.remove());
+  return count;
+}
+
 function startRoaming(){
   clearInterval(roamTimer);
   roamTimer = setInterval(() => {
@@ -9930,7 +9866,9 @@ function startRoaming(){
 }
 function roamRandom(){
   const p = randomHabitatPoint();
-  movePetTo(p.x, p.y);
+  movePetTo(p.x, p.y,()=>{
+    if(Math.random()<0.18) createPetWaste(false);
+  });
   const voices = ["♪", "今天也想被稱讚", "摸摸我嘛", "我在巡邏喔", "這裡好舒服", "好像有點想玩", "妳有看到我嗎", "今天也要陪我喔", "我剛剛有乖乖的", "這裡是我的小天地", "想吃一點香香的東西", "水水喝起來最舒服", "我是不是很可愛", "再陪我一下嘛", "我想去那邊看看", "那邊好像有東西", "我今天精神很好", "剛剛做了一個好夢", "我喜歡妳在旁邊", "不要偷偷跑掉喔", "我有認真照顧自己", "外面好像很好玩", "今天的風很舒服", "我想撒嬌一下", "可以再摸一下嗎", "我現在心情很好", "我有一點點想睡", "剛剛那個好好玩", "這裡聞起來不一樣", "我要偷偷探索一下", "我找到舒服的位置了", "妳今天也辛苦了", "我會乖乖待著", "我想和妳一起玩", "今天也要開心喔", "我在等妳來陪我", "我剛剛跑得很快吧", "我的小肚子在提醒我了", "喝完水最舒服了", "乾乾淨淨真棒", "我喜歡這個地方", "我有沒有變厲害", "我今天也很努力", "我們是好朋友對吧", "我想靠近妳一點", "妳看我一下嘛", "今天也有好多新鮮事", "我最喜歡有人陪", "偷偷告訴妳，我很開心", "再玩一次好不好"];
   if(Math.random() < .35) speak(rand(voices));
 }
@@ -10267,6 +10205,70 @@ function ensureCapybaraCompanionRoaming(delay){
   }, nextDelay);
 }
 
+function quokkaRandomCell(){
+  if(!state) return null;
+  const g=getHabitatGeometry();
+  const current=state.objectCells?.quokkaCompanion || {row:7,col:5};
+  const options=[];
+  for(let r=0;r<g.gridRows;r++){
+    for(let c=0;c<g.gridCols;c++){
+      if(!canPlaceObject("quokkaCompanion",r,c)) continue;
+      const dist=Math.abs(r-current.row)+Math.abs(c-current.col);
+      if(dist>=1 && dist<=6) options.push({row:r,col:c});
+    }
+  }
+  return options.length ? rand(options) : current;
+}
+function moveQuokkaCompanionTo(row,col){
+  if(!state || state.flags.dead || !state.companions?.quokka) return;
+  const el=$("quokkaCompanion");
+  if(!el || el.offsetParent===null) return;
+  const current=state.objectCells?.quokkaCompanion || {row:7,col:5};
+  const legal=nearestLegalCell("quokkaCompanion",row,col);
+  if(current.row===legal.row && current.col===legal.col) return;
+  el.classList.add("walking");
+  placeObjectAtCell("quokkaCompanion",legal.row,legal.col,false);
+  saveState();
+  setTimeout(()=>el.classList.remove("walking"),1200);
+}
+function tryRoamQuokkaCompanion(){
+  if(!state || state.flags.dead || !state.companions?.quokka) return;
+  const el=$("quokkaCompanion");
+  if(!el || el.offsetParent===null || roomLocked || expansionMode || objectDrag || quokkaRoaming) return;
+  const target=quokkaRandomCell();
+  if(!target) return;
+  quokkaRoaming=true;
+  moveQuokkaCompanionTo(target.row,target.col);
+  setTimeout(()=>{quokkaRoaming=false;},1300);
+}
+function stopQuokkaCompanionRoaming(){
+  if(quokkaRoamTimer){clearTimeout(quokkaRoamTimer);quokkaRoamTimer=null;}
+  quokkaRoaming=false;
+}
+function ensureQuokkaCompanionRoaming(delay){
+  if(!state || !state.companions?.quokka || state.flags.dead){stopQuokkaCompanionRoaming();return;}
+  if(quokkaRoamTimer) return;
+  const nextDelay=Number.isFinite(delay)?delay:5000+Math.random()*3000;
+  quokkaRoamTimer=setTimeout(function loop(){
+    quokkaRoamTimer=null;
+    tryRoamQuokkaCompanion();
+    ensureQuokkaCompanionRoaming(5600+Math.random()*3400);
+  },nextDelay);
+}
+function quokkaInteraction(action){
+  if(!state?.companions?.quokka) return;
+  const el=$("quokkaCompanion");
+  if(!el || el.offsetParent===null) return;
+  el.classList.add("walking");
+  setTimeout(()=>el.classList.remove("walking"),1100);
+  if(Math.random()<0.68){
+    const text=action==="clean"
+      ? `短尾矮袋鼠看到環境又變乾淨，開心地在 ${state.name} 附近蹦了幾步。`
+      : `短尾矮袋鼠笑咪咪地靠近 ${state.name}，像是在邀牠一起玩。`;
+    addLog(`<b>好夥伴互動</b>：${text}`);
+  }
+}
+
 function capybaraInteraction(action){
   if(!state?.companions?.capybara) return;
   const capy=$("capybaraCompanion");
@@ -10364,14 +10366,16 @@ function applyEffect(action){
       addLog(`<b>換新鮮水</b>：妳花了 50 金幣準備新鮮飲水。妳替 ${state.name} 換上一碗清清涼涼的新鮮水，牠馬上靠過去咕嚕咕嚕喝了幾口，滿足得不得了。`);
       gainXP(6);
       break;
-    case "clean":
-      state.stats.clean = clamp(state.stats.clean + 28);
+    case "clean":{
+      const wasteCount=clearPetWaste();
+      state.stats.clean = wasteCount>0 ? Math.max(72,clamp(state.stats.clean + 38)) : clamp(state.stats.clean + 28);
       state.stats.health = clamp(state.stats.health + 5);
       createSparkles();
       speak("房間變乾淨了！");
-      addLog(`<b>整理環境</b>：妳把小天地仔細整理了一遍，地面變得乾乾淨淨。${state.name} 還特地繞了一圈，像個認真的小小驗收員。`);
+      addLog(`<b>整理環境</b>：妳把小天地仔細整理了一遍${wasteCount?`，並清掉了 ${wasteCount} 處大小便痕跡`:""}，地面重新變得乾乾淨淨。${state.name} 還特地繞了一圈，像個認真的小小驗收員。`);
       gainXP(12); earnCoins(6);
       break;
+    }
     case "walk":
       state.stats.energy = clamp(state.stats.energy + 18);
       state.stats.mood = clamp(state.stats.mood + 10);
@@ -10453,6 +10457,7 @@ function applyEffect(action){
   reevaluateFlags();
   renderGame();
   setTimeout(()=>capybaraInteraction(action),120);
+  setTimeout(()=>quokkaInteraction(action),180);
 }
 function reevaluateFlags(){
   if(state.stats.hunger >= 25) state.flags.starving = false;
@@ -10543,6 +10548,7 @@ function applyOfflineProgress(){
   const years = Math.floor(elapsed / YEAR_MS);
   const report = [];
   const neglectTriggered=checkNeglectEvents();
+  enforceWasteCleanLimit();
   if(years <= 0){
     state.lastSeen = now;
     if(neglectTriggered) saveState();
@@ -10574,10 +10580,12 @@ function startHeartbeat(){
     const now = Date.now();
     const years = Math.floor((now - (state.lastSeen || now)) / YEAR_MS);
     const neglectTriggered=checkNeglectEvents();
+    const pottyTriggered=createPetWaste(false);
+    enforceWasteCleanLimit();
     if(years > 0){
       applyOfflineProgress();
       renderGame();
-    }else if(neglectTriggered){
+    }else if(neglectTriggered || pottyTriggered){
       renderGame();
     }
   }, 60 * 1000);
