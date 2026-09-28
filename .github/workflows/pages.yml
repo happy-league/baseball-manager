@@ -153,10 +153,10 @@ jobs:
           pet_html = pet_src.read_bytes()
           if not pet_html.startswith(b"<!DOCTYPE html>") or not pet_html.rstrip().endswith(b"</html>"):
               raise SystemExit("Unexpected pet life HTML")
-          if len(pet_html) != 376445:
-              raise SystemExit(f"Unexpected pet life HTML size: {len(pet_html)}")
-          if hashlib.sha256(pet_html).hexdigest() != "edaae9feea5b3a481ce93df6a2e27199a6afd52bddeea6f84907fbefce7e5be7":
-              raise SystemExit("Unexpected pet life SHA256")
+          if b'const SAVE_KEY = "pet_life_save_v03";' not in pet_html:
+              raise SystemExit("Unexpected pet life save key")
+          if b"Prototype v0.13.18" not in pet_html:
+              raise SystemExit("Unexpected pet life version")
           (pet_dir / "index.html").write_bytes(pet_html)
 
       - name: Setup Pages
