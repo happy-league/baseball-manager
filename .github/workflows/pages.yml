@@ -155,7 +155,7 @@ jobs:
               raise SystemExit("Unexpected pet life HTML")
           if b'const SAVE_KEY = "pet_life_save_v03";' not in pet_html:
               raise SystemExit("Unexpected pet life save key")
-          if b"Prototype v0.13.23" not in pet_html:
+          if b"Prototype v0.13.24" not in pet_html:
               raise SystemExit("Unexpected pet life version")
           (pet_dir / "index.html").write_bytes(pet_html)
 
