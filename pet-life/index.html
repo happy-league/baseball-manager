@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.22</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.23</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -5443,6 +5443,21 @@ body.resumeOnlyMode .top .badge{
   .bankPanel{padding:19px 16px}
 }
 
+
+/* ===== v0.13.23：銀行 30 分鐘施工 ===== */
+.bankBuilding.is-building{
+  opacity:.72;
+  filter:grayscale(.35) drop-shadow(0 8px 7px rgba(50,56,47,.16));
+}
+.bankBuilding.is-building::after{
+  content:"施工中" !important;
+  color:#8a6637 !important;
+  background:rgba(255,246,218,.96) !important;
+}
+.bankBuilding.is-building .bankDoor{
+  filter:grayscale(.65);
+}
+
 </style>
 </head>
 <body>
@@ -6147,7 +6162,7 @@ const shopItems = [
   {id:"rabbitGrassBall", category:"equipment", icon:"🟢", name:"草球", price:380, level:1, type:"equipment", species:"rabbit", desc:"兔子專屬器具。佔地 1×1。把兔子拖到草球旁，牠會把草球拿起來玩。"},
 
   {id:"school", category:"building", icon:"🏫", name:"私塾", price:500, level:2, type:"building", desc:"可以讓寵物學到各式各樣的知識與技能"},
-  {id:"bank", category:"building", icon:"🏦", name:"銀行", price:500, level:4, type:"building", desc:"玩家 LV.4 解鎖。可隨時存入或領出金幣；每筆存款每滿 24 小時增加 10%，未滿 24 小時不計利息。"},
+  {id:"bank", category:"building", icon:"🏦", name:"銀行", price:500, level:4, type:"building", desc:"玩家 LV.4 解鎖。購買後需施工 30 分鐘；可花 500 金幣快速落成。落成後可隨時存入或領出金幣；每筆存款每滿 24 小時增加 10%。"},
   {id:"capybara", category:"companion", icon:"🦫", name:"卡皮巴拉", price:1200, level:5, type:"companion", desc:"替寵物找一位溫和的新夥伴，購買後會一起出現在草地上。"},
   {id:"quokka", category:"companion", icon:"🐾", name:"短尾矮袋鼠", price:1500, level:6, type:"companion", desc:"玩家 LV.6 解鎖。購入後會成為另一位草地夥伴，可和原本寵物及卡皮巴拉一起活動。"}
 ];
@@ -6738,10 +6753,11 @@ function initialState(name){
     equipment:{toyBall:false, chewToy:false, deluxeBed:false, playSlide:false, petSwing:false, windmill:false, premiumWheel:false, catTower:false, catWand:false, dogFrisbee:false, dogCastle:false, rabbitMaze:false, rabbitGrassBall:false},
     buildings:{
       school:{owned:false,status:"none"},
-      bank:{owned:false,status:"complete"}
+      bank:{owned:false,status:"none"}
     },
     construction:{
-      school:{endAt:0,completedLogged:false}
+      school:{endAt:0,completedLogged:false},
+      bank:{endAt:0,completedLogged:false}
     },
     schoolStudy:{
       active:null,
@@ -6866,14 +6882,20 @@ function migrateState(){
   if(!state.buildings.school) state.buildings.school = {owned:false,status:"none"};
   if(state.buildings.school.owned == null) state.buildings.school.owned = false;
   if(!state.buildings.school.status) state.buildings.school.status = state.buildings.school.owned ? "complete" : "none";
-  if(!state.buildings.bank) state.buildings.bank={owned:false,status:"complete"};
+  if(!state.buildings.bank) state.buildings.bank={owned:false,status:"none"};
   if(state.buildings.bank.owned==null) state.buildings.bank.owned=false;
-  state.buildings.bank.status="complete";
+  // v0.13.22 以前已購買的銀行直接視為已落成，避免舊進度受到影響。
+  if(!state.buildings.bank.status){
+    state.buildings.bank.status=state.buildings.bank.owned ? "complete" : "none";
+  }
 
   if(!state.construction) state.construction = {};
   if(!state.construction.school) state.construction.school = {endAt:0,completedLogged:false};
   if(state.construction.school.endAt == null) state.construction.school.endAt = 0;
   if(state.construction.school.completedLogged == null) state.construction.school.completedLogged = false;
+  if(!state.construction.bank) state.construction.bank = {endAt:0,completedLogged:false};
+  if(state.construction.bank.endAt == null) state.construction.bank.endAt = 0;
+  if(state.construction.bank.completedLogged == null) state.construction.bank.completedLogged = false;
   if(!state.schoolStudy) state.schoolStudy={active:null,pendingQuiz:null,lastTaken:{},completedLogged:{},quizResults:{}};
   if(!state.schoolStudy.lastTaken) state.schoolStudy.lastTaken={};
   if(!state.schoolStudy.completedLogged) state.schoolStudy.completedLogged={};
@@ -7876,6 +7898,24 @@ function fastFinishSchool(){
   renderGame();
   renderShop();
 }
+function bankRemainingMs(){
+  if(!state?.buildings?.bank?.owned || state.buildings.bank.status!=="building") return 0;
+  return Math.max(0,(state.construction.bank?.endAt||0)-Date.now());
+}
+function fastFinishBank(){
+  if(!state || state.flags.dead) return;
+  migrateState();
+  if(!state.buildings.bank.owned || state.buildings.bank.status!=="building") return;
+  const cost=500;
+  if(state.owner.coins<cost) return;
+  state.owner.coins-=cost;
+  state.construction.bank.endAt=Date.now();
+  finalizeBankIfReady();
+  addLog(`<b>快速落成</b>：妳花了 500 金幣，讓銀行立即完工！`);
+  saveState();
+  renderGame();
+  renderShop();
+}
 function makeSchoolQuiz(courseId){
   if(courseId==="chinese"){
     const chars=["一","二","三","上","下","左","右","前","後"];
@@ -8243,13 +8283,13 @@ function initBankInteractions(){
     building.dataset.bankClickReady="1";
     building.addEventListener("click",(e)=>{
       if(!state || state.flags.dead || building.classList.contains("objectDragging")) return;
-      if(!state.buildings?.bank?.owned) return;
+      if(!state.buildings?.bank?.owned || state.buildings.bank.status!=="complete") return;
       e.stopPropagation();
       clearObjectSelection();
       openBankPanel();
     });
     building.addEventListener("keydown",(e)=>{
-      if((e.key==="Enter"||e.key===" ") && state?.buildings?.bank?.owned){
+      if((e.key==="Enter"||e.key===" ") && state?.buildings?.bank?.owned && state.buildings.bank.status==="complete"){
         e.preventDefault();openBankPanel();
       }
     });
@@ -8263,7 +8303,7 @@ function initBankInteractions(){
   $("bankWithdrawBtn")?.addEventListener("click",withdrawFromBank);
 }
 function openBankPanel(){
-  if(!state?.buildings?.bank?.owned) return;
+  if(!state?.buildings?.bank?.owned || state.buildings.bank.status!=="complete") return;
   const gain=processBankInterest(Date.now());
   if(gain>0) saveState();
   bankInputText="";
@@ -8370,7 +8410,10 @@ function renderShop(){
   }
   if(state.buildings.bank.owned){
     syncBankBalance();
-    inv.push(`<span class="inventoryTag">銀行：存款 ${Math.floor(state.bank.balance)} 金幣</span>`);
+    const bankText=state.buildings.bank.status==="complete"
+      ? `銀行：存款 ${Math.floor(state.bank.balance)} 金幣`
+      : `銀行：施工 ${formatCountdown(bankRemainingMs())}`;
+    inv.push(`<span class="inventoryTag">${bankText}</span>`);
   }
   $("inventoryLine").innerHTML=inv.join("");
 
@@ -8419,6 +8462,8 @@ function renderShop(){
       if(ownedBuilding){
         if(item.id==="school" && state.buildings.school.status==="building"){
           buttonText=`施工 ${formatCountdown(schoolRemainingMs())}`;
+        }else if(item.id==="bank" && state.buildings.bank.status==="building"){
+          buttonText=`施工 ${formatCountdown(bankRemainingMs())}`;
         }else{
           buttonText="已擁有";
         }
@@ -8435,7 +8480,12 @@ function renderShop(){
         }
       }
       if(item.id==="bank" && ownedBuilding){
-        stateHtml=`<div class="buildingState done">✓ 已開放・點擊草地上的銀行即可存款</div>`;
+        if(state.buildings.bank.status==="building"){
+          stateHtml=`<div class="buildingState building">施工中・${formatCountdown(bankRemainingMs())}</div>
+          <button type="button" class="bankFastFinish" ${state.owner.coins<500||state.flags.dead?"disabled":""}>快速落成 🪙500</button>`;
+        }else{
+          stateHtml=`<div class="buildingState done">✓ 已落成・點擊草地上的銀行即可存提款</div>`;
+        }
       }
 
       const researchLv=(item.id==="foodPack"||item.id==="healthSnack") ? state.research.levels[item.id] : null;
@@ -8456,6 +8506,8 @@ function renderShop(){
       if(buyBtn && !buyBtn.disabled) buyBtn.addEventListener("click",()=>buyItem(item.id));
       const fastBtn=div.querySelector(".schoolFastFinish");
       if(fastBtn && !fastBtn.disabled) fastBtn.addEventListener("click",(e)=>{e.stopPropagation();fastFinishSchool();});
+      const bankFastBtn=div.querySelector(".bankFastFinish");
+      if(bankFastBtn && !bankFastBtn.disabled) bankFastBtn.addEventListener("click",(e)=>{e.stopPropagation();fastFinishBank();});
       $("shopGrid").appendChild(div);
     });
   });
@@ -8550,10 +8602,14 @@ function buyItem(id){
       syncShopUnlockHint();
     }
     if(item.id==="bank"){
-      state.buildings.bank={owned:true,status:"complete"};
+      state.buildings.bank={owned:true,status:"building"};
+      state.construction.bank={
+        endAt:Date.now()+SCHOOL_TOTAL_BUILD_MS,
+        completedLogged:false
+      };
       if(!state.objectCells.bankBuilding) state.objectCells.bankBuilding={row:2,col:4};
       if(state.objectRotations.bankBuilding==null) state.objectRotations.bankBuilding=0;
-      addLog(`<b>建築購入</b>：毛球銀行正式開放！妳現在可以把金幣存進銀行。`);
+      addLog(`<b>建築施工</b>：銀行開始施工，預計 30 分鐘後落成。離開遊戲也會持續倒數。`);
       syncBankUnlockHint();
     }
   }else{
@@ -9457,9 +9513,27 @@ function finalizeSchoolIfReady(){
   saveState();
   return true;
 }
+function finalizeBankIfReady(){
+  if(!state) return false;
+  migrateState();
+
+  if(!state.buildings.bank.owned || state.buildings.bank.status!=="building") return false;
+  if(Date.now() < (state.construction.bank.endAt||0)) return false;
+
+  state.buildings.bank.status="complete";
+
+  if(!state.construction.bank.completedLogged){
+    state.construction.bank.completedLogged=true;
+    addLog(`<b>建築落成</b>：銀行施工完成，正式開放存提款！`);
+  }
+
+  saveState();
+  return true;
+}
 function renderBuildings(){
   migrateState();
   finalizeSchoolIfReady();
+  finalizeBankIfReady();
 
   const school=$("schoolBuilding");
   if(school){
@@ -9471,7 +9545,10 @@ function renderBuildings(){
 
   const bank=$("bankBuilding");
   if(bank){
-    bank.style.display=(state.buildings.bank.owned&&!isObjectStored("bankBuilding")) ? "block" : "none";
+    const owned=!!state.buildings.bank.owned;
+    bank.style.display=(owned&&!isObjectStored("bankBuilding")) ? "block" : "none";
+    bank.classList.toggle("is-building",owned && state.buildings.bank.status==="building");
+    bank.classList.toggle("is-complete",owned && state.buildings.bank.status==="complete");
   }
 }
 function updateConstructionTimers(){
@@ -9479,6 +9556,7 @@ function updateConstructionTimers(){
   migrateState();
 
   const completedNow=finalizeSchoolIfReady();
+  const bankCompletedNow=finalizeBankIfReady();
   const courseCompletedNow=finalizeSchoolStudyIfReady();
   const timer=$("schoolCountdown");
 
@@ -9509,7 +9587,7 @@ function updateConstructionTimers(){
     renderBankPanel();
   }
 
-  if(completedNow){
+  if(completedNow || bankCompletedNow){
     renderBuildings();
     applySavedObjectPositions();
     renderLog();
