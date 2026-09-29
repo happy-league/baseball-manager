@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.25</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.27</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -5491,6 +5491,103 @@ body.resumeOnlyMode .top .badge{
   }
 }
 
+
+/* ===== v0.13.26：卡皮巴拉改為固定 SVG 風格，跨裝置一致 ===== */
+.capybaraCompanion.capybaraFixedCompanion{
+  width:96px !important;
+  height:92px !important;
+  display:none;
+  background:none !important;
+  filter:drop-shadow(0 6px 5px rgba(54,43,31,.16));
+}
+.capybaraCompanion.capybaraFixedCompanion.walking{animation:bob .82s ease-in-out infinite}
+.capybaraFixedCompanion .capyFixedShadow{
+  position:absolute;left:18px;bottom:6px;width:62px;height:13px;border-radius:50%;
+  background:rgba(65,50,36,.18);filter:blur(2px)
+}
+.capybaraFixedCompanion .capyFixedTail{
+  position:absolute;left:8px;bottom:28px;width:18px;height:14px;border-radius:50% 40% 50% 45%;
+  background:linear-gradient(180deg,#876149,#6d4d39);transform:rotate(-28deg);z-index:1;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.12)
+}
+.capybaraFixedCompanion .capyFixedBody{
+  position:absolute;left:16px;bottom:18px;width:52px;height:41px;border-radius:48% 52% 44% 48%;
+  background:linear-gradient(180deg,#9b7457,#79563f);box-shadow:inset 0 4px 0 rgba(255,255,255,.13);z-index:2
+}
+.capybaraFixedCompanion .capyFixedBelly{
+  position:absolute;left:30px;bottom:19px;width:24px;height:22px;border-radius:48%;
+  background:#cbb29d;opacity:.92;z-index:3
+}
+.capybaraFixedCompanion .capyFixedHead{
+  position:absolute;right:6px;bottom:35px;width:38px;height:34px;border-radius:52% 52% 48% 48%;
+  background:linear-gradient(180deg,#a47d5d,#805c43);box-shadow:inset 0 4px 0 rgba(255,255,255,.12);z-index:4
+}
+.capybaraFixedCompanion .capyFixedEar{
+  position:absolute;top:-6px;width:10px;height:13px;border-radius:50% 50% 42% 42%;background:#76513b
+}
+.capybaraFixedCompanion .capyFixedEar.a{left:5px;transform:rotate(-12deg)}
+.capybaraFixedCompanion .capyFixedEar.b{right:6px;transform:rotate(12deg)}
+.capybaraFixedCompanion .capyFixedEye{
+  position:absolute;top:12px;width:5px;height:7px;border-radius:50%;background:#2f221d
+}
+.capybaraFixedCompanion .capyFixedEye.a{left:10px}.capybaraFixedCompanion .capyFixedEye.b{right:10px}
+.capybaraFixedCompanion .capyFixedEye::after{content:"";position:absolute;left:1px;top:1px;width:2px;height:2px;border-radius:50%;background:#fff}
+.capybaraFixedCompanion .capyFixedNose{
+  position:absolute;left:50%;top:19px;transform:translateX(-50%);width:7px;height:5px;border-radius:50%;background:#33241f
+}
+.capybaraFixedCompanion .capyFixedMouth{
+  position:absolute;left:50%;top:23px;transform:translateX(-50%);width:16px;height:8px;border-bottom:2px solid #3c2c25;border-radius:0 0 14px 14px
+}
+.capybaraFixedCompanion .capyFixedArm{
+  position:absolute;bottom:24px;width:7px;height:21px;border-radius:7px;background:#866248;z-index:3
+}
+.capybaraFixedCompanion .capyFixedArm.a{left:27px;transform:rotate(18deg)}
+.capybaraFixedCompanion .capyFixedArm.b{left:50px;transform:rotate(-18deg)}
+.capybaraFixedCompanion .capyFixedLeg{
+  position:absolute;bottom:9px;width:18px;height:8px;border-radius:50%;background:#69503e;z-index:3
+}
+.capybaraFixedCompanion .capyFixedLeg.a{left:18px}.capybaraFixedCompanion .capyFixedLeg.b{left:48px}
+@media(max-width:560px){
+  .capybaraCompanion.capybaraFixedCompanion{width:88px !important;height:84px !important}
+}
+
+
+/* ===== v0.13.27：草地卡皮巴拉固定使用 Android / Noto Emoji 圖像 ===== */
+.capybaraCompanion.capybaraAndroidCompanion{
+  width:82px !important;
+  height:76px !important;
+  display:none;
+  background:none !important;
+  filter:drop-shadow(0 5px 4px rgba(54,43,31,.17));
+  overflow:visible;
+}
+.capybaraAndroidCompanion .capybaraAndroidArt{
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:74px;
+  height:auto;
+  transform:translateX(-50%);
+  transform-origin:50% 88%;
+  user-select:none;
+  pointer-events:none;
+  -webkit-user-drag:none;
+}
+.capybaraCompanion.capybaraAndroidCompanion.walking .capybaraAndroidArt{
+  animation:capyAndroidWalk .42s ease-in-out infinite alternate;
+}
+@keyframes capyAndroidWalk{
+  from{transform:translateX(-50%) translateY(0) rotate(-1.5deg)}
+  to{transform:translateX(-50%) translateY(-4px) rotate(1.5deg)}
+}
+@media(max-width:560px){
+  .capybaraCompanion.capybaraAndroidCompanion{
+    width:78px !important;
+    height:72px !important;
+  }
+  .capybaraAndroidCompanion .capybaraAndroidArt{width:70px}
+}
+
 </style>
 </head>
 <body>
@@ -5499,7 +5596,7 @@ body.resumeOnlyMode .top .badge{
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.13.25</div>
+    <div class="badge">Prototype v0.13.27</div>
   </div>
 
   <section id="setup" class="card">
@@ -5567,8 +5664,8 @@ body.resumeOnlyMode .top .badge{
           </div>
           <div id="starterBall" data-footprint="1×1" class="starterBall placeableItem" aria-hidden="true"></div>
           <div id="habitatZone" class="habitatZone"></div>
-          <div id="capybaraCompanion" class="capybaraCompanion placeableItem capybaraEmojiCompanion" data-footprint="2×1" aria-label="卡皮巴拉">
-            <div class="capybaraEmojiArt" aria-hidden="true">🦫</div>
+          <div id="capybaraCompanion" class="capybaraCompanion placeableItem capybaraAndroidCompanion" data-footprint="2×1" aria-label="卡皮巴拉">
+            <img class="capybaraAndroidArt" src="data:image/png;base64,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" alt="" aria-hidden="true">
           </div>
 
           <div id="quokkaCompanion" class="quokkaCompanion placeableItem" data-footprint="2×1" aria-label="短尾矮袋鼠">
