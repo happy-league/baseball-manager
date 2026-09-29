@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.27</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.28</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -5588,6 +5588,21 @@ body.resumeOnlyMode .top .badge{
   .capybaraAndroidCompanion .capybaraAndroidArt{width:70px}
 }
 
+
+/* ===== v0.13.28：恢復寵物等級顯示，年齡獨立列 ===== */
+.petAgeRow{
+  margin-top:4px;
+  font-size:12px;
+  color:var(--muted);
+}
+.petAgeRow .petAgeLabel{
+  margin-right:5px;
+}
+.petAgeRow strong{
+  color:var(--text);
+  font-size:14px;
+}
+
 </style>
 </head>
 <body>
@@ -5596,7 +5611,7 @@ body.resumeOnlyMode .top .badge{
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.13.27</div>
+    <div class="badge">Prototype v0.13.28</div>
   </div>
 
   <section id="setup" class="card">
@@ -6204,15 +6219,15 @@ body.resumeOnlyMode .top .badge{
           <div class="petHudInfo">
             <div id="titleName" class="petHudName">麻糬</div>
             <div class="petLevelRow">
-              <span class="petLevelLabel">年齡</span>
-              <strong id="petLevel">1 歲</strong>
-              <span id="petXpMini" class="compatInfo">0/10 EXP</span>
+              <span class="petLevelLabel">寵物等級</span>
+              <strong id="petLevel">LV.1</strong>
+              <span id="petXpMini">0/10 EXP</span>
             </div>
             <div class="petHudMeta">
               <span id="infoType">狗狗</span><span class="sep">·</span>
               <span id="infoBreed">柴犬</span>
             </div>
-            <span id="infoAge" class="compatInfo">1 歲</span>
+            <div class="petAgeRow"><span class="petAgeLabel">年齡</span> <strong id="infoAge">1 歲</strong></div>
             <span id="infoStage" class="compatInfo">幼年</span>
             <div id="traitBox" class="traits"></div>
             <div id="profileText" class="muted"></div>
@@ -7574,10 +7589,11 @@ function renderOwner(){
     ? "MAX"
     : `${state.owner.xp}/${xpNeeded(state.owner.level)} EXP`;
 
-  $("petLevel").textContent = `${state.age} 歲`;
+  $("petLevel").textContent = `LV.${state.petProgress.level}`;
   $("petXpMini").textContent = state.petProgress.level>=MAX_PET_LEVEL
     ? "MAX"
     : `${state.petProgress.xp}/${petXpNeeded(state.petProgress.level)} EXP`;
+  if($("infoAge")) $("infoAge").textContent = `${state.age} 歲`;
 
   $("coinText").textContent = `🪙 ${state.owner.coins}`;
   $("bankBalanceHud").textContent = `🏦 ${Math.floor(state.bank.balance||0)}`;
