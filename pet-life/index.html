@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.18</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.22</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -5191,8 +5191,9 @@ body.resumeOnlyMode .top .badge{
 .streakRewardClose{position:absolute;right:14px;top:12px;width:38px;height:38px;border:0;border-radius:50%;background:#e2efd4;color:#4d6b3b;font-size:23px;font-weight:1000}
 .streakRewardStatus{margin-top:10px;padding:9px 12px;border-radius:13px;background:rgba(255,255,255,.72);color:#557044;font-size:12px;font-weight:900}
 .streakRewardGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:14px}
-.streakDay{position:relative;min-height:126px;padding:12px 8px 10px;border-radius:17px;border:1px solid rgba(111,151,73,.23);background:rgba(255,255,255,.85);color:#536244;text-align:center;overflow:hidden}
-.streakDay.current{outline:3px solid rgba(117,169,73,.28);background:#fbfff4}.streakDay.locked{opacity:.56;filter:saturate(.55)}
+.streakDay{position:relative;min-height:126px;padding:12px 8px 10px;border-radius:17px;border:1px solid rgba(111,151,73,.23);background:rgba(255,255,255,.85);color:#536244;text-align:center;overflow:hidden;opacity:1;filter:none}
+.streakDay.current{outline:3px solid rgba(117,169,73,.28);background:#fbfff4}
+.streakDay.claimed{opacity:.45;filter:saturate(.48);background:rgba(248,250,244,.78)}
 .streakDay .dayTitle{font-size:12px;font-weight:1000}.streakDay .dayIcon{min-height:35px;margin-top:5px;font-size:29px;display:flex;align-items:center;justify-content:center}.streakDay .dayReward{font-size:11px;font-weight:900;line-height:1.35;margin-top:4px}
 .streakClaimBtn{margin-top:8px;border:0;border-radius:10px;padding:6px 9px;background:#77ad54;color:#fff;font-size:10px;font-weight:1000}
 .doneStamp{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-13deg);padding:5px 9px;border:3px solid rgba(184,66,58,.82);border-radius:8px;color:rgba(184,66,58,.88);font-size:17px;font-weight:1000;letter-spacing:1px;background:rgba(255,255,255,.54);text-transform:uppercase;pointer-events:none}
@@ -5321,6 +5322,125 @@ body.resumeOnlyMode .top .badge{
 @media(max-width:560px){
   .gameScreen .sceneTopBar{right:118px !important;}
   .gameScreen .sceneAlert{max-width:calc(100% - 58px) !important;}
+}
+
+
+/* ===== v0.13.20：每週年齡成長 + 銀行 ===== */
+.bankBalanceHud{
+  justify-self:stretch;
+  text-align:center;
+  font-size:13px;
+  font-weight:900;
+  white-space:nowrap;
+  padding:6px 8px;
+  border-radius:12px;
+  color:#4e6f82;
+  background:#eef9ff;
+  border:1px solid #cfe5ef;
+}
+.bankUnlockHint{
+  top:calc(50% + 62px) !important;
+  background:rgba(240,252,247,.98) !important;
+  border-color:rgba(92,177,137,.46) !important;
+  color:#3c7d61 !important;
+}
+.bankUnlockHint.show::before{content:"🏦 " !important}
+
+.bankBuilding{
+  position:absolute;
+  width:150px;
+  height:116px;
+  display:none;
+  z-index:18;
+  cursor:pointer;
+  filter:drop-shadow(0 8px 7px rgba(50,56,47,.16));
+}
+.bankBuilding .bankShadow{
+  position:absolute;left:18px;right:18px;bottom:1px;height:14px;border-radius:50%;
+  background:rgba(55,63,52,.16);filter:blur(2px)
+}
+.bankBuilding .bankBase{
+  position:absolute;left:12px;right:12px;bottom:11px;height:66px;
+  border-radius:7px 7px 4px 4px;
+  background:linear-gradient(180deg,#f8f1d8,#ded1a7);
+  border:2px solid #b59d69;
+  box-shadow:inset 0 5px 0 rgba(255,255,255,.34)
+}
+.bankBuilding .bankRoof{
+  position:absolute;left:5px;right:5px;top:12px;height:27px;
+  clip-path:polygon(50% 0,100% 100%,0 100%);
+  background:linear-gradient(180deg,#e0c172,#ba9142);
+  border-bottom:2px solid #9d7835
+}
+.bankBuilding .bankSign{
+  position:absolute;left:50%;top:34px;transform:translateX(-50%);
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:#fff8d9;border:2px solid #b99a52;
+  font-size:22px;line-height:1;z-index:3;
+  box-shadow:0 2px 5px rgba(92,70,30,.16)
+}
+.bankBuilding .bankDoor{
+  position:absolute;left:58px;bottom:12px;width:34px;height:42px;
+  border-radius:8px 8px 2px 2px;background:linear-gradient(90deg,#6f8e9d,#a9c1ca);
+  border:2px solid #58727d;z-index:2
+}
+.bankBuilding .bankDoor::after{
+  content:"";position:absolute;right:5px;top:21px;width:4px;height:4px;border-radius:50%;background:#f2d16b
+}
+.bankBuilding .bankColumn{
+  position:absolute;top:44px;bottom:13px;width:13px;border-radius:3px;
+  background:linear-gradient(90deg,#eee2bb,#fff8dc,#d0bd87);border:1px solid #b9a26e;z-index:2
+}
+.bankBuilding .bankColumn.c1{left:24px}.bankBuilding .bankColumn.c2{left:42px}
+.bankBuilding .bankColumn.c3{right:42px}.bankBuilding .bankColumn.c4{right:24px}
+.bankBuilding::after{
+  content:"點擊存款";position:absolute;left:50%;bottom:-20px;transform:translateX(-50%);
+  padding:3px 7px;border-radius:8px;background:rgba(255,252,239,.94);
+  color:#715a39;font-size:9px;font-weight:900;white-space:nowrap;pointer-events:none
+}
+
+.bankOverlay{
+  position:absolute;inset:0;z-index:176;display:none;align-items:center;justify-content:center;
+  padding:18px;background:rgba(40,49,48,.48);backdrop-filter:blur(6px)
+}
+.bankOverlay.open{display:flex}
+.bankPanel{
+  position:relative;width:min(470px,94%);max-height:92%;overflow:auto;border-radius:26px;
+  padding:22px;background:linear-gradient(180deg,#f8fdff,#eef8f3);
+  border:2px solid rgba(96,155,139,.30);box-shadow:0 22px 52px rgba(34,51,47,.28)
+}
+.bankClose{
+  position:absolute;right:12px;top:10px;width:38px;height:38px;border:0;border-radius:50%;
+  background:#dceee7;color:#477261;font-size:23px;font-weight:1000
+}
+.bankHero h2{margin:3px 0 4px}.bankHero p{margin:0;color:#73817a;font-size:12px;line-height:1.55}
+.bankBalances{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.bankBalanceBox{padding:11px;border-radius:15px;background:#fff;border:1px solid rgba(97,135,123,.18)}
+.bankBalanceBox small{display:block;color:#7b8c85;font-size:10px}.bankBalanceBox b{display:block;margin-top:4px;font-size:20px;color:#496d62}
+.bankInputDisplay{
+  margin-top:12px;padding:12px 14px;border-radius:14px;background:#fff;border:2px solid #cde0d9;
+  text-align:right;font-size:25px;font-weight:1000;color:#3e6659;min-height:55px
+}
+.bankKeypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.bankKeypad button{
+  min-height:48px;border:1px solid #cbded7;border-radius:13px;background:#fff;color:#46685d;
+  font-size:18px;font-weight:1000;box-shadow:0 4px 10px rgba(52,78,69,.06)
+}
+.bankKeypad button:active{transform:scale(.97)}
+.bankDepositBtn{
+  width:100%;margin-top:11px;border:0;border-radius:14px;padding:12px;background:#5b957d;color:#fff;
+  font-size:15px;font-weight:1000
+}
+.bankDepositBtn:disabled{opacity:.42}
+.bankInterestNote{
+  margin-top:10px;padding:9px 11px;border-radius:12px;background:#fff9df;color:#7a6a40;
+  font-size:11px;line-height:1.55;border:1px solid #eadca8
+}
+@media(max-width:560px){
+  .bankUnlockHint{top:calc(50% + 72px) !important}
+  .bankBalanceHud{font-size:11px;padding:5px 6px}
+  .bankPanel{padding:19px 16px}
 }
 
 </style>
@@ -5554,6 +5674,16 @@ body.resumeOnlyMode .top .badge{
             </div>
           </div>
 
+          <div id="bankBuilding" data-footprint="3×2" class="bankBuilding placeableItem" aria-label="銀行" role="button" tabindex="0">
+            <div class="bankShadow"></div>
+            <div class="bankBase"></div>
+            <div class="bankRoof"></div>
+            <div class="bankColumn c1"></div><div class="bankColumn c2"></div>
+            <div class="bankColumn c3"></div><div class="bankColumn c4"></div>
+            <div class="bankDoor"></div>
+            <div class="bankSign" aria-label="銀行">💰</div>
+          </div>
+
           <div id="pet" class="pet idle">
             <div id="petSceneName" class="petSceneName"></div>
             <div id="speech" class="speech">啾？</div>
@@ -5624,6 +5754,33 @@ body.resumeOnlyMode .top .badge{
               <div id="bonusPetBreed" class="bonusPetBreed"></div>
               <button id="bonusPetConfirm" class="bonusPetConfirm" type="button" disabled>確認帶回家</button>
             </div>
+          </div>
+        </section>
+
+        <section id="bankOverlay" class="bankOverlay" aria-label="銀行存款">
+          <div class="bankPanel">
+            <button id="bankClose" class="bankClose" type="button" aria-label="關閉銀行">×</button>
+            <div class="bankHero">
+              <div class="eyebrow">🏦 毛球銀行</div>
+              <h2>金幣存款</h2>
+              <p>可以隨時存入或領出。每筆存款只有完整滿 24 小時才結算 10% 利息；未滿 24 小時不計利息。</p>
+            </div>
+            <div class="bankBalances">
+              <div class="bankBalanceBox"><small>身上金幣</small><b id="bankWalletCoins">🪙 0</b></div>
+              <div class="bankBalanceBox"><small>存款餘額</small><b id="bankSavedCoins">🏦 0</b></div>
+            </div>
+            <div id="bankInputDisplay" class="bankInputDisplay">0</div>
+            <div class="bankKeypad">
+              <button type="button" data-bank-key="1">1</button><button type="button" data-bank-key="2">2</button><button type="button" data-bank-key="3">3</button>
+              <button type="button" data-bank-key="4">4</button><button type="button" data-bank-key="5">5</button><button type="button" data-bank-key="6">6</button>
+              <button type="button" data-bank-key="7">7</button><button type="button" data-bank-key="8">8</button><button type="button" data-bank-key="9">9</button>
+              <button type="button" data-bank-key="00">00</button><button type="button" data-bank-key="0">0</button><button type="button" data-bank-key="back">⌫</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px">
+              <button id="bankDepositBtn" class="bankDepositBtn" type="button" disabled style="margin-top:0">存入銀行</button>
+              <button id="bankWithdrawBtn" class="bankDepositBtn" type="button" disabled style="margin-top:0;background:#7b8ea5">領出現金</button>
+            </div>
+            <div id="bankInterestNote" class="bankInterestNote">尚未有存款。</div>
           </div>
         </section>
 
@@ -5792,6 +5949,7 @@ body.resumeOnlyMode .top .badge{
           <div class="toolBtnWrap">
             <button class="toolBtn" type="button" data-panel="shopPanelOverlay"><span>🛍️</span><small>商店</small></button>
             <div id="shopUnlockHint" class="nearbyHint shopUnlockHint">可購買建築物「私塾」</div>
+            <div id="bankUnlockHint" class="nearbyHint shopUnlockHint bankUnlockHint">可購買建築物「銀行」</div>
           </div>
           <button class="toolBtn" type="button" data-panel="storagePanel"><span>📦</span><small>儲藏箱</small></button>
           <button class="toolBtn" type="button" data-panel="albumPanel"><span>🖼️</span><small>相簿</small></button>
@@ -5890,6 +6048,7 @@ body.resumeOnlyMode .top .badge{
             <div id="xpMini" class="levelHudXp">0/10 EXP</div>
           </div>
           <div id="coinText">🪙 2000</div>
+          <div id="bankBalanceHud" class="bankBalanceHud">🏦 0</div>
         </section>
 
         <section class="petHud">
@@ -5897,15 +6056,15 @@ body.resumeOnlyMode .top .badge{
           <div class="petHudInfo">
             <div id="titleName" class="petHudName">麻糬</div>
             <div class="petLevelRow">
-              <span class="petLevelLabel">寵物等級</span>
-              <strong id="petLevel">LV.1</strong>
-              <span id="petXpMini">0/10 EXP</span>
+              <span class="petLevelLabel">年齡</span>
+              <strong id="petLevel">1 歲</strong>
+              <span id="petXpMini" class="compatInfo">0/10 EXP</span>
             </div>
             <div class="petHudMeta">
               <span id="infoType">狗狗</span><span class="sep">·</span>
               <span id="infoBreed">柴犬</span>
             </div>
-            <span id="infoAge" class="compatInfo">0 歲</span>
+            <span id="infoAge" class="compatInfo">1 歲</span>
             <span id="infoStage" class="compatInfo">幼年</span>
             <div id="traitBox" class="traits"></div>
             <div id="profileText" class="muted"></div>
@@ -5927,7 +6086,8 @@ body.resumeOnlyMode .top .badge{
 <script>
 (() => {
 const SAVE_KEY = "pet_life_save_v03";
-const YEAR_MS = 60 * 60 * 1000; // 1小時 = 1年
+const PET_AGE_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000; // 每 7 天增加 1 歲
+const BANK_INTEREST_INTERVAL_MS = 24 * 60 * 60 * 1000; // 每 24 小時結算一次
 
 const speciesData = {
   dog: {
@@ -5987,6 +6147,7 @@ const shopItems = [
   {id:"rabbitGrassBall", category:"equipment", icon:"🟢", name:"草球", price:380, level:1, type:"equipment", species:"rabbit", desc:"兔子專屬器具。佔地 1×1。把兔子拖到草球旁，牠會把草球拿起來玩。"},
 
   {id:"school", category:"building", icon:"🏫", name:"私塾", price:500, level:2, type:"building", desc:"可以讓寵物學到各式各樣的知識與技能"},
+  {id:"bank", category:"building", icon:"🏦", name:"銀行", price:500, level:4, type:"building", desc:"玩家 LV.4 解鎖。可隨時存入或領出金幣；每筆存款每滿 24 小時增加 10%，未滿 24 小時不計利息。"},
   {id:"capybara", category:"companion", icon:"🦫", name:"卡皮巴拉", price:1200, level:5, type:"companion", desc:"替寵物找一位溫和的新夥伴，購買後會一起出現在草地上。"},
   {id:"quokka", category:"companion", icon:"🐾", name:"短尾矮袋鼠", price:1500, level:6, type:"companion", desc:"玩家 LV.6 解鎖。購入後會成為另一位草地夥伴，可和原本寵物及卡皮巴拉一起活動。"}
 ];
@@ -6026,6 +6187,7 @@ function init(){
   document.querySelector(".petHud")?.addEventListener("click",togglePetSceneName);
   initHudScrollGuide();
   initSchoolInteractions();
+  initBankInteractions();
   initTutorial();
   initSceneTimeCycle();
   initCameraZoom();
@@ -6540,8 +6702,9 @@ function validateName(){ $("startGameBtn").disabled = !(pickedSpecies && pickedB
 function initialState(name){
   return {
     species:pickedSpecies, breed:pickedBreed, name,
-    age:0, weight:50, bond:14,
+    age:1, ageStartedAt:Date.now(), ageSystemV2:true, weight:50, bond:14,
     owner:{level:1, xp:0, coins:2000},
+    bank:{balance:0,lastInterestAt:0,lots:[]},
     petProgress:{level:1, xp:0},
     research:{
       levels:{feed:1,foodPack:1,healthSnack:1},
@@ -6574,7 +6737,8 @@ function initialState(name){
     album:{lastPhotoDay:null,photos:[],serial:0,page:1},
     equipment:{toyBall:false, chewToy:false, deluxeBed:false, playSlide:false, petSwing:false, windmill:false, premiumWheel:false, catTower:false, catWand:false, dogFrisbee:false, dogCastle:false, rabbitMaze:false, rabbitGrassBall:false},
     buildings:{
-      school:{owned:false,status:"none"}
+      school:{owned:false,status:"none"},
+      bank:{owned:false,status:"complete"}
     },
     construction:{
       school:{endAt:0,completedLogged:false}
@@ -6622,7 +6786,7 @@ function startGame(){
   if(state.personality[0] === state.personality[1]) state.personality[1] = "好奇心強";
   addLog(`妳把 <b>${state.name}</b> 帶回家了。牠正小心翼翼地觀察新環境。`);
   addLog(`這一局的特質：${state.personality.join("、")}；${state.constitution}。`);
-  enterGame();
+  enterGame(true);
   speak("這裡就是我的新家嗎？");
   setTimeout(openIntroDialog,220);
 }
@@ -6633,6 +6797,36 @@ function migrateState(){
   if(state.owner.level == null) state.owner.level = 1;
   if(state.owner.xp == null) state.owner.xp = 0;
   if(state.owner.coins == null) state.owner.coins = 1000;
+  // v0.13.20 起改為「初始 1 歲、每 7 天增加 1 歲」。
+  // 舊存檔第一次升級到這套年齡系統時，其他進度完全保留，年齡從 1 歲重新起算。
+  if(!state.ageSystemV2){
+    state.age=1;
+    state.ageStartedAt=Date.now();
+    state.ageSystemV2=true;
+  }
+  if(!Number.isFinite(state.age) || state.age<1) state.age=1;
+  if(!Number.isFinite(state.ageStartedAt) || state.ageStartedAt<=0) state.ageStartedAt=Date.now();
+
+  if(!state.bank) state.bank={balance:0,lastInterestAt:0,lots:[]};
+  if(!Number.isFinite(state.bank.balance) || state.bank.balance<0) state.bank.balance=0;
+  if(!Number.isFinite(state.bank.lastInterestAt) || state.bank.lastInterestAt<0) state.bank.lastInterestAt=0;
+  if(!Array.isArray(state.bank.lots)) state.bank.lots=[];
+  if(state.bank.lots.length===0 && state.bank.balance>0){
+    state.bank.lots=[{
+      amount:Math.floor(state.bank.balance),
+      lastInterestAt:state.bank.lastInterestAt||Date.now()
+    }];
+  }
+  state.bank.lots=state.bank.lots
+    .filter(l=>l && Number(l.amount)>0)
+    .map(l=>({
+      amount:Math.floor(Number(l.amount)),
+      lastInterestAt:Number(l.lastInterestAt)>0 ? Number(l.lastInterestAt) : Date.now()
+    }));
+  state.bank.balance=state.bank.lots.reduce((sum,l)=>sum+l.amount,0);
+  state.bank.lastInterestAt=state.bank.lots.length
+    ? Math.min(...state.bank.lots.map(l=>l.lastInterestAt))
+    : 0;
   if(!state.inventory) state.inventory = {foodPack:0, healthSnack:0, shovel:0, schoolTicket:1};
   if(state.inventory.foodPack == null) state.inventory.foodPack = 0;
   if(state.inventory.healthSnack == null) state.inventory.healthSnack = 0;
@@ -6672,6 +6866,9 @@ function migrateState(){
   if(!state.buildings.school) state.buildings.school = {owned:false,status:"none"};
   if(state.buildings.school.owned == null) state.buildings.school.owned = false;
   if(!state.buildings.school.status) state.buildings.school.status = state.buildings.school.owned ? "complete" : "none";
+  if(!state.buildings.bank) state.buildings.bank={owned:false,status:"complete"};
+  if(state.buildings.bank.owned==null) state.buildings.bank.owned=false;
+  state.buildings.bank.status="complete";
 
   if(!state.construction) state.construction = {};
   if(!state.construction.school) state.construction.school = {endAt:0,completedLogged:false};
@@ -6789,6 +6986,9 @@ function closeIntroDialog(){
     if(!state.tutorial.opened){
       renderTutorial();
     }
+    if(streakEntryPopupPending){
+      setTimeout(showStreakEntryPopup,120);
+    }
   }
 }
 
@@ -6817,7 +7017,7 @@ function togglePetSceneName(){
   saveState();
 }
 
-function enterGame(){
+function enterGame(fromNewGame=false){
   migrateState();
   finalizeSchoolIfReady();
   finalizeSchoolStudyIfReady();
@@ -6827,11 +7027,18 @@ function enterGame(){
   $("step4").classList.add("on");
   setSpeciesFurniture();
   updateStreakRewardProgress();
+  autoClaimStreakRewardsForCurrentProgress();
   ensureDailyAlbumPhoto();
   renderGame();
   saveState();
   startRoaming();
   startStreakPetPlay();
+
+  if(fromNewGame){
+    streakEntryPopupPending=true;
+  }else{
+    setTimeout(showStreakEntryPopup,180);
+  }
 }
 function resumeSavedGame(){
   const saved = loadRawSave();
@@ -6863,6 +7070,7 @@ function resetAll(){
   $("introOverlay")?.classList.remove("open");
   $("houseResearchPage")?.classList.remove("open");
   $("schoolQuizOverlay")?.classList.remove("open");
+  $("bankOverlay")?.classList.remove("open");
   state = null;
   pickedSpecies = null; pickedBreed = null;
   $("petName").value = "";
@@ -6889,25 +7097,87 @@ function setSpeciesFurniture(){
   $("post").style.display = state.species === "cat" ? "block" : "none";
   $("bunnyTunnel").style.display = state.species === "rabbit" ? "block" : "none";
 }
+function syncPetAge(now=Date.now(),writeLog=false){
+  if(!state) return 0;
+  migrateState();
+  const expected=1+Math.max(0,Math.floor((now-state.ageStartedAt)/PET_AGE_INTERVAL_MS));
+  if(expected<=state.age) return 0;
+  const gained=expected-state.age;
+  state.age=expected;
+  if(writeLog){
+    addLog(`<b>生日成長</b>：${state.name} 長大到 ${state.age} 歲了！草地上的體型也比上一歲增加 10%。`);
+  }
+  return gained;
+}
+function petAgeScale(){
+  if(!state) return 1;
+  return Math.pow(1.10,Math.max(0,(Number(state.age)||1)-1));
+}
+function syncBankBalance(){
+  if(!state?.bank) return 0;
+  if(!Array.isArray(state.bank.lots)) state.bank.lots=[];
+  state.bank.lots=state.bank.lots.filter(l=>l && Number(l.amount)>0);
+  state.bank.balance=state.bank.lots.reduce((sum,l)=>sum+Math.floor(Number(l.amount)||0),0);
+  state.bank.lastInterestAt=state.bank.lots.length
+    ? Math.min(...state.bank.lots.map(l=>Number(l.lastInterestAt)||Date.now()))
+    : 0;
+  return state.bank.balance;
+}
+function processBankInterest(now=Date.now()){
+  if(!state?.bank) return 0;
+  let totalGain=0;
+  if(!Array.isArray(state.bank.lots)) state.bank.lots=[];
+  state.bank.lots.forEach(lot=>{
+    const periods=Math.floor((now-lot.lastInterestAt)/BANK_INTEREST_INTERVAL_MS);
+    if(periods<=0) return;
+    const before=Math.floor(lot.amount);
+    const after=Math.floor(before*Math.pow(1.10,periods));
+    lot.amount=after;
+    lot.lastInterestAt+=periods*BANK_INTEREST_INTERVAL_MS;
+    totalGain+=Math.max(0,after-before);
+  });
+  syncBankBalance();
+  if(totalGain>0){
+    addLog(`<b>銀行利息</b>：完整 24 小時週期已結算，增加 ${totalGain} 金幣，目前存款 ${state.bank.balance} 金幣。`);
+  }
+  return totalGain;
+}
+function nextBankInterestMs(now=Date.now()){
+  if(!state?.bank?.lots?.length) return null;
+  let minRemain=null;
+  state.bank.lots.forEach(lot=>{
+    const remain=Math.max(0,lot.lastInterestAt+BANK_INTEREST_INTERVAL_MS-now);
+    if(minRemain===null || remain<minRemain) minRemain=remain;
+  });
+  return minRemain;
+}
+function formatBankCountdown(ms){
+  ms=Math.max(0,ms);
+  const h=Math.floor(ms/3600000);
+  const m=Math.floor((ms%3600000)/60000);
+  const s=Math.floor((ms%60000)/1000);
+  return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+
 function stageText(){
   const age = state.age;
   if(state.species === "hamster"){
-    if(age < 1) return "幼年";
+    if(age <= 1) return "幼年";
     if(age < 2) return "成年";
     return "高齡";
   }
   if(state.species === "rabbit"){
-    if(age < 1) return "幼年";
+    if(age <= 1) return "幼年";
     if(age < 6) return "成年";
     return "高齡";
   }
   if(state.species === "dog"){
-    if(age < 1) return "幼年";
+    if(age <= 1) return "幼年";
     if(age < 8) return "成年";
     return "高齡";
   }
   if(state.species === "cat"){
-    if(age < 1) return "幼年";
+    if(age <= 1) return "幼年";
     if(age < 10) return "成年";
     return "高齡";
   }
@@ -6969,6 +7239,7 @@ function initHudScrollGuide(){
 function renderGame(){
   if(!state) return;
   migrateState();
+  syncPetAge(Date.now(),false);
   renderDailyReward();
   renderStreakRewards();
   renderTodayDate();
@@ -6994,6 +7265,7 @@ function renderGame(){
   renderTutorial();
   renderShop();
   syncShopUnlockHint();
+  syncBankUnlockHint();
   renderHabitat();
   renderPermanentSceneObjects();
   renderEquipment();
@@ -7042,6 +7314,9 @@ function showLevelUp(label, level){
   if(label==="玩家" && level===2){
     setTimeout(()=>showShopUnlockHint(),1850);
   }
+  if(label==="玩家" && level===4){
+    setTimeout(()=>showBankUnlockHint(),1850);
+  }
 }
 
 function syncShopUnlockHint(){
@@ -7055,6 +7330,16 @@ function syncShopUnlockHint(){
 
 function showShopUnlockHint(){
   syncShopUnlockHint();
+}
+function syncBankUnlockHint(){
+  const hint=$("bankUnlockHint");
+  if(!hint || !state) return;
+  const shouldShow=state.owner.level>=4 && !state.buildings?.bank?.owned && !state.flags.dead;
+  clearTimeout(showBankUnlockHint._timer);
+  hint.classList.toggle("show",shouldShow);
+}
+function showBankUnlockHint(){
+  syncBankUnlockHint();
 }
 function gainXP(amount, reason=""){
   if(!state || state.flags.dead) return;
@@ -7133,12 +7418,13 @@ function renderOwner(){
     ? "MAX"
     : `${state.owner.xp}/${xpNeeded(state.owner.level)} EXP`;
 
-  $("petLevel").textContent = `LV.${state.petProgress.level}`;
+  $("petLevel").textContent = `${state.age} 歲`;
   $("petXpMini").textContent = state.petProgress.level>=MAX_PET_LEVEL
     ? "MAX"
     : `${state.petProgress.xp}/${petXpNeeded(state.petProgress.level)} EXP`;
 
   $("coinText").textContent = `🪙 ${state.owner.coins}`;
+  $("bankBalanceHud").textContent = `🏦 ${Math.floor(state.bank.balance||0)}`;
   $("shopCoin").textContent = `🪙 ${state.owner.coins}`;
 }
 function formatCountdown(ms){
@@ -7206,23 +7492,25 @@ const STREAK_REWARDS=[
   {day:10,kind:"pet",amount:1,icon:"🐾",label:"寵物 1 隻"}
 ];
 let bonusPetPickSpecies=null,bonusPetPickBreed=null;
+let streakEntryPopupPending=false;
 function dayDiff(fromKey,toKey){if(!fromKey||!toKey)return null;const a=new Date(fromKey+"T00:00:00"),b=new Date(toKey+"T00:00:00");return Math.round((b-a)/(24*60*60*1000))}
 function updateStreakRewardProgress(){if(!state)return;migrateState();const r=state.streakRewards,today=localDayKey();if(r.lastLoginDay===today)return;const diff=dayDiff(r.lastLoginDay,today);if(diff===1)r.streak=Math.min(10,(Number(r.streak)||0)+1);else r.streak=1;r.lastLoginDay=today;saveState()}
 function nextStreakRewardDay(){if(!state)return 1;migrateState();for(let d=1;d<=10;d++)if(!state.streakRewards.claimedDays.includes(d))return d;return 11}
 function streakRewardClaimedToday(){return !!state&&state.streakRewards?.lastClaimDay===localDayKey()}
-function canClaimStreakDay(day){if(!state||state.flags.dead)return false;migrateState();if(streakRewardClaimedToday())return false;if(state.streakRewards.claimedDays.includes(day))return false;if(nextStreakRewardDay()!==day)return false;return(state.streakRewards.streak||0)>=day}
-function renderStreakRewards(){
-  if(!state)return;migrateState();const r=state.streakRewards,completed=r.claimedDays.length>=10,todayClaimed=streakRewardClaimedToday();
-  const btn=$("streakRewardBtn");if(btn)btn.classList.toggle("claimed",todayClaimed||completed);
-  const status=$("streakRewardStatus");if(status){if(completed)status.textContent="10 天連續登入獎勵已全部完成！新夥伴已加入草地。";else if(todayClaimed)status.textContent=`今天已領取完成。目前連續登入 ${r.streak} 天。`;else status.textContent=`目前連續登入 ${r.streak} 天；下一個獎勵：Day ${nextStreakRewardDay()}。`}
-  const grid=$("streakRewardGrid");if(!grid)return;
-  grid.innerHTML=STREAK_REWARDS.map(item=>{const done=r.claimedDays.includes(item.day),claimable=canClaimStreakDay(item.day),locked=!done&&!claimable,icon=item.kind==="shovel"?shovelIconSvg():item.icon;return `<div class="streakDay ${claimable?"current":""} ${locked?"locked":""}"><div class="dayTitle">Day ${item.day}</div><div class="dayIcon">${icon}</div><div class="dayReward">${item.label}</div>${claimable?`<button class="streakClaimBtn" type="button" data-streak-day="${item.day}">領取</button>`:""}${done?'<div class="doneStamp">Done</div>':""}</div>`}).join("");
-  grid.querySelectorAll("[data-streak-day]").forEach(btn=>btn.addEventListener("click",()=>claimStreakReward(Number(btn.dataset.streakDay))))
+function canClaimStreakDay(day){
+  if(!state||state.flags.dead)return false;
+  migrateState();
+  if(state.streakRewards.claimedDays.includes(day))return false;
+  if(nextStreakRewardDay()!==day)return false;
+  return(state.streakRewards.streak||0)>=day;
 }
-function openStreakReward(){if(!state)return;updateStreakRewardProgress();renderStreakRewards();$("streakRewardOverlay")?.classList.add("open")}
-function closeStreakReward(){$("streakRewardOverlay")?.classList.remove("open");$("bonusPetPicker")?.classList.add("hidden")}
-function claimStreakReward(day){
-  if(!canClaimStreakDay(day))return;const item=STREAK_REWARDS.find(x=>x.day===day);if(!item)return;if(item.kind==="pet"){openBonusPetPicker();return}
+function grantStreakReward(day){
+  if(!state||state.flags.dead)return false;
+  migrateState();
+  if(state.streakRewards.claimedDays.includes(day))return false;
+  const item=STREAK_REWARDS.find(x=>x.day===day);
+  if(!item||item.kind==="pet")return false;
+
   if(item.kind==="coins")state.owner.coins+=item.amount;
   if(item.kind==="shovel")state.inventory.shovel+=item.amount;
   if(item.kind==="ticket")state.inventory.schoolTicket+=item.amount;
@@ -7232,12 +7520,105 @@ function claimStreakReward(day){
     if(state.objectRotations.windmill==null) state.objectRotations.windmill=0;
     if(state.loginStreak) state.loginStreak.windmillGiftClaimed=true;
   }
-  state.streakRewards.claimedDays.push(day);state.streakRewards.claimedDays.sort((a,b)=>a-b);state.streakRewards.lastClaimDay=localDayKey();
-  const txt=item.kind==="coins"?`${item.amount} 金幣`:item.kind==="shovel"?"鏟子 ×1":item.kind==="windmill"?"風車 ×1":"上課券 ×1";
-  addLog(`<b>連續登入送 Day ${day}</b>：妳領取了 ${txt}！`);
-  saveState();renderOwner();renderStorage();renderEquipment();applySavedObjectPositions();renderStreakRewards();showCareActionHint(`Day ${day} 獎勵領取完成！`,true)
+
+  state.streakRewards.claimedDays.push(day);
+  state.streakRewards.claimedDays.sort((a,b)=>a-b);
+  state.streakRewards.lastClaimDay=localDayKey();
+
+  const txt=item.kind==="coins"?`${item.amount} 金幣`
+    :item.kind==="shovel"?"鏟子 ×1"
+    :item.kind==="windmill"?"風車 ×1"
+    :"上課券 ×1";
+  addLog(`<b>連續登入送 Day ${day}</b>：系統已自動發送 ${txt}！`);
+  return true;
 }
-function openBonusPetPicker(){if(!canClaimStreakDay(10))return;bonusPetPickSpecies=null;bonusPetPickBreed=null;const picker=$("bonusPetPicker");if(!picker)return;picker.classList.remove("hidden");renderBonusPetPicker();picker.scrollIntoView({behavior:"smooth",block:"nearest"})}
+function autoClaimStreakRewardsForCurrentProgress(){
+  if(!state||state.flags.dead)return;
+  migrateState();
+  const maxDay=Math.min(10,Math.max(0,Number(state.streakRewards.streak)||0));
+  let granted=false;
+
+  // 舊版若有漏領，登入時一併補發到目前已達到的連續登入天數。
+  for(let day=1;day<=Math.min(9,maxDay);day++){
+    if(!state.streakRewards.claimedDays.includes(day)){
+      if(grantStreakReward(day)) granted=true;
+    }
+  }
+
+  if(granted) saveState();
+}
+function renderStreakRewards(){
+  if(!state)return;
+  migrateState();
+  const r=state.streakRewards,completed=r.claimedDays.length>=10,todayClaimed=streakRewardClaimedToday();
+  const btn=$("streakRewardBtn");
+  if(btn)btn.classList.toggle("claimed",todayClaimed||completed);
+
+  const status=$("streakRewardStatus");
+  if(status){
+    if(completed){
+      status.textContent="10 天連續登入獎勵已全部完成！新夥伴已加入草地。";
+    }else if(canClaimStreakDay(10)){
+      status.textContent=`目前連續登入 ${r.streak} 天。Day 10 請選擇妳要的新夥伴。`;
+    }else if(todayClaimed){
+      status.textContent=`今日獎勵已自動領取。目前連續登入 ${r.streak} 天。`;
+    }else{
+      status.textContent=`目前連續登入 ${r.streak} 天；尚未達成的獎勵會在符合天數時自動發送。`;
+    }
+  }
+
+  const grid=$("streakRewardGrid");
+  if(!grid)return;
+  grid.innerHTML=STREAK_REWARDS.map(item=>{
+    const done=r.claimedDays.includes(item.day);
+    const pendingDay10=item.day===10&&canClaimStreakDay(10);
+    const icon=item.kind==="shovel"?shovelIconSvg():item.icon;
+    return `<div class="streakDay ${done?"claimed":""} ${pendingDay10?"current":""}">
+      <div class="dayTitle">Day ${item.day}</div>
+      <div class="dayIcon">${icon}</div>
+      <div class="dayReward">${item.label}</div>
+      ${done?'<div class="doneStamp">Done</div>':""}
+    </div>`;
+  }).join("");
+}
+function showStreakEntryPopup(){
+  if(!state)return;
+  streakEntryPopupPending=false;
+  renderStreakRewards();
+  $("streakRewardOverlay")?.classList.add("open");
+  if(canClaimStreakDay(10)) openBonusPetPicker();
+}
+function openStreakReward(){
+  if(!state)return;
+  updateStreakRewardProgress();
+  autoClaimStreakRewardsForCurrentProgress();
+  showStreakEntryPopup();
+  renderGame();
+  saveState();
+}
+function closeStreakReward(){
+  $("streakRewardOverlay")?.classList.remove("open");
+  $("bonusPetPicker")?.classList.add("hidden");
+}
+function claimStreakReward(day){
+  // v0.13.19 起 Day 1～9 改為登入自動領取；保留函式避免舊事件失效。
+  if(day===10){openBonusPetPicker();return}
+  if(grantStreakReward(day)){
+    saveState();
+    renderGame();
+    renderStreakRewards();
+  }
+}
+function openBonusPetPicker(){
+  if(!canClaimStreakDay(10))return;
+  bonusPetPickSpecies=null;
+  bonusPetPickBreed=null;
+  const picker=$("bonusPetPicker");
+  if(!picker)return;
+  picker.classList.remove("hidden");
+  renderBonusPetPicker();
+  picker.scrollIntoView({behavior:"smooth",block:"nearest"})
+}
 function renderBonusPetPicker(){
   const speciesBox=$("bonusPetSpecies"),breedBox=$("bonusPetBreed"),confirmBtn=$("bonusPetConfirm");if(!speciesBox||!breedBox||!confirmBtn)return;
   speciesBox.innerHTML=Object.entries(speciesData).map(([key,x])=>`<button type="button" data-bonus-species="${key}" class="${bonusPetPickSpecies===key?"active":""}">${x.name}</button>`).join("");
@@ -7855,6 +8236,121 @@ function addResearchTaskProgress(key,amount=1){
   if($("houseResearchPage")?.classList.contains("open")) renderHouseResearch();
 }
 
+let bankInputText="";
+function initBankInteractions(){
+  const building=$("bankBuilding");
+  if(building && building.dataset.bankClickReady!=="1"){
+    building.dataset.bankClickReady="1";
+    building.addEventListener("click",(e)=>{
+      if(!state || state.flags.dead || building.classList.contains("objectDragging")) return;
+      if(!state.buildings?.bank?.owned) return;
+      e.stopPropagation();
+      clearObjectSelection();
+      openBankPanel();
+    });
+    building.addEventListener("keydown",(e)=>{
+      if((e.key==="Enter"||e.key===" ") && state?.buildings?.bank?.owned){
+        e.preventDefault();openBankPanel();
+      }
+    });
+  }
+  $("bankClose")?.addEventListener("click",closeBankPanel);
+  $("bankOverlay")?.addEventListener("click",(e)=>{if(e.target===$("bankOverlay")) closeBankPanel();});
+  document.querySelectorAll("[data-bank-key]").forEach(btn=>{
+    btn.addEventListener("click",()=>handleBankKey(btn.dataset.bankKey));
+  });
+  $("bankDepositBtn")?.addEventListener("click",depositToBank);
+  $("bankWithdrawBtn")?.addEventListener("click",withdrawFromBank);
+}
+function openBankPanel(){
+  if(!state?.buildings?.bank?.owned) return;
+  const gain=processBankInterest(Date.now());
+  if(gain>0) saveState();
+  bankInputText="";
+  renderBankPanel();
+  $("bankOverlay")?.classList.add("open");
+}
+function closeBankPanel(){
+  $("bankOverlay")?.classList.remove("open");
+  bankInputText="";
+}
+function handleBankKey(key){
+  if(key==="back"){
+    bankInputText=bankInputText.slice(0,-1);
+  }else{
+    if(bankInputText.length>=9) return;
+    bankInputText=(bankInputText+key).replace(/^0+(?=\d)/,"");
+  }
+  renderBankPanel();
+}
+function renderBankPanel(){
+  if(!state) return;
+  syncBankBalance();
+  const amount=Math.max(0,Number(bankInputText)||0);
+  if($("bankWalletCoins")) $("bankWalletCoins").textContent=`🪙 ${state.owner.coins}`;
+  if($("bankSavedCoins")) $("bankSavedCoins").textContent=`🏦 ${Math.floor(state.bank.balance||0)}`;
+  if($("bankInputDisplay")) $("bankInputDisplay").textContent=amount.toLocaleString("zh-TW");
+
+  const depositBtn=$("bankDepositBtn");
+  if(depositBtn) depositBtn.disabled=amount<=0 || amount>state.owner.coins || state.flags.dead;
+
+  const withdrawBtn=$("bankWithdrawBtn");
+  if(withdrawBtn) withdrawBtn.disabled=amount<=0 || amount>state.bank.balance || state.flags.dead;
+
+  const note=$("bankInterestNote");
+  if(note){
+    if((state.bank.balance||0)<=0 || !state.bank.lots?.length){
+      note.textContent="尚未有存款。每筆新存款都會從存入當下開始計算自己的 24 小時週期。";
+    }else{
+      const remain=nextBankInterestMs(Date.now());
+      note.textContent=`下一筆 10% 利息：約 ${formatBankCountdown(remain||0)} 後結算。未滿完整 24 小時的時間不計利息。`;
+    }
+  }
+}
+function depositToBank(){
+  if(!state?.buildings?.bank?.owned || state.flags.dead) return;
+  const amount=Math.floor(Number(bankInputText)||0);
+  if(amount<=0 || amount>state.owner.coins) return;
+
+  processBankInterest(Date.now());
+  state.owner.coins-=amount;
+  state.bank.lots.push({amount,lastInterestAt:Date.now()});
+  syncBankBalance();
+  bankInputText="";
+  addLog(`<b>銀行存款</b>：妳存入 ${amount} 金幣，目前存款餘額 ${state.bank.balance} 金幣。`);
+  saveState();
+  renderOwner();
+  renderShop();
+  renderBankPanel();
+  renderLog();
+}
+function withdrawFromBank(){
+  if(!state?.buildings?.bank?.owned || state.flags.dead) return;
+  const amount=Math.floor(Number(bankInputText)||0);
+  processBankInterest(Date.now());
+  syncBankBalance();
+  if(amount<=0 || amount>state.bank.balance) return;
+
+  let remain=amount;
+  state.bank.lots.sort((a,b)=>a.lastInterestAt-b.lastInterestAt);
+  for(const lot of state.bank.lots){
+    if(remain<=0) break;
+    const take=Math.min(remain,Math.floor(lot.amount));
+    lot.amount-=take;
+    remain-=take;
+  }
+  state.bank.lots=state.bank.lots.filter(l=>l.amount>0);
+  state.owner.coins+=amount;
+  syncBankBalance();
+  bankInputText="";
+  addLog(`<b>銀行領款</b>：妳領出 ${amount} 金幣，目前存款餘額 ${state.bank.balance} 金幣。未滿 24 小時的部分不會額外計息。`);
+  saveState();
+  renderOwner();
+  renderShop();
+  renderBankPanel();
+  renderLog();
+}
+
 function renderShop(){
   migrateState();
 
@@ -7871,6 +8367,10 @@ function renderShop(){
       ? "私塾：已落成"
       : `私塾：施工 ${formatCountdown(schoolRemainingMs())}`;
     inv.push(`<span class="inventoryTag">${schoolText}</span>`);
+  }
+  if(state.buildings.bank.owned){
+    syncBankBalance();
+    inv.push(`<span class="inventoryTag">銀行：存款 ${Math.floor(state.bank.balance)} 金幣</span>`);
   }
   $("inventoryLine").innerHTML=inv.join("");
 
@@ -7917,10 +8417,10 @@ function renderShop(){
       }
 
       if(ownedBuilding){
-        if(state.buildings.school.status==="building"){
+        if(item.id==="school" && state.buildings.school.status==="building"){
           buttonText=`施工 ${formatCountdown(schoolRemainingMs())}`;
         }else{
-          buttonText="已落成";
+          buttonText="已擁有";
         }
       }
 
@@ -7933,6 +8433,9 @@ function renderShop(){
         }else{
           stateHtml=`<div class="buildingState done">✓ 已落成・點擊草地上的私塾即可上課</div>`;
         }
+      }
+      if(item.id==="bank" && ownedBuilding){
+        stateHtml=`<div class="buildingState done">✓ 已開放・點擊草地上的銀行即可存款</div>`;
       }
 
       const researchLv=(item.id==="foodPack"||item.id==="healthSnack") ? state.research.levels[item.id] : null;
@@ -8045,6 +8548,13 @@ function buyItem(id){
 
       addLog(`<b>建築施工</b>：私塾開始施工，預計 30 分鐘後落成。離開遊戲也會持續倒數。`);
       syncShopUnlockHint();
+    }
+    if(item.id==="bank"){
+      state.buildings.bank={owned:true,status:"complete"};
+      if(!state.objectCells.bankBuilding) state.objectCells.bankBuilding={row:2,col:4};
+      if(state.objectRotations.bankBuilding==null) state.objectRotations.bankBuilding=0;
+      addLog(`<b>建築購入</b>：毛球銀行正式開放！妳現在可以把金幣存進銀行。`);
+      syncBankUnlockHint();
     }
   }else{
     if(item.id==="foodPack") state.inventory.foodPack+=3;
@@ -8310,7 +8820,8 @@ const OBJECT_FOOTPRINTS={
   rabbitGrassBall:{w:1,h:1},
   capybaraCompanion:{w:2,h:1},
   quokkaCompanion:{w:2,h:1},
-  schoolBuilding:{w:3,h:3}
+  schoolBuilding:{w:3,h:3},
+  bankBuilding:{w:3,h:2}
 };
 function baseFootprintFor(id){
   if(OBJECT_FOOTPRINTS[id]) return OBJECT_FOOTPRINTS[id];
@@ -8807,7 +9318,8 @@ const STORAGE_FIXED_OBJECTS=[
   {id:"dogCastle",name:"城堡",icon:"🏰",owned:()=>state.species==="dog"&&!!state.equipment.dogCastle},
   {id:"rabbitMaze",name:"紙箱迷宮",icon:"📦",owned:()=>state.species==="rabbit"&&!!state.equipment.rabbitMaze},
   {id:"rabbitGrassBall",name:"草球",icon:"🟢",owned:()=>state.species==="rabbit"&&!!state.equipment.rabbitGrassBall},
-  {id:"schoolBuilding",name:"私塾",icon:"🏫",owned:()=>!!state.buildings.school.owned}
+  {id:"schoolBuilding",name:"私塾",icon:"🏫",owned:()=>!!state.buildings.school.owned},
+  {id:"bankBuilding",name:"銀行",icon:"🏦",owned:()=>!!state.buildings.bank.owned}
 ];
 function isObjectStored(id){
   if(!state?.storage) return false;
@@ -8950,12 +9462,17 @@ function renderBuildings(){
   finalizeSchoolIfReady();
 
   const school=$("schoolBuilding");
-  if(!school) return;
+  if(school){
+    const owned=!!state.buildings.school.owned;
+    school.style.display=(owned&&!isObjectStored("schoolBuilding")) ? "block" : "none";
+    school.classList.toggle("is-building",owned && state.buildings.school.status==="building");
+    school.classList.toggle("is-complete",owned && state.buildings.school.status==="complete");
+  }
 
-  const owned=!!state.buildings.school.owned;
-  school.style.display=(owned&&!isObjectStored("schoolBuilding")) ? "block" : "none";
-  school.classList.toggle("is-building",owned && state.buildings.school.status==="building");
-  school.classList.toggle("is-complete",owned && state.buildings.school.status==="complete");
+  const bank=$("bankBuilding");
+  if(bank){
+    bank.style.display=(state.buildings.bank.owned&&!isObjectStored("bankBuilding")) ? "block" : "none";
+  }
 }
 function updateConstructionTimers(){
   if(!state) return;
@@ -8980,6 +9497,16 @@ function updateConstructionTimers(){
 
   if($("schoolOverlay")?.classList.contains("open")){
     renderSchoolPanel();
+  }
+
+  if($("bankOverlay")?.classList.contains("open")){
+    const bankGain=processBankInterest(Date.now());
+    if(bankGain>0){
+      saveState();
+      renderOwner();
+      renderLog();
+    }
+    renderBankPanel();
   }
 
   if(completedNow){
@@ -9162,7 +9689,7 @@ function renderPetPosition(){
       state.petPos={x:Math.round(x),y:Math.round(y)};
       pet.style.left=state.petPos.x+"px";
       pet.style.top=state.petPos.y+"px";
-      pet.style.setProperty("--depth-scale",(0.86*currentCameraZoom()).toFixed(3));
+      pet.style.setProperty("--depth-scale",(0.86*currentCameraZoom()*petAgeScale()).toFixed(3));
       pet.style.zIndex="28";
       pet.classList.add("onCatTower");
       return;
@@ -9176,14 +9703,14 @@ function renderPetPosition(){
   pet.style.left = state.petPos.x + "px";
   pet.style.top = state.petPos.y + "px";
 
-  const scale = (.86 + p.depth * .18) * currentCameraZoom();
+  const scale = (.86 + p.depth * .18) * currentCameraZoom() * petAgeScale();
   pet.style.setProperty("--depth-scale", scale.toFixed(3));
   if(!pet.classList.contains("wheelRunning")){
     pet.style.zIndex = String(6 + Math.round(p.depth * 12));
   }
 }
 
-const PLACEABLE_IDS = ["starterHouse","starterBall","roomToyBall","chewToy","deluxeBed","playSlide","petSwing","windmill","wheel","catTower","catWand","dogFrisbee","dogCastle","rabbitMaze","rabbitGrassBall","capybaraCompanion","quokkaCompanion","schoolBuilding"];
+const PLACEABLE_IDS = ["starterHouse","starterBall","roomToyBall","chewToy","deluxeBed","playSlide","petSwing","windmill","wheel","catTower","catWand","dogFrisbee","dogCastle","rabbitMaze","rabbitGrassBall","capybaraCompanion","quokkaCompanion","schoolBuilding","bankBuilding"];
 let objectDrag = null;
 let capybaraRoamTimer = null;
 let capybaraRoaming = false;
@@ -9227,7 +9754,8 @@ function applySavedObjectPositions(){
     rabbitGrassBall:{row:8,col:5},
     capybaraCompanion:{row:6,col:4},
     quokkaCompanion:{row:7,col:5},
-    schoolBuilding:{row:4,col:4}
+    schoolBuilding:{row:4,col:4},
+    bankBuilding:{row:2,col:4}
   };
 
   allPlaceableIds().forEach(id=>{
@@ -9238,6 +9766,7 @@ function applySavedObjectPositions(){
     const isPurchasedWheel = id==="wheel" && state.species==="hamster" && !!state.equipment.premiumWheel;
 
     if(id==="schoolBuilding" && !state.buildings.school.owned) return;
+    if(id==="bankBuilding" && !state.buildings.bank.owned) return;
     if(isObjectStored(id)) return;
     if(id==="capybaraCompanion" && !state.companions?.capybara) return;
     if(id==="quokkaCompanion" && !state.companions?.quokka) return;
@@ -10543,49 +11072,32 @@ function markPetCaredFor(){
 
 function applyOfflineProgress(){
   if(!state) return;
-  const now = Date.now();
-  const elapsed = now - (state.lastSeen || now);
-  const years = Math.floor(elapsed / YEAR_MS);
-  const report = [];
+  migrateState();
+  const now=Date.now();
   const neglectTriggered=checkNeglectEvents();
+  const ageGained=syncPetAge(now,true);
+  const bankGain=processBankInterest(now);
   enforceWasteCleanLimit();
-  if(years <= 0){
-    state.lastSeen = now;
-    if(neglectTriggered) saveState();
-    return;
-  }
-  report.push(`妳離開了 ${years} 小時，遊戲裡相當於 ${years} 年；照顧狀態則依實際未照顧時間逐步變化。`);
-  for(let i=0;i<years;i++){
-    if(state.flags.dead) break;
-    passOneYear(report, true);
-  }
-  state.lastSeen = now;
-  addLog(`<b>重新回來</b>：${report.join(" ")}`);
-  saveState();
+  state.lastSeen=now;
+  if(neglectTriggered || ageGained>0 || bankGain>0) saveState();
 }
 function passOneYear(report, offlineMode){
-  // 年齡仍維持原本 1 小時 = 1 年的世界時間設定，
-  // 但照顧狀態與死亡改由「連續未照顧時間」獨立計算，
-  // 避免離開數個小時就讓所有狀態快速歸零。
-  state.age += 1;
-
-  if(offlineMode){
-    report.push(`${state.name} 又長大了一歲。`);
-  }
+  // 舊函式保留相容；v0.13.20 起實際年齡由「每 7 天 +1 歲」計算。
+  const gained=syncPetAge(Date.now(),!!offlineMode);
+  if(gained>0 && Array.isArray(report)) report.push(`${state.name} 長大到 ${state.age} 歲。`);
 }
 function startHeartbeat(){
   clearInterval(heartbeatTimer);
   heartbeatTimer = setInterval(() => {
     if(!state || state.flags.dead) return;
-    const now = Date.now();
-    const years = Math.floor((now - (state.lastSeen || now)) / YEAR_MS);
+    const now=Date.now();
     const neglectTriggered=checkNeglectEvents();
     const pottyTriggered=createPetWaste(false);
+    const ageGained=syncPetAge(now,true);
+    const bankGain=processBankInterest(now);
     enforceWasteCleanLimit();
-    if(years > 0){
-      applyOfflineProgress();
-      renderGame();
-    }else if(neglectTriggered || pottyTriggered){
+    if(neglectTriggered || pottyTriggered || ageGained>0 || bankGain>0){
+      saveState();
       renderGame();
     }
   }, 60 * 1000);
