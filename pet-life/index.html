@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.24</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.25</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -5461,33 +5461,33 @@ body.resumeOnlyMode .top .badge{
 
 /* ===== v0.13.24：寵物復活按鈕 ===== */
 .revivePetBtn{
-  position:fixed;
-  right:16px;
-  bottom:16px;
-  z-index:9999;
+  position:relative;
+  z-index:3;
   display:none;
   align-items:center;
-  gap:7px;
-  min-height:48px;
-  padding:11px 16px;
-  border:0;
-  border-radius:16px;
+  justify-content:center;
+  gap:8px;
+  min-width:150px;
+  min-height:54px;
+  margin-top:18px;
+  padding:12px 24px;
+  border:2px solid #f0d17d;
+  border-radius:18px;
   background:#fff3d4;
   color:#73582a;
-  font-size:15px;
+  font-size:18px;
   font-weight:1000;
-  box-shadow:0 10px 26px rgba(63,48,31,.22);
-  border:2px solid #e5c777;
+  box-shadow:0 10px 28px rgba(36,27,18,.28);
 }
 .revivePetBtn.show{display:flex}
 .revivePetBtn:active{transform:scale(.97)}
 @media(max-width:560px){
   .revivePetBtn{
-    right:10px;
-    bottom:10px;
-    min-height:44px;
-    padding:9px 13px;
-    font-size:14px;
+    min-width:142px;
+    min-height:50px;
+    margin-top:16px;
+    padding:11px 20px;
+    font-size:17px;
   }
 }
 
@@ -5499,7 +5499,7 @@ body.resumeOnlyMode .top .badge{
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的一生</small>
     </div>
-    <div class="badge">Prototype v0.13.18</div>
+    <div class="badge">Prototype v0.13.25</div>
   </div>
 
   <section id="setup" class="card">
@@ -5747,11 +5747,10 @@ body.resumeOnlyMode .top .badge{
           <div id="deadOverlay" class="deadOverlay hidden">
             <h3 id="deadTitle">再見了</h3>
             <p id="deadText">妳回到房間時，只剩下一屋子的回憶。</p>
+            <button id="revivePetBtn" class="revivePetBtn" type="button" aria-label="讓寵物復活">
+              ✨ 復活
+            </button>
           </div>
-
-          <button id="revivePetBtn" class="revivePetBtn" type="button" aria-label="讓寵物復活">
-            ✨ 復活
-          </button>
         </div>
 
         <div id="tutorialFinger" class="tutorialFinger" aria-hidden="true">
@@ -11149,7 +11148,7 @@ function revivePet(){
 }
 
 const NEGLECT_EVENT_MS=2*60*60*1000;
-const NEGLECT_DEATH_MS=24*60*60*1000;
+const NEGLECT_DEATH_MS=14*24*60*60*1000; // 連續 14 天完全未照顧才死亡
 
 function checkNeglectEvents(){
   if(!state || state.flags.dead) return false;
@@ -11189,7 +11188,7 @@ function checkNeglectEvents(){
     state.flags.weak=true;
   }
 
-  // 核心規則：連續超過 24 小時完全沒有照顧，才會觸發死亡。
+  // 核心規則：連續 14 天完全沒有照顧，才會觸發死亡。
   if(elapsed>=NEGLECT_DEATH_MS && !state.flags.dead){
     state.stats.hunger=0;
     state.stats.water=0;
@@ -11199,7 +11198,7 @@ function checkNeglectEvents(){
     state.flags.starving=true;
     state.flags.weak=true;
     state.flags.dead=true;
-    addLog(`<b>長時間未照顧</b>：${state.name} 已經超過 24 小時沒有受到照顧，最後沒有撐過去。`);
+    addLog(`<b>長時間未照顧</b>：${state.name} 已經連續 14 天沒有受到照顧，最後沒有撐過去。`);
     triggered=true;
   }
 
