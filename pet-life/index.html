@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.23</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.24</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -5458,6 +5458,39 @@ body.resumeOnlyMode .top .badge{
   filter:grayscale(.65);
 }
 
+
+/* ===== v0.13.24：寵物復活按鈕 ===== */
+.revivePetBtn{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  gap:7px;
+  min-height:48px;
+  padding:11px 16px;
+  border:0;
+  border-radius:16px;
+  background:#fff3d4;
+  color:#73582a;
+  font-size:15px;
+  font-weight:1000;
+  box-shadow:0 10px 26px rgba(63,48,31,.22);
+  border:2px solid #e5c777;
+}
+.revivePetBtn.show{display:flex}
+.revivePetBtn:active{transform:scale(.97)}
+@media(max-width:560px){
+  .revivePetBtn{
+    right:10px;
+    bottom:10px;
+    min-height:44px;
+    padding:9px 13px;
+    font-size:14px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -5715,6 +5748,10 @@ body.resumeOnlyMode .top .badge{
             <h3 id="deadTitle">再見了</h3>
             <p id="deadText">妳回到房間時，只剩下一屋子的回憶。</p>
           </div>
+
+          <button id="revivePetBtn" class="revivePetBtn" type="button" aria-label="讓寵物復活">
+            ✨ 復活
+          </button>
         </div>
 
         <div id="tutorialFinger" class="tutorialFinger" aria-hidden="true">
@@ -6182,6 +6219,7 @@ function init(){
   $("petName").addEventListener("input", validateName);
   $("startGameBtn").addEventListener("click", startGame);
   $("resetBtn").addEventListener("click", resetAll);
+  $("revivePetBtn")?.addEventListener("click", revivePet);
   $("resumeBtn").addEventListener("click", resumeSavedGame);
   $("newGameBtn").addEventListener("click", clearAndNewGame);
   $("expandBtn").addEventListener("click", expandHabitat);
@@ -11074,6 +11112,7 @@ function reevaluateFlags(){
 function renderDeathState(){
   $("room").classList.toggle("deadRoom", state.flags.dead);
   $("deadOverlay").classList.toggle("hidden", !state.flags.dead);
+  $("revivePetBtn")?.classList.toggle("show", !!state.flags.dead);
   if(state.flags.dead){
     $("pet").style.display = "none";
     $("deadTitle").textContent = `${state.name} 已經離開了`;
@@ -11081,6 +11120,32 @@ function renderDeathState(){
   }else{
     $("pet").style.display = "block";
   }
+}
+function revivePet(){
+  if(!state || !state.flags?.dead) return;
+
+  const now=Date.now();
+  state.flags.dead=false;
+  state.flags.sick=false;
+  state.flags.starving=false;
+  state.flags.weak=false;
+
+  state.stats.hunger=70;
+  state.stats.water=70;
+  state.stats.clean=70;
+  state.stats.energy=70;
+  state.stats.mood=75;
+  state.stats.health=85;
+
+  state.lastCareAt=now;
+  state.lastSeen=now;
+  state.neglectPeriodsHandled=0;
+
+  addLog(`<b>重新相聚</b>：${state.name} 復活了！原本的名字、年齡、等級、金幣、土地、建築、物品與其他進度都完整保留。`);
+  saveState();
+  renderGame();
+  startRoaming();
+  showCareActionHint(`${state.name} 回來了！`,true);
 }
 
 const NEGLECT_EVENT_MS=2*60*60*1000;
