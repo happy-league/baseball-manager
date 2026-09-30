@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.42</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.44</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -5769,9 +5769,9 @@ body.resumeOnlyMode .top .badge{
 <div class="wrap">
   <div class="top">
     <div class="logo">🐾 毛球日記
-      <small>陪伴牠走過珍貴的一生</small>
+      <small>陪伴牠走過珍貴的每一天</small>
     </div>
-    <div class="badge">Prototype v0.13.42</div>
+    <div class="badge">Prototype v0.13.44</div>
   </div>
 
   <section id="setup" class="card">
@@ -6407,7 +6407,7 @@ body.resumeOnlyMode .top .badge{
               <span id="infoType">狗狗</span><span class="sep">·</span>
               <span id="infoBreed">柴犬</span>
             </div>
-            <div class="petAgeRow"><span class="petAgeLabel">年齡</span> <strong id="infoAge">1 歲</strong></div>
+            <div class="petAgeRow"><span class="petAgeLabel">年齡</span> <strong id="infoAge">1歲</strong></div>
             <span id="infoStage" class="compatInfo">幼年</span>
             <div id="traitBox" class="traits"></div>
             <div id="profileText" class="muted"></div>
@@ -6429,7 +6429,7 @@ body.resumeOnlyMode .top .badge{
 <script>
 (() => {
 const SAVE_KEY = "pet_life_save_v03";
-const PET_AGE_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000; // 每 7 天增加 1 歲
+const PET_AGE_MONTH_INTERVAL_MS = 24 * 60 * 60 * 1000; // 每 1 個實際日增加 1 個月
 const BANK_INTEREST_INTERVAL_MS = 24 * 60 * 60 * 1000; // 每 24 小時結算一次
 
 const speciesData = {
@@ -7048,7 +7048,7 @@ function validateName(){ $("startGameBtn").disabled = !(pickedSpecies && pickedB
 function initialState(name){
   return {
     species:pickedSpecies, breed:pickedBreed, name,
-    age:1, ageStartedAt:Date.now(), ageSystemV2:true, weight:50, bond:14,
+    age:1, ageMonths:12, ageMonthStartedAt:Date.now(), ageSystemV3:true, ageStartedAt:Date.now(), ageSystemV2:true, weight:50, bond:14,
     owner:{level:1, xp:0, coins:2000},
     bank:{balance:0,lastInterestAt:0,lots:[]},
     petProgress:{level:1, xp:0},
@@ -7145,8 +7145,7 @@ function migrateState(){
   if(state.owner.level == null) state.owner.level = 1;
   if(state.owner.xp == null) state.owner.xp = 0;
   if(state.owner.coins == null) state.owner.coins = 1000;
-  // v0.13.20 起改為「初始 1 歲、每 7 天增加 1 歲」。
-  // 舊存檔第一次升級到這套年齡系統時，其他進度完全保留，年齡從 1 歲重新起算。
+  // v0.13.20 舊年齡系統保留相容。
   if(!state.ageSystemV2){
     state.age=1;
     state.ageStartedAt=Date.now();
@@ -7154,6 +7153,22 @@ function migrateState(){
   }
   if(!Number.isFinite(state.age) || state.age<1) state.age=1;
   if(!Number.isFinite(state.ageStartedAt) || state.ageStartedAt<=0) state.ageStartedAt=Date.now();
+
+  // v0.13.44：初始 1 歲，每 1 個實際日增加 1 個月；滿 12 個月自動進位。
+  // 舊存檔第一次升級時保留目前整歲，例如原本 2 歲會從 2 歲 0 個月繼續計算。
+  if(!state.ageSystemV3){
+    const preservedYears=Math.max(1,Math.floor(Number(state.age)||1));
+    state.ageMonths=preservedYears*12;
+    state.ageMonthStartedAt=Date.now();
+    state.ageSystemV3=true;
+  }
+  if(!Number.isFinite(state.ageMonths) || state.ageMonths<12){
+    state.ageMonths=Math.max(12,Math.floor(Number(state.age)||1)*12);
+  }
+  if(!Number.isFinite(state.ageMonthStartedAt) || state.ageMonthStartedAt<=0){
+    state.ageMonthStartedAt=Date.now();
+  }
+  state.age=Math.max(1,Math.floor(state.ageMonths/12));
 
   if(!state.bank) state.bank={balance:0,lastInterestAt:0,lots:[]};
   if(!Number.isFinite(state.bank.balance) || state.bank.balance<0) state.bank.balance=0;
@@ -7454,17 +7469,30 @@ function setSpeciesFurniture(){
   $("post").style.display = state.species === "cat" ? "block" : "none";
   $("bunnyTunnel").style.display = state.species === "rabbit" ? "block" : "none";
 }
+function petAgeText(){
+  if(!state) return "1歲";
+  const totalMonths=Math.max(12,Math.floor(Number(state.ageMonths)||12));
+  const years=Math.floor(totalMonths/12);
+  const months=totalMonths%12;
+  return months>0 ? `${years}歲${months}個月` : `${years}歲`;
+}
 function syncPetAge(now=Date.now(),writeLog=false){
   if(!state) return 0;
   migrateState();
-  const expected=1+Math.max(0,Math.floor((now-state.ageStartedAt)/PET_AGE_INTERVAL_MS));
-  if(expected<=state.age) return 0;
-  const gained=expected-state.age;
-  state.age=expected;
-  if(writeLog){
-    addLog(`<b>生日成長</b>：${state.name} 長大到 ${state.age} 歲了！草地上的體型也比上一歲增加 10%。`);
+  const elapsed=Math.max(0,now-state.ageMonthStartedAt);
+  const gainedMonths=Math.floor(elapsed/PET_AGE_MONTH_INTERVAL_MS);
+  if(gainedMonths<=0) return 0;
+
+  const oldYears=Math.floor(state.ageMonths/12);
+  state.ageMonths+=gainedMonths;
+  state.ageMonthStartedAt+=gainedMonths*PET_AGE_MONTH_INTERVAL_MS;
+  state.age=Math.max(1,Math.floor(state.ageMonths/12));
+  const newYears=state.age;
+
+  if(writeLog && newYears>oldYears){
+    addLog(`<b>生日成長</b>：${state.name} 長大到 ${newYears} 歲了！草地上的體型也比上一歲增加 10%。`);
   }
-  return gained;
+  return gainedMonths;
 }
 function petAgeScale(){
   if(!state) return 1;
@@ -7622,7 +7650,7 @@ function renderGame(){
   $("hudPetPortrait").innerHTML = petSVG(state.species, breedIndex(), 74);
   $("infoType").textContent = s.name;
   $("infoBreed").textContent = state.breed;
-  $("infoAge").textContent = `${state.age} 歲`;
+  $("infoAge").textContent = petAgeText();
   $("infoStage").textContent = stageText();
   $("traitBox").innerHTML = [...state.personality, state.constitution].map(t => `<span class="trait">${t}</span>`).join("");
   $("petSvg").innerHTML = petSVG(state.species, breedIndex(), 145);
@@ -7793,7 +7821,7 @@ function renderOwner(){
   $("petXpMini").textContent = state.petProgress.level>=MAX_PET_LEVEL
     ? "MAX"
     : `${state.petProgress.xp}/${petXpNeeded(state.petProgress.level)} EXP`;
-  if($("infoAge")) $("infoAge").textContent = `${state.age} 歲`;
+  if($("infoAge")) $("infoAge").textContent = petAgeText();
 
   $("coinText").innerHTML = `${coinIconSvg()} ${state.owner.coins}`;
   $("bankBalanceHud").textContent = `🏦 ${Math.floor(state.bank.balance||0)}`;
@@ -11684,9 +11712,9 @@ function applyOfflineProgress(){
   if(neglectTriggered || ageGained>0 || bankGain>0) saveState();
 }
 function passOneYear(report, offlineMode){
-  // 舊函式保留相容；v0.13.20 起實際年齡由「每 7 天 +1 歲」計算。
+  // 舊函式名稱保留相容；v0.13.44 起實際年齡由「每 1 天 +1 個月」計算。
   const gained=syncPetAge(Date.now(),!!offlineMode);
-  if(gained>0 && Array.isArray(report)) report.push(`${state.name} 長大到 ${state.age} 歲。`);
+  if(gained>0 && Array.isArray(report)) report.push(`${state.name} 現在 ${petAgeText()}。`);
 }
 function startHeartbeat(){
   clearInterval(heartbeatTimer);
