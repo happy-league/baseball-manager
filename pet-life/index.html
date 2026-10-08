@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>毛球日記｜網頁寵物機 Prototype v0.13.46</title>
+<title>毛球日記｜網頁寵物機 Prototype v0.13.47</title>
 <style>
 :root{
   --bg:#fff9f2; --panel:#ffffff; --soft:#f8eee6; --line:#eaded2; --text:#4f443d;
@@ -5203,9 +5203,43 @@ body.resumeOnlyMode .top .badge{
 .bonusPetSpecies button.active,.bonusPetBreed button.active{outline:3px solid rgba(117,169,73,.28);background:#f6ffea}
 .bonusPetBreed{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}.bonusPetBreed button{min-height:105px;font-size:10px}.bonusPetBreed .breedMini{height:70px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .bonusPetConfirm{width:100%;margin-top:12px;border:0;border-radius:12px;padding:10px 12px;background:#6fa64f;color:#fff;font-weight:1000}.bonusPetConfirm:disabled{opacity:.45}
-.streakBonusPet{position:absolute;display:none;width:104px;height:104px;z-index:18;pointer-events:none;transition:left .95s ease,top .95s ease;filter:drop-shadow(0 6px 4px rgba(51,67,42,.14))}
-.streakBonusPet .bonusPetArt{width:100%;height:100%;display:flex;align-items:center;justify-content:center}.streakBonusPet .bonusPetTag{position:absolute;left:50%;bottom:-1px;transform:translateX(-50%);padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.88);color:#5f7450;font-size:9px;font-weight:1000;white-space:nowrap}
-.streakBonusPet.playing{animation:bonusPetBob .75s ease-in-out infinite alternate}.streakBonusPet.playing::after{content:"♡";position:absolute;right:-2px;top:-10px;color:#e8838d;font-size:22px;font-weight:1000;animation:bonusHeart 1.1s ease-out infinite}
+.streakBonusPet{
+  position:absolute;
+  display:none;
+  width:68px;
+  height:68px;
+  z-index:18;
+  pointer-events:auto;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+  cursor:grab;
+  transition:left .95s ease,top .95s ease;
+  filter:drop-shadow(0 5px 4px rgba(51,67,42,.14))
+}
+.streakBonusPet .bonusPetArt{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none
+}
+.streakBonusPet .bonusPetArt svg{
+  width:64px !important;
+  height:64px !important;
+}
+.streakBonusPet .bonusPetTag{display:none!important}
+.streakBonusPet.dragging{
+  cursor:grabbing;
+  z-index:106!important;
+  transition:none!important;
+  animation:none!important;
+  filter:drop-shadow(0 8px 6px rgba(51,67,42,.24))
+}
+.streakBonusPet.playing{animation:bonusPetBob .75s ease-in-out infinite alternate}
+.streakBonusPet.dragging.playing{animation:none!important}
+.streakBonusPet.playing::after{content:"♡";position:absolute;right:-2px;top:-10px;color:#e8838d;font-size:18px;font-weight:1000;animation:bonusHeart 1.1s ease-out infinite}
 @keyframes bonusPetBob{from{transform:translateY(0)}to{transform:translateY(-4px)}}@keyframes bonusHeart{0%{opacity:0;transform:translateY(6px) scale(.7)}40%{opacity:1}100%{opacity:0;transform:translateY(-15px) scale(1.1)}}
 @media(max-width:560px){.todayDate{right:126px;top:16px;padding:7px 8px;font-size:10px}.streakRewardBtn{left:8px;top:116px;min-width:70px;height:48px}.streakRewardGrid{gap:5px}.streakDay{min-height:112px;padding:8px 4px}.streakDay .dayReward{font-size:9px}.streakDay .dayIcon{font-size:23px}.doneStamp{font-size:13px;padding:4px 6px}.bonusPetBreed{gap:5px}.bonusPetBreed button{padding:4px;min-height:92px;font-size:9px}}
 
@@ -6022,7 +6056,7 @@ body.resumeOnlyMode .top .badge{
     <div class="logo">🐾 毛球日記
       <small>陪伴牠走過珍貴的每一天</small>
     </div>
-    <div class="badge">Prototype v0.13.46</div>
+    <div class="badge">Prototype v0.13.47</div>
   </div>
 
   <section id="setup" class="card">
@@ -6265,7 +6299,6 @@ body.resumeOnlyMode .top .badge{
 
           <div id="streakBonusPet" class="streakBonusPet" aria-label="連續登入獲得的新夥伴">
             <div id="streakBonusPetArt" class="bonusPetArt"></div>
-            <div class="bonusPetTag">新夥伴</div>
           </div>
 
           <div id="deadOverlay" class="deadOverlay hidden">
@@ -6792,6 +6825,7 @@ function init(){
   initPlaceableDragging();
   checkResumePanel();
   initPetDragging();
+  initStreakBonusPetDragging();
   startHeartbeat();
   startConstructionClock();
   window.addEventListener("resize", () => {
@@ -8285,7 +8319,7 @@ function confirmBonusPetChoice(){
 function initStreakRewards(){$("streakRewardBtn")?.addEventListener("click",openStreakReward);$("streakRewardClose")?.addEventListener("click",closeStreakReward);$("streakRewardOverlay")?.addEventListener("click",e=>{if(e.target===$("streakRewardOverlay"))closeStreakReward()});$("bonusPetConfirm")?.addEventListener("click",confirmBonusPetChoice)}
 function renderStreakBonusPet(){
   const el=$("streakBonusPet");if(!el||!state)return;migrateState();const data=state.streakRewards.bonusPet;if(!data){el.style.display="none";return}
-  const idx=Number.isFinite(data.breedIndex)?data.breedIndex:Math.max(0,speciesData[data.species]?.breeds?.indexOf(data.breed)||0);if($("streakBonusPetArt"))$("streakBonusPetArt").innerHTML=breedSVG(data.species,idx,100,true);el.style.display="block";
+  const idx=Number.isFinite(data.breedIndex)?data.breedIndex:Math.max(0,speciesData[data.species]?.breeds?.indexOf(data.breed)||0);if($("streakBonusPetArt"))$("streakBonusPetArt").innerHTML=breedSVG(data.species,idx,64,true);el.style.display="block";
   if(!data.pos){const base=state.petPos||{x:310,y:250},p=clampPointToHabitat(base.x+85,base.y+25);data.pos={x:p.x,y:p.y}}el.style.left=data.pos.x+"px";el.style.top=data.pos.y+"px"
 }
 function startStreakPetPlay(){
@@ -11184,6 +11218,99 @@ function initPetDragging(){
     timer=null;
     dragging=false;
     if(!pet.classList.contains("climbing") && !pet.classList.contains("rabbitMazeEntering") && !pet.classList.contains("rabbitBallPlaying")) roomLocked=false;
+    pet.classList.remove("dragging");
+    press=null;
+  });
+}
+
+
+function initStreakBonusPetDragging(){
+  const pet=$("streakBonusPet");
+  const room=$("room");
+  if(!pet || !room || pet.dataset.dragReady==="1") return;
+  pet.dataset.dragReady="1";
+
+  let press=null;
+  let timer=null;
+  let dragging=false;
+
+  pet.addEventListener("pointerdown",e=>{
+    if(!state || state.flags.dead || !state.streakRewards?.bonusPet || pet.offsetParent===null) return;
+    if(e.button!==undefined && e.button!==0) return;
+
+    e.preventDefault();
+    clearTimeout(timer);
+    try{pet.setPointerCapture(e.pointerId)}catch(_){}
+
+    const er=pet.getBoundingClientRect();
+    press={
+      pointerId:e.pointerId,
+      offsetX:e.clientX-er.left,
+      offsetY:e.clientY-er.top
+    };
+
+    timer=setTimeout(()=>{
+      if(!press) return;
+      dragging=true;
+      roomLocked=true;
+      pet.classList.remove("playing");
+      pet.classList.add("dragging");
+    },100);
+  },{passive:false});
+
+  pet.addEventListener("pointermove",e=>{
+    if(!press || e.pointerId!==press.pointerId || !dragging) return;
+
+    const rr=room.getBoundingClientRect();
+    let x=e.clientX-rr.left-press.offsetX;
+    let y=e.clientY-rr.top-press.offsetY;
+
+    x=Math.max(-pet.offsetWidth*.35,Math.min(room.clientWidth-pet.offsetWidth*.65,x));
+    y=Math.max(-pet.offsetHeight*.35,Math.min(room.clientHeight-pet.offsetHeight*.65,y));
+
+    state.streakRewards.bonusPet.pos={x:Math.round(x),y:Math.round(y)};
+    pet.style.left=state.streakRewards.bonusPet.pos.x+"px";
+    pet.style.top=state.streakRewards.bonusPet.pos.y+"px";
+    pet.style.zIndex="106";
+    e.preventDefault();
+  },{passive:false});
+
+  const finish=e=>{
+    if(!press || e.pointerId!==press.pointerId) return;
+    clearTimeout(timer);
+    timer=null;
+
+    if(dragging && state?.streakRewards?.bonusPet){
+      const pos=state.streakRewards.bonusPet.pos || {x:310,y:250};
+      const p=clampPointToHabitat(pos.x,pos.y);
+      state.streakRewards.bonusPet.pos={x:Math.round(p.x),y:Math.round(p.y)};
+      renderStreakBonusPet();
+      saveState();
+    }
+
+    dragging=false;
+    roomLocked=false;
+    pet.classList.remove("dragging");
+    try{pet.releasePointerCapture(e.pointerId)}catch(_){}
+    press=null;
+  };
+
+  pet.addEventListener("pointerup",finish);
+  pet.addEventListener("pointercancel",finish);
+  pet.addEventListener("lostpointercapture",()=>{
+    clearTimeout(timer);
+    timer=null;
+
+    if(press && dragging && state?.streakRewards?.bonusPet){
+      const pos=state.streakRewards.bonusPet.pos || {x:310,y:250};
+      const p=clampPointToHabitat(pos.x,pos.y);
+      state.streakRewards.bonusPet.pos={x:Math.round(p.x),y:Math.round(p.y)};
+      renderStreakBonusPet();
+      saveState();
+    }
+
+    dragging=false;
+    roomLocked=false;
     pet.classList.remove("dragging");
     press=null;
   });
