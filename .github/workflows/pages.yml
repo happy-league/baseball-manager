@@ -159,6 +159,17 @@ jobs:
               raise SystemExit("Unexpected pet life version")
           (pet_dir / "index.html").write_bytes(pet_html)
 
+          # World Traveler V83, published separately at /world-traveler/.
+          world_src = Path("world-traveler/index.html")
+          if not world_src.exists():
+              raise SystemExit("World Traveler source not found")
+          world_html = world_src.read_bytes()
+          if not world_html.startswith(b"<!DOCTYPE html>") or not world_html.rstrip().endswith(b"</html>"):
+              raise SystemExit("Unexpected World Traveler HTML")
+          world_dir = out / "world-traveler"
+          world_dir.mkdir(parents=True, exist_ok=True)
+          (world_dir / "index.html").write_bytes(world_html)
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
