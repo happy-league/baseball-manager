@@ -100,15 +100,14 @@ button,input{font:inherit}
 .level-btn.completed:not(.locked){border-color:rgba(54,152,109,.5);background:linear-gradient(145deg,#f4fbf8,#dff3e6)}
 .level-actions{margin-top:22px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 
-/* 選關畫面右上角：重新開始／返回舊進度。獨立存檔，避免覆寫原先的通關資料。 */
+/* 選關畫面右上角：重新開始。新舊旅程資料仍各自獨立存放，既有存檔不變。 */
 #levelScreen .intro-shell{padding-top:91px}
 .level-restart-controls{position:absolute;top:17px;right:22px;z-index:5;display:flex;gap:9px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
-.level-restart-btn,.level-restore-btn{border:1px solid rgba(125,90,69,.27);border-radius:13px;min-height:42px;padding:8px 14px;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 5px 13px rgba(60,63,67,.16)}
+.level-restart-btn{border:1px solid rgba(125,90,69,.27);border-radius:13px;min-height:42px;padding:8px 14px;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 5px 13px rgba(60,63,67,.16)}
 .level-restart-btn{color:#fff;background:linear-gradient(145deg,#df8a57,#b94f37)}
-.level-restore-btn{color:#24566b;background:linear-gradient(145deg,#fffefb,#dbeef3)}
-.level-restart-btn:hover,.level-restore-btn:hover{filter:brightness(1.05)}
-.level-restart-btn:focus-visible,.level-restore-btn:focus-visible{outline:3px solid #208cb1;outline-offset:3px}
-@media(max-width:480px){#levelScreen .intro-shell{padding-top:77px}.level-restart-controls{top:12px;right:14px;gap:7px}.level-restart-btn,.level-restore-btn{min-height:39px;padding:7px 10px;font-size:12px}}
+.level-restart-btn:hover{filter:brightness(1.05)}
+.level-restart-btn:focus-visible{outline:3px solid #208cb1;outline-offset:3px}
+@media(max-width:480px){#levelScreen .intro-shell{padding-top:77px}.level-restart-controls{top:12px;right:14px;gap:7px}.level-restart-btn{min-height:39px;padding:7px 10px;font-size:12px}}
 
 /* Game layout */
 .game-wrap{position:relative;z-index:2;width:min(1100px,100%);margin:auto;padding:18px 14px 28px}
@@ -1312,7 +1311,6 @@ body.level-20 #playAgain{background:linear-gradient(120deg,#f0ce66,#dca62f);colo
   </div>
   <div class="intro-shell">
     <div class="level-restart-controls" aria-label="遊戲進度操作">
-      <button id="restorePreviousJourneyBtn" class="level-restore-btn hidden" type="button">↩ 返回舊進度</button>
       <button id="restartJourneyBtn" class="level-restart-btn" type="button">↻ 重新開始</button>
     </div>
     <header class="intro-header">
@@ -4113,7 +4111,7 @@ function loadLevel(levelNo){
 
 // 從右上角自願重新開始時，僅重設「新旅程」存檔，不動既有存檔。
 function restartJourneyFromBeginning(){
-  const agreed=window.confirm('確定要重新開始嗎？\n將重新選角、取名，並從 1-1 台北重新挑戰。\n原本的角色與通關進度會獨立保留，可從選關頁返回舊進度。');
+  const agreed=window.confirm('確定要重新開始嗎？\n將重新選角、取名，並從 1-1 台北重新挑戰。\n原本的角色與通關進度會獨立保留，不會遭到覆寫。');
   if(!agreed)return;
   try{
     // 先建立全新、獨立的存檔，再切換到新旅程。
@@ -4131,7 +4129,6 @@ function restartJourneyFromBeginning(){
   playerName='安安';
   document.getElementById('playerNameInput').value='';
   renderCharacterOptions();
-  document.getElementById('restorePreviousJourneyBtn').classList.remove('hidden');
   clearCelebration();
   showScreen('loading');
   setLoadingProgress(0);
@@ -4139,27 +4136,6 @@ function restartJourneyFromBeginning(){
   document.getElementById('loadingNote').textContent='正在鋪設道路中...';
   // 保留原本完整的 99% 停留約五秒的 Loading 動畫。
   runLoading();
-}
-
-// 返回舊進度會切回 V83/V85 使用中的相同存檔鍵值，重玩存檔也會保留。
-function restorePreviousJourney(){
-  if(!usingReplaySlot)return;
-  if(!window.confirm('要返回先前的旅程嗎？\n先前的角色及已解鎖關卡會完整恢復。新旅程與舊旅程各自獨立。'))return;
-  try{localStorage.removeItem(JOURNEY_SLOT_KEY)}catch(e){console.warn('無法更新目前旅程標記。',e)}
-  usingReplaySlot=false;
-  highestUnlocked=1;
-  clearedLevels=new Set();
-  readTravelProgress();
-  hasSavedProfile=false;
-  selectedCharacter='male1';
-  playerName='安安';
-  readTravelProfile();
-  selectedStartLevel=Math.min(selectedStartLevel,highestUnlocked);
-  document.getElementById('playerNameInput').value=hasSavedProfile?playerName:'';
-  renderCharacterOptions();
-  document.getElementById('restorePreviousJourneyBtn').classList.add('hidden');
-  if(hasSavedProfile)goToLevelSelect();
-  else showScreen('character');
 }
 
 function goToLevelSelect(){
@@ -4180,7 +4156,6 @@ function startGame(){
 
 function bindEvents(){
   readTravelProfile();
-  document.getElementById('restorePreviousJourneyBtn').classList.toggle('hidden',!usingReplaySlot);
   renderCharacterOptions();
   if(hasSavedProfile)document.getElementById('playerNameInput').value=playerName;
   document.getElementById('characterGrid').addEventListener('click',e=>{
@@ -4199,7 +4174,6 @@ function bindEvents(){
   });
   document.getElementById('backToCharacterBtn').addEventListener('click',()=>showScreen('character'));
   document.getElementById('restartJourneyBtn').addEventListener('click',restartJourneyFromBeginning);
-  document.getElementById('restorePreviousJourneyBtn').addEventListener('click',restorePreviousJourney);
   document.getElementById('startGameBtn').addEventListener('click',startGame);
   document.getElementById('restart').addEventListener('click',resetCurrentLevel);
   document.getElementById('playAgain').addEventListener('click',resetCurrentLevel);
