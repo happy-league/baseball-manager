@@ -100,6 +100,16 @@ button,input{font:inherit}
 .level-btn.completed:not(.locked){border-color:rgba(54,152,109,.5);background:linear-gradient(145deg,#f4fbf8,#dff3e6)}
 .level-actions{margin-top:22px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 
+/* 選關畫面右上角：重新開始／返回舊進度。獨立存檔，避免覆寫原先的通關資料。 */
+#levelScreen .intro-shell{padding-top:91px}
+.level-restart-controls{position:absolute;top:17px;right:22px;z-index:5;display:flex;gap:9px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.level-restart-btn,.level-restore-btn{border:1px solid rgba(125,90,69,.27);border-radius:13px;min-height:42px;padding:8px 14px;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 5px 13px rgba(60,63,67,.16)}
+.level-restart-btn{color:#fff;background:linear-gradient(145deg,#df8a57,#b94f37)}
+.level-restore-btn{color:#24566b;background:linear-gradient(145deg,#fffefb,#dbeef3)}
+.level-restart-btn:hover,.level-restore-btn:hover{filter:brightness(1.05)}
+.level-restart-btn:focus-visible,.level-restore-btn:focus-visible{outline:3px solid #208cb1;outline-offset:3px}
+@media(max-width:480px){#levelScreen .intro-shell{padding-top:77px}.level-restart-controls{top:12px;right:14px;gap:7px}.level-restart-btn,.level-restore-btn{min-height:39px;padding:7px 10px;font-size:12px}}
+
 /* Game layout */
 .game-wrap{position:relative;z-index:2;width:min(1100px,100%);margin:auto;padding:18px 14px 28px}
 .city{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; perspective:1100px;}
@@ -1301,6 +1311,10 @@ body.level-20 #playAgain{background:linear-gradient(120deg,#f0ce66,#dca62f);colo
     <div class="travel-screen-note">CHOOSE YOUR DESTINATION</div>
   </div>
   <div class="intro-shell">
+    <div class="level-restart-controls" aria-label="遊戲進度操作">
+      <button id="restorePreviousJourneyBtn" class="level-restore-btn hidden" type="button">↩ 返回舊進度</button>
+      <button id="restartJourneyBtn" class="level-restart-btn" type="button">↻ 重新開始</button>
+    </div>
     <header class="intro-header">
       <h1>世界的旅人</h1>
       <p>人因夢想而偉大!</p>
@@ -2488,11 +2502,19 @@ function taipeiCableAllowedTwoAddPatch(){
 
 // Unlocked stages are saved locally and shared by future versions on the same site/origin.
 const PROGRESS_KEY='world_traveler_progress_v1';
+// 既有存檔使用 PROGRESS_KEY／PROFILE_KEY，永遠不會被「重新開始」覆蓋。
+// 重新開始時切換至隔離的重玩存檔，讓原有玩家資料可隨時回復。
+const JOURNEY_SLOT_KEY='world_traveler_active_slot_v1';
+const REPLAY_PROGRESS_KEY='world_traveler_replay_progress_v1';
+const REPLAY_PROFILE_KEY='world_traveler_replay_profile_v1';
+let usingReplaySlot=false;
+try{usingReplaySlot=localStorage.getItem(JOURNEY_SLOT_KEY)==='replay';}catch(e){}
+function activeProgressKey(){return usingReplaySlot ? REPLAY_PROGRESS_KEY : PROGRESS_KEY;}
 let highestUnlocked=1;
 let clearedLevels=new Set();
 function readTravelProgress(){
   try{
-    const raw=localStorage.getItem(PROGRESS_KEY);
+    const raw=localStorage.getItem(activeProgressKey());
     if(!raw)return;
     const saved=JSON.parse(raw);
     highestUnlocked=Math.min(20,Math.max(1,Number.parseInt(saved.unlocked,10)||1));
@@ -2502,7 +2524,7 @@ function readTravelProgress(){
   }catch(e){console.warn('關卡進度讀取失敗，將使用本次遊玩進度。',e)}
 }
 function saveTravelProgress(){
-  try{localStorage.setItem(PROGRESS_KEY,JSON.stringify({unlocked:highestUnlocked,completed:[...clearedLevels].sort((a,b)=>a-b)}))}
+  try{localStorage.setItem(activeProgressKey(),JSON.stringify({unlocked:highestUnlocked,completed:[...clearedLevels].sort((a,b)=>a-b)}))}
   catch(e){console.warn('本次關卡進度暫時無法儲存至瀏覽器。',e)}
 }
 function registerLevelClear(levelNo){
@@ -2524,10 +2546,11 @@ let selectedCharacter = 'male1';
 let playerName = '安安';
 // Independent of stage progress: remembers the chosen traveler on the same site/browser.
 const PROFILE_KEY = 'world_traveler_profile_v1';
+function activeProfileKey(){return usingReplaySlot ? REPLAY_PROFILE_KEY : PROFILE_KEY;}
 let hasSavedProfile = false;
 function readTravelProfile(){
   try{
-    const raw = localStorage.getItem(PROFILE_KEY);
+    const raw = localStorage.getItem(activeProfileKey());
     if(!raw)return false;
     const saved = JSON.parse(raw);
     if(!saved || saved.ready !== true || !['male1','female1','robot1'].includes(saved.character))return false;
@@ -2541,7 +2564,7 @@ function readTravelProfile(){
 function saveTravelProfile(){
   hasSavedProfile = true;
   try{
-    localStorage.setItem(PROFILE_KEY,JSON.stringify({ready:true,character:selectedCharacter,name:playerName}));
+    localStorage.setItem(activeProfileKey(),JSON.stringify({ready:true,character:selectedCharacter,name:playerName}));
   }catch(e){console.warn('角色資料無法儲存至瀏覽器。',e)}
 }
 let mazePlayable = true;
@@ -4088,6 +4111,57 @@ function loadLevel(levelNo){
   if([1,9,10,11,13,14,15,17,18,19,20].includes(levelNo)) showTutorial();
 }
 
+// 從右上角自願重新開始時，僅重設「新旅程」存檔，不動既有存檔。
+function restartJourneyFromBeginning(){
+  const agreed=window.confirm('確定要重新開始嗎？\n將重新選角、取名，並從 1-1 台北重新挑戰。\n原本的角色與通關進度會獨立保留，可從選關頁返回舊進度。');
+  if(!agreed)return;
+  try{
+    // 先建立全新、獨立的存檔，再切換到新旅程。
+    localStorage.setItem(REPLAY_PROGRESS_KEY,JSON.stringify({unlocked:1,completed:[]}));
+    localStorage.removeItem(REPLAY_PROFILE_KEY);
+    localStorage.setItem(JOURNEY_SLOT_KEY,'replay');
+  }catch(e){console.warn('新旅程存檔無法寫入瀏覽器；本次遊玩仍會重新開始。',e);}
+  usingReplaySlot=true;
+  highestUnlocked=1;
+  clearedLevels=new Set();
+  selectedStartLevel=1;
+  currentLevel=1;
+  hasSavedProfile=false;
+  selectedCharacter='male1';
+  playerName='安安';
+  document.getElementById('playerNameInput').value='';
+  renderCharacterOptions();
+  document.getElementById('restorePreviousJourneyBtn').classList.remove('hidden');
+  clearCelebration();
+  showScreen('loading');
+  setLoadingProgress(0);
+  loadingLabel.textContent='Loading...';
+  document.getElementById('loadingNote').textContent='正在鋪設道路中...';
+  // 保留原本完整的 99% 停留約五秒的 Loading 動畫。
+  runLoading();
+}
+
+// 返回舊進度會切回 V83/V85 使用中的相同存檔鍵值，重玩存檔也會保留。
+function restorePreviousJourney(){
+  if(!usingReplaySlot)return;
+  if(!window.confirm('要返回先前的旅程嗎？\n先前的角色及已解鎖關卡會完整恢復。新旅程與舊旅程各自獨立。'))return;
+  try{localStorage.removeItem(JOURNEY_SLOT_KEY)}catch(e){console.warn('無法更新目前旅程標記。',e)}
+  usingReplaySlot=false;
+  highestUnlocked=1;
+  clearedLevels=new Set();
+  readTravelProgress();
+  hasSavedProfile=false;
+  selectedCharacter='male1';
+  playerName='安安';
+  readTravelProfile();
+  selectedStartLevel=Math.min(selectedStartLevel,highestUnlocked);
+  document.getElementById('playerNameInput').value=hasSavedProfile?playerName:'';
+  renderCharacterOptions();
+  document.getElementById('restorePreviousJourneyBtn').classList.add('hidden');
+  if(hasSavedProfile)goToLevelSelect();
+  else showScreen('character');
+}
+
 function goToLevelSelect(){
   if(selectedStartLevel>highestUnlocked)selectedStartLevel=highestUnlocked;
   clearCelebration();
@@ -4106,6 +4180,7 @@ function startGame(){
 
 function bindEvents(){
   readTravelProfile();
+  document.getElementById('restorePreviousJourneyBtn').classList.toggle('hidden',!usingReplaySlot);
   renderCharacterOptions();
   if(hasSavedProfile)document.getElementById('playerNameInput').value=playerName;
   document.getElementById('characterGrid').addEventListener('click',e=>{
@@ -4123,6 +4198,8 @@ function bindEvents(){
     goToLevelSelect();
   });
   document.getElementById('backToCharacterBtn').addEventListener('click',()=>showScreen('character'));
+  document.getElementById('restartJourneyBtn').addEventListener('click',restartJourneyFromBeginning);
+  document.getElementById('restorePreviousJourneyBtn').addEventListener('click',restorePreviousJourney);
   document.getElementById('startGameBtn').addEventListener('click',startGame);
   document.getElementById('restart').addEventListener('click',resetCurrentLevel);
   document.getElementById('playAgain').addEventListener('click',resetCurrentLevel);
