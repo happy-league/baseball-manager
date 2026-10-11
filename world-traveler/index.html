@@ -97,7 +97,8 @@ button,input{font:inherit}
 .level-btn.locked:hover{transform:none;box-shadow:none}
 .level-btn.locked .lv-name{font-size:18px}
 .level-btn.locked .lv-sub{color:#485963}
-.level-btn.completed:not(.locked){border-color:rgba(54,152,109,.5);background:linear-gradient(145deg,#f4fbf8,#dff3e6)}
+.level-btn.completed:not(.locked){border-color:var(--completed-border,#efa9b3);background:var(--completed-tint,#ffe4e7)}
+.level-btn .level-crown{display:inline-block;margin-left:3px;font-size:20px;line-height:1;vertical-align:-2px;filter:drop-shadow(0 2px 2px rgba(148,106,27,.22))}
 .level-actions{margin-top:22px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 
 /* 選關畫面右上角：重新開始。新舊旅程資料仍各自獨立存放，既有存檔不變。 */
@@ -3093,6 +3094,17 @@ function updatePlayerAvatar(){
   document.getElementById('playerAvatar').innerHTML = getAvatarSvg(selectedCharacter);
 }
 
+// 通關色彩依照關卡順序循環：淺紅、淺橘、淺黃、淺綠、淺藍、淺紫、淺灰。
+// 僅影響已完成關卡的外觀，不變更既有通關記錄。
+const completedStageColors = [
+  ['#ffe1e5','#f0a9b4'], // 淺紅
+  ['#ffead6','#f3bd94'], // 淺橘
+  ['#fff5ce','#e8d288'], // 淺黃
+  ['#e2f5e4','#a1d4a8'], // 淺綠
+  ['#e0efff','#9cc6ec'], // 淺藍
+  ['#eee3ff','#c6abea'], // 淺紫
+  ['#e9edf1','#bec9d1']  // 淺灰
+];
 function renderLevelGrid(){
   const grid = document.getElementById('levelGrid');
   grid.innerHTML = '';
@@ -3100,12 +3112,18 @@ function renderLevelGrid(){
     const btn = document.createElement('button');
     btn.type = 'button';
     const isLocked = i > highestUnlocked;
-    btn.className = 'level-btn' + (isLocked ? ' locked' : '') + (!isLocked && i === selectedStartLevel ? ' active' : '') + (clearedLevels.has(i) ? ' completed' : '');
+    const isCompleted = clearedLevels.has(i);
+    btn.className = 'level-btn' + (isLocked ? ' locked' : '') + (!isLocked && i === selectedStartLevel ? ' active' : '') + (isCompleted ? ' completed' : '');
+    if(isCompleted){
+      const [tint,border] = completedStageColors[(i-1)%completedStageColors.length];
+      btn.style.setProperty('--completed-tint',tint);
+      btn.style.setProperty('--completed-border',border);
+    }
     btn.dataset.level = i;
     btn.disabled = isLocked;
     btn.setAttribute('aria-label', `${formatLevel(i)} ${levelNames[i] || ''} ${isLocked ? '尚未解鎖' : clearedLevels.has(i) ? '已通關' : '可挑戰'}`);
     // Locked stages still show their destination; only the button itself is disabled.
-    btn.innerHTML = `<span class="lv-name">${formatLevel(i)}${isLocked ? ' 🔒' : clearedLevels.has(i) ? ' ✓' : ''}</span><span class="lv-sub">${levelNames[i] || '敬請期待'}</span>`;
+    btn.innerHTML = `<span class="lv-name">${formatLevel(i)}${isLocked ? ' 🔒' : isCompleted ? ' <span class="level-crown" aria-hidden="true">👑</span>' : ''}</span><span class="lv-sub">${levelNames[i] || '敬請期待'}</span>`;
     btn.addEventListener('click',()=>{
       if(isLocked || i>highestUnlocked)return;
       selectedStartLevel = i;
@@ -3871,6 +3889,13 @@ function showReminder(customText){
 
 
 // 每次通關觸發彩紙、星形飄落，避免重玩時殘留舊動畫。
+let fullCompletionReturnTimer = null;
+function cancelFullCompletionReturn(){
+  if(fullCompletionReturnTimer !== null){
+    clearTimeout(fullCompletionReturnTimer);
+    fullCompletionReturnTimer = null;
+  }
+}
 function clearCelebration(){
   document.getElementById('celebrationParticles').replaceChildren();
 }
@@ -3895,6 +3920,7 @@ function launchCelebration(){
 }
 
 function onWin(){
+  cancelFullCompletionReturn();
   registerLevelClear(currentLevel);
   const title = currentLevel===20 ? "🏆 完全制霸！🏆" : "恭喜過關!";
   const textMap = {
@@ -3926,6 +3952,14 @@ function onWin(){
   document.getElementById('winText').textContent = text;
   document.getElementById('winToast').classList.add('show');
   launchCelebration();
+  // 20 關全數完成時，讓「完全制霸」視窗完整停留五秒後返回選關。
+  if(currentLevel===20 && clearedLevels.size===20){
+    fullCompletionReturnTimer=setTimeout(()=>{
+      fullCompletionReturnTimer=null;
+      selectedStartLevel=20;
+      goToLevelSelect();
+    },5000);
+  }
 }
 
 
@@ -3947,6 +3981,7 @@ function showPlaceholder(levelNo){
 }
 
 function resetCurrentLevel(){
+  cancelFullCompletionReturn();
   updateRulebar(currentLevel);
   clearCelebration();
   document.getElementById('winToast').classList.remove('show');
@@ -4020,6 +4055,7 @@ function updateRulebar(levelNo){
 }
 
 function loadLevel(levelNo){
+  cancelFullCompletionReturn();
   if(!Number.isInteger(levelNo)||levelNo<1||levelNo>highestUnlocked){goToLevelSelect();return;}
   clearCelebration();
   currentLevel = levelNo;
@@ -4139,7 +4175,9 @@ function restartJourneyFromBeginning(){
 }
 
 function goToLevelSelect(){
+  cancelFullCompletionReturn();
   if(selectedStartLevel>highestUnlocked)selectedStartLevel=highestUnlocked;
+  document.getElementById('winToast').classList.remove('show');
   clearCelebration();
   showScreen('level');
   renderLevelGrid();
