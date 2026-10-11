@@ -93,10 +93,10 @@ button,input{font:inherit}
 .level-btn .lv-name{font-size:20px;font-weight:900}
 .level-btn .lv-sub{font-size:13px;color:#688291;font-weight:800}
 .level-btn.active{border-color:#2c95ba;box-shadow:0 0 0 3px rgba(44,149,186,.12),0 12px 22px rgba(49,86,104,.12)}
-.level-btn.locked{opacity:.43;filter:grayscale(.8);cursor:not-allowed;background:linear-gradient(145deg,#e5e9ec,#d9dcdf);border-color:#b5bdc2;box-shadow:none}
+.level-btn.locked{opacity:.78;filter:grayscale(.7);cursor:not-allowed;background:linear-gradient(145deg,#e5e9ec,#d9dcdf);border-color:#b5bdc2;box-shadow:none}
 .level-btn.locked:hover{transform:none;box-shadow:none}
 .level-btn.locked .lv-name{font-size:18px}
-.level-btn.locked .lv-sub{color:#65717a}
+.level-btn.locked .lv-sub{color:#485963}
 .level-btn.completed:not(.locked){border-color:rgba(54,152,109,.5);background:linear-gradient(145deg,#f4fbf8,#dff3e6)}
 .level-actions{margin-top:22px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 
@@ -2522,6 +2522,28 @@ let moves = 0;
 let visited = new Set([0]);
 let selectedCharacter = 'male1';
 let playerName = '安安';
+// Independent of stage progress: remembers the chosen traveler on the same site/browser.
+const PROFILE_KEY = 'world_traveler_profile_v1';
+let hasSavedProfile = false;
+function readTravelProfile(){
+  try{
+    const raw = localStorage.getItem(PROFILE_KEY);
+    if(!raw)return false;
+    const saved = JSON.parse(raw);
+    if(!saved || saved.ready !== true || !['male1','female1','robot1'].includes(saved.character))return false;
+    if(typeof saved.name !== 'string' || !saved.name.trim())return false;
+    selectedCharacter = saved.character;
+    playerName = saved.name.trim().slice(0,12);
+    hasSavedProfile = true;
+    return true;
+  }catch(e){console.warn('角色存檔無法讀取，本次重新選擇角色。',e);return false;}
+}
+function saveTravelProfile(){
+  hasSavedProfile = true;
+  try{
+    localStorage.setItem(PROFILE_KEY,JSON.stringify({ready:true,character:selectedCharacter,name:playerName}));
+  }catch(e){console.warn('角色資料無法儲存至瀏覽器。',e)}
+}
 let mazePlayable = true;
 let visitedArena = false;
 let londonStage = 1;
@@ -2578,7 +2600,13 @@ function runLoading(){
         setLoadingProgress(100);
         loadingLabel.textContent = '準備完成';
         document.getElementById('loadingNote').textContent = '冒險開始!';
-        setTimeout(()=>showScreen('character'), 950);
+        setTimeout(()=>{
+          if(hasSavedProfile){
+            goToLevelSelect();
+          }else{
+            showScreen('character');
+          }
+        }, 950);
       }, 5000);
     }
   }, 40);
@@ -3034,7 +3062,7 @@ function getAvatarSvg(id){
 function renderCharacterOptions(){
   const grid = document.getElementById('characterGrid');
   grid.innerHTML = characterOptions.map((cfg, index) => `
-    <button class="character-card ${index===0?'active':''}" type="button" data-character="${cfg.id}" aria-label="角色 ${index+1}" aria-pressed="${index===0?'true':'false'}">
+    <button class="character-card ${selectedCharacter===cfg.id?'active':''}" type="button" data-character="${cfg.id}" aria-label="角色 ${index+1}" aria-pressed="${selectedCharacter===cfg.id?'true':'false'}">
       ${getAvatarSvg(cfg.id)}
     </button>
   `).join('');
@@ -3055,7 +3083,8 @@ function renderLevelGrid(){
     btn.dataset.level = i;
     btn.disabled = isLocked;
     btn.setAttribute('aria-label', `${formatLevel(i)} ${levelNames[i] || ''} ${isLocked ? '尚未解鎖' : clearedLevels.has(i) ? '已通關' : '可挑戰'}`);
-    btn.innerHTML = `<span class="lv-name">${formatLevel(i)}${isLocked ? ' 🔒' : clearedLevels.has(i) ? ' ✓' : ''}</span><span class="lv-sub">${isLocked ? '尚未解鎖' : (levelNames[i] || '敬請期待')}</span>`;
+    // Locked stages still show their destination; only the button itself is disabled.
+    btn.innerHTML = `<span class="lv-name">${formatLevel(i)}${isLocked ? ' 🔒' : clearedLevels.has(i) ? ' ✓' : ''}</span><span class="lv-sub">${levelNames[i] || '敬請期待'}</span>`;
     btn.addEventListener('click',()=>{
       if(isLocked || i>highestUnlocked)return;
       selectedStartLevel = i;
@@ -4069,13 +4098,16 @@ function goToLevelSelect(){
 function startGame(){
   if(selectedStartLevel>highestUnlocked)selectedStartLevel=highestUnlocked;
   playerName = document.getElementById('playerNameInput').value.trim() || '安安';
+  saveTravelProfile();
   showScreen('game');
   updatePlayerAvatar();
   loadLevel(selectedStartLevel);
 }
 
 function bindEvents(){
+  readTravelProfile();
   renderCharacterOptions();
+  if(hasSavedProfile)document.getElementById('playerNameInput').value=playerName;
   document.getElementById('characterGrid').addEventListener('click',e=>{
     const card = e.target.closest('.character-card');
     if(!card) return;
@@ -4087,6 +4119,7 @@ function bindEvents(){
   });
   document.getElementById('toLevelSelectBtn').addEventListener('click',()=>{
     playerName = document.getElementById('playerNameInput').value.trim() || '安安';
+    saveTravelProfile();
     goToLevelSelect();
   });
   document.getElementById('backToCharacterBtn').addEventListener('click',()=>showScreen('character'));
@@ -4115,6 +4148,8 @@ function bindEvents(){
 
 bindEvents();
 renderLevelGrid();
+// Every visit plays the full loading sequence before choosing the saved-profile destination.
+// New players go to character setup; returning players go straight to level selection.
 runLoading();
 </script>
 </body>
