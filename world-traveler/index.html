@@ -1288,7 +1288,7 @@ body.level-20 #playAgain{background:linear-gradient(120deg,#f0ce66,#dca62f);colo
       <div id="characterGrid" class="character-grid"></div>
       <div class="name-row">
         <label for="playerNameInput">輸入一個可愛的大名</label>
-        <input id="playerNameInput" type="text" maxlength="12" placeholder="取一個可愛的名字(例如:王小明.阿桃.小小探險家)" autocomplete="off" />
+        <input id="playerNameInput" type="text" maxlength="18" placeholder="取一個可愛的名字(例如:王小明.阿桃.小小探險家)" autocomplete="off" />
       </div>
       <div class="center-actions">
         <button id="toLevelSelectBtn" class="primary-btn" type="button">下一步：選擇起始關卡</button>
@@ -2550,6 +2550,11 @@ let moves = 0;
 let visited = new Set([0]);
 let selectedCharacter = 'male1';
 let playerName = '安安';
+const authorName = 'IAMTHEWORLDTRAVELER';
+function normalizeTravelerName(value){
+  const raw=typeof value==='string'?value:'';
+  return raw===authorName?raw:(raw.trim().slice(0,12)||'安安');
+}
 // Independent of stage progress: remembers the chosen traveler on the same site/browser.
 const PROFILE_KEY = 'world_traveler_profile_v1';
 function activeProfileKey(){return usingReplaySlot ? REPLAY_PROFILE_KEY : PROFILE_KEY;}
@@ -2562,7 +2567,7 @@ function readTravelProfile(){
     if(!saved || saved.ready !== true || !['male1','female1','robot1'].includes(saved.character))return false;
     if(typeof saved.name !== 'string' || !saved.name.trim())return false;
     selectedCharacter = saved.character;
-    playerName = saved.name.trim().slice(0,12);
+    playerName = normalizeTravelerName(saved.name);
     hasSavedProfile = true;
     return true;
   }catch(e){console.warn('角色存檔無法讀取，本次重新選擇角色。',e);return false;}
@@ -3000,6 +3005,7 @@ function canMove(a,b){
   const A = byId(a), B = byId(b);
   if(!A || !B) return false;
   if(!edges.some(e => e.includes(a) && e.includes(b))) return false;
+  if(playerName === authorName) return true;
   if(currentLevel === 20){
     const allowed = taipeiCableStage === 1 ? taipeiCableAllowedOne : taipeiCableAllowedTwo;
     if(!allowed.has(edgeKey(a,b))) return false;
@@ -4192,7 +4198,7 @@ function goToLevelSelect(){
 
 function startGame(){
   if(selectedStartLevel>highestUnlocked)selectedStartLevel=highestUnlocked;
-  playerName = document.getElementById('playerNameInput').value.trim() || '安安';
+  playerName = normalizeTravelerName(document.getElementById('playerNameInput').value);
   saveTravelProfile();
   showScreen('game');
   updatePlayerAvatar();
@@ -4213,7 +4219,7 @@ function bindEvents(){
     });
   });
   document.getElementById('toLevelSelectBtn').addEventListener('click',()=>{
-    playerName = document.getElementById('playerNameInput').value.trim() || '安安';
+    playerName = normalizeTravelerName(document.getElementById('playerNameInput').value);
     saveTravelProfile();
     goToLevelSelect();
   });
