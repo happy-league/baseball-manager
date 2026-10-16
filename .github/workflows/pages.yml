@@ -170,6 +170,18 @@ jobs:
           world_dir.mkdir(parents=True, exist_ok=True)
           (world_dir / "index.html").write_bytes(world_html)
 
+
+          # Department store finance V8, published independently at /department-store-finance/.
+          finance_src = Path("department-store-finance/index.html")
+          if not finance_src.exists():
+              raise SystemExit("Department store finance source not found")
+          finance_html = finance_src.read_bytes()
+          if not finance_html.startswith(b"<!DOCTYPE html>") or not finance_html.rstrip().endswith(b"</html>"):
+              raise SystemExit("Unexpected department store finance HTML")
+          finance_dir = out / "department-store-finance"
+          finance_dir.mkdir(parents=True, exist_ok=True)
+          (finance_dir / "index.html").write_bytes(finance_html)
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
