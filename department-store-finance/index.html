@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no" />
 <meta name="theme-color" content="#101922" />
-<title>百貨日常・財務課｜3D冒險 V8 B1休閒服飾與B2美食街超市</title>
+<title>百貨日常・財務課｜3D冒險 V8.1</title>
 <style>
 :root{--ivory:#faf6ed;--light:#dceaf0;--teal:#8ddbc8;--gold:#ebc68c;--ink:#10212d}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -174,6 +174,17 @@ body.elevating #nearTag,body.elevating #buttons{display:none}
 #playerIdentity{display:block;font-size:10px;letter-spacing:.25px;line-height:1.5;color:#e7cfa1;font-weight:850;margin-top:3px}
 @media(max-width:640px){.introCard{padding:20px;max-height:calc(100dvh - 22px)}.introCard h1{font-size:clamp(29px,8vw,45px);margin:9px 0 6px;line-height:1.14}.introCard p{font-size:12px;line-height:1.65;margin:10px 0}.introChips{margin-top:12px}.characterSetup{padding:12px;margin-top:12px}.genderFace{min-height:42px}#startBtn{margin-top:13px;padding:14px;font-size:14px}.micro{font-size:10px;line-height:1.65}.divider{margin-top:11px}.brand strong{line-height:1.25}#playerIdentity{font-size:9px}}
 @media(max-height:600px) and (max-width:640px){.introCard{padding:15px}.introCard h1{font-size:29px}.genderFace{min-height:38px}.characterSetup{margin-top:8px}#nameInput{min-height:40px}}
+
+/* V8.1: keep task prompts steady after all twenty tasks are completed. */
+body.tasksDone .worldLabel:before {animation:none;box-shadow:none;opacity:.55}
+body.tasksDone .worldLabel.active {background:#08262ad9;border-color:#b6e9d75e;color:#ecfff5}
+body.tasksDone .alertBox.ring {animation:none}
+#runBtn {display:none!important}
+#homeBtn {display:none;position:fixed;right:15px;bottom:calc(17px + env(safe-area-inset-bottom,0px));z-index:9;background:linear-gradient(120deg,#fbeac2,#dbb46d);color:#203243;border:2px solid #fff0c9;box-shadow:0 7px 25px #0009;border-radius:12px;padding:13px 15px;font-size:14px;font-weight:950;pointer-events:auto;min-height:49px}
+body.freeExplore #homeBtn {display:block}
+body.freeExplore #buttons {bottom:calc(85px + env(safe-area-inset-bottom,0px))}
+#continueBtn {display:none;width:100%;margin-top:9px;padding:13px 16px;border-radius:10px;background:#204a58;color:#e5f8f2;border:1px solid #aee4d1;font-size:14px;font-weight:850}
+@media(max-width:640px){#homeBtn{right:12px;font-size:13px;padding:11px 13px;min-height:45px}body.freeExplore #buttons{bottom:calc(78px + env(safe-area-inset-bottom,0px))}}
 </style>
 </head>
 <body>
@@ -186,9 +197,10 @@ body.elevating #nearTag,body.elevating #buttons{display:none}
  <div id="toast"></div>
  <div id="nearTag">靠近人員或物件即可互動</div>
  <div id="joystick" aria-label="移動搖桿"><div id="stick"></div></div>
- <div id="buttons"><button class="ctrlButton" id="runBtn">快跑<small style="font-size:9px;margin-top:2px">按住</small></button><button class="ctrlButton" id="interactBtn" disabled>互動<small>交談 / 操作</small></button></div>
+ <div id="buttons"><button class="ctrlButton" id="interactBtn" disabled>互動<small>交談 / 操作</small></button></div>
  <div id="help">電腦：W A S D／方向鍵移動 · Shift 快跑 · E 互動 ｜手機：左下搖桿</div>
 </div>
+<button id="homeBtn" type="button" aria-label="返回遊戲首頁">⌂ 回到首頁</button>
 <div id="dayBanner"></div><div id="alertStack" aria-live="polite"></div>
 <div id="liftPanel" aria-label="電梯樓層按鈕"><h3>電梯操作面板</h3><div class="cabDisplay" id="liftDisplay">B2</div><div class="cabCaption">輕觸樓層按鈕前往目的地</div><div id="liftButtons"></div><button id="liftExit">開門｜返回目前樓層</button><div class="mirrorHint">鏡面位於轎廂後方 · 可看見自己的倒影</div></div>
 <div id="elevatorTransition" aria-hidden="true"><div class="door leftDoor"></div><div class="door rightDoor"></div><div id="travelTitle">電梯移動中</div></div>
@@ -204,7 +216,7 @@ body.elevating #nearTag,body.elevating #buttons{display:none}
  <input id="nameInput" type="text" autocomplete="off" maxlength="12" placeholder="例如：王小明、安安" aria-label="角色名字（可留白）">
  <div class="characterHint">不填寫時預設為「安安」。所選性別會套用到角色外觀，姓名會顯示於工作介面與劇情中。</div>
 </div>
-<button id="startBtn" class="goldBtn">佩戴識別證，開始上班　→</button><div class="micro">◆ 手機使用左下圓形搖桿移動，靠近閃爍標記後點「互動」。<br>◆ 15:00–17:00 留意 B2 專櫃人員兌幣，16:00 別忘了製作前一日的日結報表。<br>◆ 18:00 後請返回 B2 打卡下班，確保內控與交接安全。<br>◆ 這是可遊玩的單檔試作版；人物與場景採程式化 3D 建模，非真人攝影等級的寫實素材。</div></div></div>
+<button id="startBtn" class="goldBtn">佩戴識別證，開始上班　→</button><button id="continueBtn" type="button">▶ 繼續上次進度</button><div class="micro">◆ 手機使用左下圓形搖桿移動，靠近閃爍標記後點「互動」。<br>◆ 15:00–17:00 留意 B2 專櫃人員兌幣，16:00 別忘了製作前一日的日結報表。<br>◆ 18:00 後請返回 B2 打卡下班，確保內控與交接安全。<br>◆ 這是可遊玩的單檔試作版；人物與場景採程式化 3D 建模，非真人攝影等級的寫實素材。</div></div></div>
 <div id="dialogLayer" class="hidden"><div class="dialogCard"><div class="dWho" id="dWho"></div><h2 id="dTitle"></h2><p class="dialogText" id="dText"></p><div class="optionWrap" id="options"></div></div></div>
 <div id="screenWarning"></div>
 <script>
@@ -730,7 +742,51 @@ b.sphere(-.085,2.30,-.254,.020,.025,.019,'#18232c',4,6);b.sphere(.085,2.30,-.254
 if(kind==='staff'||kind==='player'){b.box(0,1.42,-.288,.22,.27,.035,'#e2f1e8');b.box(0,1.41,-.312,.16,.13,.013,kind==='player'?'#67b9b2':'#6f9eaa');b.box(0,1.95,-.22,.035,.36,.023,'#b8c2d1');}
 b.setTransform(0,0,0,0);
 }
-let state={playerName:'安安',gender:'female',started:false,floor:'B2',step:0,x:0,z:11.0,angle:0,rep:60,care:65,time:9*60,clockSec:0,shiftOver:false,finished:false,breakFlag:0,choices:[],flags:{},moving:false,run:false,dialog:false,near:null,liftFrom:'B2',portalCooldown:0,liftBusy:false,phoneRinging:false,supportCallAccepted:false,reportDone:false,reportClean:null,coinVisits:[]};
+let state={playerName:'安安',gender:'female',started:false,floor:'B2',step:0,x:0,z:11.0,angle:0,rep:60,care:65,time:9*60,clockSec:0,shiftOver:false,finished:false,breakFlag:0,choices:[],flags:{},moving:false,run:false,dialog:false,near:null,liftFrom:'B2',portalCooldown:0,liftBusy:false,phoneRinging:false,supportCallAccepted:false,reportDone:false,reportClean:null,coinVisits:[],freeExplore:false};
+// V8.1 saves only this game in its own namespace; unrelated games use different keys.
+const FINANCE_SAVE_KEY='department_store_finance_save_v1';
+let previousProgress=null;
+try {
+ previousProgress=JSON.parse(localStorage.getItem(FINANCE_SAVE_KEY)||'null');
+ if(!previousProgress||previousProgress.version!==1||!Number.isFinite(previousProgress.time))previousProgress=null;
+}catch(e){previousProgress=null;}
+function saveProgress(){
+ if(!state.started)return;
+ try{
+  const fields=['playerName','gender','floor','step','x','z','angle','rep','care','time','clockSec','shiftOver','finished','choices','flags','liftFrom','phoneRinging','supportCallAccepted','reportDone','reportClean','coinVisits','freeExplore'];
+  const data={version:1};for(const field of fields)data[field]=state[field];
+  localStorage.setItem(FINANCE_SAVE_KEY,JSON.stringify(data));
+ }catch(e){}
+}
+function resumeProgress(){
+ if(!state.started){
+  if(!previousProgress)return;
+  const data=previousProgress;
+  for(const key of ['playerName','gender','floor','step','x','z','angle','rep','care','time','clockSec','shiftOver','finished','choices','flags','liftFrom','phoneRinging','supportCallAccepted','reportDone','reportClean','coinVisits','freeExplore']){
+   if(Object.prototype.hasOwnProperty.call(data,key))state[key]=data[key];
+  }
+  state.started=true;
+  state.playerName=typeof state.playerName==='string'?state.playerName.slice(0,12):'安安';
+  if(!Object.hasOwn(SALES_FLOORS,state.floor)&&!['B2','B2M','1F','13F','LIFT'].includes(state.floor))state.floor='B2';
+  state.step=Math.max(0,Math.min(STEP.length,Number(state.step)||0));
+  state.time=Math.max(540,Math.min(1080,Number(state.time)||540));
+  state.clockSec=Math.max(0,Number(state.clockSec)||0);
+  state.flags=(state.flags&&typeof state.flags==='object')?state.flags:{};
+  state.coinVisits=Array.isArray(state.coinVisits)?state.coinVisits:generateCoinVisits();
+  state.choices=Array.isArray(state.choices)?state.choices:[];
+ }
+ state.dialog=false;state.liftBusy=false;state.portalCooldown=0;
+ state.freeExplore=!!state.finished;
+ document.body.classList.toggle('freeExplore',state.freeExplore);
+ $('#nameInput').value=state.playerName;
+ const genderInput=document.querySelector('input[name="characterGender"][value="'+state.gender+'"]');
+ if(genderInput)genderInput.checked=true;
+ $('#introPronoun').textContent=state.gender==='male'?'你':'妳';
+ $('#playerIdentity').textContent=state.playerName+'｜'+(state.gender==='male'?'男':'女')+' · 財務課員';
+ $('#overlay').classList.add('hidden');$('#hud').style.display='block';
+ $('#liftPanel').classList.toggle('open',state.floor==='LIFT');if(state.floor==='LIFT')renderLiftPanel();
+ setQuest();toast(state.freeExplore?'已返回下班後的自由參觀。':'已恢復上次的工作進度。');
+}
 const STEP=[
 {floor:'B2',target:'hr',title:'人事｜出勤異常通報',desc:'B2 入口進來先是人事區。請先找到人事專員，確認同仁的打卡異常。'},
 {floor:'B2',target:'hrDocs',title:'人事｜薪轉資料變更',desc:'前往人事區資料台，核實員工薪轉資料的變更申請。'},
@@ -807,7 +863,8 @@ function activeObjects(floor){let items=interactables[floor]||SALES_NPCS[floor]|
 let labelEls=[];for(let i=0;i<22;i++){let el=document.createElement('div');el.className='worldLabel';document.body.appendChild(el);labelEls.push(el);}
 function setQuest(){
  let s=STEP[state.step];
- if(state.shiftOver){$('#qtitle').textContent='18:00｜下班打卡';$('#qdesc').textContent='請搭電梯返回 B2 人事區的打卡機，完成最後的交接後下班。';}
+ if(state.finished){$('#qtitle').textContent='🏆 已完成下班｜自由參觀';$('#qdesc').textContent='今天的工作與下班打卡已完成，可自由探索各樓層，也可點右下角回到首頁。';}
+ else if(state.shiftOver){$('#qtitle').textContent='18:00｜下班打卡';$('#qdesc').textContent='請搭電梯返回 B2 人事區的打卡機，完成最後的交接後下班。';}
  else if(state.time>=720&&state.time<780){$('#qtitle').textContent='12:00–13:00｜午休時間';$('#qdesc').textContent='目前為休息時間；可以到其他樓層探索。工作事項下午再繼續處理。';}
  else if(state.time>=960&&!state.reportDone){$('#qtitle').textContent='16:00｜製作昨日營業日結報表';$('#qdesc').textContent='請至 B2 最裡面的財務辦公區，使用「昨日日結報表」電腦核對前一日交易、刷退、現金及刷卡金額。';}
  else if(state.step===8&&!state.supportCallAccepted){$('#qtitle').textContent=state.phoneRinging?'📞 1F 顧服來電｜請先接聽':'1F 支援｜等待顧服電話';$('#qdesc').textContent=state.phoneRinging?'1F 服務台來電請求支援！請至 B2 財務最裡側操作內線電話，確認需求再上樓。':'目前仍應在 B2 工作，等待 1F 顧服來電。';}
@@ -819,7 +876,9 @@ function setQuest(){
  $('#timeBadge').textContent=fmtTime(state.time);
  $('#shiftState').textContent=state.shiftOver?'已下班 · 請打卡':state.time>=720&&state.time<780?'午休 12:00–13:00':'上班 09:00–18:00';
  $('#scoreBadge').textContent=state.rep>=70?'優秀':state.rep>=45?'良好':'待加強';
- $('#progress').innerHTML=Array.from({length:STEP.length},(_,i)=>'<i class="'+(i<state.step?'done':'')+'"></i>').join('');updateZone();
+ $('#progress').innerHTML=Array.from({length:STEP.length},(_,i)=>'<i class="'+(i<state.step?'done':'')+'"></i>').join('');
+ document.body.classList.toggle('tasksDone',state.finished||state.step>=STEP.length);
+ updateZone();saveProgress();
 }
 function updateZone(){let label;
  if(state.floor==='LIFT')label='🛗 電梯轎廂 · 鏡面與樓層操作盤';
@@ -840,6 +899,7 @@ function generateCoinVisits(){
 }
 function updateAlerts(){
  if(!state.started)return;
+ if(state.finished||state.step>=STEP.length){$('#alertStack').replaceChildren();return;}
  let messages=[];
  if(state.phoneRinging&&!state.supportCallAccepted)messages.push(['ring','📞 1F 顧服正在來電｜請到 B2 財務區接聽']);
  if(state.time>=960&&!state.reportDone&&!state.shiftOver)messages.push(['','📊 16:00 昨日日結報表待處理｜B2 財務電腦']);
@@ -1096,7 +1156,7 @@ decision(ev.who,ev.title,typeof ev.msg==='function'?ev.msg():ev.msg,ev.options);
 }
 function showEnding(){
  if(state.finished)return;
- state.finished=true;
+ state.finished=true;state.freeExplore=false;document.body.classList.remove('freeExplore');setBanner('');setQuest();
  const critical=['payrollOK','gaClean','ledgerClean','vaultClean','refundOK','floorClean','salesDocs','salesOfficeClean','voucherClean','yesterdayClean'];
  const issues=critical.filter(x=>state.flags[x]===false).length;
  const safe=issues===0&&state.reportDone&&state.reportClean===true&&state.care>=55&&state.rep>=45&&state.step>=7;
@@ -1110,11 +1170,12 @@ function showEnding(){
  $('#dTitle').textContent=(safe?'🎉 任務成功｜':'⚠️ 結局｜')+heading;
  $('#dText').textContent=msg;
  $('#options').innerHTML=`<div class="stats"><div>工作評價<b>${state.rep}</b></div><div>內控謹慎度<b>${state.care}</b></div><div>完成事件<b>${Math.min(state.step,STEP.length)} / ${STEP.length}</b></div><div>下班時間<b>18:00</b></div></div>`;
- let b=document.createElement('button');b.className='option';b.textContent='繼續自由參觀（時間停止）';b.onclick=hideDialog;$('#options').appendChild(b);
+ let b=document.createElement('button');b.className='option';b.textContent='繼續自由參觀（時間停止）';b.onclick=()=>{hideDialog();state.freeExplore=true;document.body.classList.add('freeExplore');setQuest();};$('#options').appendChild(b);
  let b2=document.createElement('button');b2.className='option';b2.textContent='重新開始 09:00 的一天';b2.onclick=()=>{hideDialog();restart();};$('#options').appendChild(b2);
- let b3=document.createElement('button');b3.className='option';b3.textContent='重新選擇性別與名字';b3.onclick=()=>{window.location.reload();};$('#options').appendChild(b3);
+ let b3=document.createElement('button');b3.className='option';b3.textContent='重新選擇性別與名字';b3.onclick=()=>{hideDialog();$('#homeBtn').click();};$('#options').appendChild(b3);
 }
 function restart(){
+ state.freeExplore=false;document.body.classList.remove('freeExplore');
  state.floor='B2';state.step=0;state.x=0;state.z=11;state.angle=0;state.rep=60;state.care=65;
  state.time=540;state.clockSec=0;state.shiftOver=false;state.finished=false;state.breakFlag=0;state.choices=[];state.flags={};
  state.liftFrom='B2';state.portalCooldown=0;state.liftBusy=false;state.phoneRinging=false;state.supportCallAccepted=false;state.reportDone=false;state.reportClean=null;state.coinVisits=generateCoinVisits();$('#liftPanel').classList.remove('open');
@@ -1122,19 +1183,42 @@ function restart(){
  toast('09:00　'+state.playerName+'，新的一天開始，請走進 B2 辦公室。');
 }
 let closeObjs=[];
-function updateNear(){const items=activeObjects(state.floor);closeObjs=items.map(o=>({...o,d:Math.hypot(o.x-state.x,o.z-state.z)})).sort((a,b)=>a.d-b.d);let near=closeObjs[0];state.near=near&&near.d<2.45?near:null;$('#interactBtn').disabled=!state.near;$('#nearTag').textContent=state.near?`✦ ${state.near.name}`:'靠近閃爍提示處即可互動';let labels=closeObjs.filter(o=>o.d<15).slice(0,labelEls.length);for(let i=0;i<labelEls.length;i++){let el=labelEls[i],obj=labels[i];if(!obj){el.style.display='none';continue;}let p=project(obj.x,obj.y,obj.z);if(!p||p[0]<-40||p[0]>innerWidth+40||p[1]<-20||p[1]>innerHeight-80){el.style.display='none';continue;}el.style.display='block';el.style.left=p[0]+'px';el.style.top=p[1]+'px';el.textContent=obj.name;el.classList.toggle('active',STEP[state.step]&&STEP[state.step].floor===state.floor&&STEP[state.step].target===obj.id);}}
+function updateNear(){const items=activeObjects(state.floor);closeObjs=items.map(o=>({...o,d:Math.hypot(o.x-state.x,o.z-state.z)})).sort((a,b)=>a.d-b.d);let near=closeObjs[0];state.near=near&&near.d<2.45?near:null;$('#interactBtn').disabled=!state.near;$('#nearTag').textContent=state.near?`✦ ${state.near.name}`:'靠近閃爍提示處即可互動';let labels=closeObjs.filter(o=>o.d<15).slice(0,labelEls.length);for(let i=0;i<labelEls.length;i++){let el=labelEls[i],obj=labels[i];if(!obj){el.style.display='none';continue;}let p=project(obj.x,obj.y,obj.z);if(!p||p[0]<-40||p[0]>innerWidth+40||p[1]<-20||p[1]>innerHeight-80){el.style.display='none';continue;}el.style.display='block';el.style.left=p[0]+'px';el.style.top=p[1]+'px';el.textContent=obj.name;el.classList.toggle('active',!state.finished&&state.step<STEP.length&&STEP[state.step]&&STEP[state.step].floor===state.floor&&STEP[state.step].target===obj.id);}}
 function interact(){if(state.dialog||!state.started)return;if(state.near)runEvent(state.near);else toast('再靠近一點，就能與人員或設備互動。');}
 $('#interactBtn').addEventListener('click',interact);
 document.querySelectorAll('input[name="characterGender"]').forEach(el=>el.addEventListener('change',()=>{$('#introPronoun').textContent=el.checked&&el.value==='male'?'你':'妳';}));
 $('#nameInput').addEventListener('keydown',e=>{if(e.key==='Enter'){$('#nameInput').blur();$('#startBtn').click();}});
-$('#startBtn').onclick=()=>{state.gender=document.querySelector('input[name="characterGender"]:checked')?.value||'female';state.playerName=$('#nameInput').value.trim().slice(0,12)||'安安';$('#playerIdentity').textContent=state.playerName+'｜'+(state.gender==='male'?'男':'女')+' · 財務課員';state.started=true;state.clockSec=0;state.time=540;state.coinVisits=generateCoinVisits();state.phoneRinging=false;state.supportCallAccepted=false;state.reportDone=false;state.reportClean=null;$('#overlay').classList.add('hidden');$('#hud').style.display='block';setQuest();toast('09:00　'+state.playerName+'，上班了！走進 B2：人事 → 總務 → 財務。');};
+$('#startBtn').onclick=()=>{
+ state.gender=document.querySelector('input[name="characterGender"]:checked')?.value||'female';
+ state.playerName=$('#nameInput').value.trim().slice(0,12)||'安安';
+ $('#playerIdentity').textContent=state.playerName+'｜'+(state.gender==='male'?'男':'女')+' · 財務課員';
+ if(state.started){restart();}else{
+  state.started=true;state.clockSec=0;state.time=540;state.coinVisits=generateCoinVisits();
+  state.phoneRinging=false;state.supportCallAccepted=false;state.reportDone=false;state.reportClean=null;
+ }
+ state.freeExplore=false;document.body.classList.remove('freeExplore');
+ $('#overlay').classList.add('hidden');$('#hud').style.display='block';
+ $('#continueBtn').style.display='block';setQuest();
+ toast('09:00　'+state.playerName+'，上班了！走進 B2：人事 → 總務 → 財務。');
+};
+$('#continueBtn').onclick=resumeProgress;
+if(previousProgress)$('#continueBtn').style.display='block';
+$('#homeBtn').onclick=()=>{
+ if(!state.finished||!state.freeExplore||state.liftBusy)return;
+ $('#liftPanel').classList.remove('open');
+ document.body.classList.remove('freeExplore');
+ $('#overlay').classList.remove('hidden');$('#hud').style.display='none';
+ $('#continueBtn').textContent='▶ 繼續自由參觀';$('#continueBtn').style.display='block';
+ $('#startBtn').textContent='重新開始 09:00 的一天　→';saveProgress();
+};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)saveProgress();});
 // Touch joystick and desktop controls.
 let stick=$('#stick'),joy=$('#joystick');let axes={x:0,y:0},joyPointer=null;function setStick(e){let b=joy.getBoundingClientRect(),cx=b.left+b.width/2,cy=b.top+b.height/2,dx=e.clientX-cx,dy=e.clientY-cy,r=48,l=Math.hypot(dx,dy),s=l>r?r/l:1;axes.x=dx*s/r;axes.y=dy*s/r;stick.style.transform=`translate(${dx*s}px,${dy*s}px)`;}
 joy.addEventListener('pointerdown',e=>{e.preventDefault();joyPointer=e.pointerId;joy.setPointerCapture(e.pointerId);joy.classList.add('active');setStick(e);});joy.addEventListener('pointermove',e=>{if(joyPointer===e.pointerId){e.preventDefault();setStick(e);}});
 function resetStick(e){if(joyPointer!==e.pointerId)return;joyPointer=null;joy.classList.remove('active');axes.x=0;axes.y=0;stick.style.transform='translate(0,0)';}
 joy.addEventListener('pointerup',resetStick);joy.addEventListener('pointercancel',resetStick);joy.addEventListener('lostpointercapture',()=>{joyPointer=null;axes.x=axes.y=0;stick.style.transform='translate(0,0)';});
-const keys={};addEventListener('keydown',e=>{let k=e.key.toLowerCase();if('wasdarrowleftarrowrightarrowuparrowdownshift e'.includes(k)||['arrowleft','arrowright','arrowup','arrowdown',' '].includes(k))e.preventDefault();keys[k]=true;if((k==='e'||k===' ')&&!e.repeat&&!$('#dialogLayer').classList.contains('hidden'))return;if((k==='e'||k===' ')&&!e.repeat)interact();if(k==='escape'&&state.dialog)hideDialog();});addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});addEventListener('blur',()=>{axes.x=axes.y=0;Object.keys(keys).forEach(k=>keys[k]=false);state.run=false;$('#runBtn').classList.remove('down');});
-const runBtn=$('#runBtn');runBtn.addEventListener('pointerdown',e=>{e.preventDefault();runBtn.setPointerCapture(e.pointerId);state.run=true;runBtn.classList.add('down');});for(let ev of ['pointerup','pointercancel','lostpointercapture'])runBtn.addEventListener(ev,()=>{state.run=false;runBtn.classList.remove('down');});
+const keys={};addEventListener('keydown',e=>{let k=e.key.toLowerCase();if('wasdarrowleftarrowrightarrowuparrowdownshift e'.includes(k)||['arrowleft','arrowright','arrowup','arrowdown',' '].includes(k))e.preventDefault();keys[k]=true;if((k==='e'||k===' ')&&!e.repeat&&!$('#dialogLayer').classList.contains('hidden'))return;if((k==='e'||k===' ')&&!e.repeat)interact();if(k==='escape'&&state.dialog)hideDialog();});addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});addEventListener('blur',()=>{axes.x=axes.y=0;Object.keys(keys).forEach(k=>keys[k]=false);});
+// Mobile sprint button removed; desktop Shift remains available.
 // Easy-to-navigate collision volumes around solid desks and walls.
 const boxesB2=[
 // HR furniture and cabinets
@@ -1181,10 +1265,10 @@ return false;
 // Main character can smoothly walk in four directions and around furniture.
 let time=0,last=performance.now();let cam={x:0,y:7,z:15};let dynamicBuffer=gl.createBuffer();
 function move(dt){if(!state.started||state.dialog||state.liftBusy){state.moving=false;return;}
-let x=axes.x+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),y=axes.y+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);let len=Math.hypot(x,y);state.moving=len>.10;if(!state.moving)return;x/=Math.max(1,len);y/=Math.max(1,len);let speed=(state.run||keys.shift)?6.35:3.75,dx=x*speed*dt,dz=y*speed*dt;if(!collide(state.x+dx,state.z))state.x+=dx;if(!collide(state.x,state.z+dz))state.z+=dz;state.angle=Math.atan2(-x,-y);
+let x=axes.x+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),y=axes.y+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);let len=Math.hypot(x,y);state.moving=len>.10;if(!state.moving)return;x/=Math.max(1,len);y/=Math.max(1,len);let speed=keys.shift?6.35:3.75,dx=x*speed*dt,dz=y*speed*dt;if(!collide(state.x+dx,state.z))state.x+=dx;if(!collide(state.x,state.z+dz))state.z+=dz;state.angle=Math.atan2(-x,-y);
  if((state.floor==='B2'||state.floor==='B2M')&&state.x>-12.72&&state.x<-8.42&&state.z>=12.24&&performance.now()>(state.portalCooldown||0))crossB2Door();
 }
-function buildDynamic(t){let b=new Builder(),current=STEP[state.step];if(state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')current={floor:'B2',target:'servicePhone'};if(state.time>=960&&!state.reportDone&&state.floor==='B2')current={floor:'B2',target:'yesterdayReport'};
+function buildDynamic(t){let b=new Builder(),current=(state.finished||state.step>=STEP.length)?null:STEP[state.step];if(!state.finished&&state.step<STEP.length&&state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')current={floor:'B2',target:'servicePhone'};if(!state.finished&&state.step<STEP.length&&state.time>=960&&!state.reportDone&&state.floor==='B2')current={floor:'B2',target:'yesterdayReport'};
 // Artificial contact shadows and highlighted light guide at task targets.
 for(let o of activeObjects(state.floor)){if(o.type==='npc')shadow(b,o.x,o.z,.90);if(current&&current.floor===state.floor&&current.target===o.id){let pulse=.7+Math.sin(t*3.7)*.17;b.cylinder(o.x,.055,o.z,1.13*pulse,.028,'#d3b577',22);b.cylinder(o.x,.075,o.z,.63,.022,'#f5e4b8',18);}}
 shadow(b,state.x,state.z,.91);
@@ -1250,7 +1334,7 @@ let p=map(0,z),gap=map(2.1,z)[0]-p[0];ctx.strokeStyle='#7195ab';ctx.lineWidth=3;
 ctx.beginPath();ctx.moveTo(20,p[1]);ctx.lineTo(p[0]-gap,p[1]);ctx.moveTo(p[0]+gap,p[1]);ctx.lineTo(w-20,p[1]);ctx.stroke();}
 ctx.fillStyle=isRetailScene(state.floor)?'#fff4d9':'#ecfbff';ctx.font='bold 17px sans-serif';ctx.fillText(state.floor==='B2M'?'B2':state.floor,w-42,17);
 for(let o of activeObjects(state.floor)){let p=map(o.x,o.z);ctx.fillStyle=o.id==='elevator'?'#ca9870':'#507d8e';ctx.fillRect(p[0]-3,p[1]-3,6,6);}
-let target=STEP[state.step];if(state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')target={floor:'B2',target:'servicePhone'};if(state.time>=960&&!state.reportDone&&state.floor==='B2')target={floor:'B2',target:'yesterdayReport'};if(target&&target.floor===state.floor){let o=activeObjects(state.floor).find(x=>x.id===target.target);if(o){let p=map(o.x,o.z);ctx.beginPath();ctx.arc(p[0],p[1],8+2*Math.sin(time*4),0,6.283);ctx.strokeStyle='#e4a244';ctx.lineWidth=3;ctx.stroke();}}
+let target=(state.finished||state.step>=STEP.length)?null:STEP[state.step];if(!state.finished&&state.step<STEP.length&&state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')target={floor:'B2',target:'servicePhone'};if(!state.finished&&state.step<STEP.length&&state.time>=960&&!state.reportDone&&state.floor==='B2')target={floor:'B2',target:'yesterdayReport'};if(target&&target.floor===state.floor){let o=activeObjects(state.floor).find(x=>x.id===target.target);if(o){let p=map(o.x,o.z);ctx.beginPath();ctx.arc(p[0],p[1],8+2*Math.sin(time*4),0,6.283);ctx.strokeStyle='#e4a244';ctx.lineWidth=3;ctx.stroke();}}
 let p=map(state.x,state.z);ctx.fillStyle='#173a51';ctx.beginPath();ctx.arc(p[0],p[1],5.3,0,6.283);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
 }
 let cw=0,ch=0;function resize(){const dpr=Math.min(devicePixelRatio||1,innerWidth<780?1.25:1.6);cw=Math.max(1,Math.floor(innerWidth*dpr));ch=Math.max(1,Math.floor(innerHeight*dpr));if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}gl.viewport(0,0,cw,ch);}
