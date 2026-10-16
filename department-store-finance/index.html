@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no" />
 <meta name="theme-color" content="#101922" />
-<title>百貨日常・財務課｜3D冒險 V8.1</title>
+<title>百貨日常・財務課｜3D冒險 V8.2</title>
 <style>
 :root{--ivory:#faf6ed;--light:#dceaf0;--teal:#8ddbc8;--gold:#ebc68c;--ink:#10212d}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -725,8 +725,10 @@ function roamingSalesPeople(floor,t,gameTime){
 
 // Visual casts: geometric shadow discs beneath characters and quest marker.
 function shadow(b,x,z,s=1){b.cylinder(x,.022,z,.48*s,.014,'#7d8787',14);}
-function human(b,x,z,rot,color,walk=0,t=0,kind='staff'){
-b.setTransform(x,0,z,rot);const skin=kind==='tourist'?'#dcb08f':'#c79b7e',pant='#263543',hair=kind==='player'?(state.gender==='female'?'#402a29':'#1d2c35'):kind==='tourist'?'#41332a':'#1b252d';
+function human(b,x,z,rot,color,walk=0,t=0,kind='staff',genderHint=null){
+b.setTransform(x,0,z,rot);const skin=kind==='tourist'?'#dcb08f':'#c79b7e',pant='#263543';
+const woman=kind==='player'?state.gender==='female':genderHint==='female';
+const hair=kind==='player'?(woman?'#402a29':'#1d2c35'):kind==='tourist'?'#41332a':woman?'#392a31':'#1b252d';
 let stride=Math.sin(t*9)*Math.min(1,walk),swing=stride*.13;
 // Shoes, pants, jacket, arms, face and ID badge.
 b.box(-.19,.16,-.075+stride*.13,.27,.21,.48,'#1d2730');b.box(.19,.16,-.075-stride*.13,.27,.21,.48,'#222831');
@@ -735,8 +737,8 @@ b.box(0,1.11,0,.66,.19,.38,'#223541');b.sphere(0,1.49,0,.41,.52,.26,color,8,12);
 b.cylinder(-.48,1.46,-swing,.13,.67,color,9);b.cylinder(.48,1.46,swing,.13,.67,color,9);
 b.sphere(-.49,1.08,-swing, .125,.16,.13,skin,5,8);b.sphere(.49,1.08,swing,.125,.16,.13,skin,5,8);
 b.cylinder(0,2.00,0,.12,.25,skin,10);b.sphere(0,2.29,-.025,.257,.315,.245,skin,9,13);
-b.sphere(0,2.53,-.012,.265,kind==='player'&&state.gender==='male'?.11:.14,.262,hair,6,12);
-if(kind==='player'&&state.gender==='female'){b.sphere(0,2.25,.16,.275,.39,.18,hair,8,11);b.sphere(-.225,2.23,.045,.09,.29,.12,hair,7,8);b.sphere(.225,2.23,.045,.09,.29,.12,hair,7,8);b.box(0,.86,.0,.70,.27,.47,'#3c526b');}
+b.sphere(0,2.53,-.012,.265,kind==='player'&&!woman?.11:.14,.262,hair,6,12);
+if(woman){b.sphere(0,2.25,.16,.275,.39,.18,hair,8,11);b.sphere(-.225,2.23,.045,.09,.29,.12,hair,7,8);b.sphere(.225,2.23,.045,.09,.29,.12,hair,7,8);if(kind==='player')b.box(0,.86,.0,.70,.27,.47,'#3c526b');else{b.box(0,.94,.04,.66,.37,.41,color);b.box(0,2.44,-.205,.38,.085,.095,hair);}}
 b.sphere(-.24,2.28,-.005,.058,.094,.062,skin,4,6);b.sphere(.24,2.28,-.005,.058,.094,.062,skin,4,6);
 b.sphere(-.085,2.30,-.254,.020,.025,.019,'#18232c',4,6);b.sphere(.085,2.30,-.254,.020,.025,.019,'#18232c',4,6);b.sphere(0,2.21,-.27,.049,.052,.028,'#b78063',5,7);
 if(kind==='staff'||kind==='player'){b.box(0,1.42,-.288,.22,.27,.035,'#e2f1e8');b.box(0,1.41,-.312,.16,.13,.013,kind==='player'?'#67b9b2':'#6f9eaa');b.box(0,1.95,-.22,.035,.36,.023,'#b8c2d1');}
@@ -859,7 +861,7 @@ function activeCoinVisit(){return state.coinVisits.find(v=>!v.done && state.time
 function activeObjects(floor){let items=interactables[floor]||SALES_NPCS[floor]||(floor==='LIFT'?[]:[{id:'elevator',x:15.1,z:10.25,name:floor+' · 電梯入口',y:3,type:'lift'}]);
  let visible=items.filter(o=>o.id==='floorMgrB2'?state.step===7:o.id==='floorMgr13'?state.step!==7:true);
  if(floor==='B2'){let visitor=activeCoinVisit();if(visitor)visible=[...visible,{id:'coinVisitor',x:1.8,z:-4.45,name:'💰 '+visitor.name+'｜專櫃兌幣',y:3,type:'npc'}];}
- return visible;}
+ return visible.map(o=>o.type==='npc'?{...o,...colleagueMotion(floor,o,typeof time==='number'?time:0)}:o);}
 let labelEls=[];for(let i=0;i<22;i++){let el=document.createElement('div');el.className='worldLabel';document.body.appendChild(el);labelEls.push(el);}
 function setQuest(){
  let s=STEP[state.step];
@@ -1250,17 +1252,86 @@ const boxesB2M=[
 [5.0,7.65,-11.4,-9.35],[5.0,7.65,-8.85,-6.85],[5.0,7.65,-6.30,-4.25],[4.25,8.5,7.90,9.70]
 ];
 const boxesSales=[[-16.1,-9.5,.1,1.4],[-16.1,-9.5,-10.3,-9.0],[9.5,16.1,-8.6,-7.3],[-14.45,-11.15,4.26,5.44],[-14.45,-11.15,-5.75,-4.60],[11.15,14.45,-4.45,-3.3],[6.45,8.85,9.75,10.8]];
-function collide(x,z){
-if(state.floor==='LIFT')return x<-2.35||x>2.35||z<-.55||z>1.52;
+function collide(x,z,floor=state.floor){
+if(floor==='LIFT')return x<-2.35||x>2.35||z<-.55||z>1.52;
 if(x<-17.65||x>17.65||z<-12.88||z>12.77)return true;
-if(state.floor==='B2'||state.floor==='13F'){
+if(floor==='B2'||floor==='13F'){
 // Only the exterior entrance is enclosed; B2 departments have NO internal walls.
 if(Math.abs(z-9.5)<.25&&Math.abs(x)>1.86)return true;
 }
-for(let b of (state.floor==='B2'?boxesB2:state.floor==='13F'?boxes13F:state.floor==='1F'?boxes1F:state.floor==='B2M'?boxesB2M:SALES_FLOORS[state.floor]?[...boxesSales,[13.55,16.90,11.60,13.5]]:[[13.55,16.90,11.60,13.5]])){
+for(let b of (floor==='B2'?boxesB2:floor==='13F'?boxes13F:floor==='1F'?boxes1F:floor==='B2M'?boxesB2M:SALES_FLOORS[floor]?[...boxesSales,[13.55,16.90,11.60,13.5]]:[[13.55,16.90,11.60,13.5]])){
 if(x>b[0]-.28&&x<b[1]+.28&&z>b[2]-.28&&z<b[3]+.28)return true;
 }
 return false;
+}
+
+/* V8.2: staff wander gently inside their own office or near their counter.
+   All routes are purely visual and retain existing event IDs and saved data. */
+const colleagueRoutes=new Map();
+function femaleColleague(floor,o){
+ if(floor==='B2')return ['hr','coworker','floorMgrB2'].includes(o.id);
+ if(floor==='13F')return ['floorMgr13','salesPlanner','salesComplaints'].includes(o.id);
+ if(floor==='1F')return o.id==='floorMgr';
+ if(floor==='B2M')return ['foodClerkA','foodClerkB','marketClerk'].includes(o.id);
+ if(SALES_FLOORS[floor]){
+  const isA=o.id==='storeClerkA',isB=o.id==='storeClerkB';
+  if(floor==='5F'||floor==='9F')return false;
+  if(floor==='6F')return isB;
+  if(floor==='10F'||floor==='11F'||floor==='12F')return isA;
+  return true;
+ }
+ return false;
+}
+function withinColleagueArea(floor,o,x,z){
+ if(x<-16.8||x>16.8||z<-12.42||z>12.24)return false;
+ if(floor==='B2'){
+  if(o.id==='hr')return z>=3.58&&z<=9.08;
+  if(o.id==='ga'||o.id==='floorMgrB2')return z>=-3.05&&z<=3.05;
+  if(o.id==='coinVisitor')return z>=-8.2&&z<=-3.53;
+  return z>=-12.38&&z<=-3.57;
+ }
+ if(floor==='13F')return z>=-12.32&&z<=9.03;
+ if(floor==='B2M')return z>=-12.25&&z<=11.55;
+ if(floor==='1F')return z>=-12.25&&z<=12.1;
+ return z>=-12.2&&z<=11.5;
+}
+function routeForColleague(floor,o){
+ const key=floor+':'+o.id;
+ if(colleagueRoutes.has(key))return colleagueRoutes.get(key);
+ let seed=0;for(const c of key)seed=(seed*31+c.charCodeAt(0))%100003;
+ const valid=(x,z)=>withinColleagueArea(floor,o,x,z)&&!collide(x,z,floor);
+ let home=null;
+ for(const radius of [0,.35,.7,1.05,1.4,1.75,2.1,2.5]){
+  for(let i=0;i<(radius?20:1);i++){
+   const a=i*2*Math.PI/20+(seed%21)*.1;
+   const x=o.x+Math.cos(a)*radius,z=o.z+Math.sin(a)*radius;
+   if(valid(x,z)){home={x,z};break;}
+  }
+  if(home)break;
+ }
+ if(!home){const fallback={a:{x:o.x,z:o.z},b:{x:o.x,z:o.z},seed};colleagueRoutes.set(key,fallback);return fallback;}
+ let best=null;
+ // A clear segment is selected by sampling feet along the entire short route.
+ for(const radius of [1.55,1.30,1.07,.82,.56]){
+  for(let i=0;i<20;i++){
+   const theta=i*2*Math.PI/20+seed*.018;
+   const b={x:home.x+Math.cos(theta)*radius,z:home.z+Math.sin(theta)*radius};
+   let free=true;
+   for(let j=1;j<=8;j++){const q=j/8;if(!valid(home.x+(b.x-home.x)*q,home.z+(b.z-home.z)*q)){free=false;break;}}
+   if(free){best=b;break;}
+  }
+  if(best)break;
+ }
+ const route={a:home,b:best||home,seed};
+ colleagueRoutes.set(key,route);return route;
+}
+function colleagueMotion(floor,o,t){
+ const r=routeForColleague(floor,o);
+ const phase=t*(.53+(r.seed%13)*.009)+(r.seed%37)*.13;
+ const u=(1-Math.cos(phase))*.5,dx=r.b.x-r.a.x,dz=r.b.z-r.a.z;
+ const going=Math.sin(phase)>=0?1:-1;
+ const moving=Math.hypot(dx,dz)>.1&&Math.abs(Math.sin(phase))>.14;
+ return {x:r.a.x+dx*u,z:r.a.z+dz*u,angle:moving?Math.atan2(-dx*going,-dz*going):0,walking:moving?.74:0};
 }
 // Main character can smoothly walk in four directions and around furniture.
 let time=0,last=performance.now();let cam={x:0,y:7,z:15};let dynamicBuffer=gl.createBuffer();
@@ -1276,12 +1347,12 @@ shadow(b,state.x,state.z,.91);
 if(state.floor==='B2'){
 for(let o of activeObjects('B2').filter(o=>o.type==='npc')){
 let coat=o.id==='coinVisitor'?'#dabbb5':o.id==='hr'?'#c3dbe9':o.id==='ga'?'#9ebcb6':o.id==='floorMgrB2'?'#e1bbb2':o.id==='boss'?'#edf2f8':'#cedceb';
-human(b,o.x,o.z,o.id==='boss'?.5:-.8,coat,0,t,'staff');
+human(b,o.x,o.z,o.angle,coat,o.walking,t,'staff',femaleColleague('B2',o)?'female':'male');
 }
 }else if(state.floor==='B2M'){
  for(const o of activeObjects('B2M').filter(o=>o.type==='npc')){
   shadow(b,o.x,o.z,.83);
-  human(b,o.x,o.z,o.id==='marketStock'?.3:-.55,o.id.startsWith('food')?'#c8a88a':'#8caca2',0,t,'staff');
+  human(b,o.x,o.z,o.angle,o.id.startsWith('food')?'#c8a88a':'#8caca2',o.walking,t,'staff',femaleColleague('B2M',o)?'female':'male');
  }
  for(const p of roamingSalesPeople('B2M',t,state.time)){
   shadow(b,p.x,p.z,.77);
@@ -1290,13 +1361,13 @@ human(b,o.x,o.z,o.id==='boss'?.5:-.8,coat,0,t,'staff');
 }else if(state.floor==='13F'){
 for(let o of activeObjects('13F').filter(o=>o.type==='npc')){
 let coat=o.id==='floorMgr13'?'#d8b5a8':o.id==='salesLead'?'#677f91':'#b9ccd8';
-human(b,o.x,o.z,-.55,coat,0,t,'staff');
+human(b,o.x,o.z,o.angle,coat,o.walking,t,'staff',femaleColleague('13F',o)?'female':'male');
 }
-for(let [i,x] of [-13.7,11.7].entries()){let z=2.45+Math.sin(t*.4+i)*.22;shadow(b,x,z,.86);human(b,x,z,t*.2+i,'#a8bfc9',.13,t+i,'staff');}
+for(let [i,x] of [-13.7,11.7].entries()){let z=2.45+Math.sin(t*.4+i)*.72;shadow(b,x,z,.86);human(b,x,z,t*.2+i,'#a8bfc9',.55,t+i,'staff',i===0?'female':'male');}
 }else if(state.floor==='1F'){
 for(let o of activeObjects('1F').filter(o=>o.type==='npc')){
 let coat=o.id==='tax'?'#bcb28c':o.id==='fx'?'#b4b9d1':o.id==='floorMgr'?'#c99e85':o.id==='shop'?'#d9ada4':o.id==='greeter'?'#9dced0':'#263649';
-human(b,o.x,o.z,-.35,coat,0,t,(o.id==='greeter'||o.id==='guard'||o.id==='floorMgr')?'staff':'tourist');
+human(b,o.x,o.z,o.angle,coat,o.walking,t,(o.id==='greeter'||o.id==='guard'||o.id==='floorMgr')?'staff':'tourist',femaleColleague('1F',o)?'female':'male');
 }
 for(let i=0;i<5;i++){let x=[-1,5,-9,4,-14][i]+Math.sin(t*.23+i*2.2)*1.35,z=[4,9,5,1,8][i]+Math.cos(t*.18+i)*1.9;shadow(b,x,z,.85);human(b,x,z,t*.12+i,['#b8a1a7','#929e7d','#879db2','#cebca7','#a1b6a0'][i],.5,t+i,'tourist');}
 }
@@ -1305,7 +1376,7 @@ else if(SALES_FLOORS[state.floor]){
  const floorData=SALES_FLOORS[state.floor];
  for(const o of activeObjects(state.floor).filter(o=>o.type==='npc')){
   shadow(b,o.x,o.z,.83);
-  human(b,o.x,o.z,o.id==='storeClerkA'?-.36:.55,o.id==='storeClerkA'?floorData.accent:'#bfc5c9',0,t,'staff');
+  human(b,o.x,o.z,o.angle,o.id==='storeClerkA'?floorData.accent:'#bfc5c9',o.walking,t,'staff',femaleColleague(state.floor,o)?'female':'male');
  }
  for(const p of roamingSalesPeople(state.floor,t,state.time)){
   shadow(b,p.x,p.z,.78);
