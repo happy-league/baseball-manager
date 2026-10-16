@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no" />
 <meta name="theme-color" content="#101922" />
-<title>百貨日常・財務課｜3D冒險 V8.2</title>
+<title>百貨日常・財務課｜3D冒險 V8.3</title>
 <style>
 :root{--ivory:#faf6ed;--light:#dceaf0;--teal:#8ddbc8;--gold:#ebc68c;--ink:#10212d}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -269,6 +269,75 @@ let VP=new Float32Array(16),proj=new Float32Array(16),view=new Float32Array(16);
 function project(x,y,z){let cx=VP[0]*x+VP[4]*y+VP[8]*z+VP[12],cy=VP[1]*x+VP[5]*y+VP[9]*z+VP[13],cz=VP[2]*x+VP[6]*y+VP[10]*z+VP[14],cw=VP[3]*x+VP[7]*y+VP[11]*z+VP[15];if(cw<=.1||cz/cw>1)return null;return [((cx/cw)+1)*.5*innerWidth,(1-(cy/cw))*.5*innerHeight,cz/cw];}
 function makeBuffer(B){let buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(B.a),gl.STATIC_DRAW);return {buffer,count:B.a.length/10};}
 function draw(data){if(!data||!data.count)return;gl.bindBuffer(gl.ARRAY_BUFFER,data.buffer);let stride=40;for(const [id,size,ofs] of [[loc.p,3,0],[loc.n,3,12],[loc.c,3,24],[loc.k,1,36]]){gl.enableVertexAttribArray(id);gl.vertexAttribPointer(id,size,gl.FLOAT,false,stride,ofs);}gl.drawArrays(gl.TRIANGLES,0,data.count);}
+
+// Office decoration models (V8.3). Decorative only; no task or save effects.
+function officeDecor(b,where){
+ function clock(x,y,z){
+  b.sphere(x,y,z,.64,.64,.075,'#8babbc',11,20);
+  b.sphere(x,y,z+.075,.54,.54,.025,'#f7fcff',10,20);
+  for(let i=0;i<12;i++){let a=Math.PI/2-i*Math.PI/6;
+   b.box(x+Math.cos(a)*.45,y+Math.sin(a)*.45,z+.105,.056,.065,.018,i%3?'#9ab5c3':'#456b82',4);}
+ }
+ function boardRear(x,y,z){
+  b.box(x,y,z,4.30,2.08,.13,'#7e9eaf',4);
+  b.box(x,y,z+.081,4.05,1.86,.019,'#faf3e7',4);
+  let notes=[[-1.35,.37],[-.2,.38],[1.24,.31],[-1.30,-.48],[0,-.47],[1.31,-.5]];
+  notes.forEach(([dx,dy],i)=>{
+   b.box(x+dx,y+dy,z+.105,.76,.61,.017,['#c4e1eb','#f0dec2','#d4e6d8','#e3d7ed','#f2d9cf','#d2e5ec'][i],4);
+   b.box(x+dx-.24,y+dy+.23,z+.122,.12,.085,.012,'#bf8a6a',4);
+   for(let j=0;j<3;j++)b.box(x+dx,y+dy+.07-j*.13,z+.120,.47,.012,.008,'#9aa7ac',4);
+  });
+ }
+ function boardSide(x,y,z){
+  b.box(x,y,z,.15,2.18,3.7,'#839da9',4);
+  b.box(x-.084,y,z,.022,1.90,3.46,'#f6f0e2',4);
+  for(let i=0;i<5;i++)b.box(x-.103,y+.33-(i%2)*.60,z-1.27+i*.63,.020,.47,.50,['#f1dac8','#cee8e9','#e3e8c9','#d9e0f0','#eed9d8'][i],4);
+ }
+ function plant(x,z){
+  b.cylinder(x,.42,z,.43,.80,'#dce8e6',12,.48);
+  b.cylinder(x,.82,z,.49,.08,'#9db8c5',13);
+  b.cylinder(x,1.15,z,.09,.82,'#668d7d',9);
+  for(let i=0;i<6;i++){let a=i*Math.PI/3;
+   b.sphere(x+Math.cos(a)*.37,1.56+(i%2)*.18,z+Math.sin(a)*.35,.39,.47,.28,i%2?'#6aa18a':'#84b8a1',6,10);}
+  b.sphere(x,1.91,z,.36,.49,.34,'#648f79',7,11);
+ }
+ function standee(x,z,coat){
+  // A fictional singer cutout, not a real photograph or identifiable celebrity.
+  b.box(x,.08,z,1.05,.15,.58,'#6f8595',4);
+  b.box(x,1.17,z+.115,.055,2.24,.07,'#9caeb8',4);
+  b.box(x-.20,.57,z,.24,.85,.11,'#37485d',4);b.box(x+.20,.57,z,.24,.85,.11,'#37485d',4);
+  b.box(x,1.39,z,.75,.95,.10,coat,4);
+  for(let dx of [-.46,.46])b.box(x+dx,1.50,z,.16,.72,.085,coat,4);
+  b.sphere(x,2.18,z,.275,.34,.09,'#eac0a9',8,13);
+  b.sphere(x,2.43,z-.012,.31,.19,.10,'#513a40',7,11);
+  b.box(x,1.73,z+.067,.40,.09,.026,'#f4d59a',4);
+  for(let i=0;i<5;i++){let a=i*Math.PI*2/5;
+   b.box(x+Math.cos(a)*.20,1.16+Math.sin(a)*.20,z+.076,.11,.11,.018,'#ffe29f',4);}
+  b.box(x,2.75,z,1.13,.22,.09,'#f7d58f',4);
+ }
+ if(where==='B2'){
+  clock(-1.8,3.68,-13.42);
+  boardRear(-10.4,2.85,-13.43);boardRear(9.15,2.87,-13.43);
+  plant(-16.4,-3.35);plant(16.6,-6.6);
+  standee(16.40,-4.20,'#bf9acd');
+ }else{
+  clock(-.65,3.72,-13.30);
+  boardSide(18.14,2.76,2.9);
+  plant(-16.55,3.05);plant(16.10,-7.75);
+  standee(-16.40,4.45,'#8aacc5');
+ }
+}
+function drawOfficeClockHands(b,x,y,z,gameMin){
+ const hands=[[(gameMin%720)/60,12,.32,.030,'#29495d'],[gameMin%60,60,.46,.020,'#557a8a']];
+ for(const [t,den,len,w,col] of hands){
+  let a=Math.PI/2-t*Math.PI*2/den,c=Math.cos(a),si=Math.sin(a),nx=-si,ny=c;
+  let x0=x+c*.04,y0=y+si*.04, x1=x+c*len,y1=y+si*len;
+  b.quad([x0+nx*w,y0+ny*w,z+.145],[x0-nx*w,y0-ny*w,z+.145],
+         [x1-nx*w*.6,y1-ny*w*.6,z+.145],[x1+nx*w*.6,y1+ny*w*.6,z+.145],[0,0,1],col,4);
+ }
+ b.sphere(x,y,z+.154,.060,.060,.018,'#2e5269',5,9);
+}
+
 const buildOffice=()=>{
 let b=new Builder();
 // B2 entrance is at z=9.5. Corridor is physically outside the office.
@@ -319,6 +388,12 @@ for(let dx of [-1.31,1.31])for(let dz of [-.48,.48])b.box(x+dx,.38,z+dz,.078,.7,
 b.box(x,.99,z-.3,1.13,.69,.10,'#2d485e');b.box(x,1.02,z-.24,1.0,.54,.035,'#7faebe',4);
 b.box(x,.87,z+.36,.86,.04,.28,'#d6e8f0');b.box(x+.98,.9,z+.32,.27,.22,.25,'#f9fdff');
 b.box(x-.91,.90,z+.28,.20,.12,.22,'#bdd5e4');
+ // Every desk now has clearly visible dual screens and full computer peripherals.
+ b.box(x+.96,1.02,z-.29,.72,.55,.078,'#344c5c',4);
+ b.box(x+.96,1.04,z-.245,.63,.45,.024,'#90c9d8',4);
+ b.box(x+.96,.86,z+.35,.62,.03,.26,'#eaf3f8',4);
+ b.sphere(x+.51,.9,z+.43,.076,.047,.095,'#93b5c6',5,8);
+ b.box(x-.62,.33,z-.01,.26,.64,.42,'#aabfca',4);
 }
 function chair(x,z){b.cylinder(x,.37,z,.46,.14,'#8ea6b9',13);b.box(x,.93,z+.26,.88,1.07,.13,'#6d8b9e');b.cylinder(x,.20,z,.085,.35,'#576f84');}
 // Entry area: 人事 (human resources).
@@ -374,6 +449,7 @@ b.box(-.7,.86,-11.6,1.65,.15,.83,'#b9d4e4',3);
 b.box(-.7,1.22,-11.73,1.05,.62,.09,'#30526a',4);
 b.box(-.7,1.25,-11.66,.91,.47,.03,'#e0f5ff',4);
 for(let x of [5.6,10.7]){b.cylinder(x,.43,11.90,.51,.80,'#8b9fa7',12);b.cylinder(x,1.30,11.9,.10,1.05,'#708c7d');for(let j=0;j<5;j++)b.sphere(x+Math.cos(j*1.257)*.42,1.85,11.9+Math.sin(j*1.257)*.42,.43,.33,.38,'#7eac89',5,7);}
+officeDecor(b,'B2');
 return makeBuffer(b);
 };
 const buildLobby=()=>{let b=new Builder();b.box(0,-.22,0,37,.45,27.5,'#f0e1c5',1);
@@ -426,6 +502,10 @@ function workstation(x,z){
  for(let dx of [-1.13,1.13]){b.box(x+dx,.41,z,.1,.76,1.06,'#acb9bf');}
  b.box(x,.99,z-.20,1.06,.60,.09,'#304955');b.box(x,1.02,z-.15,.92,.46,.025,'#74b4bd',4);
  b.box(x,.92,z+.43,.83,.03,.26,'#e8edf1');
+  b.box(x+.82,1.00,z-.22,.72,.52,.08,'#314b56',4);
+  b.box(x+.82,1.02,z-.17,.62,.42,.024,'#83bdc1',4);
+  b.box(x+.76,.93,z+.44,.51,.03,.22,'#eff5f2',4);
+  b.box(x-.90,.34,z,.23,.64,.39,'#acbdc4',4);
  b.cylinder(x,.35,z+1.14,.42,.16,'#718a97',12);b.box(x,.90,z+1.36,.82,1.01,.15,'#5a7686');
 }
 for(let [x,z] of [[-13,6.2],[-7.5,6.2],[6,6.2],[11.3,6.2],[-13,.5],[-7.5,.5],[6,.5],[11.3,.5]])workstation(x,z);
@@ -453,6 +533,7 @@ for(let k=0;k<8;k++)b.box(-14.4+k*.8,2.48,-12.98,.48,.68,.09,['#a9cdd6','#d6d9df
 for(let x of [-3.2,0,3.2])b.box(x,.94,-4.7,1.4,.18,.75,'#d6c6b0',3);
 b.box(-3.6,2.2,-12.85,2.3,2.5,.12,'#e8f0f2',4);
 for(let j=0;j<5;j++)b.box(-3.6,1.45+j*.38,-12.77,1.7,.09,.06,'#98b2c0');
+officeDecor(b,'13F');
 return makeBuffer(b);
 };
 // Legacy empty-landing geometry retained as a fallback for unbuilt scenes.
@@ -1269,7 +1350,7 @@ return false;
    All routes are purely visual and retain existing event IDs and saved data. */
 const colleagueRoutes=new Map();
 function femaleColleague(floor,o){
- if(floor==='B2')return ['hr','coworker','floorMgrB2'].includes(o.id);
+ if(floor==='B2')return ['hr','coworker','floorMgrB2'].includes(o.id)||(o.id==='coinVisitor'&&/佳蓉|美玲/.test(o.name));
  if(floor==='13F')return ['floorMgr13','salesPlanner','salesComplaints'].includes(o.id);
  if(floor==='1F')return o.id==='floorMgr';
  if(floor==='B2M')return ['foodClerkA','foodClerkB','marketClerk'].includes(o.id);
@@ -1339,7 +1420,10 @@ function move(dt){if(!state.started||state.dialog||state.liftBusy){state.moving=
 let x=axes.x+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),y=axes.y+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);let len=Math.hypot(x,y);state.moving=len>.10;if(!state.moving)return;x/=Math.max(1,len);y/=Math.max(1,len);let speed=keys.shift?6.35:3.75,dx=x*speed*dt,dz=y*speed*dt;if(!collide(state.x+dx,state.z))state.x+=dx;if(!collide(state.x,state.z+dz))state.z+=dz;state.angle=Math.atan2(-x,-y);
  if((state.floor==='B2'||state.floor==='B2M')&&state.x>-12.72&&state.x<-8.42&&state.z>=12.24&&performance.now()>(state.portalCooldown||0))crossB2Door();
 }
-function buildDynamic(t){let b=new Builder(),current=(state.finished||state.step>=STEP.length)?null:STEP[state.step];if(!state.finished&&state.step<STEP.length&&state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')current={floor:'B2',target:'servicePhone'};if(!state.finished&&state.time>=960&&!state.reportDone&&state.floor==='B2')current={floor:'B2',target:'yesterdayReport'};
+function buildDynamic(t){let b=new Builder();
+if(state.floor==='B2')drawOfficeClockHands(b,-1.8,3.68,-13.42,state.time);
+else if(state.floor==='13F')drawOfficeClockHands(b,-.65,3.72,-13.30,state.time);
+let current=(state.finished||state.step>=STEP.length)?null:STEP[state.step];if(!state.finished&&state.step<STEP.length&&state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')current={floor:'B2',target:'servicePhone'};if(!state.finished&&state.time>=960&&!state.reportDone&&state.floor==='B2')current={floor:'B2',target:'yesterdayReport'};
 // Artificial contact shadows and highlighted light guide at task targets.
 for(let o of activeObjects(state.floor)){if(o.type==='npc')shadow(b,o.x,o.z,.90);if(current&&current.floor===state.floor&&current.target===o.id){let pulse=.7+Math.sin(t*3.7)*.17;b.cylinder(o.x,.055,o.z,1.13*pulse,.028,'#d3b577',22);b.cylinder(o.x,.075,o.z,.63,.022,'#f5e4b8',18);}}
 shadow(b,state.x,state.z,.91);
