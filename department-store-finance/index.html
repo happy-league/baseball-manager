@@ -877,7 +877,7 @@ function setQuest(){
  $('#shiftState').textContent=state.shiftOver?'已下班 · 請打卡':state.time>=720&&state.time<780?'午休 12:00–13:00':'上班 09:00–18:00';
  $('#scoreBadge').textContent=state.rep>=70?'優秀':state.rep>=45?'良好':'待加強';
  $('#progress').innerHTML=Array.from({length:STEP.length},(_,i)=>'<i class="'+(i<state.step?'done':'')+'"></i>').join('');
- document.body.classList.toggle('tasksDone',state.finished||state.step>=STEP.length);
+ document.body.classList.toggle('tasksDone',state.finished||(state.step>=STEP.length&&state.reportDone));
  updateZone();saveProgress();
 }
 function updateZone(){let label;
@@ -899,7 +899,7 @@ function generateCoinVisits(){
 }
 function updateAlerts(){
  if(!state.started)return;
- if(state.finished||state.step>=STEP.length){$('#alertStack').replaceChildren();return;}
+ if(state.finished||(state.step>=STEP.length&&state.reportDone)){$('#alertStack').replaceChildren();return;}
  let messages=[];
  if(state.phoneRinging&&!state.supportCallAccepted)messages.push(['ring','📞 1F 顧服正在來電｜請到 B2 財務區接聽']);
  if(state.time>=960&&!state.reportDone&&!state.shiftOver)messages.push(['','📊 16:00 昨日日結報表待處理｜B2 財務電腦']);
@@ -1172,7 +1172,7 @@ function showEnding(){
  $('#options').innerHTML=`<div class="stats"><div>工作評價<b>${state.rep}</b></div><div>內控謹慎度<b>${state.care}</b></div><div>完成事件<b>${Math.min(state.step,STEP.length)} / ${STEP.length}</b></div><div>下班時間<b>18:00</b></div></div>`;
  let b=document.createElement('button');b.className='option';b.textContent='繼續自由參觀（時間停止）';b.onclick=()=>{hideDialog();state.freeExplore=true;document.body.classList.add('freeExplore');setQuest();};$('#options').appendChild(b);
  let b2=document.createElement('button');b2.className='option';b2.textContent='重新開始 09:00 的一天';b2.onclick=()=>{hideDialog();restart();};$('#options').appendChild(b2);
- let b3=document.createElement('button');b3.className='option';b3.textContent='重新選擇性別與名字';b3.onclick=()=>{hideDialog();$('#homeBtn').click();};$('#options').appendChild(b3);
+ let b3=document.createElement('button');b3.className='option';b3.textContent='重新選擇性別與名字';b3.onclick=()=>{hideDialog();state.freeExplore=true;document.body.classList.add('freeExplore');$('#homeBtn').click();};$('#options').appendChild(b3);
 }
 function restart(){
  state.freeExplore=false;document.body.classList.remove('freeExplore');
@@ -1268,7 +1268,7 @@ function move(dt){if(!state.started||state.dialog||state.liftBusy){state.moving=
 let x=axes.x+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),y=axes.y+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);let len=Math.hypot(x,y);state.moving=len>.10;if(!state.moving)return;x/=Math.max(1,len);y/=Math.max(1,len);let speed=keys.shift?6.35:3.75,dx=x*speed*dt,dz=y*speed*dt;if(!collide(state.x+dx,state.z))state.x+=dx;if(!collide(state.x,state.z+dz))state.z+=dz;state.angle=Math.atan2(-x,-y);
  if((state.floor==='B2'||state.floor==='B2M')&&state.x>-12.72&&state.x<-8.42&&state.z>=12.24&&performance.now()>(state.portalCooldown||0))crossB2Door();
 }
-function buildDynamic(t){let b=new Builder(),current=(state.finished||state.step>=STEP.length)?null:STEP[state.step];if(!state.finished&&state.step<STEP.length&&state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')current={floor:'B2',target:'servicePhone'};if(!state.finished&&state.step<STEP.length&&state.time>=960&&!state.reportDone&&state.floor==='B2')current={floor:'B2',target:'yesterdayReport'};
+function buildDynamic(t){let b=new Builder(),current=(state.finished||state.step>=STEP.length)?null:STEP[state.step];if(!state.finished&&state.step<STEP.length&&state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')current={floor:'B2',target:'servicePhone'};if(!state.finished&&state.time>=960&&!state.reportDone&&state.floor==='B2')current={floor:'B2',target:'yesterdayReport'};
 // Artificial contact shadows and highlighted light guide at task targets.
 for(let o of activeObjects(state.floor)){if(o.type==='npc')shadow(b,o.x,o.z,.90);if(current&&current.floor===state.floor&&current.target===o.id){let pulse=.7+Math.sin(t*3.7)*.17;b.cylinder(o.x,.055,o.z,1.13*pulse,.028,'#d3b577',22);b.cylinder(o.x,.075,o.z,.63,.022,'#f5e4b8',18);}}
 shadow(b,state.x,state.z,.91);
@@ -1334,7 +1334,7 @@ let p=map(0,z),gap=map(2.1,z)[0]-p[0];ctx.strokeStyle='#7195ab';ctx.lineWidth=3;
 ctx.beginPath();ctx.moveTo(20,p[1]);ctx.lineTo(p[0]-gap,p[1]);ctx.moveTo(p[0]+gap,p[1]);ctx.lineTo(w-20,p[1]);ctx.stroke();}
 ctx.fillStyle=isRetailScene(state.floor)?'#fff4d9':'#ecfbff';ctx.font='bold 17px sans-serif';ctx.fillText(state.floor==='B2M'?'B2':state.floor,w-42,17);
 for(let o of activeObjects(state.floor)){let p=map(o.x,o.z);ctx.fillStyle=o.id==='elevator'?'#ca9870':'#507d8e';ctx.fillRect(p[0]-3,p[1]-3,6,6);}
-let target=(state.finished||state.step>=STEP.length)?null:STEP[state.step];if(!state.finished&&state.step<STEP.length&&state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')target={floor:'B2',target:'servicePhone'};if(!state.finished&&state.step<STEP.length&&state.time>=960&&!state.reportDone&&state.floor==='B2')target={floor:'B2',target:'yesterdayReport'};if(target&&target.floor===state.floor){let o=activeObjects(state.floor).find(x=>x.id===target.target);if(o){let p=map(o.x,o.z);ctx.beginPath();ctx.arc(p[0],p[1],8+2*Math.sin(time*4),0,6.283);ctx.strokeStyle='#e4a244';ctx.lineWidth=3;ctx.stroke();}}
+let target=(state.finished||state.step>=STEP.length)?null:STEP[state.step];if(!state.finished&&state.step<STEP.length&&state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')target={floor:'B2',target:'servicePhone'};if(!state.finished&&state.time>=960&&!state.reportDone&&state.floor==='B2')target={floor:'B2',target:'yesterdayReport'};if(target&&target.floor===state.floor){let o=activeObjects(state.floor).find(x=>x.id===target.target);if(o){let p=map(o.x,o.z);ctx.beginPath();ctx.arc(p[0],p[1],8+2*Math.sin(time*4),0,6.283);ctx.strokeStyle='#e4a244';ctx.lineWidth=3;ctx.stroke();}}
 let p=map(state.x,state.z);ctx.fillStyle='#173a51';ctx.beginPath();ctx.arc(p[0],p[1],5.3,0,6.283);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
 }
 let cw=0,ch=0;function resize(){const dpr=Math.min(devicePixelRatio||1,innerWidth<780?1.25:1.6);cw=Math.max(1,Math.floor(innerWidth*dpr));ch=Math.max(1,Math.floor(innerHeight*dpr));if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}gl.viewport(0,0,cw,ch);}
