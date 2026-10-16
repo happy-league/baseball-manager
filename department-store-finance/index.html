@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no" />
+<meta name="theme-color" content="#101922" />
+<title>百貨日常・財務課｜3D冒險 V8 B1休閒服飾與B2美食街超市</title>
+<style>
+:root{--ivory:#faf6ed;--light:#dceaf0;--teal:#8ddbc8;--gold:#ebc68c;--ink:#10212d}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0d1720;color:var(--ivory);font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;touch-action:none}
+#game{position:fixed;inset:0;display:block;width:100%;height:100%;outline:none}
+#vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 44%,#08172445 98%)}
+#grain{position:fixed;inset:0;pointer-events:none;opacity:.11;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E")}
+button{font:inherit;cursor:pointer;border:0}
+#hud{position:fixed;inset:0;pointer-events:none;display:none}
+.hudTop{position:absolute;top:env(safe-area-inset-top,0px);left:0;right:0;padding:14px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.brand{padding:9px 13px 10px;border:1px solid #d9f8ef31;border-radius:15px;background:#071724c7;box-shadow:0 7px 28px #0717244d;backdrop-filter:blur(14px)}
+.brand small{display:block;font-size:9px;letter-spacing:3px;color:#b1dfd5;font-weight:700}.brand strong{font-size:17px;letter-spacing:1.5px;display:block;margin-top:2px}
+.topRight{display:flex;align-items:flex-start;gap:8px}.badge{background:#071724c7;border:1px solid #f8ffff2b;backdrop-filter:blur(13px);border-radius:13px;padding:9px 12px;font-weight:800;min-width:66px;text-align:center;font-size:13px}.badge span{display:block;font-size:9px;color:#8db8b8;letter-spacing:1px;font-weight:600;margin-bottom:4px}
+#objective{position:absolute;left:16px;top:99px;max-width:min(360px,calc(100vw - 190px));background:linear-gradient(110deg,#091c2edb,#0b2936c7);border:1px solid #ddfff03a;border-left:3px solid #e6c481;padding:13px 14px;border-radius:4px 14px 14px 4px;box-shadow:0 10px 36px #020c1745;backdrop-filter:blur(14px)}
+.eyebrow{font-size:10px;letter-spacing:2.7px;color:#b9dece;font-weight:800;text-transform:uppercase}#qtitle{margin:5px 0 4px;font-size:15px;font-weight:900}#qdesc{font-size:11px;color:#d0dee1;line-height:1.7}
+#progress{margin-top:9px;display:flex;gap:3px}#progress i{flex:1;height:3px;background:#ffffff27;border-radius:8px}#progress i.done{background:var(--teal)}
+#minimap{width:142px;height:120px;border-radius:14px;background:#071724d5;border:1px solid #e4fff440;backdrop-filter:blur(12px)}
+#mapWrap{position:absolute;right:16px;top:95px}#mapCap{position:absolute;top:8px;left:12px;color:#aed8d6;font-size:9px;letter-spacing:1.4px;font-weight:800;pointer-events:none}
+#toast{position:absolute;left:50%;bottom:148px;transform:translate(-50%,10px);background:#061c29e8;border:1px solid #c6eee44d;border-radius:12px;padding:9px 15px;color:#fff;font-size:12px;font-weight:700;max-width:calc(100vw - 160px);text-align:center;opacity:0;transition:opacity .25s,transform .25s;box-shadow:0 10px 36px #0007}#toast.show{opacity:1;transform:translate(-50%,0)}
+#joystick{position:absolute;left:24px;bottom:calc(29px + env(safe-area-inset-bottom,0px));width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#bdeee810 0%,#9cdec916 54%,#bfeae520 55%,#ffffff18 59%,#ffffff07 65%);border:1px solid #e1fff72d;box-shadow:0 0 33px #8bdecd18,inset 0 0 18px #ffffff0b;pointer-events:auto;touch-action:none;user-select:none}
+#joystick:before{content:'移動';position:absolute;left:50%;top:9px;transform:translateX(-50%);color:#cfebe79c;letter-spacing:2px;font-size:10px;font-weight:900}
+#stick{position:absolute;width:58px;height:58px;left:40px;top:40px;border-radius:50%;background:linear-gradient(150deg,#e4fff8dd,#75cbbfae);border:2px solid #ffffff9b;box-shadow:0 6px 22px #031c2a88,inset 0 2px 5px #fff9;transition:box-shadow .1s;pointer-events:none}#joystick.active #stick{box-shadow:0 0 0 9px #a4ffdd22,0 8px 25px #0008}
+#buttons{position:absolute;bottom:calc(37px + env(safe-area-inset-bottom,0px));right:19px;display:flex;align-items:flex-end;gap:13px;pointer-events:auto}
+.ctrlButton{color:white;border:1px solid #f8ffff60;box-shadow:0 11px 34px #00152088;display:flex;align-items:center;justify-content:center;flex-direction:column;user-select:none;touch-action:none}
+#runBtn{width:64px;height:64px;border-radius:50%;background:#0b2e3fb9;font-weight:900;letter-spacing:1px;font-size:12px}#runBtn.down{background:#15947e}#interactBtn{width:91px;height:91px;border-radius:50%;background:linear-gradient(145deg,#e6c88e,#a66d3c);color:#172730;font-weight:950;font-size:17px;border:3px solid #fff4ce;box-shadow:0 0 0 7px #fce4a51c,0 12px 28px #0008}#interactBtn:disabled{filter:saturate(.3);opacity:.5}#interactBtn small{font-size:10px;margin-top:4px}
+#nearTag{position:absolute;right:15px;bottom:calc(146px + env(safe-area-inset-bottom,0px));font-size:11px;font-weight:700;color:#e8faef;text-align:right;text-shadow:0 2px 6px #000e;max-width:190px}
+.worldLabel{position:fixed;transform:translate(-50%,-100%);pointer-events:none;white-space:nowrap;min-width:55px;text-align:center;padding:5px 10px;color:#ecfff5;font-size:11px;font-weight:900;border-radius:18px;background:#08262ad9;border:1px solid #b6e9d75e;box-shadow:0 3px 12px #071019bd;display:none}
+.worldLabel:before{content:'';display:block;background:#e8c179;width:6px;height:6px;position:absolute;left:calc(50% - 3px);top:-10px;border-radius:50%;box-shadow:0 0 0 5px #e8c17946;animation:ping 1.7s infinite}.worldLabel.active{border-color:#fbe6a9;color:#ffebb9;background:#343022ec}
+@keyframes ping{0%,100%{box-shadow:0 0 0 3px #f8d78c42}50%{box-shadow:0 0 0 10px #f8d78c03}}
+#overlay,#dialogLayer{position:fixed;inset:0;background:linear-gradient(115deg,#07111bc7,#061420ba);display:flex;align-items:center;justify-content:center;padding:22px;backdrop-filter:blur(10px);z-index:10}
+#overlay{background:radial-gradient(ellipse at 65% 25%,#32555c95,transparent 57%),linear-gradient(110deg,#07111df5,#0a1b2bec)}
+#overlay.hidden,#dialogLayer.hidden{display:none}
+.introCard{width:min(570px,100%);padding:clamp(20px,5vw,43px);background:linear-gradient(140deg,#1c3444ed,#10202fea);border:1px solid #eef5e35c;border-radius:22px;box-shadow:0 30px 85px #0009;position:relative;overflow:hidden}
+.introCard:before{content:'';width:210px;height:210px;position:absolute;right:-90px;top:-115px;border:48px solid #d6bf8b0d;border-radius:50%;pointer-events:none}
+.introCard h1{font-size:clamp(35px,8.5vw,61px);letter-spacing:2px;line-height:1.22;margin:17px 0 9px;font-weight:950}.introCard h1 em{font-style:normal;color:#e8ca94}.introCard p{color:#cee0e3;font-size:14px;line-height:1.95;margin:16px 0}.divider{width:70px;height:3px;background:#e9c58d;margin-top:20px}
+.introChips{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px}.introChips span{font-size:11px;padding:7px 11px;border:1px solid #b7ece750;border-radius:99px;color:#ddf0e8;background:#ffffff0c}
+.goldBtn{border-radius:10px;padding:13px 21px;background:linear-gradient(115deg,#ffecbd,#d7ac6e);color:#233039;font-weight:950;box-shadow:0 6px 20px #0003;letter-spacing:1px}#startBtn{width:100%;margin-top:23px;font-size:16px;padding:16px}
+.micro{font-size:11px;color:#a9bac3;line-height:1.8;margin-top:13px}
+#dialogLayer{z-index:20;background:#04101a9e}
+.dialogCard{width:min(570px,100%);max-height:min(90dvh,720px);overflow:auto;background:linear-gradient(150deg,#f8f4e9,#e3ebe8);color:#1a2c35;border-radius:19px;box-shadow:0 18px 90px #000a;border:1px solid #fff;padding:24px 24px 21px}
+.dWho{font-size:11px;font-weight:900;letter-spacing:2px;color:#4a7470;margin-bottom:7px}.dialogCard h2{font-size:24px;margin:0 0 13px;line-height:1.4}.dialogText{white-space:pre-line;font-size:14px;color:#334650;line-height:1.9;margin:0 0 18px}.optionWrap{display:flex;flex-direction:column;gap:9px}.option{background:white;border:1px solid #ccdbd7;padding:13px 15px;border-radius:10px;text-align:left;color:#20363b;line-height:1.55;font-size:14px;font-weight:800}.option:hover,.option:focus-visible{background:#ecf6ef;border-color:#77b9a6}.option:active{transform:scale(.99)}.option:before{content:'›';margin-right:10px;color:#6faaa0}
+#resultText{font-size:13px;color:#35565c;line-height:1.9}.stats{display:flex;gap:8px;margin:17px 0;flex-wrap:wrap}.stats div{flex:1;min-width:110px;background:#ffffffb8;padding:13px;border-radius:11px;text-align:center;font-size:13px}.stats b{display:block;color:#215e5a;font-size:23px;margin-top:4px}
+#help{position:absolute;bottom:calc(10px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);font-size:10px;color:#dbede6a5;white-space:nowrap;text-shadow:0 1px 7px #001}
+#screenWarning{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;text-align:center;background:#0b1a27;color:white;padding:25px;font-size:16px}
+@media(max-width:640px){.hudTop{padding:8px 9px}.brand{padding:7px 9px}.brand small{font-size:8px;letter-spacing:1.5px}.brand strong{font-size:14px}.badge{padding:8px;font-size:12px;min-width:57px}.badge span{font-size:8px}#objective{left:9px;top:76px;max-width:calc(100vw - 168px);padding:9px 10px}#qtitle{font-size:12px}#qdesc{font-size:10px;line-height:1.5}#mapWrap{right:9px;top:76px}#minimap{width:135px;height:108px}#joystick{left:13px;bottom:calc(17px + env(safe-area-inset-bottom,0px));width:127px;height:127px}#stick{left:34.5px;top:34.5px}#buttons{right:13px;bottom:calc(22px + env(safe-area-inset-bottom,0px));gap:7px}#runBtn{width:58px;height:58px}#interactBtn{width:80px;height:80px;font-size:15px}#nearTag{bottom:calc(120px + env(safe-area-inset-bottom,0px))}#toast{bottom:165px;max-width:calc(100vw - 35px);font-size:11px}#help{display:none}.dialogCard{padding:20px}.dialogCard h2{font-size:21px}}
+@media(max-width:390px){#minimap{width:111px;height:98px}#objective{max-width:calc(100vw - 131px)}}
+
+#zoneBadge{position:absolute;top:74px;left:50%;transform:translateX(-50%);max-width:45vw;border-radius:99px;padding:7px 15px;border:1px solid #cbe5f4a6;background:#e4f4ffd9;color:#245270;font-weight:950;font-size:12px;letter-spacing:.6px;text-align:center;white-space:nowrap;box-shadow:0 8px 30px #0004;backdrop-filter:blur(10px)}
+body.mall #zoneBadge{background:#fff0cddf;color:#70502a;border-color:#ffe2a7}
+body.mall #vignette{background:radial-gradient(ellipse at center,transparent 52%,#96652b2a 100%)}
+body.mall #grain{opacity:.07}
+#overlay .introChips span{border-color:#c3e2f3a8}
+.brand{min-width:0}.brand small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand strong{white-space:nowrap}.topRight{flex-shrink:0}
+#objective .eyebrow{white-space:nowrap}
+@media(max-width:640px){#objective .eyebrow{font-size:8px;letter-spacing:.65px}#questIndex{letter-spacing:0}}
+@media(max-width:390px){.brand small{max-width:125px}.brand strong{font-size:13px}}
+@media(max-width:640px){#zoneBadge{top:65px;left:50%;transform:translateX(-50%);font-size:10px;max-width:60vw;padding:5px 8px}#objective{top:101px}#mapWrap{top:101px}#qdesc{font-size:9px}#qtitle{font-size:12px}}
+@media(max-width:390px){#zoneBadge{top:59px;font-size:9px}#objective{top:99px}#mapWrap{top:99px}}
+
+/* V4: simulated workday and elevator cabin */
+#timeBadge{font-variant-numeric:tabular-nums;font-size:19px;color:#ffedba}
+#shiftState{display:block;font-size:9px;line-height:1.6;letter-spacing:.5px;color:#d1e7e3}
+#liftPanel{display:none;position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:8;
+ width:clamp(174px,23vw,226px);max-height:min(81dvh,690px);padding:12px;border:1px solid #dbecf6a0;
+ border-radius:18px;background:linear-gradient(155deg,#b3c6d1ef,#5b7589f6 26%,#1d3449f8 90%);box-shadow:0 20px 65px #000b;
+ overflow-y:auto;pointer-events:auto;scrollbar-width:thin}
+#liftPanel.open{display:block}
+#liftPanel h3{font-size:13px;letter-spacing:2px;text-align:center;margin:0 0 3px;color:white}
+#liftPanel .cabDisplay{background:#0a151e;border:2px solid #c4d3d8;border-radius:8px;padding:7px;color:#a6f5df;text-align:center;
+ font-weight:950;font-size:21px;letter-spacing:1px;margin:7px 0 9px;box-shadow:inset 0 0 13px #71ffdb25}
+#liftPanel .cabCaption{font-size:10px;color:#e2f0f5;line-height:1.5;text-align:center;margin-bottom:7px}
+#liftButtons{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+#liftButtons button{aspect-ratio:1.18;border-radius:9px;background:linear-gradient(130deg,#e8eff4,#91a3af);color:#1a3045;font-size:14px;font-weight:950;border:1px solid #ffffffba;box-shadow:inset 0 1px 2px white,0 3px 5px #0004}
+#liftButtons button:active,#liftButtons button.sel{background:#ffe3a0;box-shadow:0 0 0 2px #fce59b}
+#liftExit{background:#dfc794;color:#293748;border-radius:9px;font-weight:950;width:100%;padding:10px 5px;margin-top:9px;font-size:12px}
+#liftPanel .mirrorHint{font-size:10px;color:#d6e8ee;text-align:center;margin-top:8px;line-height:1.4}
+#elevatorTransition{pointer-events:none;position:fixed;inset:0;z-index:25;visibility:hidden;display:flex;overflow:hidden}
+#elevatorTransition .door{width:50%;height:100%;background:linear-gradient(100deg,#526b7a,#e0edf1 45%,#8ca6b2 92%);border:2px solid #93aab2;transition:transform .5s ease-in-out}
+#elevatorTransition .leftDoor{transform:translateX(-101%)}#elevatorTransition .rightDoor{transform:translateX(101%)}
+#elevatorTransition.shut{visibility:visible}
+#elevatorTransition.shut .door{transform:translateX(0)}
+#travelTitle{position:absolute;left:50%;top:49%;transform:translate(-50%,-50%);padding:13px 25px;background:#071521db;color:#f5fffc;border-radius:10px;
+ font-weight:900;font-size:17px;letter-spacing:3px;opacity:0;transition:opacity .25s;white-space:nowrap}
+#elevatorTransition.shut #travelTitle{opacity:1}
+#dayBanner{pointer-events:none;position:fixed;top:125px;left:50%;transform:translateX(-50%);z-index:5;max-width:90vw;display:none;
+ background:#192f44e5;color:#fbe9be;padding:10px 14px;border-radius:12px;border:1px solid #f1d49b;font-size:12px;text-align:center;font-weight:850}
+#dayBanner.on{display:block}
+body.elevating #mapWrap,body.elevating #objective{display:none}
+body.elevating #nearTag,body.elevating #buttons{display:none}
+@media(max-width:640px){.badge{min-width:0}#timeBadge{font-size:16px}#shiftState{font-size:8px}
+#liftPanel{top:51%;right:8px;width:min(43vw,205px);max-height:69dvh;padding:9px}#liftButtons{gap:5px}#liftButtons button{font-size:12px}
+#liftPanel .cabCaption,#liftPanel .mirrorHint{font-size:9px}#dayBanner{top:72px;font-size:10px;max-width:86vw}}
+/* V4.1: Always-visible in-game clock, including narrow phones.
+   The earlier mobile rule hid the entire SECOND badge: that was the clock. */
+.topRight > .badge:has(#timeBadge){
+  border:1px solid #f6d891;
+  background:linear-gradient(135deg,#162d3df5,#234056ed);
+  box-shadow:0 4px 18px #0008,inset 0 1px 0 #ffe8aa22;
+}
+#timeBadge{display:block;font-size:24px;letter-spacing:1.7px;font-weight:950;
+  color:#ffe4a3;text-shadow:0 0 16px #e9c4756b;white-space:nowrap;line-height:1.15}
+#shiftState{white-space:nowrap;font-size:9px;color:#e8ecdd}
+@media(max-width:640px){
+  .hudTop{display:block;pointer-events:none;padding:0}
+  .hudTop .brand{position:absolute;left:8px;top:8px;max-width:calc(100vw - 166px)}
+  .brand small{font-size:7px;letter-spacing:.9px}
+  .brand strong{font-size:13px}
+  .topRight{position:absolute;left:8px;right:auto;top:64px;display:flex;gap:6px}
+  .topRight>.badge{padding:6px 9px;min-width:57px;font-size:12px}
+  .topRight>.badge span{font-size:9px;margin-bottom:2px}
+  .topRight>.badge:has(#timeBadge){
+    display:block!important;position:fixed;top:8px;right:8px;
+    width:150px;min-width:0;padding:9px 10px 8px;z-index:4;
+  }
+  #timeBadge{font-size:25px}
+  #shiftState{font-size:9px;letter-spacing:0}
+  #zoneBadge{top:112px;left:50%;transform:translateX(-50%);max-width:96vw}
+  #objective,#mapWrap{top:151px}
+  #dayBanner{top:123px;z-index:9}
+}
+@media(max-width:370px){
+  .hudTop .brand{max-width:calc(100vw - 155px)}
+  .topRight>.badge:has(#timeBadge){width:143px}
+  #timeBadge{font-size:24px}
+  #objective,#mapWrap{top:150px}
+}
+@media(max-height:650px) and (max-width:640px){
+  #zoneBadge{top:103px}
+  #objective,#mapWrap{top:139px}
+  .topRight{top:59px}
+}
+/* V5: loading, live intercom, scheduled daily closing, and coin-exchange visits */
+#loadingScreen{position:fixed;inset:0;z-index:45;background:radial-gradient(ellipse at 57% 20%,#305264 0%,#102a3e 43%,#081421 100%);display:flex;align-items:center;justify-content:center;padding:22px;color:#f2f9f6}
+#loadingScreen.done{display:none}
+.loadingWrap{width:min(540px,100%);text-align:center}
+.loadingIcon{height:96px;display:flex;align-items:center;justify-content:center;font-size:65px;filter:drop-shadow(0 8px 18px #f7d7a455);animation:floatLogo 2.2s ease-in-out infinite}
+@keyframes floatLogo{50%{transform:translateY(-7px)}}
+.loadingSub{font-size:12px;letter-spacing:4px;color:#d9e6de;margin:14px 0}
+.loadingTitle{font-size:clamp(30px,8vw,51px);font-weight:950;letter-spacing:2px;color:#f9e2b3;margin:4px 0 33px}
+.loadingBar{height:16px;padding:3px;border:1px solid #bedce1a0;border-radius:50px;background:#10212b;box-shadow:0 5px 25px #0005}
+.loadingFill{width:0%;height:100%;border-radius:50px;background:linear-gradient(90deg,#90cfd2,#f5d58c);box-shadow:0 0 18px #edcb8066}
+.loadingPercent{font-size:42px;font-weight:950;letter-spacing:1px;font-variant-numeric:tabular-nums;margin:17px auto 4px}
+.loadingMsg{font-size:14px;font-weight:750;min-height:26px;color:#d7e8e8}
+.loadingFooter{font-size:11px;color:#9caeb8;margin-top:25px;letter-spacing:1.2px}
+#alertStack{position:fixed;left:16px;bottom:calc(205px + env(safe-area-inset-bottom,0px));z-index:6;width:min(352px,calc(100vw - 32px));pointer-events:none;display:flex;flex-direction:column;gap:5px}
+#alertStack:empty{display:none}
+.alertBox{padding:9px 11px;background:#142e40ee;border:1px solid #f2ce80;color:#fff3d6;font-size:12px;font-weight:850;line-height:1.5;border-radius:10px;box-shadow:0 5px 20px #06111c89;backdrop-filter:blur(9px)}
+.alertBox.ring{border-color:#83e4d1;color:#d3fff7;animation:ringGlow 1.5s ease-in-out infinite}
+@keyframes ringGlow{50%{box-shadow:0 0 23px #74e4c668}}
+#alertStack .alertBox:nth-child(n+3){display:none}
+@media(max-width:640px){#alertStack{left:9px;bottom:calc(175px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 18px)}.alertBox{font-size:10px;padding:7px 9px}}
+
+/* V7 character creation: mobile-first and fully touch-operable. */
+.introCard{max-height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+.characterSetup{position:relative;margin-top:16px;padding:15px;border:1px solid #bde7df55;background:linear-gradient(140deg,#f6ffff11,#cedfd90a);border-radius:13px}
+.characterLabel{display:block;font-size:11px;letter-spacing:1.2px;font-weight:900;color:#bce5de;margin-bottom:8px}
+.genderPick{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:13px}
+.genderPick label{position:relative;display:block;cursor:pointer;min-width:0}
+.genderPick input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.genderFace{display:flex;align-items:center;justify-content:center;gap:9px;min-height:48px;border-radius:9px;border:1.5px solid #9aaebd70;color:#dfedef;background:#0a202dce;transition:background .15s,border .15s,box-shadow .15s;font-size:14px;font-weight:900}
+.genderFace .genderIcon{font-size:20px;line-height:1;color:#e4c78c}
+.genderPick input:checked+.genderFace{border-color:#f4d29a;background:#435b67;box-shadow:0 0 0 2px #dfc18f24}
+.genderPick input:focus-visible+.genderFace{outline:3px solid #9be8d4;outline-offset:2px}
+#nameInput{width:100%;min-height:46px;border:1px solid #c1d4e0;border-radius:9px;padding:11px 12px;background:#f4f9fa;color:#172b38;font-size:16px;font-family:inherit;outline:none;touch-action:auto}
+#nameInput:focus{border-color:#e4c68b;box-shadow:0 0 0 3px #e4c68b3b}
+.characterHint{margin-top:8px;font-size:10px;line-height:1.6;color:#b7ccd0}
+#playerIdentity{display:block;font-size:10px;letter-spacing:.25px;line-height:1.5;color:#e7cfa1;font-weight:850;margin-top:3px}
+@media(max-width:640px){.introCard{padding:20px;max-height:calc(100dvh - 22px)}.introCard h1{font-size:clamp(29px,8vw,45px);margin:9px 0 6px;line-height:1.14}.introCard p{font-size:12px;line-height:1.65;margin:10px 0}.introChips{margin-top:12px}.characterSetup{padding:12px;margin-top:12px}.genderFace{min-height:42px}#startBtn{margin-top:13px;padding:14px;font-size:14px}.micro{font-size:10px;line-height:1.65}.divider{margin-top:11px}.brand strong{line-height:1.25}#playerIdentity{font-size:9px}}
+@media(max-height:600px) and (max-width:640px){.introCard{padding:15px}.introCard h1{font-size:29px}.genderFace{min-height:38px}.characterSetup{margin-top:8px}#nameInput{min-height:40px}}
+</style>
+</head>
+<body>
+<canvas id="game" aria-label="3D 百貨公司場景"></canvas><div id="vignette"></div><div id="grain"></div>
+<div id="hud">
+ <div class="hudTop"><div class="brand"><small>DEPARTMENT STORE · STORY MODE</small><strong>百貨日常 <span style="color:#e5c18a">｜財務課</span></strong><span id="playerIdentity" aria-live="polite">財務課員 · 待命</span></div><div class="topRight"><div class="badge"><span>目前樓層</span><b id="floorBadge">B2</b></div><div class="badge"><span>遊戲現在時刻</span><b id="timeBadge" role="timer" aria-label="遊戲現在時刻">09:00</b><small id="shiftState">上班 09:00–18:00</small></div><div class="badge"><span>工作評價</span><b id="scoreBadge">良好</b></div></div></div>
+ <div id="objective"><div class="eyebrow">TODAY'S ASSIGNMENT · <span id="questIndex">01 / 20</span></div><div id="qtitle">上班打卡</div><div id="qdesc">前往財務室，開始今天的工作。</div><div id="progress"></div></div>
+ <div id="zoneBadge">🚶 B2 公共走廊 · 人事室入口</div>
+ <div id="mapWrap"><canvas id="minimap" width="284" height="240"></canvas><span id="mapCap">FLOOR MAP</span></div>
+ <div id="toast"></div>
+ <div id="nearTag">靠近人員或物件即可互動</div>
+ <div id="joystick" aria-label="移動搖桿"><div id="stick"></div></div>
+ <div id="buttons"><button class="ctrlButton" id="runBtn">快跑<small style="font-size:9px;margin-top:2px">按住</small></button><button class="ctrlButton" id="interactBtn" disabled>互動<small>交談 / 操作</small></button></div>
+ <div id="help">電腦：W A S D／方向鍵移動 · Shift 快跑 · E 互動 ｜手機：左下搖桿</div>
+</div>
+<div id="dayBanner"></div><div id="alertStack" aria-live="polite"></div>
+<div id="liftPanel" aria-label="電梯樓層按鈕"><h3>電梯操作面板</h3><div class="cabDisplay" id="liftDisplay">B2</div><div class="cabCaption">輕觸樓層按鈕前往目的地</div><div id="liftButtons"></div><button id="liftExit">開門｜返回目前樓層</button><div class="mirrorHint">鏡面位於轎廂後方 · 可看見自己的倒影</div></div>
+<div id="elevatorTransition" aria-hidden="true"><div class="door leftDoor"></div><div class="door rightDoor"></div><div id="travelTitle">電梯移動中</div></div>
+<div id="loadingScreen" role="status" aria-live="polite"><div class="loadingWrap"><div class="loadingIcon">🏬</div><div class="loadingSub">DEPARTMENT STORE · FINANCE STORY</div><div class="loadingTitle">百貨日常</div><div class="loadingBar"><div class="loadingFill" id="loadingFill"></div></div><div class="loadingPercent" id="loadingPercent">0%</div><div class="loadingMsg" id="loadingMsg">正在整理財務憑證…</div><div class="loadingFooter">準備開始 09:00 的百貨工作日</div></div></div>
+<div id="overlay"><div class="introCard"><div class="eyebrow">A DAY INSIDE THE DEPARTMENT STORE</div><div class="divider"></div><h1>百貨日常<br><em>財務課的<br>一天</em></h1><p><span id="introPronoun">妳</span>是百貨公司 B2 辦公室的財務課員。平安度過一天，18:00準時下班！玩家需要妥善處理會計、出納、顧客服務及跨部門工作，避免留下重大內控疏失。🏆 贏得勝利！</p><div class="introChips"><span>3D 第一人稱探索</span><span>分支事件 × 多種結局</span></div>
+<div class="characterSetup" aria-label="遊戲角色設定">
+ <span class="characterLabel">01 · 選擇角色性別</span>
+ <div class="genderPick" role="radiogroup" aria-label="角色性別">
+  <label><input type="radio" name="characterGender" value="female" checked><span class="genderFace"><span class="genderIcon">♀</span>女性</span></label>
+  <label><input type="radio" name="characterGender" value="male"><span class="genderFace"><span class="genderIcon">♂</span>男性</span></label>
+ </div>
+ <label class="characterLabel" for="nameInput">02 · 輸入角色名字</label>
+ <input id="nameInput" type="text" autocomplete="off" maxlength="12" placeholder="例如：王小明、安安" aria-label="角色名字（可留白）">
+ <div class="characterHint">不填寫時預設為「安安」。所選性別會套用到角色外觀，姓名會顯示於工作介面與劇情中。</div>
+</div>
+<button id="startBtn" class="goldBtn">佩戴識別證，開始上班　→</button><div class="micro">◆ 手機使用左下圓形搖桿移動，靠近閃爍標記後點「互動」。<br>◆ 15:00–17:00 留意 B2 專櫃人員兌幣，16:00 別忘了製作前一日的日結報表。<br>◆ 18:00 後請返回 B2 打卡下班，確保內控與交接安全。<br>◆ 這是可遊玩的單檔試作版；人物與場景採程式化 3D 建模，非真人攝影等級的寫實素材。</div></div></div>
+<div id="dialogLayer" class="hidden"><div class="dialogCard"><div class="dWho" id="dWho"></div><h2 id="dTitle"></h2><p class="dialogText" id="dText"></p><div class="optionWrap" id="options"></div></div></div>
+<div id="screenWarning"></div>
+<script>
+'use strict';
+// A self-contained WebGL 3D game: no library download or internet connection required.
+(function(){
+const $=s=>document.querySelector(s), canvas=$('#game');let gl;
+try{gl=canvas.getContext('webgl',{alpha:false,antialias:true,depth:true,powerPreference:'high-performance'})||canvas.getContext('experimental-webgl');}catch(e){}
+if(!gl){$('#loadingScreen').classList.add('done');$('#overlay').style.display='none';const w=$('#screenWarning');w.style.display='flex';w.textContent='目前瀏覽器無法啟用 WebGL 3D。請改用最新版 Chrome、Edge 或 Safari 開啟此 HTML。';return;}
+const VERT=`attribute vec3 aPosition; attribute vec3 aNormal;attribute vec3 aColor;attribute float aKind;
+uniform mat4 uVP;varying vec3 vNormal;varying vec3 vColor;varying vec3 vWorld;varying float vKind;
+void main(){vNormal=aNormal;vColor=aColor;vWorld=aPosition;vKind=aKind;gl_Position=uVP*vec4(aPosition,1.0);}`;
+const FRAG=`precision mediump float;varying vec3 vNormal;varying vec3 vColor;varying vec3 vWorld;varying float vKind;
+uniform vec3 uEye;uniform vec3 uFogColor;uniform float uFloor;
+float grid(float v,float density,float width){float f=fract(v*density);return 1.0-smoothstep(0.0,width,min(f,1.0-f));}
+void main(){vec3 n=normalize(vNormal);vec3 sun=normalize(vec3(-0.38,0.85,0.6));float diff=max(0.,dot(n,sun));float side=max(0.,dot(n,normalize(vec3(0.55,0.48,-0.5))));
+vec3 col=vColor;float gloss=.1;
+if(vKind>.5 && vKind<1.5){float lines=max(grid(vWorld.x,0.52,.011),grid(vWorld.z,0.52,.011));float vein=sin(vWorld.x*2.9+sin(vWorld.z*1.8))*sin(vWorld.z*2.4+vWorld.x)*.035;col=col*(1.0-lines*.18+vein);gloss=.55;}
+else if(vKind>1.5&&vKind<2.5){float lines=max(grid(vWorld.x,.32,.008),grid(vWorld.z,.32,.008));col=col*(1.-lines*.18);gloss=.14;}
+else if(vKind>2.5&&vKind<3.5){col*=.96+.06*sin(vWorld.x*42.+vWorld.z*11.);gloss=.25;}
+else if(vKind>3.5&&vKind<4.5){col*=.91+.09*sin(vWorld.x*115.+vWorld.z*4.);gloss=.5;}
+float lighting=.70+diff*.34+side*.11;vec3 view=normalize(uEye-vWorld);vec3 refl=reflect(-sun,n);float spec=pow(max(0.,dot(refl,view)),(gloss>.4?38.:18.))*gloss;
+vec3 temperature=uFloor>.5?vec3(1.10,.99,.82):vec3(.93,1.015,1.07);
+vec3 lit=col*lighting*temperature+temperature*spec*.26;
+float d=distance(uEye,vWorld);float fog=smoothstep(24.,65.,d)*.37;gl_FragColor=vec4(mix(lit,uFogColor,fog),1.0);}`;
+function shader(type,src){let s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s;}
+let program;try{program=gl.createProgram();gl.attachShader(program,shader(gl.VERTEX_SHADER,VERT));gl.attachShader(program,shader(gl.FRAGMENT_SHADER,FRAG));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(program));}catch(e){$('#loadingScreen').classList.add('done');$('#overlay').innerHTML='<div class="introCard">3D 畫面初始化失敗：'+String(e.message||e)+'</div>';return;}
+gl.useProgram(program);gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.clearColor(.09,.15,.19,1);gl.disable(gl.CULL_FACE);
+const loc={p:gl.getAttribLocation(program,'aPosition'),n:gl.getAttribLocation(program,'aNormal'),c:gl.getAttribLocation(program,'aColor'),k:gl.getAttribLocation(program,'aKind'),vp:gl.getUniformLocation(program,'uVP'),eye:gl.getUniformLocation(program,'uEye'),fog:gl.getUniformLocation(program,'uFogColor'),floor:gl.getUniformLocation(program,'uFloor')};
+const colorCache={};function rgb(s){if(Array.isArray(s))return s;if(colorCache[s])return colorCache[s];s=s.replace('#','');return colorCache[s]=[parseInt(s.substr(0,2),16)/255,parseInt(s.substr(2,2),16)/255,parseInt(s.substr(4,2),16)/255];}
+function Builder(){this.a=[];this.ox=0;this.oy=0;this.oz=0;this.ry=0;this.cos=1;this.sin=0;}
+Builder.prototype.setTransform=function(x,y,z,ry){this.ox=x;this.oy=y;this.oz=z;this.ry=ry||0;this.cos=Math.cos(this.ry);this.sin=Math.sin(this.ry);};
+Builder.prototype.vertex=function(x,y,z,nx,ny,nz,c,k){let X=x*this.cos+z*this.sin+this.ox,Z=-x*this.sin+z*this.cos+this.oz;let NX=nx*this.cos+nz*this.sin,NZ=-nx*this.sin+nz*this.cos;this.a.push(X,y+this.oy,Z,NX,ny,NZ,c[0],c[1],c[2],k||0);};
+Builder.prototype.tri=function(a,b,c,n,col,k){const C=rgb(col);this.vertex(a[0],a[1],a[2],n[0],n[1],n[2],C,k);this.vertex(b[0],b[1],b[2],n[0],n[1],n[2],C,k);this.vertex(c[0],c[1],c[2],n[0],n[1],n[2],C,k)};
+Builder.prototype.quad=function(a,b,c,d,n,col,k){this.tri(a,b,c,n,col,k);this.tri(a,c,d,n,col,k)};
+Builder.prototype.box=function(x,y,z,w,h,d,col,k=0){let x0=x-w/2,x1=x+w/2,y0=y-h/2,y1=y+h/2,z0=z-d/2,z1=z+d/2;
+this.quad([x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1],[0,1,0],col,k);
+this.quad([x1,y0,z0],[x0,y0,z0],[x0,y0,z1],[x1,y0,z1],[0,-1,0],col,k);
+this.quad([x0,y0,z1],[x0,y1,z1],[x1,y1,z1],[x1,y0,z1],[0,0,1],col,k);
+this.quad([x1,y0,z0],[x1,y1,z0],[x0,y1,z0],[x0,y0,z0],[0,0,-1],col,k);
+this.quad([x1,y0,z1],[x1,y1,z1],[x1,y1,z0],[x1,y0,z0],[1,0,0],col,k);
+this.quad([x0,y0,z0],[x0,y1,z0],[x0,y1,z1],[x0,y0,z1],[-1,0,0],col,k);};
+Builder.prototype.cylinder=function(x,y,z,r,h,col,segments=12,rTop=r,kind=0){let C=rgb(col),a,b,p1,p2;for(let i=0;i<segments;i++){a=i/segments*Math.PI*2;b=(i+1)/segments*Math.PI*2;let c1=Math.cos(a),s1=Math.sin(a),c2=Math.cos(b),s2=Math.sin(b);p1=[x+c1*r,y-h/2,z+s1*r];p2=[x+c2*r,y-h/2,z+s2*r];let t1=[x+c1*rTop,y+h/2,z+s1*rTop],t2=[x+c2*rTop,y+h/2,z+s2*rTop];this.vertex(...p1,c1,0,s1,C,kind);this.vertex(...t1,c1,0,s1,C,kind);this.vertex(...t2,c2,0,s2,C,kind);this.vertex(...p1,c1,0,s1,C,kind);this.vertex(...t2,c2,0,s2,C,kind);this.vertex(...p2,c2,0,s2,C,kind);this.tri([x,y+h/2,z],t2,t1,[0,1,0],col,kind);this.tri([x,y-h/2,z],p1,p2,[0,-1,0],col,kind);}};
+Builder.prototype.sphere=function(x,y,z,rx,ry,rz,col,rings=7,segments=11){let C=rgb(col);for(let i=0;i<rings;i++){let a=-Math.PI/2+i*Math.PI/rings,b=-Math.PI/2+(i+1)*Math.PI/rings;for(let j=0;j<segments;j++){let u=j*Math.PI*2/segments,v=(j+1)*Math.PI*2/segments;let fn=(lat,lon)=>{let nx=Math.cos(lat)*Math.cos(lon),ny=Math.sin(lat),nz=Math.cos(lat)*Math.sin(lon);return [x+rx*nx,y+ry*ny,z+rz*nz,nx/rx,ny/ry,nz/rz];};let p=fn(a,u),q=fn(b,u),r=fn(b,v),s=fn(a,v);let emit=v=>{let len=Math.hypot(v[3],v[4],v[5]);this.vertex(v[0],v[1],v[2],v[3]/len,v[4]/len,v[5]/len,C,0)};emit(p);emit(q);emit(r);emit(p);emit(r);emit(s);}}};
+// Numeric matrix functions keep the file fully offline.
+function perspective(out,fov,aspect,near,far){let f=1/Math.tan(fov/2);out.fill(0);out[0]=f/aspect;out[5]=f;out[10]=(far+near)/(near-far);out[11]=-1;out[14]=2*far*near/(near-far);return out;}
+function lookAt(out,e,t,up){let zx=e[0]-t[0],zy=e[1]-t[1],zz=e[2]-t[2];let l=Math.hypot(zx,zy,zz)||1;zx/=l;zy/=l;zz/=l;let xx=up[1]*zz-up[2]*zy,xy=up[2]*zx-up[0]*zz,xz=up[0]*zy-up[1]*zx;l=Math.hypot(xx,xy,xz)||1;xx/=l;xy/=l;xz/=l;let yx=zy*xz-zz*xy,yy=zz*xx-zx*xz,yz=zx*xy-zy*xx;out[0]=xx;out[1]=yx;out[2]=zx;out[3]=0;out[4]=xy;out[5]=yy;out[6]=zy;out[7]=0;out[8]=xz;out[9]=yz;out[10]=zz;out[11]=0;out[12]=-(xx*e[0]+xy*e[1]+xz*e[2]);out[13]=-(yx*e[0]+yy*e[1]+yz*e[2]);out[14]=-(zx*e[0]+zy*e[1]+zz*e[2]);out[15]=1;return out;}
+function mul(out,a,b){for(let i=0;i<4;i++)for(let j=0;j<4;j++){out[j*4+i]=a[i]*b[j*4]+a[4+i]*b[j*4+1]+a[8+i]*b[j*4+2]+a[12+i]*b[j*4+3];}return out;}
+let VP=new Float32Array(16),proj=new Float32Array(16),view=new Float32Array(16);
+function project(x,y,z){let cx=VP[0]*x+VP[4]*y+VP[8]*z+VP[12],cy=VP[1]*x+VP[5]*y+VP[9]*z+VP[13],cz=VP[2]*x+VP[6]*y+VP[10]*z+VP[14],cw=VP[3]*x+VP[7]*y+VP[11]*z+VP[15];if(cw<=.1||cz/cw>1)return null;return [((cx/cw)+1)*.5*innerWidth,(1-(cy/cw))*.5*innerHeight,cz/cw];}
+function makeBuffer(B){let buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(B.a),gl.STATIC_DRAW);return {buffer,count:B.a.length/10};}
+function draw(data){if(!data||!data.count)return;gl.bindBuffer(gl.ARRAY_BUFFER,data.buffer);let stride=40;for(const [id,size,ofs] of [[loc.p,3,0],[loc.n,3,12],[loc.c,3,24],[loc.k,1,36]]){gl.enableVertexAttribArray(id);gl.vertexAttribPointer(id,size,gl.FLOAT,false,stride,ofs);}gl.drawArrays(gl.TRIANGLES,0,data.count);}
+const buildOffice=()=>{
+let b=new Builder();
+// B2 entrance is at z=9.5. Corridor is physically outside the office.
+// The three departments are sequential from the main entrance toward the far interior:
+// HR z[3.3,9.5] -> General Affairs z[-3.35,3.3] -> Finance z[-13.5,-3.35].
+b.box(0,-.22,0,37,.45,27.5,'#eaf4fa',1);
+// Cooler white/sky-blue office compared to the public B2 corridor.
+b.box(0,-.008,11.46,36.7,.01,4.00,'#cbd7df',2);
+b.box(0,-.002,10.05,35,.008,.04,'#a8bbc9');
+b.box(0,2.72,-13.62,36.9,5.5,.23,'#dcecf6');
+b.box(-18.4,2.7,0,.26,5.5,27.5,'#d4e7f4');
+b.box(18.4,2.7,0,.26,5.5,27.5,'#d4e7f4');
+// Front exterior corridor parapet only 0.65m, so 3D player is visible.
+// Public passage has a real walk-through opening (x=-12.8..-8.4) into B2 retail.
+b.box(-15.60,.31,13.70,5.60,.65,.16,'#9db3c0');
+b.box(5.00,.31,13.70,26.8,.65,.16,'#9db3c0');
+b.box(-12.87,2.2,13.50,.22,4.35,.40,'#a5c5d6',4);
+b.box(-8.33,2.2,13.50,.22,4.35,.40,'#a5c5d6',4);
+b.box(-10.60,4.36,13.50,4.60,.23,.42,'#d6e8f0',4);
+b.box(-10.60,4.03,13.50,3.35,.44,.19,'#3f7387',4);
+b.box(-10.60,.045,13.38,4.28,.035,.45,'#d9c9a6',4);
+// Slim glass door leaf: deliberately translucent-looking and not solid for entry.
+for(let x of [-11.72,-9.47]){b.box(x,2.08,13.54,1.90,3.61,.038,'#c3e3e9',4);b.box(x,1.93,13.37,.08,.52,.08,'#d7c18c',4);}
+// Office glass entry partitions, with central 4-meter passage.
+function glassPartition(z){
+for(let [x,w] of [[-10.25,16.4],[10.25,16.4]]){
+b.box(x,1.61,z,w,3.22,.095,'#d7eaf5',4);
+b.box(x,2.9,z,w,.11,.15,'#a2bed0',4);
+for(let dx=-w/2+3.2;dx<w/2-.4;dx+=3.9)b.box(x+dx,1.65,z,.095,3.25,.12,'#8aadc2',4);
+}
+b.box(-2.02,1.75,z,.16,3.5,.20,'#8eaabf',4);b.box(2.02,1.75,z,.16,3.5,.20,'#8eaabf',4);
+b.box(0,3.34,z,4.1,.23,.26,'#b0cada');}
+glassPartition(9.5);
+// No partitions at all between the B2 HR, General Affairs and Finance teams.
+// Different desk groupings distinguish departments without physical dividers.
+// Corporate acoustic ceiling, clinical cool-white LED fixtures.
+for(let x of [-13,-7,1,8,14])for(let z of [-10.7,-6,0,6.5]){
+b.box(x,5.28,z,2.8,.10,1.55,'#d7e6ed');
+b.box(x,5.22,z,2.25,.035,.35,'#e7fbff');
+b.box(x,5.17,z,2.14,.031,.08,'#fffefe');}
+// Zone-specific pale blue carpet/runners on each floor, centre passage kept clear.
+for(let [z,depth,col] of [[6.55,5.4,'#e2f1f8'],[-.05,6.0,'#d5edf8'],[-8.15,10.0,'#e8f5fb']]){
+b.box(-9.65,.005,z,15.2,.013,depth,col,2);b.box(10,.005,z,15.0,.013,depth,col,2);}
+for(let z of [9.3])b.box(0,.008,z,4.1,.025,.14,'#91b8ce');
+function desk(x,z,c='#c0d8e6'){
+b.box(x,.78,z,3.10,.16,1.38,c,3);
+for(let dx of [-1.31,1.31])for(let dz of [-.48,.48])b.box(x+dx,.38,z+dz,.078,.7,.09,'#9bb5c5',4);
+b.box(x,.99,z-.3,1.13,.69,.10,'#2d485e');b.box(x,1.02,z-.24,1.0,.54,.035,'#7faebe',4);
+b.box(x,.87,z+.36,.86,.04,.28,'#d6e8f0');b.box(x+.98,.9,z+.32,.27,.22,.25,'#f9fdff');
+b.box(x-.91,.90,z+.28,.20,.12,.22,'#bdd5e4');
+}
+function chair(x,z){b.cylinder(x,.37,z,.46,.14,'#8ea6b9',13);b.box(x,.93,z+.26,.88,1.07,.13,'#6d8b9e');b.cylinder(x,.20,z,.085,.35,'#576f84');}
+// Entry area: 人事 (human resources).
+for(let [x,z] of [[-12,7.6],[9.5,7.6],[-12,4.95],[9.5,4.95]]){desk(x,z,'#c5dae6');chair(x,z+1.04);}
+for(let x of [-16.9,15.1])for(let z of [4.2,6.45,8.45]){
+b.box(x,1.13,z,1.05,2.12,1.35,'#a5bfcd',4);
+for(let n=0;n<3;n++)b.box(x+(x<0?.54:-.54),.57+n*.61,z,.06,.42,1.03,'#f6fcff');}
+// HR employee forms and glass table.
+b.box(-13,.92,6.7,.65,.08,.46,'#edfaff');b.box(8.6,.94,6.55,.65,.05,.5,'#e5f2f8');
+// General Affairs centre: procurement and supplies.
+for(let [x,z] of [[-12,.65],[10,.65],[-12,-2.0],[10,-2.0]]){desk(x,z,'#bdd7e3');chair(x,z+1.01);}
+// GA equipment and storage, well clear of the central aisle.
+b.box(-16.6,1.25,-.6,1.15,2.45,3.6,'#95afc0',4);
+for(let z of [-1.70,-.60,.50]){b.box(-15.9,1.25,z,.08,.07,.90,'#eff8fc');}
+b.box(15.8,1.15,1.25,1.55,2.16,2.6,'#b2c9d4');
+for(let k=0;k<3;k++)b.box(14.95,.49+k*.57,1.25,.06,.38,2.05,'#e4f4fb');
+b.box(-15.1,1.02,1.8,1.7,.94,1.1,'#eaf8fc');b.box(-15.1,1.56,1.85,1.15,.22,.57,'#c4d7e0');
+// Finance is deep inside the office.
+for(let [x,z] of [[-12.1,-10.3],[-6.6,-10.3],[-12.1,-6.8],[-6.6,-6.8],[6.1,-10.3]]){desk(x,z,'#b4d0e1');chair(x,z+1.04);}
+for(let z of [-10.7,-8.5,-6.25,-4.45]){
+b.box(-17.35,1.25,z,1.08,2.35,1.60,'#99b4c9',4);
+for(let j=0;j<3;j++){b.box(-16.77,.56+j*.68,z,.09,.46,1.17,'#e2f0fa');b.box(-16.71,.55+j*.68,z,.065,.045,.35,'#7395ae',4);}}
+// Ledger terminal and cashier verification desk near player approach.
+b.box(-10.3,.96,-6.7,.56,.07,.4,'#f8fdff');b.box(-11,.96,-6.77,.47,.04,.31,'#e6eef5');
+// Vault deeper on the far right; interaction happens from its accessible near side.
+b.box(12.05,1.42,-10.1,2.9,2.83,1.72,'#7d9fb2',4);
+b.box(12.05,1.48,-9.2,2.40,2.28,.09,'#bcd4df',4);
+b.cylinder(12,1.50,-9.11,.42,.095,'#658798',14);
+b.box(12.05,1.49,-9.06,.71,.10,.09,'#e9f4f6',4);
+b.box(8.6,.86,-5.7,2.0,.14,1.10,'#adc6d6');b.box(8.6,.99,-5.7,.55,.08,.33,'#e6edf5');
+// Supervisor corner, behind the general finance desks.
+desk(6.1,-12.1,'#a4c1d2');b.box(15.2,1.5,-12.6,3.85,2.97,.95,'#98b8cb',4);
+for(let i=0;i<6;i++)b.box(13.9+i*.43,1.35,-12.04,.29,1.12,.22,['#e8eff6','#9bd2df','#c6d5f1'][i%3]);
+// Attendance clock, positioned just beyond the office entrance by the HR desks.
+b.cylinder(2.8,.50,8.80,.16,.95,'#9cb8c9',12);
+b.box(2.8,1.22,8.80,.64,.82,.24,'#5c7c8e',4);
+b.box(2.8,1.27,8.65,.53,.36,.06,'#9fe8e1',4);
+b.box(2.8,.97,8.65,.35,.08,.05,'#eef9f6');
+// Hallway elevator: ONLY outside office, along B2 public corridor near x=15.
+b.box(15.2,2.7,12.66,5.0,5.5,2.25,'#95acbb',4);
+b.box(15.2,2.38,11.48,3.26,4.60,.15,'#dae8f0',4);
+b.box(14.39,2.38,11.37,1.50,4.29,.07,'#8b9fac',4);
+b.box(16.00,2.38,11.37,1.51,4.29,.07,'#8499a6',4);
+b.box(15.2,.034,11.11,3.62,.04,.22,'#d4b477',4);
+b.box(17.25,1.72,11.16,.33,.7,.28,'#5d7c8d',4);
+b.box(17.25,1.73,10.99,.10,.20,.08,'#9cebdc');
+b.box(15.2,4.84,11.30,3.4,.45,.18,'#dfeef5');
+// B2 finance internal phone and yesterday's report terminal.
+b.box(.55,.68,-10.00,1.40,1.34,.72,'#b7d1df',3);
+b.box(.55,1.39,-10.00,.75,.56,.18,'#284b67',4);
+b.box(.55,1.43,-9.88,.63,.42,.035,'#a4dfed',4);
+b.box(-.7,.86,-11.6,1.65,.15,.83,'#b9d4e4',3);
+b.box(-.7,1.22,-11.73,1.05,.62,.09,'#30526a',4);
+b.box(-.7,1.25,-11.66,.91,.47,.03,'#e0f5ff',4);
+for(let x of [5.6,10.7]){b.cylinder(x,.43,11.90,.51,.80,'#8b9fa7',12);b.cylinder(x,1.30,11.9,.10,1.05,'#708c7d');for(let j=0;j<5;j++)b.sphere(x+Math.cos(j*1.257)*.42,1.85,11.9+Math.sin(j*1.257)*.42,.43,.33,.38,'#7eac89',5,7);}
+return makeBuffer(b);
+};
+const buildLobby=()=>{let b=new Builder();b.box(0,-.22,0,37,.45,27.5,'#f0e1c5',1);
+b.box(0,3.7,-13.65,37,7.6,.35,'#e8d8bb');b.box(-18.4,3.6,0,.30,7.4,27.5,'#f1e2cb');b.box(18.4,3.6,0,.30,7.4,27.5,'#ead7b8');b.box(0,1.2,13.72,37,2.4,.15,'#efdab9');
+// Tall glass facade and window mullions.
+for(let x=-16;x<=16;x+=4){b.box(x,4.15,-13.4,.14,5.8,.15,'#576e74',4);b.box(x+1.6,4.7,-13.29,2.9,4.75,.07,'#e7dbbb',4);}b.box(0,6.95,-13.3,37,.17,.19,'#4b5e64',4);
+for(let x of [-14,-3,9,16]){b.box(x,3.1,-8,.6,6.2,.6,'#f0ddb6');b.box(x,6.3,-8,1.1,.38,1.1,'#fff4d8');}
+for(let x of [-9,1,11])for(let z of [-8,3,11]){b.box(x,7.4,z,4.6,.11,2.3,'#fff2d2');b.box(x,7.30,z,2.15,.045,.25,'#fff3b1');}
+// Elegant floor accent islands and marble inlays.
+for(let z of [-9,-4,1,6,11]){b.box(0,-.004,z,28,.008,.055,'#cfae7c',1);}b.box(0,-.001,7,16,.008,3.1,'#e1c18c',1);
+// Service desk has usable space in front (positive z).
+function counter(x,z,w=5,col='#836e61'){b.box(x,.64,z,w,1.28,1.5,col,3);b.box(x,1.33,z,w+.24,.14,1.72,'#eee8df',1);b.box(x,1.13,z+.8,w,.24,.075,'#c8b07c',4);}
+counter(-9.5,-7.5,5.1,'#b69a76');counter(1,-7.5,4.2,'#b09270');
+for(let x of [-10.5,-8.6,1]){b.box(x,1.45,-7.45,.5,.38,.1,'#203947');b.box(x,1.41,-7.33,.46,.31,.04,'#4e9197',4);}
+// Mall boutique on right.
+b.box(9.7,3.4,4.7,.14,6.8,11,'#c9cfce',4);b.box(14.2,3.4,4.7,.11,6.8,11,'#b0babe',4);b.box(11.8,6.7,4.7,5.5,.22,11,'#c3c7c2',4);b.box(12.2,.63,5.7,3.7,1.24,1.4,'#968272',3);b.box(12.2,1.32,5.7,3.9,.14,1.62,'#ebe6db',1);b.box(12.7,1.44,5.5,.6,.15,.35,'#314855');b.box(10.9,1.37,5.58,.4,.05,.5,'#dedac9');
+// Display racks with folded clothes.
+for(let x of [9,14.6])for(let z of [1.0,7.6]){b.box(x,1.1,z,1.25,.10,2,'#cebca9');for(let i=0;i<4;i++)b.box(x,1.2+i*.14,z-.2,.75,.13,.55,['#c6a49e','#738f8b','#ddd3c5','#6a7784'][i]);}
+// Atrium bench and greenery.
+for(let p of [[-3,6],[2,8],[-13,7]]){b.cylinder(p[0],.45,p[1],.57,.87,'#ede2d3',12);b.cylinder(p[0],1.3,p[1],.15,.9,'#556d48',8);for(let j=0;j<4;j++)b.sphere(p[0]+Math.cos(j*1.57)*.4,1.8,p[1]+Math.sin(j*1.57)*.42,.55,.38,.5,'#587e54',6,9);}
+b.box(-7,.46,8,3,.21,1.1,'#ac9380',3);b.box(-8.25,.23,8,.17,.46,.75,'#7b6a65');b.box(-5.75,.23,8,.17,.46,.75,'#7b6a65');
+// Kiosks / electronic signage.
+b.box(-14.9,1.5,0,1.5,3,.4,'#2b414d',4);b.box(-14.9,1.72,.26,1.24,2.25,.09,'#4b7e8e',4);b.box(-14.9,.32,0,.7,.65,.7,'#52646b');
+// Elevator similar coordinates across floors.
+b.box(15.2,2.8,-11.45,5.3,5.5,4.1,'#858b89',4);b.box(15.2,2.35,-9.38,3.2,4.63,.15,'#bbc4c1',4);b.box(14.42,2.35,-9.27,1.51,4.29,.06,'#6c8489',4);b.box(16,2.35,-9.27,1.51,4.29,.06,'#718990',4);b.box(15.2,.02,-8.76,3.7,.04,.68,'#e7bb70',4);b.box(17.27,1.68,-8.8,.34,.74,.26,'#2d4e58',4);b.box(17.27,1.7,-8.62,.08,.2,.08,'#99e7d4');
+// Signage mounting and abstract decor boxes.
+for(let x of [-12.5,-9.5,-6.5]){b.cylinder(x,5.8,-7.0,.1,1.8,'#a3957f');b.sphere(x,4.7,-7,.47,.47,.47,'#f0d5a5',6,10);}
+return makeBuffer(b);};
+const buildSalesOffice=()=>{
+let b=new Builder();
+// Level 13 houses Sales Operations / Floor Management, not any department in B2.
+// Pale stone floor, wood trim and abundant daylight distinguish this office.
+b.box(0,-.22,0,37,.45,27.5,'#e5e9e9',1);
+b.box(0,-.01,11.46,36.7,.02,4.0,'#c9d7dd',2);
+b.box(0,2.71,-13.62,36.8,5.5,.23,'#d8e3e7');
+b.box(-18.4,2.71,0,.26,5.5,27.4,'#e4ecef');
+b.box(18.4,2.71,0,.26,5.5,27.4,'#e4ecef');
+b.box(0,.31,13.72,36.7,.65,.18,'#8d9ba4');
+// Glass entry from lift corridor, open center walkway.
+for(let x of [-10.25,10.25]){b.box(x,1.6,9.5,16.4,3.2,.10,'#d0e3e9',4);b.box(x,3.23,9.5,16.4,.20,.12,'#8ca5b2',4);}
+b.box(-2.03,1.7,9.5,.12,3.4,.14,'#8ba3ad');b.box(2.03,1.7,9.5,.12,3.4,.14,'#8ba3ad');
+// Linear ceiling lights and wall-side panoramic windows.
+for(let x of [-13,-8,-3,4,10])for(let z of [-10,-5,1,6]){b.box(x,5.17,z,2.4,.09,1.2,'#edf4f5');b.box(x,5.09,z,1.9,.025,.23,'#ffffff');}
+for(let x of [-13,-8,-3,2,7,12]){b.box(x,3.0,-13.46,4.55,3.1,.06,'#a8c7d5',4);b.box(x,1.43,-13.40,4.40,.07,.10,'#eef9fb');}
+// Meeting table at left rear and open-plan floor-management workstations.
+b.box(-7.4,.76,-8.1,7.8,.22,2.05,'#bea991',3);
+for(let x of [-9.6,-6.5,-3.7])for(let z of [-9.6,-6.65]){b.cylinder(x,.37,z,.42,.18,'#7894a4',11);b.box(x,.92,z+.2,.75,1.0,.16,'#6f8693');}
+function workstation(x,z){
+ b.box(x,.82,z,2.8,.17,1.37,'#d3c1aa',3);
+ for(let dx of [-1.13,1.13]){b.box(x+dx,.41,z,.1,.76,1.06,'#acb9bf');}
+ b.box(x,.99,z-.20,1.06,.60,.09,'#304955');b.box(x,1.02,z-.15,.92,.46,.025,'#74b4bd',4);
+ b.box(x,.92,z+.43,.83,.03,.26,'#e8edf1');
+ b.cylinder(x,.35,z+1.14,.42,.16,'#718a97',12);b.box(x,.90,z+1.36,.82,1.01,.15,'#5a7686');
+}
+for(let [x,z] of [[-13,6.2],[-7.5,6.2],[6,6.2],[11.3,6.2],[-13,.5],[-7.5,.5],[6,.5],[11.3,.5]])workstation(x,z);
+// Sales reporting / customer complaint board at the deep end.
+b.box(8.25,2.45,-12.95,8.4,3.45,.19,'#526c77',4);
+b.box(8.25,2.47,-12.82,7.7,2.74,.04,'#dbecef',4);
+for(let i=0;i<5;i++){b.box(5.3+i*1.3,2.1+(i%3)*.27,-12.77,.92,.8,.02,['#91bdc1','#d6c6aa','#b0d6d7'][i%3],4);}
+// Document archive, noticeboards and copier.
+b.box(-16.35,1.35,-3.8,1.55,2.7,3.4,'#b1c1ca',4);
+for(let j=0;j<3;j++)b.box(-15.53,.6+j*.70,-3.8,.11,.52,3.1,'#dbe7ea');
+b.box(16.25,1.0,-2.6,1.6,1.95,2.5,'#afbfc5');
+b.box(16.2,2.0,-2.6,1.25,.20,1.8,'#f0f5f5');
+// Elevator is outside the office, in the 13F corridor.
+b.box(15.2,2.7,12.66,5.0,5.5,2.25,'#9fadb7',4);
+b.box(15.2,2.38,11.48,3.26,4.60,.15,'#d5e3e9',4);
+b.box(14.39,2.38,11.37,1.50,4.29,.07,'#90a0ad',4);
+b.box(16,2.38,11.37,1.51,4.29,.07,'#8598a4',4);
+b.box(15.2,.034,11.11,3.62,.04,.22,'#d4b477',4);
+b.box(17.25,1.72,11.16,.33,.7,.28,'#536975',4);
+b.box(17.25,1.73,10.99,.10,.20,.08,'#95e5d7');
+// Indoor planting for lived-in corporate feel.
+for(let x of [-15.2,12.4]){b.cylinder(x,.52,8.25,.53,1.02,'#eee3d0');b.cylinder(x,1.30,8.25,.12,.8,'#64836a');b.sphere(x,2.02,8.25,.66,.72,.55,'#638d78',6,9);}
+// Additional everyday sales operations: wall calendars, folders, poster boards and document trays.
+for(let k=0;k<8;k++)b.box(-14.4+k*.8,2.48,-12.98,.48,.68,.09,['#a9cdd6','#d6d9df','#c9b99e','#97b3c6'][k%4],4);
+for(let x of [-3.2,0,3.2])b.box(x,.94,-4.7,1.4,.18,.75,'#d6c6b0',3);
+b.box(-3.6,2.2,-12.85,2.3,2.5,.12,'#e8f0f2',4);
+for(let j=0;j<5;j++)b.box(-3.6,1.45+j*.38,-12.77,1.7,.09,.06,'#98b2c0');
+return makeBuffer(b);
+};
+// Legacy empty-landing geometry retained as a fallback for unbuilt scenes.
+const buildEmptyLanding=()=>{let b=new Builder();
+b.box(0,-.22,0,37,.45,27.5,'#dfe6ed',1);
+b.box(0,2.85,-13.63,37,5.7,.22,'#eaf0f5');b.box(-18.4,2.85,0,.24,5.7,27.5,'#e6edf3');b.box(18.4,2.85,0,.24,5.7,27.5,'#e1e9f1');
+b.box(0,2.85,13.69,37,5.7,.18,'#e5eaf1');
+for(let x of [-12,-4,4,12]){b.box(x,5.52,-2,3.3,.10,1.35,'#f6fcff');b.box(x,5.51,7.2,3.3,.1,1.35,'#f3faff');}
+// Only the landing, threshold and elevator door are present; the floor is empty.
+b.box(15.18,2.65,12.70,5.2,5.3,1.77,'#a8b7c5',4);
+b.box(15.17,2.31,11.68,3.30,4.3,.10,'#d1dce5',4);
+b.box(14.37,2.31,11.59,1.52,4.16,.06,'#8fa4b3',4);
+b.box(15.99,2.31,11.59,1.52,4.16,.06,'#879eac',4);
+b.box(13.2,1.4,11.54,.42,.90,.15,'#354957');
+b.box(13.2,1.44,11.45,.17,.32,.05,'#9ce6d5');
+b.box(15.17,.03,11.36,3.5,.055,.23,'#d1bb91');return makeBuffer(b);};
+const buildLiftCabin=()=>{let b=new Builder();
+// Lift is a separate walkable 3D room. Rear panel is a large full-height mirror.
+b.box(0,-.18,0,6.6,.35,6.25,'#a7bbc7',1);
+b.box(0,-.015,0,5.6,.018,5.6,'#dfe8ec',4);
+b.box(-3.15,2.28,0,.22,4.8,6.3,'#869aa8',4);b.box(3.15,2.28,0,.22,4.8,6.3,'#9cabb6',4);
+b.box(0,2.30,-3.10,6.25,4.75,.21,'#5e7b8e',4);
+// The silvery inset sits behind the 3D reflected avatar (rendered dynamically).
+b.box(0,2.25,-2.97,4.82,3.96,.05,'#9dbfc9',4);
+b.box(0,4.30,-2.88,5.16,.13,.14,'#edfaff',4);
+for(let x of [-2.53,2.53])b.box(x,2.26,-2.86,.17,4.11,.14,'#e4eff5',4);
+b.box(0,.26,-2.84,5.05,.15,.15,'#dbe7ee',4);
+for(let z of [-1.8,.3,2.5]){b.box(-3.04,1.12,z,.13,.12,1.6,'#c4d3dc',4);b.box(3.04,1.12,z,.13,.12,1.6,'#d4dfe5',4);}
+// Physical number-panel housing and button indicators on right wall.
+b.box(2.97,2.36,-.35,.30,3.2,1.45,'#d9e5ec',4);
+for(let j=0;j<5;j++)for(let i=0;i<3;i++){
+ let z=-1.01+i*.52,y=1.55+j*.43;
+ b.box(2.80,y,z,.06,.30,.34,'#536c7b',4);
+ b.box(2.758,y,z,.023,.20,.20,'#b9e1e0',4);
+}
+for(let x of [-1.7,1.7])b.box(x,4.6,0,1.5,.10,2.7,'#c6e9ef');
+b.box(0,4.55,-.1,2.6,.05,1.2,'#f3ffff');
+// Wide entrance has no opaque front face to keep the character and mirror visible.
+b.box(-3,2.3,3.07,.20,4.6,.17,'#e7eef2');b.box(3,2.3,3.07,.20,4.6,.17,'#e7eef2');
+b.box(0,4.55,3.07,6.2,.18,.17,'#dbe7ed');return makeBuffer(b);};
+let staticMeshes={B2:buildOffice(),'1F':buildLobby(),'13F':buildSalesOffice(),EMPTY:buildEmptyLanding(),LIFT:buildLiftCabin()};
+
+// 2F–12F: fully walkable sales levels, with different merchandise layouts,
+// floor-guide interactions, sales associates and moving shoppers.
+const SALES_FLOORS={
+ 'B1':{name:'休閒服飾與自在生活',desc:'都會休閒服飾、丹寧牛仔褲、針織上衣、舒適鞋履與日常配件。',kind:'youth',color:'#d8d4c8',accent:'#85886b',warm:'#f2eee5',booths:['都會休閒服','丹寧與針織','休閒鞋履'],staff:['休閒服飾 · 佳霖','丹寧選物 · 思柔']},
+ '2F':{name:'時髦女性與流行配件',desc:'少女與淑女流行服飾、飾品、配件選物；設有 BENITY 風格配件區。',kind:'fashion',color:'#e8c6cf',accent:'#b1789c',warm:'#f6eee9',booths:['流行女裝','飾品配件','包款選物'],staff:['流行服飾 · 亭妤','BENITY 風格配件 · 怡安']},
+ '3F':{name:'現代淑女與精緻風格',desc:'經典女裝、名品服飾、內著與女性配件。',kind:'classic',color:'#e5d9c7',accent:'#927b7a',warm:'#f9f3e5',booths:['經典女裝','名品服飾','女性內著'],staff:['經典女裝 · 子晴','名品服飾 · 美蓉']},
+ '4F':{name:'少女服飾與城市休閒',desc:'日系少淑女裝、美式休閒，包含 BETTY\'S、COCOLULU 風格選物。',kind:'youth',color:'#c9dcee',accent:'#567fa8',warm:'#edf4fa',booths:['日系少淑女裝','城市休閒','潮流單品'],staff:["BETTY'S 風格服飾 · 采妮",'COCOLULU 風格服飾 · 佳芸']},
+ '5F':{name:'經典男裝與紳士休閒',desc:'紳士西服、男士休閒服、皮鞋皮件及戶外機能服。',kind:'mens',color:'#b7c5c8',accent:'#405b62',warm:'#e9ebe7',booths:['紳士西服','鞋履皮件','戶外機能'],staff:['紳士服飾 · 柏翰','鞋履皮件 · 宗翰']},
+ '6F':{name:'運動休閒與主題餐廳',desc:'運動品牌、球鞋與運動用品；後方有港式點心等主題餐飲區。',kind:'sport',color:'#bdd8d6',accent:'#448f8e',warm:'#f0dfca',booths:['運動品牌','跑鞋用品','港式點心'],staff:['運動品牌 · 阿哲','餐廳接待 · 小蓉']},
+ '7F':{name:'生活家具與居家美學',desc:'設計家具、沙發、桌椅、居家布置及有情門風格家具規劃門市。',kind:'home',color:'#d0cab9',accent:'#8d745e',warm:'#eee9de',booths:['設計家具','居家沙發','系統收納'],staff:['有情門風格家具 · 佳惠','居家選物 · 孟君']},
+ '8F':{name:'童裝玩具與嬰童用品',desc:'童裝、嬰兒車、嬰童用品、益智玩具及玩具體驗區。',kind:'kids',color:'#ebd6aa',accent:'#d5965f',warm:'#f9f1e0',booths:['兒童服飾','嬰童用品','益智玩具'],staff:['童裝櫃 · 小瑜','玩具櫃 · 佩雯']},
+ '9F':{name:'生活家電與寢具美學',desc:'PHILIPS、Dyson 等家電展示風格區、智慧家電、名品寢具與床墊。',kind:'appliance',color:'#c5d7d9',accent:'#688b97',warm:'#eef1f3',booths:['精品家電','智慧選品','寢具床墊'],staff:['PHILIPS 風格家電 · 勇志','Dyson 風格家電 · 嘉恩']},
+ '10F':{name:'活動展演廳與多功能空間',desc:'週年慶聯合特賣、品牌快閃、節慶布置與體驗展演區。',kind:'exhibit',color:'#ead3be',accent:'#c28166',warm:'#f9efe3',booths:['聯合特賣','限時快閃','主題展演'],staff:['活動企劃 · 小潔','特賣會 · 育翔']},
+ '11F':{name:'多功能特賣與休閒主題',desc:'季節特賣、文創市集與動漫角色主題快閃活動。',kind:'popup',color:'#d4c6e8',accent:'#977db9',warm:'#f4effa',booths:['主題特賣','動漫快閃','文創周邊'],staff:['主題策展 · 芷儀','文創選物 · 昱承']},
+ '12F':{name:'文化會館與行政服務中心',desc:'文化藝術展示、卡友服務櫃檯及活動贈品兌換。',kind:'culture',color:'#dad8ce',accent:'#8b8272',warm:'#f5f2eb',booths:['藝文展覽','卡友服務','贈品兌換'],staff:['文化會館 · 佩珊','卡友服務 · 宇辰']}
+};
+function makeSalesFloor(floor){
+ const d=SALES_FLOORS[floor],b=new Builder(), k=d.kind;
+ // 37m × 27.5m salesplate. An unblocked central promenade leads from lift to counters.
+ b.box(0,-.22,0,37,.45,27.5,d.warm,1);
+ b.box(0,-.008,0,9,.025,26.8,'#f9f8f3',1);
+ for(let z=-10;z<=10;z+=4)b.box(0,.011,z,9,.019,.07,d.color,4);
+ for(let x of [-18.39,18.39])b.box(x,3.2,0,.25,6.4,27.5,d.color);
+ b.box(0,3.2,-13.6,36.8,6.4,.24,d.color);
+ b.box(0,3.0,13.69,36.8,6.0,.15,d.warm);
+ for(let x of [-13.6,-6.9,6.9,13.6])for(let z of [-9.2,-2.0,5.5,10.5]){
+  b.box(x,6.05,z,3.3,.11,1.4,'#fbf9f2');b.box(x,5.97,z,2.6,.035,.28,'#fff9e5');
+ }
+ for(let x of [-16,-9.5,9.5,16]){
+  b.box(x,2.9,-13.43,.09,4.8,.06,'#fffefa',4);
+  b.box(x,4.3,-13.39,2.0,1.25,.06,d.accent,4);
+ }
+ // Five-column soft architectural storefront rhythm, with no full-wall partitions.
+ for(let x of [-15.3,-8.4,8.4,15.3]){
+  b.box(x,3.3,8.2,.25,5.7,.24,d.accent,4);
+  b.box(x,5.99,8.2,1.15,.23,1.2,'#fff6e8',4);
+ }
+ // Three visibly distinct concessions, two on the left and one on the right.
+ const stalls=[[-12.8,3.3],[-12.8,-7.1],[12.8,-5.4]];
+ for(let i=0;i<stalls.length;i++){
+  let [x,z]=stalls[i],side=x<0?-1:1;
+  b.box(x,-.008,z,8.1,.024,8.7,i===1?d.color:d.warm,2);
+  b.box(x,3.0,z-3.25,7.6,.18,.28,d.accent,4);
+  b.box(x,3.15,z-3.02,5.0,.13,.15,'#fffdf8',4);
+  b.box(x,1.12,z-2.52,6.4,2.15,.42,i%2?d.accent:d.color,3);
+  b.box(x,2.14,z-2.29,5.9,.18,.11,'#fff9f2',4);
+  // Store counter near wall, leaving the central player circulation clear.
+  b.box(x,0.68,z+1.55,3.2,1.35,1.17,d.accent,3);
+  b.box(x,1.38,z+1.55,3.42,.13,1.30,'#f5ede4',1);
+  b.box(x+side*.35,1.62,z+1.38,.68,.35,.12,'#324751',4);
+ }
+ // Floor-specific products and displays, composed of real 3D geometry.
+ function rack(x,z,col){
+  b.box(x,1.84,z,3.4,.08,.12,'#6e7c82',4);
+  for(let dx of [-1.56,1.56])b.box(x+dx,.99,z,.08,1.94,.12,'#737f82',4);
+  for(let j=0;j<7;j++){let xx=x-1.30+j*.43;b.box(xx,1.33,z,.32,.92,.29,[col,d.accent,'#f0ddce','#adbec7'][j%4],3);}
+ }
+ function mannequin(x,z,shirt=d.accent){
+  b.cylinder(x,.04,z,.42,.07,'#ded8cf',11);b.cylinder(x,.73,z,.07,1.4,'#b6bdbe',9);
+  b.sphere(x,2.14,z,.22,.28,.20,'#c4afa2',6,10);b.sphere(x,1.48,z,.43,.43,.24,shirt,7,10);
+  b.box(x,1.1,z,.32,.46,.29,shirt,3);b.box(x,2.39,z,.55,.11,.16,'#413e40');
+ }
+ function handbag(x,z){b.box(x,1.32,z,.68,.6,.28,d.accent,3);b.box(x,1.73,z,.07,.26,.20,'#e7cdaa');b.box(x-.23,1.73,z,.07,.26,.20,'#e7cdaa');b.box(x+.23,1.73,z,.07,.26,.20,'#e7cdaa');}
+ function sofa(x,z){b.box(x,.49,z,3.4,.65,1.25,'#c4ae95',3);b.box(x,.95,z-.55,3.5,1.22,.21,'#a48f7f',3);for(let dx of [-1.56,1.56])b.box(x+dx,.85,z,.20,.76,1.34,'#b5a18c',3);}
+ function sneaker(x,z){b.box(x,1.45,z,1,.22,.38,'#f3f4ef',3);b.box(x+.27,1.50,z,.55,.3,.38,d.accent,3);}
+ function stallDisplay(x,z){b.box(x,.78,z,3.25,1.5,1.40,'#d7d0c7',3);b.box(x,1.57,z,3.42,.08,1.50,d.accent,4);}
+ if(['fashion','classic','youth','mens'].includes(k)){
+  for(let [x,z] of [[-13.2,5.8],[-13.2,-4.5],[12.8,-2.4]])rack(x,z,k==='mens'?'#5f7480':k==='youth'?'#8bbad8':d.color);
+  for(let [x,z] of [[-9.1,2],[-9.1,-10.7],[9,-9.8]])mannequin(x,z,k==='classic'?'#b9a995':k==='youth'?'#8db0d8':d.accent);
+  if(k==='fashion'||k==='classic'){for(let i=0;i<4;i++)handbag(11.1+i*.87,-7.3);}
+  else for(let i=0;i<5;i++)sneaker(10.7+i*.73,-7.3);
+  if(k==='mens'){for(let z of [2,4,6])b.box(10,1.1,z,1.1,.12,1.0,'#555e60',3);}
+ } else if(k==='sport'){
+  for(let [x,z] of [[-13,4.1],[-13,-7],[12,-8]]){
+   b.box(x,1,z,3.6,2,.95,'#687d89',3);
+   for(let i=0;i<3;i++){b.sphere(x-1+i*.9,2.2,z,.40,.40,.40,['#edbf77','#d47f80','#a8d7d2'][i],6,10);}
+  }
+  for(let z of [-1,2.5]){b.box(11.1,.75,z,2.2,.11,1.30,'#927861',3);for(let dx of [-.9,.9])b.cylinder(11.1+dx,.38,z+.9,.41,.35,'#b2a188',11);}
+  rack(-13,5.7,'#75b9b9');
+ } else if(k==='home'){
+  sofa(-12.6,4.1);sofa(12.1,-6.7);b.box(-12.8,.68,1.4,2,.14,1.2,'#7d644e',3);
+  for(let z of [-8,-5]){b.box(-12.8,.79,z,2.9,.15,1.65,'#8c725a',3);for(let dx of [-1.1,1.1])b.box(-12.8+dx,.38,z,.11,.74,1.45,'#84664f');}
+  b.box(11.6,1.5,2.8,3.4,3.0,.9,'#b5a18c',3);
+  for(let i=0;i<5;i++)b.box(10.1+i*.75,1.3,3.35,.09,2.7,.12,'#e7d5b6');
+ } else if(k==='kids'){
+  for(let x of [-14.5,-12.7,-11])for(let z of [-6,-4.7,-3.4]){
+    b.box(x,1.25,z,1,1,1,['#f5c0ac','#9dcfd6','#efd58b','#bcaad9'][(Math.round(x+z)+100)%4],3);
+  }
+  // Stroller frames and teddy-bear-style toy models.
+  for(let x of [10.8,13.0]){b.cylinder(x-.52,.24,-6,.24,.15,'#525c6e',12);b.cylinder(x+.52,.24,-6,.24,.15,'#525c6e',12);b.box(x,1.0,-6,1.4,.45,.8,'#c1bdcd');b.box(x,.79,-6.2,1.2,.3,.9,'#ded2c6');}
+  for(let x of [-12,-10.6,-9.3]){b.sphere(x,1.65,5.1,.46,.58,.42,'#d1b293',6,9);b.sphere(x,2.27,5.1,.31,.34,.31,'#c8a78b',6,9);}
+  b.box(11,.012,4.4,4,.03,3,'#a9d6cc',2);b.box(11.1,.5,4.6,2.5,.99,1.4,'#f1d99c',3);
+ } else if(k==='appliance'){
+  for(let x of [-14,-11.5])for(let z of [-5.5,-2.6]){b.box(x,.85,z,1.6,1.7,1.6,'#e1e6e6',4);b.cylinder(x,1.03,z+.82,.55,.05,'#667982',12);}
+  for(let x of [10,12.6,15.2]){b.box(x,1.65,3,2.25,2.2,.17,'#263940',4);b.box(x,1.65,3.12,1.95,1.91,.028,'#8aafb9',4);b.box(x,.48,3,.23,.93,.2,'#afb2af');}
+  for(let x of [10.5,14]){b.box(x,.58,-7.6,2.55,1.12,3.3,'#eef0eb',3);b.box(x,.99,-7.6,2.55,.23,3.3,'#cfddd9');b.box(x,1.20,-8.5,2.4,.18,.85,'#eef7f4');}
+ } else if(k==='exhibit'||k==='popup'){
+  // Seasonal retail event: colorful modular booths and catwalk / exhibition stage.
+  for(let [x,z] of [[-13,5],[-12,-5],[12,-5],[12,4]]){
+   b.box(x,1.07,z,3.8,2.1,1.4,k==='popup'?'#ac92bc':'#dba483',3);
+   b.box(x,2.24,z,4.4,.22,1.66,'#fff9ee',4);
+   for(let i=0;i<4;i++)b.box(x-1.4+i*.91,1.68,z+.35,.6,.55,.22,['#f2d6a5','#97c8d1','#c7b7e7','#e4aeb0'][i],3);
+  }
+  b.box(0,.26,-11.7,7,.50,2.5,d.accent,3);b.box(0,.54,-11.7,7,.07,2.5,'#f8e9d6');
+  for(let x of [-3.5,3.5])b.box(x,2.4,-12.6,.2,3.9,.27,'#555266');
+  if(k==='popup')for(let i=0;i<5;i++){let x=-10.7+i*1.4,z=-10.9;b.sphere(x,1.2,z,.40,.53,.30,['#e5aece','#9dbeed','#dfd28f'][i%3],6,9);b.sphere(x,1.8,z,.31,.33,.29,'#e7d7ca',6,9);}
+ } else if(k==='culture'){
+  // Framed paintings, gallery plinths, services and gift-redemption counter.
+  for(let i=0;i<5;i++){
+   let x=-15+i*6.5;b.box(x,2.82,-13.32,3.7,2.95,.17,'#aa9e8e',4);
+   b.box(x,2.84,-13.2,3.25,2.50,.04,['#829ca9','#d4c1a6','#a4ada0','#d8b3a6','#a8a6bd'][i],4);
+   b.box(x+.55,3,-13.14,1,.75,.015,'#f3eee6',4);
+  }
+  for(let x of [-12.7,-9.7,10.8,13.8]){b.box(x,.64,1,1.9,1.28,1.9,'#c9beaa',3);b.sphere(x,1.63,1,.54,.76,.46,'#afbeb4',8,10);}
+  b.box(12.3,1.03,-5.4,6.2,2.05,1.55,'#bbb1a2',3);b.box(12.3,2.13,-5.4,6.35,.13,1.65,'#fffaf4');
+ }
+ // Amenities: plant pots, promotional columns, feature LED wayfinding strips.
+ for(let [x,z] of [[-16.7,9],[7.7,9],[16.4,-10]]){
+  b.cylinder(x,.48,z,.48,.95,'#e4e3dc',12);b.cylinder(x,1.18,z,.10,.65,'#627962');
+  b.sphere(x,1.82,z,.53,.62,.53,'#668871',6,9);
+ }
+ // Freestanding guide stands near elevator, signs are also interactive overlays.
+ b.box(7.6,1.42,10.25,2.1,2.84,.25,'#405763',4);
+ b.box(7.6,1.7,10.42,1.74,1.63,.04,d.accent,4);
+ b.box(7.6,.20,10.1,1.7,.4,.75,'#7b8790',4);
+ b.box(15.15,2.7,12.66,5.0,5.5,2.25,'#8c9eaa',4);
+ b.box(15.15,2.36,11.47,3.20,4.62,.13,'#dbe6eb',4);
+ b.box(14.38,2.36,11.38,1.46,4.25,.06,'#879baa',4);
+ b.box(15.94,2.36,11.38,1.46,4.25,.06,'#879baa',4);
+ b.box(15.15,.026,11.1,3.6,.03,.20,'#ead29d',4);
+ b.box(17.32,1.75,11.11,.25,.80,.22,'#3f5665',4);
+ b.box(17.32,1.75,10.98,.08,.23,.06,'#9ce8d4',4);
+ return makeBuffer(b);
+}
+// Basement B2 retail wing: lively food court to the west, a supermarket to the east.
+// This is a separate camera scene from the B2 back-office, reached via a walk-through door.
+function buildB2Retail(){let b=new Builder();
+ b.box(0,-.23,0,37,.46,27.5,'#e9e2d7',1);
+ b.box(0,-.007,0,6,.022,27.0,'#f6f1e9',1);
+ for(let z=-10;z<=12;z+=2.6)b.box(0,.004,z,35.7,.012,.035,'#cec4ba',1);
+ b.box(-18.40,3.25,0,.25,6.50,27.5,'#d6bfab');b.box(18.40,3.25,0,.25,6.50,27.5,'#d1dfe1');
+ b.box(0,3.25,-13.64,36.8,6.5,.25,'#e3d5c7');b.box(0,3.25,13.67,36.8,6.5,.20,'#e6e1d9');
+ for(let x of [-15,-9,-3,3,9,15])for(let z of [-10,-4,2,8]){
+  b.box(x,6.15,z,2.8,.10,1.65,'#fff4d9');b.box(x,6.07,z,1.8,.05,.45,'#fffce5');
+ }
+ // Retail entrance opposite the B2 office corridor: framed double glass doors.
+ b.box(-12.87,2.35,13.45,.25,4.7,.44,'#9aaeb6',4);b.box(-8.33,2.35,13.45,.25,4.7,.44,'#9aaeb6',4);
+ b.box(-10.60,4.59,13.45,4.6,.26,.42,'#e4dbcf',4);
+ b.box(-10.60,4.19,13.45,3.4,.44,.15,'#b58161',4);
+ b.box(-10.60,.045,13.38,4.25,.035,.40,'#c1a785',4);
+ for(let x of [-11.72,-9.47]){b.box(x,2.13,13.47,1.89,3.7,.035,'#d6eced',4);b.box(x,1.85,13.34,.08,.48,.06,'#cfaa6c',4);}
+ // West: four distinct illuminated food stands, cooking areas and collection counters.
+ const food=[[-12.6,-9.15,'#bd8465'],[-12.6,-4.30,'#8daeb0'],[-12.6,.50,'#b7a071'],[-12.6,5.25,'#c99b87']];
+ food.forEach(([x,z,col],i)=>{
+  b.box(x,3.05,z-1.2,8.25,5.86,.22,'#f1e7dd');
+  b.box(x,4.6,z+.38,7.5,1.20,.18,col,4);
+  b.box(x,1.03,z+1.30,6.0,2.0,1.32,'#ad9584',3);
+  b.box(x,2.10,z+1.30,6.27,.18,1.43,'#f4e9da',4);
+  for(let m=0;m<3;m++){
+   b.box(x-2.2+m*2.2,3.65,z+.45,1.6,.87,.09,'#4d5555',4);
+   b.box(x-2.2+m*2.2,3.66,z+.50,1.37,.52,.02,['#dfbb88','#c9d6ac','#efccb2'][m],4);
+  }
+  b.box(x,1.93,z-.05,4.5,.1,.72,'#7c6559',3);
+  for(let k=0;k<3;k++)b.cylinder(x-1.55+k*1.55,2.15,z-.02,.28,.16,'#f5e8d4',14);
+ });
+ // A bright seating zone within the centre-left, keep main path clear.
+ for(let [x,z] of [[-4.4,-9],[-4.4,-5.5],[-4.4,-1.6],[-4.4,2.2]]){
+  b.box(x,.8,z,1.65,.13,1.42,'#bb9375',3);b.box(x,.39,z,.13,.75,.14,'#9c7d6d');
+  for(let xx of [-1.45,1.45]){b.box(x+xx,.46,z,.85,.15,.65,'#d1b09d',3);b.box(x+xx,.25,z,.09,.48,.09,'#897a70');}
+ }
+ // Right wing: supermarket entrance, checkout counter, chilled goods and produce bays.
+ b.box(4.45,3.5,5.4,.19,5.55,13.2,'#acbec1',4);
+ b.box(16.8,3.5,5.4,.22,5.55,13.2,'#acbec1',4);
+ b.box(11,5.60,11.9,11.7,.32,.22,'#95b1a8',4);
+ for(let z of [-10.4,-5.2,-.1,4.8]){
+  b.box(11.8,.76,z,6.3,1.46,1.55,'#bdcbc7',3);
+  for(let d=0;d<3;d++){
+   b.box(11.8,1.17+d*.40,z,6.20,.08,1.65,'#e2e9e3',4);
+   for(let i=0;i<7;i++)b.box(9.25+i*.81,1.30+d*.40,z+.11,.48,.23,.58,['#c0d5ab','#f3c6aa','#b7ccd6','#e2d3a4'][(d+i)%4],3);
+  }
+ }
+ // Produce displays on right front: repeating rows of vegetables and fruits.
+ for(let [x,z] of [[6.3,-10.4],[6.3,-7.9],[6.3,-5.4]]){
+  b.box(x,.67,z,2.3,1.30,1.30,'#988b70',3);
+  for(let i=0;i<5;i++)b.sphere(x-0.9+i*.43,1.40,z,.24,.21,.27,['#84b074','#e7bc75','#be765e'][Math.abs(i+Math.round(z))%3],5,8);
+ }
+ // Chillers, upright refrigerator doors and refrigerated product rows.
+ for(let x of [6.8,9.2,11.6,14]){
+  b.box(x,1.69,-12.25,2.12,3.32,.70,'#b8d0d5',4);
+  b.box(x,1.73,-11.85,1.92,2.9,.08,'#7c9ea8',4);
+  for(let y of [.8,1.55,2.3])b.box(x,y,-11.79,1.7,.09,.13,'#ddebef',4);
+ }
+ for(let z of [8.75,11.0]){
+  b.box(6.3,0.86,z,3.55,1.7,1.4,'#94aba7',3);b.box(6.3,1.75,z,3.7,.15,1.5,'#edf0e8',4);
+  b.box(6.05,1.92,z+.1,.65,.4,.15,'#253a43',4);
+ }
+ for(let [x,z] of [[-1.25,11.2],[2.1,-11.4],[16.8,9]]){
+  b.cylinder(x,.44,z,.48,.87,'#ded5c6',12);b.cylinder(x,1.16,z,.08,.6,'#707b66');
+  b.sphere(x,1.83,z,.50,.60,.49,'#739676',6,9);
+ }
+ return makeBuffer(b);
+}
+staticMeshes.B2M=buildB2Retail();
+
+for(const f of Object.keys(SALES_FLOORS))staticMeshes[f]=makeSalesFloor(f);
+const SALES_NPCS={};
+for(const [floor,d] of Object.entries(SALES_FLOORS)){
+ SALES_NPCS[floor]=[
+  {id:'elevator',x:15.1,z:10.05,name:floor+' · 電梯',y:3.1,type:'lift'},
+  {id:'floorGuide',x:7.6,z:9.45,name:'🗺 '+floor+' · '+d.name,y:3.08,type:'desk'},
+  {id:'storeClerkA',x:-9.0,z:3.5,name:d.staff[0],y:3.04,type:'npc'},
+  {id:'storeClerkB',x:9.1,z:-4.3,name:d.staff[1],y:3.04,type:'npc'},
+  {id:'floorDisplay',x:-9,z:-7.4,name:d.booths[1]+'｜櫃位介紹',y:2.4,type:'desk'}
+ ];
+}
+function roamingSalesPeople(floor,t,gameTime){
+ if(gameTime<660)return [];
+ const seed=floor==='B2M'?2:floor==='B1'?1:Number(floor.replace('F',''));
+ const res=[];
+ for(let i=0;i<5;i++){
+  let phase=t*(.23+i*.019)+i*1.45+seed*.37;
+  let x=-2.0+Math.sin(phase*.61+i*.9)*2.6;
+  let z=Math.sin(phase)*8.8;
+  res.push({x,z,angle:Math.cos(phase)>0?Math.PI:0,tourist:i<4,coat:['#bb9db7','#8ca7b6','#d1b29a','#9cb9aa','#b0a2c9'][(i+seed)%5],id:i});
+ }
+ return res;
+}
+
+// Visual casts: geometric shadow discs beneath characters and quest marker.
+function shadow(b,x,z,s=1){b.cylinder(x,.022,z,.48*s,.014,'#7d8787',14);}
+function human(b,x,z,rot,color,walk=0,t=0,kind='staff'){
+b.setTransform(x,0,z,rot);const skin=kind==='tourist'?'#dcb08f':'#c79b7e',pant='#263543',hair=kind==='player'?(state.gender==='female'?'#402a29':'#1d2c35'):kind==='tourist'?'#41332a':'#1b252d';
+let stride=Math.sin(t*9)*Math.min(1,walk),swing=stride*.13;
+// Shoes, pants, jacket, arms, face and ID badge.
+b.box(-.19,.16,-.075+stride*.13,.27,.21,.48,'#1d2730');b.box(.19,.16,-.075-stride*.13,.27,.21,.48,'#222831');
+b.cylinder(-.18,.64,stride*.13,.146,.88,pant,10);b.cylinder(.18,.64,-stride*.13,.146,.88,pant,10);
+b.box(0,1.11,0,.66,.19,.38,'#223541');b.sphere(0,1.49,0,.41,.52,.26,color,8,12);b.box(0,1.90,-.06,.55,.13,.32,color);
+b.cylinder(-.48,1.46,-swing,.13,.67,color,9);b.cylinder(.48,1.46,swing,.13,.67,color,9);
+b.sphere(-.49,1.08,-swing, .125,.16,.13,skin,5,8);b.sphere(.49,1.08,swing,.125,.16,.13,skin,5,8);
+b.cylinder(0,2.00,0,.12,.25,skin,10);b.sphere(0,2.29,-.025,.257,.315,.245,skin,9,13);
+b.sphere(0,2.53,-.012,.265,kind==='player'&&state.gender==='male'?.11:.14,.262,hair,6,12);
+if(kind==='player'&&state.gender==='female'){b.sphere(0,2.25,.16,.275,.39,.18,hair,8,11);b.sphere(-.225,2.23,.045,.09,.29,.12,hair,7,8);b.sphere(.225,2.23,.045,.09,.29,.12,hair,7,8);b.box(0,.86,.0,.70,.27,.47,'#3c526b');}
+b.sphere(-.24,2.28,-.005,.058,.094,.062,skin,4,6);b.sphere(.24,2.28,-.005,.058,.094,.062,skin,4,6);
+b.sphere(-.085,2.30,-.254,.020,.025,.019,'#18232c',4,6);b.sphere(.085,2.30,-.254,.020,.025,.019,'#18232c',4,6);b.sphere(0,2.21,-.27,.049,.052,.028,'#b78063',5,7);
+if(kind==='staff'||kind==='player'){b.box(0,1.42,-.288,.22,.27,.035,'#e2f1e8');b.box(0,1.41,-.312,.16,.13,.013,kind==='player'?'#67b9b2':'#6f9eaa');b.box(0,1.95,-.22,.035,.36,.023,'#b8c2d1');}
+b.setTransform(0,0,0,0);
+}
+let state={playerName:'安安',gender:'female',started:false,floor:'B2',step:0,x:0,z:11.0,angle:0,rep:60,care:65,time:9*60,clockSec:0,shiftOver:false,finished:false,breakFlag:0,choices:[],flags:{},moving:false,run:false,dialog:false,near:null,liftFrom:'B2',portalCooldown:0,liftBusy:false,phoneRinging:false,supportCallAccepted:false,reportDone:false,reportClean:null,coinVisits:[]};
+const STEP=[
+{floor:'B2',target:'hr',title:'人事｜出勤異常通報',desc:'B2 入口進來先是人事區。請先找到人事專員，確認同仁的打卡異常。'},
+{floor:'B2',target:'hrDocs',title:'人事｜薪轉資料變更',desc:'前往人事區資料台，核實員工薪轉資料的變更申請。'},
+{floor:'B2',target:'ga',title:'總務｜採購發票核對',desc:'B2 人事與總務區相通，沿著開放式辦公區往內走，向總務專員確認設備採購。'},
+{floor:'B2',target:'gaStock',title:'總務｜影印機故障',desc:'總務區另一側傳來求助：影印機卡紙影響憑證作業。'},
+{floor:'B2',target:'ledger',title:'財務｜日結帳務對帳',desc:'沒有隔板阻擋，繼續往 B2 最裡面走，找到財務電腦核對 POS 報表。'},
+{floor:'B2',target:'coworker',title:'財務｜刷卡手續費差異',desc:'向會計同事確認刷卡入帳金額與應收差異。'},
+{floor:'B2',target:'vault',title:'財務｜現金點收繳庫',desc:'到最裡面的財務保險櫃，確認封緘與現金交接。'},
+{floor:'B2',target:'floorMgrB2',title:'營業｜13F 樓管偶爾來訪',desc:'平常在 13F 辦公的營業樓管，今天因為特殊退款問題特地下到 B2，請到總務區旁與她會合。'},
+{floor:'B2',target:'elevator',to:'1F',title:'支援一樓｜等候顧服電話',desc:'必須先在 B2 接到 1F 顧客服務台來電確認需要支援，才能搭電梯上樓。'},
+{floor:'1F',target:'greeter',title:'服務台｜分流等候顧客',desc:'抵達黃光明亮的 1F，先向服務台同仁了解待處理案件。'},
+{floor:'1F',target:'tax',title:'服務台｜外籍旅客退稅',desc:'到退稅窗口前，協助核驗護照、發票及退稅條件。'},
+{floor:'1F',target:'fx',title:'服務台｜外幣兌換需求',desc:'有旅客詢問現場外幣服務，請先確認可受理的範圍。'},
+{floor:'1F',target:'floorMgr',title:'營業樓管｜退貨爭議',desc:'營業樓管正在處理退貨退款，先去協調處理方式。'},
+{floor:'1F',target:'shop',title:'專櫃支援｜無人櫃代結帳',desc:'前往右側專櫃，協助久候的顧客完成合規結帳。'},
+{floor:'1F',target:'floorMgr',title:'營業樓管｜折讓單補件',desc:'請樓管確認折讓與收據資料是否完整，避免晚間帳差。'},
+{floor:'1F',target:'elevator',to:'B2',title:'返回 B2｜結束一樓支援',desc:'回到 1F 電梯，選擇 B2，再返回最裡面的財務區。'},
+{floor:'B2',target:'ga',title:'總務｜廠商請款覆核',desc:'回辦公室經過人事，找到總務人員確認廠商請款附件。'},
+{floor:'B2',target:'hr',title:'人事｜加班與工時確認',desc:'今日跨部門支援時間較長，向人事核實加班登記。'},
+{floor:'B2',target:'coworker',title:'財務｜電子禮券核銷差異',desc:'雅婷在財務區發現電子禮券的 POS 核銷金額與系統明細差了 200 元，請共同查明原因。'},
+{floor:'B2',target:'boss',title:'財務｜向主管彙報工作',desc:'回到最裡面的財務區，向主管報告各部門異常與改善建議。'}
+];
+const interactables={
+B2:[
+{id:'hr',x:-9.1,z:5.35,name:'人事 · 怡君',y:3.0,type:'npc'},
+{id:'hrDocs',x:8.0,z:6.0,name:'人事 · 薪轉資料台',y:2.5,type:'desk'},
+{id:'ga',x:-9.3,z:-.65,name:'總務 · 志豪',y:3.0,type:'npc'},
+{id:'gaStock',x:7.9,z:-1.1,name:'總務 · 設備與影印機',y:2.4,type:'desk'},
+{id:'floorMgrB2',x:4.2,z:-.30,name:'13F 樓管 · 芷晴（臨時下樓）',y:3.0,type:'npc'},
+{id:'ledger',x:-10.0,z:-5.1,name:'財務 · POS 日結電腦',y:2.35,type:'desk'},
+{id:'servicePhone',x:.55,z:-9.65,name:'📞 財務內線 · 1F 顧服電話',y:2.7,type:'desk'},
+{id:'yesterdayReport',x:-.7,z:-11.25,name:'📊 16:00 · 昨日日結報表',y:2.9,type:'desk'},
+{id:'coworker',x:-2.7,z:-7.2,name:'財務 · 雅婷會計',y:3.0,type:'npc'},
+{id:'vault',x:12.0,z:-7.7,name:'財務 · 出納保險櫃',y:2.4,type:'desk'},
+{id:'boss',x:6.1,z:-8.1,name:'財務 · 陳主任',y:3.0,type:'npc'},
+{id:'elevator',x:15.1,z:10.05,name:'B2 走廊 · 全館電梯（B1–13F）',y:3.1,type:'lift'},
+{id:'b2MallDoor',x:-10.6,z:12.10,name:'🚪 B2 賣場入口｜美食街・超市',y:3.25,type:'door'},
+{id:'printer',x:-15.1,z:1.95,name:'總務 · 公用影印機',y:2.1,type:'desk'},
+{id:'punchClock',x:2.8,z:8.8,name:'人事區 · 下班打卡機',y:2.5,type:'desk'}
+],
+'B2M':[
+{id:'b2OfficeDoor',x:-10.6,z:12.13,name:'🚪 返回 B2 辦公室走廊',y:3.15,type:'door'},
+{id:'foodClerkA',x:-8.1,z:-8.0,name:'美食街 · 餐飲服務人員',y:3.03,type:'npc'},
+{id:'foodClerkB',x:-8.3,z:.9,name:'美食街 · 點餐與取餐',y:3.03,type:'npc'},
+{id:'marketClerk',x:8.3,z:9.3,name:'超市 · 收銀同仁',y:3.03,type:'npc'},
+{id:'marketStock',x:7.7,z:-3.3,name:'超市 · 理貨人員',y:3.03,type:'npc'},
+{id:'marketGuide',x:3.4,z:6.5,name:'B2 美食街與超市導覽',y:2.9,type:'desk'}
+],
+'1F':[
+{id:'elevator',x:15.3,z:-7.95,name:'1F · 全館電梯（B2–13F）',y:3.2,type:'lift'},
+{id:'tax',x:-9.5,z:-4.1,name:'退稅旅客 · 服務台',y:3.0,type:'npc'},
+{id:'fx',x:1.0,z:-4.1,name:'外籍旅客 · 兌換詢問',y:3.0,type:'npc'},
+{id:'floorMgr',x:5.2,z:1.2,name:'營業 · 芷晴樓管',y:3.0,type:'npc'},
+{id:'shop',x:11.7,z:8.15,name:'等待結帳的顧客',y:3.0,type:'npc'},
+{id:'greeter',x:-4.3,z:1.4,name:'服務台 · 宇翔',y:3.0,type:'npc'},
+{id:'guard',x:-13,z:2.8,name:'保全 · 老周',y:3.0,type:'npc'}
+],
+'13F':[
+{id:'elevator',x:15.1,z:10.05,name:'13F 走廊 · 全館電梯',y:3.1,type:'lift'},
+{id:'floorMgr13',x:-1.5,z:-2.6,name:'營業樓管 · 芷晴',y:3.05,type:'npc'},
+{id:'salesAdmin',x:2.25,z:3.25,name:'營業行政 · 明哲',y:3.05,type:'npc'},
+{id:'salesLead',x:2.5,z:-8.8,name:'營業 · 劉襄理',y:3.05,type:'npc'},
+{id:'salesBoard',x:8.25,z:-10.65,name:'13F 營業日報與促銷核對',y:2.8,type:'desk'},
+{id:'salesPlanner',x:-3.1,z:3.65,name:'營業企劃 · 婉如',y:3.05,type:'npc'},
+{id:'salesComplaints',x:-2.2,z:-4.9,name:'客訴處理 · 育瑄',y:3.05,type:'npc'},
+{id:'salesCash',x:11.7,z:-5.2,name:'營業管理 · 俊霖',y:3.05,type:'npc'}
+]
+};
+function activeCoinVisit(){return state.coinVisits.find(v=>!v.done && state.time>=v.at && state.time<v.end);}
+function activeObjects(floor){let items=interactables[floor]||SALES_NPCS[floor]||(floor==='LIFT'?[]:[{id:'elevator',x:15.1,z:10.25,name:floor+' · 電梯入口',y:3,type:'lift'}]);
+ let visible=items.filter(o=>o.id==='floorMgrB2'?state.step===7:o.id==='floorMgr13'?state.step!==7:true);
+ if(floor==='B2'){let visitor=activeCoinVisit();if(visitor)visible=[...visible,{id:'coinVisitor',x:1.8,z:-4.45,name:'💰 '+visitor.name+'｜專櫃兌幣',y:3,type:'npc'}];}
+ return visible;}
+let labelEls=[];for(let i=0;i<22;i++){let el=document.createElement('div');el.className='worldLabel';document.body.appendChild(el);labelEls.push(el);}
+function setQuest(){
+ let s=STEP[state.step];
+ if(state.shiftOver){$('#qtitle').textContent='18:00｜下班打卡';$('#qdesc').textContent='請搭電梯返回 B2 人事區的打卡機，完成最後的交接後下班。';}
+ else if(state.time>=720&&state.time<780){$('#qtitle').textContent='12:00–13:00｜午休時間';$('#qdesc').textContent='目前為休息時間；可以到其他樓層探索。工作事項下午再繼續處理。';}
+ else if(state.time>=960&&!state.reportDone){$('#qtitle').textContent='16:00｜製作昨日營業日結報表';$('#qdesc').textContent='請至 B2 最裡面的財務辦公區，使用「昨日日結報表」電腦核對前一日交易、刷退、現金及刷卡金額。';}
+ else if(state.step===8&&!state.supportCallAccepted){$('#qtitle').textContent=state.phoneRinging?'📞 1F 顧服來電｜請先接聽':'1F 支援｜等待顧服電話';$('#qdesc').textContent=state.phoneRinging?'1F 服務台來電請求支援！請至 B2 財務最裡側操作內線電話，確認需求再上樓。':'目前仍應在 B2 工作，等待 1F 顧服來電。';}
+ else{$('#qtitle').textContent=s?s.title:'工作事項已完成';$('#qdesc').textContent=s?s.desc:'今天主要事項已處理完成，可探索13F營業辦公室、確認交接，等待18:00打卡。';
+ if(state.step===8&&state.supportCallAccepted){$('#qtitle').textContent='1F 顧服已通知｜前往支援';$('#qdesc').textContent='已在 B2 接聽 1F 顧服人員電話。請從 B2 辦公室出去，到外部走廊搭電梯前往 1F。';}}
+ updateAlerts();
+ $('#questIndex').textContent=String(Math.min(state.step+1,STEP.length)).padStart(2,'0')+' / '+String(STEP.length).padStart(2,'0');
+ $('#floorBadge').textContent=state.floor==='LIFT'?state.liftFrom+' →':state.floor==='B2M'?'B2':state.floor;
+ $('#timeBadge').textContent=fmtTime(state.time);
+ $('#shiftState').textContent=state.shiftOver?'已下班 · 請打卡':state.time>=720&&state.time<780?'午休 12:00–13:00':'上班 09:00–18:00';
+ $('#scoreBadge').textContent=state.rep>=70?'優秀':state.rep>=45?'良好':'待加強';
+ $('#progress').innerHTML=Array.from({length:STEP.length},(_,i)=>'<i class="'+(i<state.step?'done':'')+'"></i>').join('');updateZone();
+}
+function updateZone(){let label;
+ if(state.floor==='LIFT')label='🛗 電梯轎廂 · 鏡面與樓層操作盤';
+ else if(state.floor==='1F')label='✦ 1F 百貨賣場 · 暖黃光';
+ else if(state.floor==='13F')label=state.z>9.45?'🚶 13F 營業辦公室外 · 電梯走廊':'📊 13F 營業（樓管）辦公室';
+ else if(state.floor==='B2'){if(state.z>9.45)label='🚶 B2 辦公室外 · 公共走廊';else if(state.z>3.3)label='👥 B2 人事單位 · 入口';else if(state.z>-3.35)label='📋 B2 總務單位 · 中段';else label='💼 B2 財務單位 · 最內側';}
+ else if(state.floor==='B2M')label='🍽 B2 美食街・超市';
+ else if(SALES_FLOORS[state.floor])label='🛍 '+state.floor+'｜'+SALES_FLOORS[state.floor].name;
+ else label='🚧 '+state.floor+' · 電梯門外（本樓層暫無內容）';
+ $('#zoneBadge').textContent=label;document.body.classList.toggle('mall',state.floor==='1F'||state.floor==='B2M'||!!SALES_FLOORS[state.floor]);document.body.classList.toggle('elevating',state.floor==='LIFT');
+}
+function setBanner(text){let el=$('#dayBanner');el.textContent=text;el.classList.toggle('on',!!text);}
+function generateCoinVisits(){
+ const visits=[{start:900,spread:17,name:'美玲（服飾櫃）',amount:'NT$5,000',denom:'100 元鈔券'},
+               {start:934,spread:17,name:'阿翰（美妝櫃）',amount:'NT$3,000',denom:'50 元硬幣'},
+               {start:974,spread:19,name:'佳蓉（生活櫃）',amount:'NT$2,000',denom:'10 元硬幣'}];
+ return visits.map(v=>{const at=v.start+Math.floor(Math.random()*v.spread);return {...v,at,end:Math.min(1020,at+21+Math.floor(Math.random()*8)),done:false};});
+}
+function updateAlerts(){
+ if(!state.started)return;
+ let messages=[];
+ if(state.phoneRinging&&!state.supportCallAccepted)messages.push(['ring','📞 1F 顧服正在來電｜請到 B2 財務區接聽']);
+ if(state.time>=960&&!state.reportDone&&!state.shiftOver)messages.push(['','📊 16:00 昨日日結報表待處理｜B2 財務電腦']);
+ let visitor=activeCoinVisit();if(visitor&&state.floor==='B2')messages.push(['','💰 專櫃人員等候兌幣｜'+visitor.name+'（至 '+fmtTime(visitor.end)+'）']);
+ $('#alertStack').innerHTML=messages.slice(0,2).map(([type,msg])=>'<div class="alertBox '+type+'">'+msg+'</div>').join('');
+}
+function advanceWorkClock(seconds){
+ if(!state.started||state.finished||state.shiftOver)return;
+ const old=state.time;state.clockSec+=Math.max(0,seconds);
+ state.time=Math.min(1080,540+Math.floor(state.clockSec));
+ if(old===state.time)return;
+ if(old<665&&state.time>=665&&!state.supportCallAccepted){state.phoneRinging=true;toast('☎️ 1F 顧服來電！請在 B2 財務區接聽內線電話。');}
+ if(old<720&&state.time>=720){setBanner('☕ 午休時間 12:00–13:00｜可自由休息與探索');toast('12:00 午休開始，記得休息。');}
+ if(old<780&&state.time>=780){setBanner('');toast('13:00 下午上班，繼續處理財務與跨部門業務。');}
+ for(const v of state.coinVisits){
+  if(old<v.at&&state.time>=v.at)toast('💰 B2 財務區：'+v.name+'前來兌幣，請留意。');
+  if(!v.done&&old<v.end&&state.time>=v.end){v.done=true;v.missed=true;toast('⏳ '+v.name+'等候時間結束，已由其他同事協助處理。');}
+ }
+ if(old<960&&state.time>=960){setBanner('📊 16:00｜請至 B2 財務區製作「前一日」營業日結報表');toast('16:00！昨天的營業日結報表可以開始製作了。');}
+ if(state.time>=1080){state.shiftOver=true;setBanner('🔔 18:00 下班時間｜請返回 B2 人事區打卡下班');toast('18:00！請返回 B2 完成交接與打卡。');}
+ setQuest();
+}
+function isRetailFloor(f){return f==='B1'||f==='1F'||(Number.parseInt(f,10)>=2&&Number.parseInt(f,10)<=12&&f.endsWith('F'));}
+function isRetailScene(f){return f==='B2M'||isRetailFloor(f);}
+function crossB2Door(){
+ if(state.floor==='B2'){
+  if(state.time<660){state.z=11.85;toast('賣場入口目前尚未開放，請先處理辦公室業務。');return;}
+  state.floor='B2M';state.x=-10.6;state.z=9.52;state.angle=0;toast('已走進 B2 賣場。');
+ }else if(state.floor==='B2M'){
+  state.floor='B2';state.x=-10.6;state.z=11.05;state.angle=Math.PI;toast('已返回 B2 辦公室外走廊。');
+ }else return;
+ state.portalCooldown=performance.now()+700;setQuest();
+}
+function fmtTime(m){return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
+let toastTimer;function toast(s){let e=$('#toast');e.textContent=s;e.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.remove('show'),3000);}
+function dialog(who,title,msg,options){state.dialog=true;$('#dWho').textContent=who;$('#dTitle').textContent=title;$('#dText').textContent=msg;$('#options').innerHTML='';for(let option of options){let bt=document.createElement('button');bt.className='option';bt.textContent=option.label;bt.onclick=()=>{hideDialog();if(option.onClick)option.onClick();};$('#options').appendChild(bt);}$('#dialogLayer').classList.remove('hidden');}
+function hideDialog(){state.dialog=false;$('#dialogLayer').classList.add('hidden');}
+function next(rep,care,msg,mins=18){state.rep=Math.max(0,Math.min(100,state.rep+rep));state.care=Math.max(0,Math.min(100,state.care+care));state.choices.push({step:state.step,rep,care});state.step++;setQuest();toast(msg);}
+function decision(who,title,msg,options){dialog(who,title,msg,options.map((o)=>({label:o[0],onClick:()=>{next(o[1],o[2],o[3],o[4]||18);if(o[5]){if(typeof o[5]==='function')o[5]();else Object.assign(state.flags,o[5]);}}})));}
+const FLOORS=['B2','B1',...Array.from({length:13},(_,i)=>String(i+1)+'F')];
+function renderLiftPanel(){
+ $('#liftDisplay').textContent=state.liftFrom;
+ $('#liftButtons').innerHTML='';
+ for(const f of FLOORS){let b=document.createElement('button');b.textContent=f;b.title='前往'+f;
+ if(f===state.liftFrom)b.classList.add('sel');
+ b.onclick=()=>travelLift(f);$('#liftButtons').appendChild(b);}
+}
+function elevator(){
+ state.liftFrom=state.floor;state.floor='LIFT';state.x=0;state.z=.65;state.angle=0;
+ renderLiftPanel();$('#liftPanel').classList.add('open');setQuest();
+ toast('已進入電梯：鏡面可以看到自己的倒影，右側可按 B2、B1、1–13F。');
+}
+function exitLift(){if(state.floor!=='LIFT'||state.liftBusy)return;
+ const f=state.liftFrom;state.floor=f;state.x=15.1;state.z=f==='1F'?-7.55:10.05;state.angle=0;
+ $('#liftPanel').classList.remove('open');setQuest();toast('電梯門開了，已返回 '+f+'。');
+}
+function travelLift(to){
+ if(state.floor!=='LIFT'||state.liftBusy)return;
+ if(to===state.liftFrom){exitLift();return;}
+ if(isRetailFloor(to)&&state.time<660){dialog('百貨保全｜電梯樓層管制','賣場尚未開放','此時仍在營業準備階段。請先處理辦公室工作，稍後再搭電梯前往賣場。',[{label:'了解，返回電梯'}]);return;}
+ if(to==='1F'&&!state.supportCallAccepted){dialog('財務課｜1F 支援規範','先接獲 1F 顧服電話才能前往支援',state.phoneRinging?'1F 服務台已經來電。請先返回 B2，接聽財務內線電話確認需求，然後再搭電梯上樓。':'目前尚未接獲 1F 服務台的正式支援通知。你應留在 B2 處理工作；請留意財務內線電話。',[{label:'返回目前樓層'}]);return;}
+ state.liftBusy=true;$('#liftPanel').classList.remove('open');
+ $('#travelTitle').textContent='電梯行進中　→　'+to;
+ $('#elevatorTransition').classList.add('shut');
+ setTimeout(()=>{
+ const from=state.liftFrom,required=STEP[state.step];
+ const advances=required&&required.floor===from&&required.target==='elevator'&&required.to===to;
+ state.floor=to;state.x=15.1;state.z=to==='1F'?-7.55:10.05;state.angle=0;
+ if(advances){state.step++;state.choices.push({step:state.step-1,rep:0,care:0});}
+ setQuest();
+ setTimeout(()=>{state.liftBusy=false;$('#elevatorTransition').classList.remove('shut');
+ toast(SALES_FLOORS[to]?'叮──'+to+'｜'+SALES_FLOORS[to].name+'，歡迎參觀！':'叮──電梯抵達 '+to+'！');},420);
+ },740);
+}
+$('#liftExit').onclick=exitLift;
+function generic(o){let data={
+hr:['怡君｜人事','跨部門一起把問題解決','「剛剛收到排班異常通知，記得差勤、加班都要依實際紀錄送審；你們財務組的交接單也別忘了。」'],
+hrDocs:['人事資料台','薪資保密提醒','薪轉資訊與員工個資請依權限查閱，異動前務必確認本人申請及核准紀錄。'],
+ga:['志豪｜總務','請款附件核對','「廠商催款的時候，發票、驗收與請購資料還是要一項項核對，你們財務才好付款。」'],
+gaStock:['總務｜設備管理','辦公設備狀況','影印機運轉的聲音從總務櫃位傳來，旁邊擺著文具、維修紀錄及公用設備清單。'],
+floorMgrB2:['芷晴｜13F 營業樓管','難得來 B2 的跨部門協調','「我平常都在 13 樓的營業辦公室，今天這筆退款比較特殊才特地下來。等等我要趕回 13F 整理資料。」'],
+ledger:['財務日結電腦','營業報表','螢幕顯示 POS 銷售日報、各櫃繳款記錄與待核的刷卡請款資料。'],
+coworker:['雅婷｜財務課','同事間的核對','「會計分錄做得再快，也要確認原始憑證和交易日期。忙起來更要謹慎。」'],
+vault:['財務出納','現金保管','出納區設置雙人交接表、封緘袋與保險櫃，須依規定點收和記錄。'],
+boss:['陳主任｜財務課','主管的叮嚀','「跟人事、總務、樓管保持溝通很好，但內控程序不能因為忙就省略。」'],
+printer:['總務公用設備','請妥善處理紙本單據','出納憑證不宜隨意放在公用設備旁。敏感文件用完應即時收妥。'],
+punchClock:['下班打卡機','工作時段','你的工作時間為 09:00 至 18:00，午休 12:00 至 13:00。請在 18:00 後返回打卡下班。'],
+tax:['外國旅客','退稅需求','「Excuse me, I need help with a tax refund.」旅客遞出發票。'],
+fx:['外國旅客','兌換詢問','一名外籍旅客希望了解是否可在商場兌換外幣。'],
+floorMgr:['芷晴｜營業樓管','1F 賣場巡視中','「我辦公室在 13F，不過今天到一樓處理顧客退貨。折讓與刷退單據要留存，財務和營業才能對帳。」'],
+floorMgr13:['芷晴｜13F 營業樓管','營業辦公室','「13 樓這裡才是我的辦公室，平常我要管促銷、櫃位營業額、顧客申訴和樓管輪班；只有特別需要對接財務，才會下去 B2。」'],
+salesAdmin:['明哲｜營業行政','樓管工作日常','「我們在 13F 整理銷售報表、促銷簽呈和櫃位公文，要找財務確認時才會跨樓層。」'],
+salesLead:['劉襄理｜營業主管','營業與財務的合作','「營業與財務要互相配合，退貨折讓不能為了求快就省掉憑證。」'],
+salesBoard:['13F 營業日報','營業資料待核','上面記載各專櫃營業額、折讓明細、今日檔期促銷及刷退款項；你可以協助做一次跨部門核對。'],
+salesPlanner:['婉如｜13F 營業企劃','檔期活動預算','「活動預算表與請款單有筆金額不一致，我會先整理簽核紀錄再請財務確認。」'],
+salesComplaints:['育瑄｜13F 客訴處理','客訴事件追蹤','「退款不能只靠電話說好了，顧客簽收與刷退明細都要留存。」'],
+salesCash:['俊霖｜13F 營業管理','各櫃繳款差異','「今天有專櫃晚交營業日報，等我追齊交易紀錄再請你們財務核對。」'],
+shop:['專櫃顧客','等待結帳','「不好意思，我已經等了一陣子，可以找人幫我結帳嗎？」'],
+greeter:['宇翔｜1F 服務台','大廳今天好忙','「今天退稅、外幣諮詢、失物招領都來了，謝謝你從 B2 趕來幫忙！」'],
+guard:['老周｜保全','公共區域安全','「如果遇到顧客爭議，先找樓管與主管協調，安全最重要。」']};
+let d=data[o.id]||['百貨公司','忙碌的一天','各單位正在為今天的營業努力。'];
+dialog(d[0],d[1],d[2],[{label:'了解，繼續工作'}]);}
+// Decisions that create later dialogue consequences, not just score changes.
+const EVENTS={
+0:{who:'怡君｜人事課',title:'同仁打卡漏刷',msg:'「昨天有一位專櫃支援同仁忘了刷退，現在說他加班到晚上十點。可是系統沒有出勤紀錄。」\n\n你身為財務課員，協助人事確認津貼與出勤核對，會怎麼做？',options:[
+['請人事依實際出勤、主管證明與差勤規定補正後再計薪',10,12,'人事補齊核准文件，這筆工時得以正確處理。',18,{hrClean:true}],
+['只憑同仁口頭說明，直接列入加班費',-11,-17,'加班資料欠缺證據，之後發生薪資爭議。',9,{hrClean:false}]]},
+1:{who:'人事資料台｜B2',title:'變更薪轉帳號',msg:'人事專員轉來一封電子郵件，要求將一名員工的薪資轉帳帳戶更改為新帳號，但附件缺少本人簽名。\n\n財務應怎麼處理？',options:[
+['要求依權限核實本人身分並補齊異動申請與核准紀錄',11,12,'薪資異動完成雙重覆核，保住員工的權益。',16,{payrollOK:true}],
+['看到寄件者寫著「人事」，便直接修改帳號',-15,-22,'你接到人事主管來電：有人反映薪水帳戶被錯改。',9,{payrollOK:false}]]},
+2:{who:'志豪｜總務課',title:'採購憑證不完整',msg:'總務提出購置展示架的請款文件，金額 NT$23,600。雖然有統一發票，但驗收欄位尚未簽核。\n\n廠商今天就要來領款，你會？',options:[
+['通知總務補齊驗收及授權核准，再依付款時程處理',11,13,'總務確認到貨數量後，完成驗收與請款。',19,{gaClean:true}],
+['先付款給廠商，驗收的部分以後再補',-12,-17,'架子數量短少，請款已先付款，須啟動追查。',11,{gaClean:false}]]},
+3:{who:'總務｜設備管理',title:'影印機卡紙與維修報價',msg:'影印機卡紙，等待列印的收據及憑證累積一大疊。外包維修員提出立即更換零件的報價。\n\n你會如何協調？',options:[
+['先改用備援設備，請總務按採購與報修程序辦理',8,11,'重要文件順利印出，維修程序也完成登記。',12],
+['自行同意更換設備並先墊付所有維修費用',-8,-12,'維修付款找不到授權依據，總務不得不補查。',13]]},
+4:{who:'財務課｜日結電腦',title:'專櫃日結帳差',msg:'POS 日報：NT$126,480\n刷卡：NT$87,920\n應收現金：NT$38,560\n實收現金：NT$38,530\n\n還差 NT$30，且有一筆請款單據不完整。你會怎麼做？',options:[
+['逐筆比對專櫃繳款、交易憑證與現金明細',12,14,'你在票據袋中找到遺漏的 30 元，帳款核對完成。',24,{ledgerClean:true}],
+['直接用備用零用金補差額，把表做平',-18,-24,'表面平帳，實際現金來源不明，留下稽核風險。',12,{ledgerClean:false}]]},
+5:{who:'雅婷｜財務課',title:'刷卡撥款差了 180 元',msg:'「信用卡系統今日入帳 24,820 元，但 POS 顯示刷卡營收 25,000 元，差了 180 元。」\n\n雅婷翻出刷卡結帳單，想請你共同釐清。',options:[
+['查看請款批次、交易日期與銀行手續費項目',10,12,'發現差額是約定手續費，完成清楚的調節表。',22],
+['把差額全部當作現金短少，不看銀行撥款明細',-10,-11,'入帳科目不正確，月底仍要調整。',11]]},
+6:{who:'出納作業｜財務最內側',title:'大額現金與封緘保管',msg:'櫃位現金準備繳庫。正當你要點收時，電話不斷響起，營業部同仁也催著你趕去支援。',options:[
+['先完成雙人點收與簽收，再交接給代理同仁',12,15,'現金安全繳庫，接著你才離開財務區。',21,{vaultClean:true}],
+['先把現金擱在桌上就趕去一樓',-17,-23,'現金未妥善保管，主管要求立即檢討。',8,{vaultClean:false}]]},
+7:{who:'芷晴｜營業樓管（臨時到 B2）',title:'樓管從 13F 下來詢問退款',msg:'「我今天難得從 13 樓下來，想直接問財務。顧客說上週退貨退款，卡費卻還沒有顯示退回，專櫃想直接付現。這樣可以嗎？」\n\n芷晴等著你的專業建議。',options:[
+['先核對原交易和刷退紀錄，依原支付方式與退款規範處理',11,14,'樓管查到銀行處理時差，向顧客清楚說明。',16,{refundOK:true}],
+['同意櫃位直接付現，先讓顧客離開',-14,-18,'退款管道和原交易不符，留下重複退款風險。',8,{refundOK:false}]]},
+9:{who:'宇翔｜1F 服務台',title:'三位客人同時求助',msg:'服務台已排滿人：外國旅客詢問退稅、另一位想換外幣，還有一位抱怨專櫃沒人。\n\n宇翔問你如何協助分流？',options:[
+['分類需求並向顧客說明等候順序，必要時請樓管支援',9,9,'隊伍分流順利，旅客的焦慮緩和下來。',12],
+['不與同仁確認，先讓最生氣的客人插隊',-10,-7,'現場反而引起其他客人不滿。',8]]},
+10:{who:'外籍旅客｜1F',title:'協助購物退稅',msg:'「Could you help me claim a tax refund?」\n\n旅客出示護照及消費發票，但時間緊迫，旁邊有人不斷催促。',options:[
+['依規定檢查證件、交易資格及資料後，再協助送件',12,13,'核驗完成，旅客順利獲得正確指引。',20],
+['跳過資格核驗，直接協助申報',-17,-20,'申請資料被系統退回，旅客又多等了一次。',11]]},
+11:{who:'旅客服務｜1F',title:'外幣兌換的合法作業',msg:'一位旅客拿出外幣現鈔，希望在現場兌換新臺幣。\n\n你應先確認商場是否提供合法、經授權的兌換服務及適用條件。',options:[
+['確認是否有合法指定的兌換服務，依現場規定協助或引導至合適機構',12,12,'你清楚說明可提供的服務與核驗程序。',17],
+['自行估算匯率，收下外幣直接交付新臺幣',-24,-25,'私自兌換違反作業規定，主管必須立即介入。',9]]},
+12:{who:'芷晴｜1F 營業樓管',title:'退貨、折價與現場爭議',msg:'顧客主張商品有瑕疵，但專櫃說使用痕跡明顯。兩邊說法不同，櫃位提議直接刪掉原交易紀錄重刷。',options:[
+['請樓管協助依退貨規範確認事實，保留原單、退款及折讓紀錄',12,13,'樓管與顧客完成協商，異動憑證都有留存。',21,{floorClean:true}],
+['直接刪除原紀錄，事後再跟財務說明',-15,-19,'夜間關帳發現紀錄斷裂，必須重新調查。',11,{floorClean:false}]]},
+13:{who:'專櫃顧客｜1F',title:'專櫃無人等待結帳',msg:'「我只是想買這件上衣，怎麼找不到任何人？」\n\n櫃位沒有服務人員，商品標籤及刷卡設備都在，但你沒有該櫃的常態操作權限。',options:[
+['聯絡樓管及授權櫃員，核對貨號金額與可使用的收款權限再結帳',13,12,'你完成授權支援，顧客順利拿到商品與收據。',24],
+['先收下現金把商品交出去，等櫃員回來再補開發票',-17,-24,'交易未即時紀錄，銷售和庫存都出現異常。',10]]},
+14:{who:'芷晴｜營業樓管',title:'折讓單少了一張',msg:'營業樓管整理了今天的銷退資料，發現其中一筆折讓缺少可供核對的附件。',options:[
+['逐筆查核原交易、折讓與核准附件，與樓管補齊',10,12,'退貨折讓資料補齊，夜間結帳免於發生帳差。',20,{salesDocs:true}],
+['先把折讓資料做進系統，不必等待附件',-10,-15,'夜間對帳被要求查核資料來源，大家加班補件。',10,{salesDocs:false}]]},
+16:{who:'志豪｜總務課',title:'廠商請款再次催繳',msg:()=>`廠商來電催請款，要求立即處理。${state.flags.gaClean===false?'先前那筆採購的驗收資料仍有缺漏，這次如果再略過檢核，會讓問題擴大。':'總務剛完成驗收與請款附件整理，想請財務再核對付款條件。'}`,options:[
+['確認發票、請購、驗收、付款權限與期程，依流程回覆廠商',12,12,'請款文件核對完成，廠商獲得明確的付款安排。',19],
+['因對方催得急，不核對就先進行付款',-14,-19,'未完成審核的款項被主管攔下。',10]]},
+17:{who:'怡君｜人事課',title:'跨部門支援的加班認定',msg:()=>`「你今天除了財務作業，也在一樓支援了許久。」\n\n${state.flags.hrClean===false?'早上漏刷的工時仍待補正，人事現在正在處理一件較棘手的加班爭議。':'早上的差勤補正案已完成核實，人事今天的薪資作業相當順利。'}\n\n要如何紀錄自己的實際工時？`,options:[
+['按照實際工時、核准流程及公司制度填寫紀錄',10,11,'人事收到正確工時資料，完成登錄。',11],
+['把一樓支援時間自行加倍填寫，以補償忙碌',-12,-17,'人事提醒不實登記須更正。',8]]},
+18:{who:'雅婷｜B2 財務課',title:'電子禮券核銷金額差了 200 元',msg:'雅婷在核對電子禮券收款時發現：\n\n電子禮券平台核銷：NT$12,000\nPOS 系統核銷：NT$11,800\n差異：NT$200\n\n營業樓管說有一筆活動抵用券尚待確認，請你決定如何處理。',options:[
+['逐筆對照交易流水號、禮券類型與折抵紀錄，請樓管提供活動核准資料',12,14,'你查明 200 元屬活動折抵分類差異，資料已完成核對並留存。',18,{voucherClean:true}],
+['直接手動加回 200 元，使兩份報表看起來一樣',-14,-19,'尚未釐清的禮券差異被不當調整，留下核銷風險。',9,{voucherClean:false}]]}
+};
+function handleServicePhone(){
+ if(state.supportCallAccepted){dialog('B2 財務內線','1F 顧服支援確認','先前 1F 顧服宇翔已電話通知：一樓有旅客退稅、外幣詢問以及專櫃暫時無人的結帳需求。你已經完成電話交接，可以搭電梯前往 1F。',[{label:'了解，前往一樓支援'}]);return;}
+ if(!state.phoneRinging){dialog('B2 財務內線','目前沒有顧服來電',state.time<660?'顧服尚未來電，請先處理 B2 工作。':'請先留在 B2 處理會計、出納工作；1F 顧服有需求時會主動致電。',[{label:'繼續處理 B2 業務'}]);return;}
+ dialog('☎️ 1F 顧客服務台｜宇翔','來電通知：請財務上樓支援',
+ '「財務同仁你好，我是 1F 顧服宇翔。現在賣場已經開放，有外籍旅客需要退稅協助，也有人詢問外幣兌換，另有專櫃無人結帳的狀況。能請你們安排人員上樓嗎？」\n\n你仍須先妥善保管出納現金與完成交接。',[
+ {label:'確認需求，完成 B2 出納交接後再上 1F 支援',onClick:()=>{state.supportCallAccepted=true;state.phoneRinging=false;state.rep=Math.min(100,state.rep+3);setQuest();toast('☎️ 已接獲 1F 顧服通知！可搭電梯上樓支援。');}},
+ {label:'告知稍後回電，先處理手上的出納作業',onClick:()=>{toast('顧服會等候回覆，內線仍在待接狀態。');}},
+ {label:'不核實需求，直接掛斷電話',onClick:()=>{state.care=Math.max(0,state.care-5);setQuest();toast('顧服仍待回電，請再次使用內線確認。');}}
+ ]);
+}
+function handleYesterdayReport(){
+ if(state.shiftOver&&!state.reportDone){dialog('B2 財務課｜日結報表電腦','已過 18:00｜待交接事項','今日 16:00 的昨日營業日結報表尚未完成，已列為內控交接缺失。請將未完成事項如實交接主管，不能事後假裝準時完成。',[{label:'了解，記錄待補報'}]);return;}
+ if(state.time<960){dialog('B2 財務課｜日結報表電腦','昨日報表｜16:00 開始製作','每天 16:00 才開始製作前一日的日結報表。目前尚未到指定時間，請先處理其他業務。',[{label:'了解，16:00 再來'}]);return;}
+ if(state.reportDone){dialog('B2 財務課｜日結報表電腦','昨日營業日結已完成',state.reportClean?'前一日營業額、刷退及入帳資料均已核對並留存。':'報表已送出，但仍有未釐清的差異，需要主管追蹤。',[{label:'關閉畫面'}]);return;}
+ dialog('B2 財務課｜昨日營業日結','16:00 必做｜製作前一日的日結報表',
+ '昨日 POS 營業額：NT$256,800\n昨日刷卡交易：NT$182,300\n昨日現金交易：NT$74,500\n昨日退貨／刷退：NT$2,500\n\n淨營業額應為 NT$254,300。\n\n你還需要核對各專櫃日報、收款紀錄、退貨明細及銀行入帳資料。',[
+ {label:'逐項核對原始憑證與退貨明細，確認淨額 254,300 元後出報表',onClick:()=>{state.reportDone=true;state.reportClean=true;state.flags.yesterdayClean=true;state.rep=Math.min(100,state.rep+13);state.care=Math.min(100,state.care+15);setBanner('');setQuest();toast('📊 昨日日結報表核對完成，已妥善留存憑證。');}},
+ {label:'直接採用未扣除退款的 256,800 元，先把報表送出',onClick:()=>{state.reportDone=true;state.reportClean=false;state.flags.yesterdayClean=false;state.rep=Math.max(0,state.rep-15);state.care=Math.max(0,state.care-20);setBanner('');setQuest();toast('⚠️ 報表忽略退貨刷退，主管將要求更正。');}},
+ {label:'先不製作，晚點再回來'}
+ ]);
+}
+function handleCoinVisitor(){
+ let v=activeCoinVisit();if(!v)return;
+ dialog(v.name+'｜B2 專櫃人員','臨時兌幣需求｜'+fmtTime(state.time),
+ '「不好意思，我剛從專櫃下來，櫃上零錢不足，想把 '+v.amount+' 換成 '+v.denom+'，現在可以幫我兌換嗎？」\n\n需確認專櫃繳交的原款總額、面額數量與權限，以及是否有足夠零用金。',[
+ {label:'核點繳入總額、清點換出面額，雙方簽收並登錄兌幣簿',onClick:()=>{v.done=true;v.outcome='good';state.rep=Math.min(100,state.rep+7);state.care=Math.min(100,state.care+8);setQuest();toast('💰 '+v.name+'兌幣完成：金額相符、簽收留存。');}},
+ {label:'直接把硬幣交出去，不點鈔也不留兌幣紀錄',onClick:()=>{v.done=true;v.outcome='bad';state.rep=Math.max(0,state.rep-11);state.care=Math.max(0,state.care-14);setQuest();toast('⚠️ 兌幣沒有留下交易記錄，現金管理出現風險。');}},
+ {label:'請稍等，我還在忙其他業務'}
+ ]);
+}
+function runEvent(o){
+if(o.id==='b2MallDoor'||o.id==='b2OfficeDoor'){crossB2Door();return;}
+if(state.floor==='B2M'){
+ let messages={foodClerkA:['美食街｜餐飲同仁','用餐與取餐服務','「您好，今日有熱食、便當與現做餐點。如需點餐，可以先看櫃檯上的菜單。」'],foodClerkB:['美食街｜服務同仁','美食街服務','「內用區就在旁邊，謝謝您。高峰時段我們會請顧客依序取餐。」'],marketClerk:['超市｜收銀同仁','結帳協助','「購物結帳與發票開立依超市系統辦理，有付款異常會先請樓管確認。」'],marketStock:['超市｜理貨同仁','商品上架與庫存','「新鮮蔬果和冷藏商品都需要依規定檢查效期與庫存。」'],marketGuide:['B2 賣場導覽','美食街・生活超市','左側是美食街與內用座位，右側是超市、蔬果和冷藏商品。沿著賣場入口可返回 B2 辦公室走廊。']}[o.id];
+ if(messages){dialog(messages[0],messages[1],messages[2],[{label:'了解，謝謝！'}]);return;}
+}
+if(o.id==='servicePhone'){handleServicePhone();return;}
+if(o.id==='yesterdayReport'){handleYesterdayReport();return;}
+if(o.id==='coinVisitor'){handleCoinVisitor();return;}
+if(o.id==='elevator'){elevator();return;}
+if(o.id==='punchClock'){
+ if(!state.shiftOver){generic(o);return;}
+ dialog('人事課｜下班打卡機','18:00　準備下班',state.playerName+'，今天處理了人事、總務、財務及營業等跨部門工作。離開前確認交接紀錄是否完整。',[
+ {label:'核對交接紀錄並完成下班打卡',onClick:()=>showEnding()},
+ {label:'再巡一下辦公室，稍後打卡'}]);return;
+}
+if(SALES_FLOORS[state.floor]){
+ let d=SALES_FLOORS[state.floor];
+ if(o.id==='floorGuide'){
+  dialog(state.floor+'｜樓層導覽',d.name,d.desc+'\n\n本樓層目前可與專櫃人員交談、觀察顧客走動。財務主線仍在 B2、1F 與 13F，若接到緊急工作請搭電梯返回。', [{label:'知道了，繼續逛逛'}]);
+ }else if(o.id==='floorDisplay'){
+  dialog(state.floor+'｜'+d.booths[1],'本樓層特色櫃位',d.desc,[{label:'了解，謝謝介紹'}]);
+ }else if(o.id==='storeClerkA'||o.id==='storeClerkB'){
+  const first=o.id==='storeClerkA';
+  dialog(o.name,d.name,first?'「您好，歡迎光臨！這層以'+d.name+'為主。有需要找櫃位或商品，我可以為您介紹。」':'「今天店裡有些客人正在試看商品。如果是需要櫃位帳務或刷退協調，請找樓管再與財務聯繫。」',[
+   {label:'詢問樓層有哪些專櫃',onClick:()=>{toast(state.floor+'：'+d.booths.join('／'));}},
+   {label:'提醒同仁收款與退款要留交易紀錄',onClick:()=>{toast('已提醒專櫃依規定辦理收款、開立憑證。');}},
+   {label:'道謝離開'}
+  ]);
+ }else generic(o);
+ return;
+}
+if(state.shiftOver){generic(o);return;}
+if(state.time>=720&&state.time<780){dialog('員工行事曆','午休時間 12:00–13:00','目前為午間休息時間。可以探索環境，也可以等到 13:00 再繼續工作。',[{label:'了解，先享受午休'}]);return;}
+if(['salesPlanner','salesComplaints','salesCash'].includes(o.id)&&!state.flags[o.id]){
+ let data={salesPlanner:['婉如｜營業企劃','活動預算與核銷','促銷活動的費用預算和實際請款不一致，營業企劃請你幫忙判斷。'],
+ salesComplaints:['育瑄｜營業客訴','顧客退貨申訴','顧客表示沒有收到退款，但系統紀錄顯示刷退已送出。'],
+ salesCash:['俊霖｜營業管理','專櫃漏交營收資料','一間專櫃延遲繳交昨日銷售日報，會影響財務日結。']}[o.id];
+ dialog(data[0],data[1],data[2],[
+ {label:'依原始單據、授權流程及跨部門紀錄核對',onClick:()=>{state.flags[o.id]=true;state.rep=Math.min(100,state.rep+5);state.care=Math.min(100,state.care+5);setQuest();toast('13F 協作：已完成核對與文件交接。');}},
+ {label:'先口頭答應，暫不留任何資料',onClick:()=>{state.flags[o.id]=false;state.rep=Math.max(0,state.rep-7);state.care=Math.max(0,state.care-9);setQuest();toast('這筆跨部門業務沒有留完整紀錄。');}},
+ {label:'目前先不處理'}]);return;
+}
+if(o.id==='salesBoard'&&!state.flags.salesOfficeReviewed){
+ dialog('13F 營業辦公室｜資料看板','跨部門加碼任務：營業日報',
+ '13F 營業行政請你幫忙核對今日促銷折讓與 POS 銷售彙總：其中兩筆交易尚缺樓管簽核，明哲問能不能先當成已核准入帳。',[
+ {label:'核對原始交易與簽核，提醒營業補齊資料再交財務',onClick:()=>{state.flags.salesOfficeReviewed=true;state.flags.salesOfficeClean=true;state.rep=Math.min(100,state.rep+9);state.care=Math.min(100,state.care+11);setQuest();toast('13F 協作完成：營業日報完成核對，評價上升。');}},
+ {label:'未經確認直接認列，先讓報表看起來沒問題',onClick:()=>{state.flags.salesOfficeReviewed=true;state.flags.salesOfficeClean=false;state.rep=Math.max(0,state.rep-10);state.care=Math.max(0,state.care-14);setQuest();toast('營業日報留下待釐清的帳務風險。');}},
+ {label:'先不處理，稍後再來'}]);return;
+}
+
+const need=STEP[state.step];if(!need||need.floor!==state.floor||o.id!==need.target){generic(o);return;}
+if(state.step===19){
+let problems=[];
+if(state.flags.ledgerClean===false)problems.push('現金帳差使用備用金補足的紀錄');
+if(state.flags.payrollOK===false)problems.push('薪轉帳號異動缺乏簽核');
+if(state.flags.refundOK===false||state.flags.floorClean===false)problems.push('營業退款處理缺乏完整軌跡');
+if(state.flags.vaultClean===false)problems.push('現金保管交接不完整');
+if(state.flags.salesOfficeClean===false)problems.push('13F 營業日報未經核准就認列');
+if(state.flags.voucherClean===false)problems.push('電子禮券核銷差異未核實就調整');
+let risk=problems.length?'\n\n主管特別指出：'+problems.join('、')+'，需要明確提出改善方式。':'\n\n主管看到你已經保留各單位的核對及交接紀錄，語氣輕鬆了不少。';
+dialog('陳主任｜B2 財務課','今日跨部門工作彙報','「'+state.playerName+'，今天不只是出納對帳，還和人事、總務、樓管及服務台聯繫了。工作如何？異常有沒有留下紀錄？」'+risk,[
+{label:'如實報告差異與原因，提出內控改善建議',onClick:()=>{next(14,14,'主管肯定你的完整回報。18:00 再到人事區打卡下班。',19);}},
+{label:'只報告順利的部分，問題先不講',onClick:()=>{next(-14,-18,'主管察覺異常被隱瞞；下班前仍須留意交接。',12);}}]);return;}
+if(state.step===5&&state.flags.ledgerClean===false)toast('雅婷發現前一筆帳差，建議你先核對原始資料。');
+let ev=EVENTS[state.step];if(!ev){generic(o);return;}
+decision(ev.who,ev.title,typeof ev.msg==='function'?ev.msg():ev.msg,ev.options);
+}
+function showEnding(){
+ if(state.finished)return;
+ state.finished=true;
+ const critical=['payrollOK','gaClean','ledgerClean','vaultClean','refundOK','floorClean','salesDocs','salesOfficeClean','voucherClean','yesterdayClean'];
+ const issues=critical.filter(x=>state.flags[x]===false).length;
+ const safe=issues===0&&state.reportDone&&state.reportClean===true&&state.care>=55&&state.rep>=45&&state.step>=7;
+ let heading=safe?(state.step>=19?'平安下班・模範財務課員':'平安下班・穩健的一天'):'下班了，卻留下待改善事項';
+ let msg=safe?state.playerName+'，今天沒有留下已知的重大現金保管、薪資資料、付款或退款內控疏失。你妥善結束值勤，18:00打卡下班。':
+ state.playerName+'，今天仍有 '+issues+' 項作業留下缺失、重要任務未完成，或工作評價／內控謹慎度不足。你雖然在18:00打卡，但主管要求隔日追蹤改善。';
+ if(!state.reportDone)msg+=' 16:00 的昨日營業日結報表尚未完成，必須列為隔日待辦。';
+ if(state.step<8)msg+=' 今日處理的任務較少，未完成事項需按公司規範移交同仁。';
+ state.dialog=true;$('#dialogLayer').classList.remove('hidden');
+ $('#dWho').textContent='工作日誌 · 18:00 下班';
+ $('#dTitle').textContent=(safe?'🎉 任務成功｜':'⚠️ 結局｜')+heading;
+ $('#dText').textContent=msg;
+ $('#options').innerHTML=`<div class="stats"><div>工作評價<b>${state.rep}</b></div><div>內控謹慎度<b>${state.care}</b></div><div>完成事件<b>${Math.min(state.step,STEP.length)} / ${STEP.length}</b></div><div>下班時間<b>18:00</b></div></div>`;
+ let b=document.createElement('button');b.className='option';b.textContent='繼續自由參觀（時間停止）';b.onclick=hideDialog;$('#options').appendChild(b);
+ let b2=document.createElement('button');b2.className='option';b2.textContent='重新開始 09:00 的一天';b2.onclick=()=>{hideDialog();restart();};$('#options').appendChild(b2);
+ let b3=document.createElement('button');b3.className='option';b3.textContent='重新選擇性別與名字';b3.onclick=()=>{window.location.reload();};$('#options').appendChild(b3);
+}
+function restart(){
+ state.floor='B2';state.step=0;state.x=0;state.z=11;state.angle=0;state.rep=60;state.care=65;
+ state.time=540;state.clockSec=0;state.shiftOver=false;state.finished=false;state.breakFlag=0;state.choices=[];state.flags={};
+ state.liftFrom='B2';state.portalCooldown=0;state.liftBusy=false;state.phoneRinging=false;state.supportCallAccepted=false;state.reportDone=false;state.reportClean=null;state.coinVisits=generateCoinVisits();$('#liftPanel').classList.remove('open');
+ $('#elevatorTransition').classList.remove('shut');setBanner('');setQuest();
+ toast('09:00　'+state.playerName+'，新的一天開始，請走進 B2 辦公室。');
+}
+let closeObjs=[];
+function updateNear(){const items=activeObjects(state.floor);closeObjs=items.map(o=>({...o,d:Math.hypot(o.x-state.x,o.z-state.z)})).sort((a,b)=>a.d-b.d);let near=closeObjs[0];state.near=near&&near.d<2.45?near:null;$('#interactBtn').disabled=!state.near;$('#nearTag').textContent=state.near?`✦ ${state.near.name}`:'靠近閃爍提示處即可互動';let labels=closeObjs.filter(o=>o.d<15).slice(0,labelEls.length);for(let i=0;i<labelEls.length;i++){let el=labelEls[i],obj=labels[i];if(!obj){el.style.display='none';continue;}let p=project(obj.x,obj.y,obj.z);if(!p||p[0]<-40||p[0]>innerWidth+40||p[1]<-20||p[1]>innerHeight-80){el.style.display='none';continue;}el.style.display='block';el.style.left=p[0]+'px';el.style.top=p[1]+'px';el.textContent=obj.name;el.classList.toggle('active',STEP[state.step]&&STEP[state.step].floor===state.floor&&STEP[state.step].target===obj.id);}}
+function interact(){if(state.dialog||!state.started)return;if(state.near)runEvent(state.near);else toast('再靠近一點，就能與人員或設備互動。');}
+$('#interactBtn').addEventListener('click',interact);
+document.querySelectorAll('input[name="characterGender"]').forEach(el=>el.addEventListener('change',()=>{$('#introPronoun').textContent=el.checked&&el.value==='male'?'你':'妳';}));
+$('#nameInput').addEventListener('keydown',e=>{if(e.key==='Enter'){$('#nameInput').blur();$('#startBtn').click();}});
+$('#startBtn').onclick=()=>{state.gender=document.querySelector('input[name="characterGender"]:checked')?.value||'female';state.playerName=$('#nameInput').value.trim().slice(0,12)||'安安';$('#playerIdentity').textContent=state.playerName+'｜'+(state.gender==='male'?'男':'女')+' · 財務課員';state.started=true;state.clockSec=0;state.time=540;state.coinVisits=generateCoinVisits();state.phoneRinging=false;state.supportCallAccepted=false;state.reportDone=false;state.reportClean=null;$('#overlay').classList.add('hidden');$('#hud').style.display='block';setQuest();toast('09:00　'+state.playerName+'，上班了！走進 B2：人事 → 總務 → 財務。');};
+// Touch joystick and desktop controls.
+let stick=$('#stick'),joy=$('#joystick');let axes={x:0,y:0},joyPointer=null;function setStick(e){let b=joy.getBoundingClientRect(),cx=b.left+b.width/2,cy=b.top+b.height/2,dx=e.clientX-cx,dy=e.clientY-cy,r=48,l=Math.hypot(dx,dy),s=l>r?r/l:1;axes.x=dx*s/r;axes.y=dy*s/r;stick.style.transform=`translate(${dx*s}px,${dy*s}px)`;}
+joy.addEventListener('pointerdown',e=>{e.preventDefault();joyPointer=e.pointerId;joy.setPointerCapture(e.pointerId);joy.classList.add('active');setStick(e);});joy.addEventListener('pointermove',e=>{if(joyPointer===e.pointerId){e.preventDefault();setStick(e);}});
+function resetStick(e){if(joyPointer!==e.pointerId)return;joyPointer=null;joy.classList.remove('active');axes.x=0;axes.y=0;stick.style.transform='translate(0,0)';}
+joy.addEventListener('pointerup',resetStick);joy.addEventListener('pointercancel',resetStick);joy.addEventListener('lostpointercapture',()=>{joyPointer=null;axes.x=axes.y=0;stick.style.transform='translate(0,0)';});
+const keys={};addEventListener('keydown',e=>{let k=e.key.toLowerCase();if('wasdarrowleftarrowrightarrowuparrowdownshift e'.includes(k)||['arrowleft','arrowright','arrowup','arrowdown',' '].includes(k))e.preventDefault();keys[k]=true;if((k==='e'||k===' ')&&!e.repeat&&!$('#dialogLayer').classList.contains('hidden'))return;if((k==='e'||k===' ')&&!e.repeat)interact();if(k==='escape'&&state.dialog)hideDialog();});addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});addEventListener('blur',()=>{axes.x=axes.y=0;Object.keys(keys).forEach(k=>keys[k]=false);state.run=false;$('#runBtn').classList.remove('down');});
+const runBtn=$('#runBtn');runBtn.addEventListener('pointerdown',e=>{e.preventDefault();runBtn.setPointerCapture(e.pointerId);state.run=true;runBtn.classList.add('down');});for(let ev of ['pointerup','pointercancel','lostpointercapture'])runBtn.addEventListener(ev,()=>{state.run=false;runBtn.classList.remove('down');});
+// Easy-to-navigate collision volumes around solid desks and walls.
+const boxesB2=[
+// HR furniture and cabinets
+[-13.72,-10.3,6.90,8.35],[7.78,11.25,6.90,8.35],[-13.72,-10.3,4.22,5.70],[7.78,11.25,4.22,5.70],
+[-17.70,-16.12,3.00,9.12],[14.05,16.0,3.0,9.13],
+// General Affairs furniture and equipment
+[-13.68,-10.3,-.12,1.43],[8.2,11.6,-.12,1.43],[-13.68,-10.3,-2.70,-1.20],[8.2,11.6,-2.70,-1.20],
+[-17.45,-15.55,-2.37,2.80],[14.8,17.0,-.27,2.85],
+// Finance desks and filing cabinets
+[-13.82,-10.35,-11.06,-9.52],[-8.30,-4.91,-11.06,-9.52],[-13.82,-10.35,-7.57,-6.05],[-8.30,-4.91,-7.57,-6.05],
+[4.38,7.80,-11.08,-9.52],[10.48,13.60,-11.01,-9.10],[4.38,7.82,-12.95,-11.42],[-17.96,-16.47,-12.60,-4.08],
+// Elevator shaft ONLY in exterior hallway
+[13.55,16.90,11.60,13.50]
+];
+const boxes13F=[
+// Sales desk pods (wide circulation at center), file cabinets, meeting table.
+[-14.55,-11.45,5.38,7.00],[-8.98,-5.96,5.38,7.00],[4.42,7.48,5.38,7.00],[9.75,12.85,5.38,7.00],
+[-14.55,-11.45,-.32,1.26],[-8.98,-5.96,-.32,1.26],[4.42,7.48,-.32,1.26],[9.75,12.85,-.32,1.26],
+[-11.6,-3.3,-9.4,-6.8],[-17.4,-15.4,-5.6,-1.65],[15.1,17.2,-4.1,-1.1],
+[13.55,16.9,11.6,13.50]
+];
+const boxes1F=[[-12.25,-6.7,-8.7,-6.35],[-1.3,3.4,-8.7,-6.35],[9.3,13.9,4.65,6.7],[-8.7,-5.2,7.3,8.6],[9.4,10.5,-.1,2.2]];
+// Shelf/back-counter footprints on the sales floors. Walkways remain available in the centre.
+// B2 market: counter and supermarket shelving footprints, leave wide shopping aisles.
+const boxesB2M=[
+[-16.0,-9.2,-8.55,-7.15],[-16.0,-9.2,-3.70,-2.30],[-16.0,-9.2,1.10,2.50],[-16.0,-9.2,5.83,7.10],
+[-5.55,-3.2,-9.8,-8.15],[-5.55,-3.2,-6.35,-4.70],[-5.55,-3.2,-2.45,-.80],[-5.55,-3.2,1.40,3.05],
+[8.2,15.3,-11.25,-9.55],[8.2,15.3,-6.05,-4.45],[8.2,15.3,-.95,.65],[8.2,15.3,4.0,5.6],
+[5.0,7.65,-11.4,-9.35],[5.0,7.65,-8.85,-6.85],[5.0,7.65,-6.30,-4.25],[4.25,8.5,7.90,9.70]
+];
+const boxesSales=[[-16.1,-9.5,.1,1.4],[-16.1,-9.5,-10.3,-9.0],[9.5,16.1,-8.6,-7.3],[-14.45,-11.15,4.26,5.44],[-14.45,-11.15,-5.75,-4.60],[11.15,14.45,-4.45,-3.3],[6.45,8.85,9.75,10.8]];
+function collide(x,z){
+if(state.floor==='LIFT')return x<-2.35||x>2.35||z<-.55||z>1.52;
+if(x<-17.65||x>17.65||z<-12.88||z>12.77)return true;
+if(state.floor==='B2'||state.floor==='13F'){
+// Only the exterior entrance is enclosed; B2 departments have NO internal walls.
+if(Math.abs(z-9.5)<.25&&Math.abs(x)>1.86)return true;
+}
+for(let b of (state.floor==='B2'?boxesB2:state.floor==='13F'?boxes13F:state.floor==='1F'?boxes1F:state.floor==='B2M'?boxesB2M:SALES_FLOORS[state.floor]?[...boxesSales,[13.55,16.90,11.60,13.5]]:[[13.55,16.90,11.60,13.5]])){
+if(x>b[0]-.28&&x<b[1]+.28&&z>b[2]-.28&&z<b[3]+.28)return true;
+}
+return false;
+}
+// Main character can smoothly walk in four directions and around furniture.
+let time=0,last=performance.now();let cam={x:0,y:7,z:15};let dynamicBuffer=gl.createBuffer();
+function move(dt){if(!state.started||state.dialog||state.liftBusy){state.moving=false;return;}
+let x=axes.x+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),y=axes.y+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);let len=Math.hypot(x,y);state.moving=len>.10;if(!state.moving)return;x/=Math.max(1,len);y/=Math.max(1,len);let speed=(state.run||keys.shift)?6.35:3.75,dx=x*speed*dt,dz=y*speed*dt;if(!collide(state.x+dx,state.z))state.x+=dx;if(!collide(state.x,state.z+dz))state.z+=dz;state.angle=Math.atan2(-x,-y);
+ if((state.floor==='B2'||state.floor==='B2M')&&state.x>-12.72&&state.x<-8.42&&state.z>=12.24&&performance.now()>(state.portalCooldown||0))crossB2Door();
+}
+function buildDynamic(t){let b=new Builder(),current=STEP[state.step];if(state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')current={floor:'B2',target:'servicePhone'};if(state.time>=960&&!state.reportDone&&state.floor==='B2')current={floor:'B2',target:'yesterdayReport'};
+// Artificial contact shadows and highlighted light guide at task targets.
+for(let o of activeObjects(state.floor)){if(o.type==='npc')shadow(b,o.x,o.z,.90);if(current&&current.floor===state.floor&&current.target===o.id){let pulse=.7+Math.sin(t*3.7)*.17;b.cylinder(o.x,.055,o.z,1.13*pulse,.028,'#d3b577',22);b.cylinder(o.x,.075,o.z,.63,.022,'#f5e4b8',18);}}
+shadow(b,state.x,state.z,.91);
+// NPCs wear uniform in office and varied clothes in the public atrium.
+if(state.floor==='B2'){
+for(let o of activeObjects('B2').filter(o=>o.type==='npc')){
+let coat=o.id==='coinVisitor'?'#dabbb5':o.id==='hr'?'#c3dbe9':o.id==='ga'?'#9ebcb6':o.id==='floorMgrB2'?'#e1bbb2':o.id==='boss'?'#edf2f8':'#cedceb';
+human(b,o.x,o.z,o.id==='boss'?.5:-.8,coat,0,t,'staff');
+}
+}else if(state.floor==='B2M'){
+ for(const o of activeObjects('B2M').filter(o=>o.type==='npc')){
+  shadow(b,o.x,o.z,.83);
+  human(b,o.x,o.z,o.id==='marketStock'?.3:-.55,o.id.startsWith('food')?'#c8a88a':'#8caca2',0,t,'staff');
+ }
+ for(const p of roamingSalesPeople('B2M',t,state.time)){
+  shadow(b,p.x,p.z,.77);
+  human(b,p.x,p.z,p.angle,p.coat,.65,t+p.id,p.tourist?'tourist':'staff');
+ }
+}else if(state.floor==='13F'){
+for(let o of activeObjects('13F').filter(o=>o.type==='npc')){
+let coat=o.id==='floorMgr13'?'#d8b5a8':o.id==='salesLead'?'#677f91':'#b9ccd8';
+human(b,o.x,o.z,-.55,coat,0,t,'staff');
+}
+for(let [i,x] of [-13.7,11.7].entries()){let z=2.45+Math.sin(t*.4+i)*.22;shadow(b,x,z,.86);human(b,x,z,t*.2+i,'#a8bfc9',.13,t+i,'staff');}
+}else if(state.floor==='1F'){
+for(let o of activeObjects('1F').filter(o=>o.type==='npc')){
+let coat=o.id==='tax'?'#bcb28c':o.id==='fx'?'#b4b9d1':o.id==='floorMgr'?'#c99e85':o.id==='shop'?'#d9ada4':o.id==='greeter'?'#9dced0':'#263649';
+human(b,o.x,o.z,-.35,coat,0,t,(o.id==='greeter'||o.id==='guard'||o.id==='floorMgr')?'staff':'tourist');
+}
+for(let i=0;i<5;i++){let x=[-1,5,-9,4,-14][i]+Math.sin(t*.23+i*2.2)*1.35,z=[4,9,5,1,8][i]+Math.cos(t*.18+i)*1.9;shadow(b,x,z,.85);human(b,x,z,t*.12+i,['#b8a1a7','#929e7d','#879db2','#cebca7','#a1b6a0'][i],.5,t+i,'tourist');}
+}
+
+else if(SALES_FLOORS[state.floor]){
+ const floorData=SALES_FLOORS[state.floor];
+ for(const o of activeObjects(state.floor).filter(o=>o.type==='npc')){
+  shadow(b,o.x,o.z,.83);
+  human(b,o.x,o.z,o.id==='storeClerkA'?-.36:.55,o.id==='storeClerkA'?floorData.accent:'#bfc5c9',0,t,'staff');
+ }
+ for(const p of roamingSalesPeople(state.floor,t,state.time)){
+  shadow(b,p.x,p.z,.78);
+  human(b,p.x,p.z,p.angle,p.coat,.7,t+p.id,p.tourist?'tourist':'staff');
+ }
+}
+
+// The mirror shows a visually mirrored 3D copy of the player's outfit, posture, and movement.
+// Reflection is a geometry-based mock-up rather than a real-time ray-traced mirror.
+if(state.floor==='LIFT'){
+ let mirrorX=-state.x*.8;
+ human(b,mirrorX,-2.39,Math.PI-state.angle,state.gender==='female'?'#697f96':'#253f58',state.moving?1:0,t,'player');
+}
+human(b,state.x,state.z,state.angle,state.gender==='female'?'#697f96':'#253f58',state.moving?1:0,t,'player');
+let a=new Float32Array(b.a);gl.bindBuffer(gl.ARRAY_BUFFER,dynamicBuffer);gl.bufferData(gl.ARRAY_BUFFER,a,gl.DYNAMIC_DRAW);return {buffer:dynamicBuffer,count:a.length/10};}
+function renderMini(){
+if(state.floor==='LIFT')return;
+const c=$('#minimap'),ctx=c.getContext('2d'),w=c.width,h=c.height;
+ctx.clearRect(0,0,w,h);ctx.fillStyle=state.floor==='B2'?'#112c3d':state.floor==='B2M'?'#31443a':state.floor==='13F'?'#293c48':SALES_FLOORS[state.floor]?'#243942':'#3b322a';ctx.fillRect(0,0,w,h);
+const map=(x,z)=>[20+(x+18)*((w-40)/36),25+(z+13.5)*((h-47)/27)];
+const bands=state.floor==='B2M'?[[-13.5,13.5,'#ebe5d9','B2 美食街・超市']]:state.floor==='B2'?[[-13.5,-3.35,'#b4e2ee','財務'],[-3.35,3.3,'#d8ebf4','總務'],[3.3,9.5,'#edfafc','人事'],[9.5,13.5,'#879fae','走廊']]:state.floor==='13F'?[[-13.5,9.5,'#d8e5e7','13F 營業辦公室'],[9.5,13.5,'#9caeb5','走廊']]:state.floor==='1F'?[[-13.5,13.5,'#f3daa9','1F 百貨商場']]:SALES_FLOORS[state.floor]?[[-13.5,13.5,SALES_FLOORS[state.floor].warm,SALES_FLOORS[state.floor].name]]:[[-13.5,13.5,'#e6ebef','空白樓層']];
+for(let [z0,z1,color,label] of bands){let a=map(-18,z0),b=map(18,z1);ctx.fillStyle=color;ctx.globalAlpha=.94;ctx.fillRect(a[0],a[1],b[0]-a[0],b[1]-a[1]);ctx.globalAlpha=1;ctx.font='bold 15px sans-serif';ctx.fillStyle='#33516c';ctx.fillText(label.length>10?label.slice(0,10)+'…':label,25,a[1]+21);}
+ctx.strokeStyle='#53738b';ctx.lineWidth=2;ctx.strokeRect(20,25,w-40,h-47);
+if(state.floor==='B2'||state.floor==='13F')for(let z of [9.5]){
+let p=map(0,z),gap=map(2.1,z)[0]-p[0];ctx.strokeStyle='#7195ab';ctx.lineWidth=3;
+ctx.beginPath();ctx.moveTo(20,p[1]);ctx.lineTo(p[0]-gap,p[1]);ctx.moveTo(p[0]+gap,p[1]);ctx.lineTo(w-20,p[1]);ctx.stroke();}
+ctx.fillStyle=isRetailScene(state.floor)?'#fff4d9':'#ecfbff';ctx.font='bold 17px sans-serif';ctx.fillText(state.floor==='B2M'?'B2':state.floor,w-42,17);
+for(let o of activeObjects(state.floor)){let p=map(o.x,o.z);ctx.fillStyle=o.id==='elevator'?'#ca9870':'#507d8e';ctx.fillRect(p[0]-3,p[1]-3,6,6);}
+let target=STEP[state.step];if(state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')target={floor:'B2',target:'servicePhone'};if(state.time>=960&&!state.reportDone&&state.floor==='B2')target={floor:'B2',target:'yesterdayReport'};if(target&&target.floor===state.floor){let o=activeObjects(state.floor).find(x=>x.id===target.target);if(o){let p=map(o.x,o.z);ctx.beginPath();ctx.arc(p[0],p[1],8+2*Math.sin(time*4),0,6.283);ctx.strokeStyle='#e4a244';ctx.lineWidth=3;ctx.stroke();}}
+let p=map(state.x,state.z);ctx.fillStyle='#173a51';ctx.beginPath();ctx.arc(p[0],p[1],5.3,0,6.283);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+}
+let cw=0,ch=0;function resize(){const dpr=Math.min(devicePixelRatio||1,innerWidth<780?1.25:1.6);cw=Math.max(1,Math.floor(innerWidth*dpr));ch=Math.max(1,Math.floor(innerHeight*dpr));if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}gl.viewport(0,0,cw,ch);}
+function render(now){requestAnimationFrame(render);let seconds=Math.max(0,(now-last)/1000);let dt=Math.min(seconds,.055);last=now;time+=dt;advanceWorkClock(seconds);resize();move(dt);
+const aspect=cw/ch;let portrait=aspect<.86;let inCabin=state.floor==='LIFT';let wishX=state.x+(inCabin?.15:(portrait?1.4:1.0)),wishY=inCabin?(portrait?4.05:3.50):(portrait?10.2:7.65),wishZ=state.z+(inCabin?(portrait?7.05:6.4):(portrait?15.6:11.3));let l=Math.min(1,dt*5);cam.x+=(wishX-cam.x)*l;cam.y+=(wishY-cam.y)*l;cam.z+=(wishZ-cam.z)*l;
+perspective(proj,(portrait?69:64)*Math.PI/180,aspect,.1,90);lookAt(view,[cam.x,cam.y,cam.z],[state.x,inCabin?1.65:1.2,state.z-(inCabin?1.15:2.2)],[0,1,0]);mul(VP,proj,view);
+gl.clearColor(isRetailScene(state.floor)?.94:state.floor==='13F'?.83:.78,isRetailScene(state.floor)?.88:state.floor==='13F'?.90:.88,isRetailScene(state.floor)?.79:state.floor==='13F'?.91:.94,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.useProgram(program);gl.uniformMatrix4fv(loc.vp,false,VP);gl.uniform3f(loc.eye,cam.x,cam.y,cam.z);gl.uniform3f(loc.fog,isRetailScene(state.floor)?.96:.85,isRetailScene(state.floor)?.88:.92,isRetailScene(state.floor)?.82:.96);gl.uniform1f(loc.floor,isRetailScene(state.floor)?1:0);
+draw(staticMeshes[state.floor]||staticMeshes.EMPTY);draw(buildDynamic(time));if(state.started){updateNear();updateZone();renderMini();}}
+cam={x:0,y:8,z:19};requestAnimationFrame(render);
+// 0–99% fills first; 99% deliberately stays for five real seconds before 100%.
+(function loadingSequence(){
+ const stage=$('#loadingScreen'),fill=$('#loadingFill'),pct=$('#loadingPercent'),msg=$('#loadingMsg');
+ let start=performance.now(),holdStart=0;
+ function frame(now){
+  if(!holdStart){let p=Math.min(99,Math.floor((now-start)/2550*99));pct.textContent=p+'%';fill.style.width=p+'%';
+   msg.textContent=p<55?'正在整理財務憑證…':p<90?'正在檢查辦公室與電梯…':'正在準備上班識別證…';
+   if(p>=99){holdStart=now;msg.textContent='即將上班，準備迎接百貨的一天…';}}
+  else if(now-holdStart>=5000){pct.textContent='100%';fill.style.width='100%';msg.textContent='準備就緒，開始工作！';
+   setTimeout(()=>{stage.classList.add('done');},650);return;}
+  requestAnimationFrame(frame);
+ }
+ requestAnimationFrame(frame);
+})();
+// Show a meaningful prompt even before interacting with the scene.
+setQuest();
+})();
+</script>
+</body>
+</html>
