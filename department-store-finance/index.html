@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no" />
 <meta name="theme-color" content="#101922" />
-<title>百貨日常・財務課｜3D冒險 V8.4</title>
+<title>百貨日常・財務課｜3D冒險 V8.5</title>
 <style>
 :root{--ivory:#faf6ed;--light:#dceaf0;--teal:#8ddbc8;--gold:#ebc68c;--ink:#10212d}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -1331,12 +1331,13 @@ const keys={};addEventListener('keydown',e=>{let k=e.key.toLowerCase();if('wasda
 // Rotate the actual camera, not the player; the joystick/keyboard movement
 // remains screen-relative as the orbit changes. This is visual input state only:
 // no changes to localStorage, task indices, or world positions on load.
-const orbit={yaw:0,pitch:.55,distance:12.2,mode:'third',gesture:null,instant:true};
+const orbit={yaw:0,pitch:.86,distance:8.6,mode:'third',gesture:null,instant:true};
 const clamp=(x,low,high)=>Math.max(low,Math.min(high,x));
 function turnCamera(dx,dy){
  if(!state.started||state.dialog||state.liftBusy)return;
- orbit.yaw+=dx*.0063;
- orbit.pitch=clamp(orbit.pitch+dy*.0045,orbit.mode==='first'?-.85:.35,orbit.mode==='first'?.85:1.23);
+ orbit.yaw=Math.atan2(Math.sin(orbit.yaw+dx*.0063),Math.cos(orbit.yaw+dx*.0063));
+ orbit.pitch=clamp(orbit.pitch+dy*.0040,orbit.mode==='first'?-.78:.76,orbit.mode==='first'?.78:1.22);
+ orbit.instant=true;
 }
 function updateCameraModeButton(){
  $('#camMode').textContent=orbit.mode==='first'?'第一人稱':'第三人稱';
@@ -1345,15 +1346,16 @@ function updateCameraModeButton(){
 function switchCameraMode(){
  if(!state.started||state.dialog)return;
  orbit.mode=orbit.mode==='first'?'third':'first';
- orbit.pitch=orbit.mode==='first'?0:.55;
+ orbit.pitch=orbit.mode==='first'?0:.86;
  orbit.instant=true;
  updateCameraModeButton();
 }
 $('#camMode').addEventListener('click',switchCameraMode);
-$('#camLeft').addEventListener('click',()=>{if(state.started&&!state.dialog)orbit.yaw-=Math.PI/6;});
-$('#camRight').addEventListener('click',()=>{if(state.started&&!state.dialog)orbit.yaw+=Math.PI/6;});
+$('#camLeft').addEventListener('click',()=>{if(state.started&&!state.dialog){orbit.yaw-=Math.PI/6;orbit.instant=true;}});
+$('#camRight').addEventListener('click',()=>{if(state.started&&!state.dialog){orbit.yaw+=Math.PI/6;orbit.instant=true;}});
 $('#camReset').addEventListener('click',()=>{
- if(!state.started)return;orbit.yaw=0;orbit.pitch=orbit.mode==='first'?0:.55;orbit.distance=12.2;orbit.instant=true;
+ if(!state.started)return;orbit.mode='third';orbit.yaw=0;orbit.pitch=.86;orbit.distance=8.6;orbit.instant=true;
+ updateCameraModeButton();
 });
 canvas.addEventListener('pointerdown',e=>{
  if(!state.started||state.dialog||state.liftBusy||!$('#overlay').classList.contains('hidden'))return;
@@ -1376,15 +1378,15 @@ canvas.addEventListener('pointercancel',endCameraGesture);
 canvas.addEventListener('lostpointercapture',endCameraGesture);
 canvas.addEventListener('wheel',e=>{
  if(!state.started||state.dialog||orbit.mode==='first')return;
- orbit.distance=clamp(orbit.distance+Math.sign(e.deltaY)*.92,4.2,15.5);
+ orbit.distance=clamp(orbit.distance+Math.sign(e.deltaY)*.80,5.0,11.3);orbit.instant=true;
  e.preventDefault();
 },{passive:false});
 window.addEventListener('keydown',e=>{
  if(!state.started||state.dialog||!$('#overlay').classList.contains('hidden')||e.repeat)return;
  const k=e.key.toLowerCase();
  if(k==='v')switchCameraMode();
- else if(k==='q')orbit.yaw-=Math.PI/6;
- else if(k==='r')orbit.yaw+=Math.PI/6;
+ else if(k==='q'){orbit.yaw-=Math.PI/6;orbit.instant=true;}
+ else if(k==='r'){orbit.yaw+=Math.PI/6;orbit.instant=true;}
 });
 
 // Mobile sprint button removed; desktop Shift remains available.
@@ -1585,29 +1587,62 @@ ctx.fillStyle='#173a51';ctx.beginPath();ctx.arc(p[0],p[1],5.3,0,6.283);ctx.fill(
 let cw=0,ch=0;function resize(){const dpr=Math.min(devicePixelRatio||1,innerWidth<780?1.25:1.6);cw=Math.max(1,Math.floor(innerWidth*dpr));ch=Math.max(1,Math.floor(innerHeight*dpr));if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}gl.viewport(0,0,cw,ch);}
 function render(now){requestAnimationFrame(render);let seconds=Math.max(0,(now-last)/1000);let dt=Math.min(seconds,.055);last=now;time+=dt;advanceWorkClock(seconds);resize();move(dt);
 const aspect=cw/ch,portrait=aspect<.86,inCabin=state.floor==='LIFT';
-const first=orbit.mode==='first', yaw=orbit.yaw, pitch=orbit.pitch;
+const first=orbit.mode==='first',yaw=orbit.yaw,pitch=orbit.pitch;
 let wishX,wishY,wishZ,targetX,targetY,targetZ;
 if(first){
- wishX=state.x;wishY=2.26;wishZ=state.z;
- const forward=5.0;
- targetX=state.x-Math.sin(yaw)*forward;
- targetZ=state.z-Math.cos(yaw)*forward;
- targetY=2.26-Math.tan(pitch)*forward;
+ // First person is at eye height inside the scene, never outside the room.
+ wishX=state.x;wishY=2.23;wishZ=state.z;
+ const fwd=4.0;
+ targetX=wishX-Math.sin(yaw)*fwd;
+ targetZ=wishZ-Math.cos(yaw)*fwd;
+ targetY=wishY-Math.tan(pitch)*fwd;
 }else{
- // Camera orbits around the avatar; high-angle orbit stays above office walls.
- const distance=inCabin?Math.min(orbit.distance,5.8):orbit.distance;
- const hdist=Math.cos(pitch)*distance;
+ // Third-person view is an elevated orbit looking down at the character.
+ // This prevents the lens from dropping into merchandise, furniture or walls.
+ const distance=inCabin?Math.min(orbit.distance,4.5):orbit.distance;
+ const highPitch=Math.max(.76,pitch);
+ const hdist=Math.cos(highPitch)*distance;
+ targetX=state.x;targetY=inCabin?1.65:1.48;targetZ=state.z;
  wishX=state.x+Math.sin(yaw)*hdist;
  wishZ=state.z+Math.cos(yaw)*hdist;
- wishY=(inCabin?1.65:1.55)+Math.sin(pitch)*distance;
- targetX=state.x-Math.sin(yaw)*(inCabin?.25:1.20);
- targetZ=state.z-Math.cos(yaw)*(inCabin?.25:1.20);
- targetY=inCabin?1.80:1.45;
+ wishY=(inCabin?1.65:1.48)+Math.sin(highPitch)*distance;
+ // Scene geometry is built as solid walls. Keep the camera on the
+ // character's side when its line of sight would cross a physical wall.
+ // Sample along the aim ray, not just at the destination.
+ const wallHeight=state.floor==='1F'?7.5:isRetailScene(state.floor)?6.50:5.55;
+ let safe=1;
+ if(!inCabin){
+  for(let i=1;i<=48;i++){
+   const u=i/48;
+   const px=targetX+(wishX-targetX)*u;
+   const py=targetY+(wishY-targetY)*u;
+   const pz=targetZ+(wishZ-targetZ)*u;
+   const outer=px<-18.18||px>18.18||pz<-13.42||pz>13.46;
+   const entry=(state.floor==='B2'||state.floor==='13F')&&Math.abs(pz-9.5)<.115&&Math.abs(px)>2.15;
+   if((outer&&py<wallHeight+.15)||(entry&&py<3.60)){
+    safe=Math.max(.18,(i-1)/48-.025);break;
+   }
+  }
+ }
+ if(safe<1){
+  wishX=targetX+(wishX-targetX)*safe;
+  wishY=targetY+(wishY-targetY)*safe;
+  wishZ=targetZ+(wishZ-targetZ)*safe;
+  // If a narrow corner forces a short orbit, remain over the avatar's head.
+  wishY=Math.max(wishY,inCabin?3.35:3.65);
+ }
 }
-const lerp=orbit.instant?1:Math.min(1,dt*(first?13:8));
-cam.x+=(wishX-cam.x)*lerp;cam.y+=(wishY-cam.y)*lerp;cam.z+=(wishZ-cam.z)*lerp;
+// Do not linearly interpolate camera Cartesian coordinates during rotation:
+// an arc shortcut would cut through walls or pass inside the avatar.
+cam.x=wishX;cam.y=wishY;cam.z=wishZ;
 orbit.instant=false;
-perspective(proj,(first?70:(portrait?69:64))*Math.PI/180,aspect,.08,90);
+if(!Number.isFinite(cam.x+cam.y+cam.z+targetX+targetY+targetZ)){
+ // Fail-safe for unexpected touch-device numerical input.
+ orbit.yaw=0;orbit.pitch=.86;orbit.mode='third';updateCameraModeButton();
+ cam.x=state.x;cam.y=9.2;cam.z=state.z+5.4;
+ targetX=state.x;targetY=1.48;targetZ=state.z;
+}
+perspective(proj,(first?68:(portrait?66:62))*Math.PI/180,aspect,.10,90);
 lookAt(view,[cam.x,cam.y,cam.z],[targetX,targetY,targetZ],[0,1,0]);mul(VP,proj,view);
 gl.clearColor(isRetailScene(state.floor)?.94:state.floor==='13F'?.83:.78,isRetailScene(state.floor)?.88:state.floor==='13F'?.90:.88,isRetailScene(state.floor)?.79:state.floor==='13F'?.91:.94,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.useProgram(program);gl.uniformMatrix4fv(loc.vp,false,VP);gl.uniform3f(loc.eye,cam.x,cam.y,cam.z);gl.uniform3f(loc.fog,isRetailScene(state.floor)?.96:.85,isRetailScene(state.floor)?.88:.92,isRetailScene(state.floor)?.82:.96);gl.uniform1f(loc.floor,isRetailScene(state.floor)?1:0);
 draw(staticMeshes[state.floor]||staticMeshes.EMPTY);draw(buildDynamic(time));if(state.started){updateNear();updateZone();renderMini();}}
