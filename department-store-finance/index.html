@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no" />
 <meta name="theme-color" content="#101922" />
-<title>百貨日常・財務課｜3D冒險 V8.5</title>
+<title>百貨日常・財務課｜3D冒險 V8.3</title>
 <style>
 :root{--ivory:#faf6ed;--light:#dceaf0;--teal:#8ddbc8;--gold:#ebc68c;--ink:#10212d}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -185,25 +185,6 @@ body.freeExplore #homeBtn {display:block}
 body.freeExplore #buttons {bottom:calc(85px + env(safe-area-inset-bottom,0px))}
 #continueBtn {display:none;width:100%;margin-top:9px;padding:13px 16px;border-radius:10px;background:#204a58;color:#e5f8f2;border:1px solid #aee4d1;font-size:14px;font-weight:850}
 @media(max-width:640px){#homeBtn{right:12px;font-size:13px;padding:11px 13px;min-height:45px}body.freeExplore #buttons{bottom:calc(78px + env(safe-area-inset-bottom,0px))}}
-
-/* V8.4: camera orbit controls; touch and desktop support. */
-#cameraControls{position:absolute;right:16px;top:52%;transform:translateY(-50%);z-index:7;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:auto}
-#cameraControls button{min-width:51px;min-height:42px;padding:7px 9px;background:#092b3cdb;color:#eefaf6;border:1px solid #b7e6d58b;border-radius:11px;box-shadow:0 5px 18px #04121ca1;font-weight:900;font-size:18px;touch-action:manipulation;user-select:none}
-#cameraControls button:active{background:#49786f}
-#cameraControls button:focus-visible{outline:3px solid #f3d49a;outline-offset:2px}
-#cameraControls #camMode{min-width:82px;font-size:11px;line-height:1.4;background:#ead09adf;color:#213540;border-color:#fff4c5;padding:8px 6px}
-#cameraControls #camReset{font-size:11px;min-height:34px}
-#cameraControls .camHint{font-size:9px;text-shadow:0 1px 6px #000;pointer-events:none;background:#122936bc;padding:3px 5px;border-radius:6px;color:#e7f6f1}
-body.elevating #cameraControls{right:auto;left:16px;top:52%}
-@media(max-width:640px){
- #cameraControls{right:8px;top:56%;gap:5px}
- #cameraControls button{min-width:43px;min-height:37px;padding:5px 7px;font-size:17px}
- #cameraControls #camMode{min-width:69px;font-size:10px}
- #cameraControls #camReset{min-height:29px;font-size:10px}
- #cameraControls .camHint{font-size:8px}
- body.elevating #cameraControls{left:8px;right:auto;top:54%}
-}
-@media(max-height:620px){#cameraControls{top:56%;gap:3px}#cameraControls button{min-height:31px}}
 </style>
 </head>
 <body>
@@ -213,25 +194,18 @@ body.elevating #cameraControls{right:auto;left:16px;top:52%}
  <div id="objective"><div class="eyebrow">TODAY'S ASSIGNMENT · <span id="questIndex">01 / 20</span></div><div id="qtitle">上班打卡</div><div id="qdesc">前往財務室，開始今天的工作。</div><div id="progress"></div></div>
  <div id="zoneBadge">🚶 B2 公共走廊 · 人事室入口</div>
  <div id="mapWrap"><canvas id="minimap" width="284" height="240"></canvas><span id="mapCap">FLOOR MAP</span></div>
-  <div id="cameraControls" role="group" aria-label="3D 旋轉視角">
-   <div class="camHint">旋轉視角</div>
-   <button id="camLeft" type="button" aria-label="向左旋轉視角">↶</button>
-   <button id="camMode" type="button" aria-label="切換第一人稱或第三人稱視角">第三人稱</button>
-   <button id="camRight" type="button" aria-label="向右旋轉視角">↷</button>
-   <button id="camReset" type="button" aria-label="將視角轉回初始方向">重設視角</button>
-  </div>
  <div id="toast"></div>
  <div id="nearTag">靠近人員或物件即可互動</div>
  <div id="joystick" aria-label="移動搖桿"><div id="stick"></div></div>
  <div id="buttons"><button class="ctrlButton" id="interactBtn" disabled>互動<small>交談 / 操作</small></button></div>
- <div id="help">電腦：WASD 移動 · 滑鼠拖曳旋轉鏡頭 · 滾輪縮放 · E 互動｜手機：左側搖桿、右側滑動旋轉視角</div>
+ <div id="help">電腦：W A S D／方向鍵移動 · Shift 快跑 · E 互動 ｜手機：左下搖桿</div>
 </div>
 <button id="homeBtn" type="button" aria-label="返回遊戲首頁">⌂ 回到首頁</button>
 <div id="dayBanner"></div><div id="alertStack" aria-live="polite"></div>
 <div id="liftPanel" aria-label="電梯樓層按鈕"><h3>電梯操作面板</h3><div class="cabDisplay" id="liftDisplay">B2</div><div class="cabCaption">輕觸樓層按鈕前往目的地</div><div id="liftButtons"></div><button id="liftExit">開門｜返回目前樓層</button><div class="mirrorHint">鏡面位於轎廂後方 · 可看見自己的倒影</div></div>
 <div id="elevatorTransition" aria-hidden="true"><div class="door leftDoor"></div><div class="door rightDoor"></div><div id="travelTitle">電梯移動中</div></div>
 <div id="loadingScreen" role="status" aria-live="polite"><div class="loadingWrap"><div class="loadingIcon">🏬</div><div class="loadingSub">DEPARTMENT STORE · FINANCE STORY</div><div class="loadingTitle">百貨日常</div><div class="loadingBar"><div class="loadingFill" id="loadingFill"></div></div><div class="loadingPercent" id="loadingPercent">0%</div><div class="loadingMsg" id="loadingMsg">正在整理財務憑證…</div><div class="loadingFooter">準備開始 09:00 的百貨工作日</div></div></div>
-<div id="overlay"><div class="introCard"><div class="eyebrow">A DAY INSIDE THE DEPARTMENT STORE</div><div class="divider"></div><h1>百貨日常<br><em>財務課的<br>一天</em></h1><p><span id="introPronoun">妳</span>是百貨公司 B2 辦公室的財務課員。平安度過一天，18:00準時下班！玩家需要妥善處理會計、出納、顧客服務及跨部門工作，避免留下重大內控疏失。🏆 贏得勝利！</p><div class="introChips"><span>3D 自由旋轉視角</span><span>分支事件 × 多種結局</span></div>
+<div id="overlay"><div class="introCard"><div class="eyebrow">A DAY INSIDE THE DEPARTMENT STORE</div><div class="divider"></div><h1>百貨日常<br><em>財務課的<br>一天</em></h1><p><span id="introPronoun">妳</span>是百貨公司 B2 辦公室的財務課員。平安度過一天，18:00準時下班！玩家需要妥善處理會計、出納、顧客服務及跨部門工作，避免留下重大內控疏失。🏆 贏得勝利！</p><div class="introChips"><span>3D 第一人稱探索</span><span>分支事件 × 多種結局</span></div>
 <div class="characterSetup" aria-label="遊戲角色設定">
  <span class="characterLabel">01 · 選擇角色性別</span>
  <div class="genderPick" role="radiogroup" aria-label="角色性別">
@@ -242,7 +216,7 @@ body.elevating #cameraControls{right:auto;left:16px;top:52%}
  <input id="nameInput" type="text" autocomplete="off" maxlength="12" placeholder="例如：王小明、安安" aria-label="角色名字（可留白）">
  <div class="characterHint">不填寫時預設為「安安」。所選性別會套用到角色外觀，姓名會顯示於工作介面與劇情中。</div>
 </div>
-<button id="startBtn" class="goldBtn">佩戴識別證，開始上班　→</button><button id="continueBtn" type="button">▶ 繼續上次進度</button><div class="micro">◆ 手機左下搖桿移動、滑動場景旋轉視角；電腦用滑鼠拖曳旋轉。靠近標記後點「互動」。<br>◆ 15:00–17:00 留意 B2 專櫃人員兌幣，16:00 別忘了製作前一日的日結報表。<br>◆ 18:00 後請返回 B2 打卡下班，確保內控與交接安全。<br>◆ 這是可遊玩的單檔試作版；人物與場景採程式化 3D 建模，非真人攝影等級的寫實素材。</div></div></div>
+<button id="startBtn" class="goldBtn">佩戴識別證，開始上班　→</button><button id="continueBtn" type="button">▶ 繼續上次進度</button><div class="micro">◆ 手機使用左下圓形搖桿移動，靠近閃爍標記後點「互動」。<br>◆ 15:00–17:00 留意 B2 專櫃人員兌幣，16:00 別忘了製作前一日的日結報表。<br>◆ 18:00 後請返回 B2 打卡下班，確保內控與交接安全。<br>◆ 這是可遊玩的單檔試作版；人物與場景採程式化 3D 建模，非真人攝影等級的寫實素材。</div></div></div>
 <div id="dialogLayer" class="hidden"><div class="dialogCard"><div class="dWho" id="dWho"></div><h2 id="dTitle"></h2><p class="dialogText" id="dText"></p><div class="optionWrap" id="options"></div></div></div>
 <div id="screenWarning"></div>
 <script>
@@ -1327,68 +1301,6 @@ joy.addEventListener('pointerdown',e=>{e.preventDefault();joyPointer=e.pointerId
 function resetStick(e){if(joyPointer!==e.pointerId)return;joyPointer=null;joy.classList.remove('active');axes.x=0;axes.y=0;stick.style.transform='translate(0,0)';}
 joy.addEventListener('pointerup',resetStick);joy.addEventListener('pointercancel',resetStick);joy.addEventListener('lostpointercapture',()=>{joyPointer=null;axes.x=axes.y=0;stick.style.transform='translate(0,0)';});
 const keys={};addEventListener('keydown',e=>{let k=e.key.toLowerCase();if('wasdarrowleftarrowrightarrowuparrowdownshift e'.includes(k)||['arrowleft','arrowright','arrowup','arrowdown',' '].includes(k))e.preventDefault();keys[k]=true;if((k==='e'||k===' ')&&!e.repeat&&!$('#dialogLayer').classList.contains('hidden'))return;if((k==='e'||k===' ')&&!e.repeat)interact();if(k==='escape'&&state.dialog)hideDialog();});addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});addEventListener('blur',()=>{axes.x=axes.y=0;Object.keys(keys).forEach(k=>keys[k]=false);});
-
-// Rotate the actual camera, not the player; the joystick/keyboard movement
-// remains screen-relative as the orbit changes. This is visual input state only:
-// no changes to localStorage, task indices, or world positions on load.
-const orbit={yaw:0,pitch:.86,distance:8.6,mode:'third',gesture:null,instant:true};
-const clamp=(x,low,high)=>Math.max(low,Math.min(high,x));
-function turnCamera(dx,dy){
- if(!state.started||state.dialog||state.liftBusy)return;
- orbit.yaw=Math.atan2(Math.sin(orbit.yaw+dx*.0063),Math.cos(orbit.yaw+dx*.0063));
- orbit.pitch=clamp(orbit.pitch+dy*.0040,orbit.mode==='first'?-.78:.76,orbit.mode==='first'?.78:1.22);
- orbit.instant=true;
-}
-function updateCameraModeButton(){
- $('#camMode').textContent=orbit.mode==='first'?'第一人稱':'第三人稱';
- $('#camMode').setAttribute('aria-pressed',orbit.mode==='first'?'true':'false');
-}
-function switchCameraMode(){
- if(!state.started||state.dialog)return;
- orbit.mode=orbit.mode==='first'?'third':'first';
- orbit.pitch=orbit.mode==='first'?0:.86;
- orbit.instant=true;
- updateCameraModeButton();
-}
-$('#camMode').addEventListener('click',switchCameraMode);
-$('#camLeft').addEventListener('click',()=>{if(state.started&&!state.dialog){orbit.yaw-=Math.PI/6;orbit.instant=true;}});
-$('#camRight').addEventListener('click',()=>{if(state.started&&!state.dialog){orbit.yaw+=Math.PI/6;orbit.instant=true;}});
-$('#camReset').addEventListener('click',()=>{
- if(!state.started)return;orbit.mode='third';orbit.yaw=0;orbit.pitch=.86;orbit.distance=8.6;orbit.instant=true;
- updateCameraModeButton();
-});
-canvas.addEventListener('pointerdown',e=>{
- if(!state.started||state.dialog||state.liftBusy||!$('#overlay').classList.contains('hidden'))return;
- if(e.pointerType==='mouse'&&e.button!==0)return;
- if(orbit.gesture)return;
- orbit.gesture={id:e.pointerId,x:e.clientX,y:e.clientY};
- try{canvas.setPointerCapture(e.pointerId);}catch(err){}
- e.preventDefault();
-});
-canvas.addEventListener('pointermove',e=>{
- const p=orbit.gesture;if(!p||p.id!==e.pointerId)return;
- const dx=e.clientX-p.x,dy=e.clientY-p.y;
- p.x=e.clientX;p.y=e.clientY;
- turnCamera(dx,dy);
- e.preventDefault();
-});
-function endCameraGesture(e){if(orbit.gesture&&orbit.gesture.id===e.pointerId)orbit.gesture=null;}
-canvas.addEventListener('pointerup',endCameraGesture);
-canvas.addEventListener('pointercancel',endCameraGesture);
-canvas.addEventListener('lostpointercapture',endCameraGesture);
-canvas.addEventListener('wheel',e=>{
- if(!state.started||state.dialog||orbit.mode==='first')return;
- orbit.distance=clamp(orbit.distance+Math.sign(e.deltaY)*.80,5.0,11.3);orbit.instant=true;
- e.preventDefault();
-},{passive:false});
-window.addEventListener('keydown',e=>{
- if(!state.started||state.dialog||!$('#overlay').classList.contains('hidden')||e.repeat)return;
- const k=e.key.toLowerCase();
- if(k==='v')switchCameraMode();
- else if(k==='q'){orbit.yaw-=Math.PI/6;orbit.instant=true;}
- else if(k==='r'){orbit.yaw+=Math.PI/6;orbit.instant=true;}
-});
-
 // Mobile sprint button removed; desktop Shift remains available.
 // Easy-to-navigate collision volumes around solid desks and walls.
 const boxesB2=[
@@ -1505,8 +1417,7 @@ function colleagueMotion(floor,o,t){
 // Main character can smoothly walk in four directions and around furniture.
 let time=0,last=performance.now();let cam={x:0,y:7,z:15};let dynamicBuffer=gl.createBuffer();
 function move(dt){if(!state.started||state.dialog||state.liftBusy){state.moving=false;return;}
-let x=axes.x+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),y=axes.y+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);let len=Math.hypot(x,y);state.moving=len>.10;if(!state.moving)return;x/=Math.max(1,len);y/=Math.max(1,len);let speed=keys.shift?6.35:3.75,cy=Math.cos(orbit.yaw),sy=Math.sin(orbit.y);
-let dx=(x*cy+y*sy)*speed*dt,dz=(-x*sy+y*cy)*speed*dt;if(!collide(state.x+dx,state.z))state.x+=dx;if(!collide(state.x,state.z+dz))state.z+=dz;state.angle=Math.atan2(-dx,-dz);
+let x=axes.x+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),y=axes.y+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);let len=Math.hypot(x,y);state.moving=len>.10;if(!state.moving)return;x/=Math.max(1,len);y/=Math.max(1,len);let speed=keys.shift?6.35:3.75,dx=x*speed*dt,dz=y*speed*dt;if(!collide(state.x+dx,state.z))state.x+=dx;if(!collide(state.x,state.z+dz))state.z+=dz;state.angle=Math.atan2(-x,-y);
  if((state.floor==='B2'||state.floor==='B2M')&&state.x>-12.72&&state.x<-8.42&&state.z>=12.24&&performance.now()>(state.portalCooldown||0))crossB2Door();
 }
 function buildDynamic(t){let b=new Builder();
@@ -1563,7 +1474,7 @@ if(state.floor==='LIFT'){
  let mirrorX=-state.x*.8;
  human(b,mirrorX,-2.39,Math.PI-state.angle,state.gender==='female'?'#697f96':'#253f58',state.moving?1:0,t,'player');
 }
-if(orbit.mode!=='first')human(b,state.x,state.z,state.angle,state.gender==='female'?'#697f96':'#253f58',state.moving?1:0,t,'player');
+human(b,state.x,state.z,state.angle,state.gender==='female'?'#697f96':'#253f58',state.moving?1:0,t,'player');
 let a=new Float32Array(b.a);gl.bindBuffer(gl.ARRAY_BUFFER,dynamicBuffer);gl.bufferData(gl.ARRAY_BUFFER,a,gl.DYNAMIC_DRAW);return {buffer:dynamicBuffer,count:a.length/10};}
 function renderMini(){
 if(state.floor==='LIFT')return;
@@ -1579,74 +1490,15 @@ ctx.beginPath();ctx.moveTo(20,p[1]);ctx.lineTo(p[0]-gap,p[1]);ctx.moveTo(p[0]+ga
 ctx.fillStyle=isRetailScene(state.floor)?'#fff4d9':'#ecfbff';ctx.font='bold 17px sans-serif';ctx.fillText(state.floor==='B2M'?'B2':state.floor,w-42,17);
 for(let o of activeObjects(state.floor)){let p=map(o.x,o.z);ctx.fillStyle=o.id==='elevator'?'#ca9870':'#507d8e';ctx.fillRect(p[0]-3,p[1]-3,6,6);}
 let target=(state.finished||state.step>=STEP.length)?null:STEP[state.step];if(!state.finished&&state.step<STEP.length&&state.phoneRinging&&!state.supportCallAccepted&&state.floor==='B2')target={floor:'B2',target:'servicePhone'};if(!state.finished&&state.time>=960&&!state.reportDone&&state.floor==='B2')target={floor:'B2',target:'yesterdayReport'};if(target&&target.floor===state.floor){let o=activeObjects(state.floor).find(x=>x.id===target.target);if(o){let p=map(o.x,o.z);ctx.beginPath();ctx.arc(p[0],p[1],8+2*Math.sin(time*4),0,6.283);ctx.strokeStyle='#e4a244';ctx.lineWidth=3;ctx.stroke();}}
-let p=map(state.x,state.z);
-ctx.strokeStyle='#ecb773';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(p[0],p[1]);
-ctx.lineTo(p[0]-Math.sin(orbit.yaw)*12,p[1]-Math.cos(orbit.yaw)*12);ctx.stroke();
-ctx.fillStyle='#173a51';ctx.beginPath();ctx.arc(p[0],p[1],5.3,0,6.283);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+let p=map(state.x,state.z);ctx.fillStyle='#173a51';ctx.beginPath();ctx.arc(p[0],p[1],5.3,0,6.283);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
 }
 let cw=0,ch=0;function resize(){const dpr=Math.min(devicePixelRatio||1,innerWidth<780?1.25:1.6);cw=Math.max(1,Math.floor(innerWidth*dpr));ch=Math.max(1,Math.floor(innerHeight*dpr));if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}gl.viewport(0,0,cw,ch);}
 function render(now){requestAnimationFrame(render);let seconds=Math.max(0,(now-last)/1000);let dt=Math.min(seconds,.055);last=now;time+=dt;advanceWorkClock(seconds);resize();move(dt);
-const aspect=cw/ch,portrait=aspect<.86,inCabin=state.floor==='LIFT';
-const first=orbit.mode==='first',yaw=orbit.yaw,pitch=orbit.pitch;
-let wishX,wishY,wishZ,targetX,targetY,targetZ;
-if(first){
- // First person is at eye height inside the scene, never outside the room.
- wishX=state.x;wishY=2.23;wishZ=state.z;
- const fwd=4.0;
- targetX=wishX-Math.sin(yaw)*fwd;
- targetZ=wishZ-Math.cos(yaw)*fwd;
- targetY=wishY-Math.tan(pitch)*fwd;
-}else{
- // Third-person view is an elevated orbit looking down at the character.
- // This prevents the lens from dropping into merchandise, furniture or walls.
- const distance=inCabin?Math.min(orbit.distance,4.5):orbit.distance;
- const highPitch=Math.max(.76,pitch);
- const hdist=Math.cos(highPitch)*distance;
- targetX=state.x;targetY=inCabin?1.65:1.48;targetZ=state.z;
- wishX=state.x+Math.sin(yaw)*hdist;
- wishZ=state.z+Math.cos(yaw)*hdist;
- wishY=(inCabin?1.65:1.48)+Math.sin(highPitch)*distance;
- // Scene geometry is built as solid walls. Keep the camera on the
- // character's side when its line of sight would cross a physical wall.
- // Sample along the aim ray, not just at the destination.
- const wallHeight=state.floor==='1F'?7.5:isRetailScene(state.floor)?6.50:5.55;
- let safe=1;
- if(!inCabin){
-  for(let i=1;i<=48;i++){
-   const u=i/48;
-   const px=targetX+(wishX-targetX)*u;
-   const py=targetY+(wishY-targetY)*u;
-   const pz=targetZ+(wishZ-targetZ)*u;
-   const outer=px<-18.18||px>18.18||pz<-13.42||pz>13.46;
-   const entry=(state.floor==='B2'||state.floor==='13F')&&Math.abs(pz-9.5)<.115&&Math.abs(px)>2.15;
-   if((outer&&py<wallHeight+.15)||(entry&&py<3.60)){
-    safe=Math.max(.18,(i-1)/48-.025);break;
-   }
-  }
- }
- if(safe<1){
-  wishX=targetX+(wishX-targetX)*safe;
-  wishY=targetY+(wishY-targetY)*safe;
-  wishZ=targetZ+(wishZ-targetZ)*safe;
-  // If a narrow corner forces a short orbit, remain over the avatar's head.
-  wishY=Math.max(wishY,inCabin?3.35:3.65);
- }
-}
-// Do not linearly interpolate camera Cartesian coordinates during rotation:
-// an arc shortcut would cut through walls or pass inside the avatar.
-cam.x=wishX;cam.y=wishY;cam.z=wishZ;
-orbit.instant=false;
-if(!Number.isFinite(cam.x+cam.y+cam.z+targetX+targetY+targetZ)){
- // Fail-safe for unexpected touch-device numerical input.
- orbit.yaw=0;orbit.pitch=.86;orbit.mode='third';updateCameraModeButton();
- cam.x=state.x;cam.y=9.2;cam.z=state.z+5.4;
- targetX=state.x;targetY=1.48;targetZ=state.z;
-}
-perspective(proj,(first?68:(portrait?66:62))*Math.PI/180,aspect,.10,90);
-lookAt(view,[cam.x,cam.y,cam.z],[targetX,targetY,targetZ],[0,1,0]);mul(VP,proj,view);
+const aspect=cw/ch;let portrait=aspect<.86;let inCabin=state.floor==='LIFT';let wishX=state.x+(inCabin?.15:(portrait?1.4:1.0)),wishY=inCabin?(portrait?4.05:3.50):(portrait?10.2:7.65),wishZ=state.z+(inCabin?(portrait?7.05:6.4):(portrait?15.6:11.3));let l=Math.min(1,dt*5);cam.x+=(wishX-cam.x)*l;cam.y+=(wishY-cam.y)*l;cam.z+=(wishZ-cam.z)*l;
+perspective(proj,(portrait?69:64)*Math.PI/180,aspect,.1,90);lookAt(view,[cam.x,cam.y,cam.z],[state.x,inCabin?1.65:1.2,state.z-(inCabin?1.15:2.2)],[0,1,0]);mul(VP,proj,view);
 gl.clearColor(isRetailScene(state.floor)?.94:state.floor==='13F'?.83:.78,isRetailScene(state.floor)?.88:state.floor==='13F'?.90:.88,isRetailScene(state.floor)?.79:state.floor==='13F'?.91:.94,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.useProgram(program);gl.uniformMatrix4fv(loc.vp,false,VP);gl.uniform3f(loc.eye,cam.x,cam.y,cam.z);gl.uniform3f(loc.fog,isRetailScene(state.floor)?.96:.85,isRetailScene(state.floor)?.88:.92,isRetailScene(state.floor)?.82:.96);gl.uniform1f(loc.floor,isRetailScene(state.floor)?1:0);
 draw(staticMeshes[state.floor]||staticMeshes.EMPTY);draw(buildDynamic(time));if(state.started){updateNear();updateZone();renderMini();}}
-cam={x:0,y:8,z:19};updateCameraModeButton();requestAnimationFrame(render);
+cam={x:0,y:8,z:19};requestAnimationFrame(render);
 // 0–99% fills first; 99% deliberately stays for five real seconds before 100%.
 (function loadingSequence(){
  const stage=$('#loadingScreen'),fill=$('#loadingFill'),pct=$('#loadingPercent'),msg=$('#loadingMsg');
