@@ -1504,7 +1504,7 @@ function colleagueMotion(floor,o,t){
 let time=0,last=performance.now();let cam={x:0,y:7,z:15};let dynamicBuffer=gl.createBuffer();
 function move(dt){if(!state.started||state.dialog||state.liftBusy){state.moving=false;return;}
 let x=axes.x+(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),y=axes.y+(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);let len=Math.hypot(x,y);state.moving=len>.10;if(!state.moving)return;x/=Math.max(1,len);y/=Math.max(1,len);let speed=keys.shift?6.35:3.75,cy=Math.cos(orbit.yaw),sy=Math.sin(orbit.y);
-let dx=(x*cy+y*sy)*speed*dt,dz=(-x*sy+y*cy)*speed*dt;if(!collide(state.x+dx,state.z))state.x+=dx;if(!collide(state.x,state.z+dz))state.z+=dz;state.angle=Math.atan2(-x,-y);
+let dx=(x*cy+y*sy)*speed*dt,dz=(-x*sy+y*cy)*speed*dt;if(!collide(state.x+dx,state.z))state.x+=dx;if(!collide(state.x,state.z+dz))state.z+=dz;state.angle=Math.atan2(-dx,-dz);
  if((state.floor==='B2'||state.floor==='B2M')&&state.x>-12.72&&state.x<-8.42&&state.z>=12.24&&performance.now()>(state.portalCooldown||0))crossB2Door();
 }
 function buildDynamic(t){let b=new Builder();
