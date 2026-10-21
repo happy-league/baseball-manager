@@ -657,7 +657,7 @@ const FUN_NEWS=[
 '投票前夕選戰算命師預言膠著，所有陣營都說預言對自己有利'
 ];
 let newsOrder=[],newsIndex=0,newsTimer=0;
-function spinNews(){const el=$('newsLine');if(!el)return;if(!newsOrder.length||newsIndex>=newsOrder.length){newsOrder=shuffle([...Array(FUN_NEWS.length).keys()]);newsIndex=0;}const headline=FUN_NEWS[newsOrder[newsIndex++]];el.classList.remove('roll');el.textContent='【鬼島快訊】 '+headline;el.style.setProperty('--news-start',Math.max(280,$('newsClip').clientWidth)+'px');el.style.setProperty('--news-speed',(Math.max(13,(el.textContent.length*.24)+8)).toFixed(1)+'s');void el.offsetWidth;el.classList.add('roll');clearTimeout(newsTimer);newsTimer=setTimeout(spinNews,Math.max(13000,(el.textContent.length*.24+8)*1000));}
+function spinNews(){const el=$('newsLine');if(!el)return;if(!newsOrder.length||newsIndex>=newsOrder.length){newsOrder=shuffle([...Array(FUN_NEWS.length).keys()]);newsIndex=0;}const headline=FUN_NEWS[newsOrder[newsIndex++]];el.classList.remove('roll');el.textContent='【鬼島快訊】 '+headline;el.style.setProperty('--news-start',Math.max(280,$('newsClip').clientWidth)+'px');const newsDuration=Math.max(13,(el.textContent.length*.24)+8)*2;el.style.setProperty('--news-speed',newsDuration.toFixed(1)+'s');void el.offsetWidth;el.classList.add('roll');clearTimeout(newsTimer);newsTimer=setTimeout(spinNews,newsDuration*1000);}
 
 const SURPRISES=[
 ['直播訊號突然中斷','你剛做完決策，直播設備突然黑屏，記者正等候說明。', [['現場公開故障原因',-45,3,-4,4],['增租備援系統',-145,4,-6,5],['改用文字公告',-15,-2,2,1]]],
