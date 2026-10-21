@@ -182,6 +182,17 @@ jobs:
           finance_dir.mkdir(parents=True, exist_ok=True)
           (finance_dir / "index.html").write_bytes(finance_html)
 
+          # 2026 political battle at /political-battle-2026/.
+          campaign_src = Path("political-battle-2026/index.html")
+          if not campaign_src.exists():
+              raise SystemExit("Political battle V16 source not found")
+          campaign_html = campaign_src.read_bytes()
+          if not campaign_html.startswith(b"<!doctype html>") or not campaign_html.rstrip().endswith(b"</html>"):
+              raise SystemExit("Unexpected political battle V16 HTML")
+          campaign_dir = out / "political-battle-2026"
+          campaign_dir.mkdir(parents=True, exist_ok=True)
+          (campaign_dir / "index.html").write_bytes(campaign_html)
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
