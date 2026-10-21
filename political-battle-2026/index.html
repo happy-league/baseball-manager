@@ -1,0 +1,1467 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#081321">
+<title>2026政壇爭霸｜選戰趣聞 V16</title>
+<style>
+:root{--bg:#081321;--panel:rgba(11,23,39,.90);--line:rgba(187,211,237,.20);--white:#eef5ff;--muted:#b4c5d8;--gold:#edc477;--faction:#6aaaff}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;color:var(--white);font-family:'Noto Sans TC','Microsoft JhengHei',system-ui,sans-serif;background:var(--bg);-webkit-tap-highlight-color:transparent}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}#world{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;background:linear-gradient(#9fbbc9 0%,#b5c2bf 44%,#393f4c 100%)}.hidden{display:none!important}.glass{background:var(--panel);border:1px solid var(--line);box-shadow:0 14px 40px #0005;backdrop-filter:blur(17px)}#topbar{position:absolute;top:12px;left:12px;right:12px;z-index:8;display:flex;align-items:stretch;gap:8px;pointer-events:none}.brand{min-width:184px;display:flex;flex-direction:column;justify-content:center;padding:9px 14px;border-radius:14px;border-left:3px solid var(--faction)}.brand b{font-size:16px;letter-spacing:1px}.brand small,.muted{font-size:11px;color:var(--muted)}.stat{border-radius:14px;padding:9px 13px;min-width:108px;display:flex;flex-direction:column;justify-content:center}.stat b{font-size:18px;font-variant-numeric:tabular-nums;white-space:nowrap}.stat label{font-size:11px;color:var(--muted)}#dashBtns{pointer-events:auto;display:flex;align-items:center;gap:6px;margin-left:auto}.tinyBtn,.mainBtn{border-radius:10px;background:#143249;color:#ecf7ff;border:1px solid #66829b80;padding:10px 13px;font-weight:800;transition:.15s}.tinyBtn:hover,.mainBtn:hover{background:#23506c}.mainBtn{background:linear-gradient(110deg,#cfaa61,#f2d58e);border:none;color:#1a2129;box-shadow:0 6px 24px #0004}.mainBtn:hover{background:#f5d992}#side{position:absolute;top:89px;right:12px;width:min(282px,27vw);z-index:5;display:flex;flex-direction:column;gap:8px;pointer-events:none}.sideCard{padding:12px 14px;border-radius:15px}.sideHead{font-size:12px;color:#ecf1f9;font-weight:800;display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.sideHead span{color:var(--muted);font-weight:500;font-size:10px}#radar{display:block;margin:auto;width:100%;max-width:215px;height:173px}.pollRow{display:flex;align-items:center;justify-content:space-between;font-size:12px;border-top:1px solid #ffffff12;padding:8px 0;gap:4px}.pollRow strong{font-variant-numeric:tabular-nums;white-space:nowrap;font-size:11px}.pollTitle{color:#b9cedb;font-size:11px}#actionbar{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);z-index:8;display:flex;gap:8px;align-items:center;background:#071927bd;padding:8px;border-radius:15px;border:1px solid #ffffff25}#actionbar .mainBtn{white-space:nowrap}#hint{font-size:12px;color:#cad9e5;white-space:nowrap}#joystick{display:none;position:absolute;bottom:33px;left:23px;width:126px;height:126px;border-radius:50%;border:2px solid #ddedff6f;background:#cce4ff18;z-index:12;touch-action:none;align-items:center;justify-content:center}#stick{height:52px;width:52px;border-radius:50%;border:2px solid #e1f7ffba;background:linear-gradient(#8fc5ebc9,#266080d9);box-shadow:0 8px 23px #0006;transform:translate(0,0)}#lookHint{display:none;position:absolute;bottom:41px;right:13px;z-index:9;color:#ffffffe0;font-size:11px;background:#071c2da1;border-radius:20px;padding:7px 9px}#markers{position:absolute;inset:0;pointer-events:none;z-index:4}.npcMark{position:absolute;display:flex;flex-direction:column;align-items:center;gap:2px;transform:translate(-50%,-100%);pointer-events:auto;cursor:pointer;text-shadow:0 1px 7px #000;font-size:12px;white-space:nowrap}.npcMark b{border-radius:20px;background:#061825cb;border:1px solid #d2edffaa;padding:4px 9px;font-size:12px}.npcMark small{background:#081c2bd9;border-radius:30px;padding:3px 7px;color:#f7d895;font-size:10px}.npcMark.near b{background:#b98941;border-color:#f9d79a;color:#081421}.cover{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:15px;background:linear-gradient(130deg,rgba(4,16,29,.98),rgba(13,28,47,.94));overflow:auto}.coverPanel{width:min(990px,100%);max-height:calc(100dvh - 30px);overflow:auto;border:1px solid #d3e7ff29;border-radius:23px;padding:26px;background:linear-gradient(125deg,#102339f4,#0d1a2cf5);box-shadow:0 16px 60px #000b}#loading{background:radial-gradient(circle at 50% 44%,#1e4a66,#061420 68%)}#loading .loadingCard{text-align:center;width:min(530px,86vw)}.eyebrow{color:#f5d59d;letter-spacing:3px;font-size:12px}.bigTitle{font-size:clamp(32px,5.5vw,70px);line-height:1.12;font-weight:950;letter-spacing:3px;text-shadow:0 6px 40px #0008;margin:13px 0}.sub{color:#adbfce;font-size:14px;line-height:1.8}.loadingTrack{height:9px;border-radius:20px;background:#ffffff21;overflow:hidden;margin:28px 0 10px}.loadingTrack div{height:100%;width:0;background:linear-gradient(90deg,#6bb0dd,#f3d18b);transition:width .15s}.largeNum{font-size:48px;font-weight:900;color:#f2dfb8;font-variant-numeric:tabular-nums}.steps{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:17px}.step{font-size:12px;border-radius:20px;padding:6px 11px;background:#ffffff0d;color:#afbfcd}.step.active{background:#edc477;color:#142132;font-weight:900}#factionGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}.factionCard{background:#07192ae0;border:1px solid #8ba7bd51;border-radius:17px;padding:22px 13px;min-height:150px;color:#eff6fc;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center}.factionCard.selected{outline:3px solid var(--gold);background:#173448}.factionIcon{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;font-size:24px;box-shadow:0 6px 16px #0008}.formline{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:15px}.input{border-radius:10px;border:1px solid #8fb4c95f;background:#071724;color:#e4f0fc;padding:11px 12px;outline:none;min-width:150px}.input:focus{border-color:#edc477}.sectionTitle{font-size:22px;font-weight:950;margin:2px 0 8px}.cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:16px 0}.abilityCard{padding:12px 7px;border-radius:14px;border:1px solid #8faac04d;background:#091b2c;min-height:142px;color:#e7f0fa;text-align:center}.abilityCard.selected{border-color:#edc477;background:#26384a;box-shadow:0 0 0 2px #e9b95755}.abilityCard strong{font-size:14px;display:block;color:#f1ce8e}.abilityCard p{font-size:11px;color:#b4c6d5;margin:6px 0}.miniBars{display:flex;align-items:flex-end;justify-content:center;height:46px;gap:5px;margin-top:8px}.miniBars i{width:13px;border-radius:4px 4px 2px 2px;background:#70b4dd;opacity:.9}.badge{display:inline-flex;align-items:center;gap:5px;border-radius:20px;font-size:11px;padding:5px 9px;background:#e9c37b20;border:1px solid #edc47764;color:#f5d58a}.modalBack{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:#010811cf;padding:12px;overflow:auto}.modal{width:min(650px,100%);max-height:calc(100dvh - 24px);overflow:auto;border-radius:22px;padding:23px;background:linear-gradient(135deg,#152c43,#07182b);border:1px solid #b5d4e950;box-shadow:0 20px 60px #000c}.modal small{color:#e5c285;font-size:12px;letter-spacing:1px}.modal h2{margin:9px 0;font-size:25px}.modal p{line-height:1.8;font-size:14px;color:#d0dfec}.choice{width:100%;background:#17344a;border:1px solid #6c92a75c;text-align:left;display:block;color:#f1f8ff;border-radius:13px;margin-top:10px;padding:12px 15px}.choice:hover{border-color:#f4d28e;background:#254760}.choice b{display:block;font-size:14px;margin-bottom:5px}.choice em{display:block;font-style:normal;font-size:12px;color:#bdd2e4}.countyPicker{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap;color:#d8e7f6;font-size:12px}.footNote{color:#99b0c3;font-size:10px;margin-top:14px;line-height:1.6}.ballot{padding:13px;border-radius:10px;background:#ffffff0a;border:1px solid #ffffff18}.rallyGlow{color:#f6dfb8;text-shadow:0 0 25px #eeaa50a6}#results{background:#061221ed}.resultsPanel{width:min(1110px,100%);max-height:calc(100dvh - 22px);overflow:auto;border-radius:21px;background:#10243af5;border:1px solid #d3e7ff38;padding:18px}.resultsLayout{display:grid;grid-template-columns:minmax(285px,.95fr) minmax(320px,1.1fr);gap:18px}.mapBox{position:relative;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 51% 44%,#174466,#08182b 67%);border:1px solid #6689ab50;min-height:435px;display:grid;place-items:center}.mapBox:before{content:'';position:absolute;inset:0;background-image:linear-gradient(#ffffff0b 1px,transparent 1px),linear-gradient(90deg,#ffffff0b 1px,transparent 1px);background-size:30px 30px;pointer-events:none}#mapSvg{width:100%;height:auto;max-height:550px;position:relative;overflow:visible}#mapSvg path{stroke:#a5d0f0;stroke-width:1.45;vector-effect:non-scaling-stroke;transition:fill .25s;cursor:pointer}#mapSvg path:hover{stroke:#f8e6b2;stroke-width:2.8;filter:brightness(1.25)}#mapTip{position:absolute;left:9px;bottom:9px;color:#f9e6b4;background:#071828e3;padding:6px 10px;border-radius:8px;font-size:12px;max-width:95%}.voteRows{display:grid;gap:8px}.voteRow{border-radius:10px;background:#ffffff0a;padding:9px 11px}.voteHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}.voteHead b{font-size:15px;font-variant-numeric:tabular-nums}.voteTrack{height:8px;border-radius:8px;overflow:hidden;background:#ffffff18;display:flex}.voteTrack span{height:100%;transition:width .1s}#countyResults{display:grid;grid-template-columns:repeat(2,1fr);gap:4px 10px;max-height:188px;overflow:auto;margin-top:10px}.countyLine{font-size:11px;display:flex;justify-content:space-between;padding:5px 7px;border-radius:7px;background:#ffffff0b}.countyLine b{font-size:11px}.resultsControls{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap}.finalReview{background:#ffffff0a;border-left:3px solid #edc477;padding:12px 14px;border-radius:8px;margin-top:10px;font-size:13px;line-height:1.9;color:#e1edf9}#toast{position:absolute;bottom:92px;left:50%;transform:translateX(-50%);z-index:40;background:#192f42e8;border:1px solid #ecca90a8;padding:9px 14px;border-radius:12px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;text-align:center;max-width:85vw}#toast.show{opacity:1}#controlsHelp{position:absolute;bottom:15px;right:15px;font-size:11px;color:#e3eff9b6;z-index:4;text-shadow:0 2px 5px #000}.source{font-size:10px;color:#aac3d2;line-height:1.6}body.isMobile #joystick{display:flex}body.isMobile #lookHint{display:block}body.isMobile #controlsHelp{display:none}
+@media(max-width:850px){#topbar{flex-wrap:wrap;gap:5px;top:7px;left:7px;right:7px}.brand{min-width:initial;padding:7px 10px;flex:1 1 100%;flex-direction:row;align-items:center;justify-content:space-between}.brand b{font-size:12px}.stat{padding:6px 9px;min-width:72px;flex:1 1 55px}.stat b{font-size:14px}.stat label{font-size:9px}#dashBtns{margin-left:0}.tinyBtn{padding:7px 9px;font-size:12px}#side{top:115px;right:7px;width:154px;gap:5px}.sideCard{padding:6px 8px;border-radius:10px}.sideHead{font-size:10px;margin-bottom:3px}.sideHead span{font-size:9px}#radar{height:115px}#pollPanel .pollRow{font-size:10px;padding:5px 0}#pollPanel .pollRow strong{font-size:9px}#pollPanel .pollRow span{font-size:9px}#pollPanel .pollTitle{font-size:9px}#actionbar{bottom:57px;left:auto;right:8px;transform:none;padding:6px;min-width:unset}#actionbar .mainBtn{font-size:12px;padding:9px 11px}#hint{display:none}#joystick{bottom:22px;left:11px;width:114px;height:114px}#stick{height:45px;width:45px}#lookHint{bottom:19px}.coverPanel{padding:17px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.abilityCard{min-height:105px}#factionGrid{gap:8px}.factionCard{padding:12px 5px;min-height:120px}.factionIcon{height:42px;width:42px}.resultsLayout{grid-template-columns:1fr}.mapBox{min-height:300px}#mapSvg{max-height:375px}#countyResults{max-height:130px}.resultsPanel{padding:10px}.modal{padding:16px}.modal h2{font-size:21px}}@media(max-width:385px){#side{top:118px;width:139px}#radar{height:110px}#pollPanel{display:none}#dashBtns .tinyBtn:nth-child(2){display:none}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* 2.0：電影式競選總部 HUD、戲仿媒體戰報與逐人開票 */
+#world{filter:contrast(1.07) saturate(1.1)}
+body:after{content:'';position:fixed;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at 54% 44%,transparent 30%,rgba(2,10,22,.29) 100%)}
+#minimapBox{position:absolute;bottom:19px;right:15px;width:178px;padding:9px;z-index:7;border-radius:14px;pointer-events:auto}
+#minimapTitle{font-size:11px;font-weight:850;display:flex;justify-content:space-between;color:#f0e5c8}#minimapTitle span{color:#9fd2d4}
+#minimap{display:block;width:100%;aspect-ratio:1;height:auto;border:1px solid #accad255;border-radius:8px;margin-top:6px}
+#minimapLegend{font-size:9px;color:#b4cbd4;padding-top:5px}.blinkDot{color:#efd07e;animation:ping .75s infinite alternate}
+#objective{position:absolute;left:12px;bottom:74px;z-index:7;border-radius:12px;padding:10px 13px;display:flex;flex-direction:column;gap:4px;max-width:265px;font-size:11px;color:#d4e1e9}
+#objective b{font-size:10px;color:#f3cf8c;letter-spacing:2px}#objective span{font-weight:800}
+.npcMark.quest small{background:#e1ac54;color:#16222a;font-weight:900;animation:ping .6s alternate infinite}.npcMark.quest b{border-color:#f9ca73;box-shadow:0 0 17px #dfb4546f}
+@keyframes ping{from{opacity:.42;transform:scale(.9)}to{opacity:1;transform:scale(1.07)}}
+.abilityCard{min-height:237px;padding:11px 9px}.abilityBars{display:flex;flex-direction:column;gap:8px;margin:15px 1px}.abilityBar{display:flex;gap:5px;align-items:center;font-size:10px}.abilityBar>span{width:26px;text-align:left;color:#becdd9;flex-shrink:0}.abilityBar>i{height:9px;flex:1;border-radius:6px;background:#1a3345;overflow:hidden}.abilityBar>i>em{height:100%;display:block;border-radius:6px;box-shadow:0 0 9px #7993a166}.abilityBar>b{min-width:19px;color:#e4e9ee;font-variant-numeric:tabular-nums}
+.eventNarrative{font-size:14px;line-height:2;color:#e3eaf0;border-left:3px solid #ad8e5c;padding-left:14px}.eventNarrative p{line-height:1.95}
+.modal:has(.eventNarrative){width:min(850px,100%)}
+.modal:has(#pollCountyGrid){width:min(1020px,100%);max-height:96dvh}
+.pollTool{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:12px 0}.pollTool span{font-size:11px;color:#9fb2c3}.pollTool .input{padding:7px;min-width:unset}
+.pollCountyGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.pollCounty{background:#07192cc9;border:1px solid #ffffff20;border-radius:12px;padding:13px;scroll-margin-top:20px}.pollCountyTop{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff22;padding-bottom:8px}.pollCountyTop strong{font-size:17px}.pollCountyTop small{font-size:10px;color:#c0d4e6}.pollCandidates{display:flex;justify-content:space-between;gap:7px;margin:10px 0}.pollCandidates span{min-width:0;flex:1;padding-left:7px;border-left:3px solid var(--cand);display:flex;flex-direction:column;gap:3px}.pollCandidates b{font-size:13px;white-space:nowrap}.pollCandidates small{color:#9db1be;font-size:9px;line-height:1.5}.pollCandidates .pollCandidateMinor{opacity:.75}.pollCandidates .pollCandidateLead b{font-size:15px;color:#fae5b7}.pollMediums{display:grid;gap:6px}.pollMedium{display:grid;grid-template-columns:62px 1fr 45px;align-items:center;gap:6px}.pollMedium>span{font-size:10px;color:#c5d4e0}.pollMedium>b{font-size:10px;text-align:right;color:#f8dda8}.pollMiniTrack{height:10px;display:flex;background:#ffffff16;overflow:hidden;border-radius:5px}.pollMiniTrack i{height:100%;display:block}
+#results .resultsPanel{width:min(1220px,100%)}#results .resultsLayout{display:flex;flex-direction:column-reverse;gap:15px}#results .mapBox{min-height:480px}#results #mapSvg{max-height:570px;width:min(100%,660px)}
+#results #countyResults{grid-template-columns:repeat(2,minmax(0,1fr));max-height:335px;gap:7px;overflow:auto}
+#results .countyLine{display:flex;flex-direction:column;padding:10px 11px;border-radius:10px;background:#ffffff0a;border:1px solid #ffffff11}
+#results .countySummary{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;font-weight:900;font-size:12px}
+#results .countySummary b{font-size:11px}.candidatesVotes{display:grid;gap:4px}.candidateVote{display:flex;align-items:center;gap:6px;font-size:11px;font-variant-numeric:tabular-nums}.candidateVote b{margin-left:auto;font-size:11px;color:#e6eef7}.candidateSymbol{border-radius:50%;width:9px;height:9px;display:inline-block;flex-shrink:0}.candidateName{color:#c6d8e7}
+#results .resultsPanel>.eyebrow{font-size:10px}#results .source{font-size:10px;color:#b6c6d6}
+@media(max-width:850px){
+ #dashBtns{gap:4px}#dashBtns .tinyBtn{font-size:10px;padding:6px 7px}
+ #minimapBox{width:130px;right:8px;bottom:8px;padding:6px}#minimapLegend{font-size:8px}
+ #objective{left:7px;bottom:155px;padding:7px 9px;max-width:167px;font-size:10px}
+ .abilityCard{min-height:216px}.abilityBar>span{width:24px}.abilityBar{font-size:9px}
+ .pollCountyGrid{grid-template-columns:1fr}.pollCandidates b{font-size:12px}.pollCountyTop strong{font-size:14px}
+ #results .resultsLayout{flex-direction:column-reverse}#results #countyResults{grid-template-columns:1fr;max-height:330px}
+ #results .mapBox{min-height:300px}#results #mapSvg{max-height:380px}
+ #results .resultsPanel{padding:12px}#results .source{font-size:9px}
+ #results .candidateVote{font-size:10px}
+}
+
+/* V3 半透明競選總部：載入頁與能力卡頁均以現有即時 WebGL 畫面作背景 */
+#world{filter:brightness(1.16) saturate(.84) contrast(1.06)!important}
+#loading,#setup{background:linear-gradient(140deg,rgba(228,238,245,.18),rgba(18,37,54,.39) 52%,rgba(226,231,229,.24))!important;backdrop-filter:blur(5px) saturate(.72)!important;-webkit-backdrop-filter:blur(5px) saturate(.72)!important}
+#loading .loadingCard,#setup .coverPanel{background:rgba(16,32,48,.82)!important;box-shadow:0 14px 70px #0a24305b,0 0 0 1px #e2f1ff3d!important;backdrop-filter:blur(9px)}
+#setup .coverPanel{max-height:94dvh;overflow:auto}
+#side{max-height:270px!important}#side .sideCard{max-width:260px!important}
+#objective{max-width:360px!important}#btnEvent:disabled{opacity:.57;cursor:not-allowed;filter:saturate(.35)}
+#setupTwo .abilityCard{backdrop-filter:blur(2px)}
+#results .resultsLayout{display:flex!important;flex-direction:column!important;gap:12px!important}
+#results .resultsLayout>div:first-child{order:2!important}
+#results .resultsLayout>div:nth-child(2){order:1!important;width:100%!important;min-width:0!important}
+#results #countyResults{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;max-height:38vh;overflow-y:auto}
+#results .mapBox{max-width:680px;margin:0 auto;max-height:390px;min-height:290px}
+#results #mapSvg{max-height:330px!important}
+#results .resultsPanel{overflow-y:auto}
+#results .candidateVote .candidatePartyTag{font-size:10px;opacity:.77;min-width:60px}
+#results .candidateVote{gap:7px}
+.pollCandidates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pollCandidateMain{padding:8px 9px;background:#1b3042b9;border:1px solid #7890a24b;border-radius:9px}
+.pollCandidateMain b{display:block;font-size:13px}
+.pollCandidateMain small{font-size:10px;color:#b9cbd8}
+.pollCandidateMinor{padding:3px 6px;font-size:11px;opacity:.7}
+.pollMedium{grid-template-columns:65px minmax(0,1fr) 60px!important}
+#introBoard{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:30;background:linear-gradient(130deg,#071b29ed,#20354be8);padding:18px;overflow-y:auto}
+#introBoard.hidden{display:none!important}
+#introBoard .introCard{background:#193245eb;max-width:725px;width:100%;border-radius:19px;border:1px solid #e8d7ac80;padding:clamp(18px,4vw,35px);box-shadow:0 25px 100px #0009}
+#introBoard h2{font-size:clamp(25px,5vw,41px);line-height:1.3;margin:5px 0 14px;color:#f4dc99}
+#introBoard p{line-height:1.9;margin:12px 0;color:#e4eef8;font-size:clamp(14px,2vw,16px)}
+#introBoard .introBadge{font-size:11px;letter-spacing:.12em;color:#a9d9e5}
+#introBoard .introFooter{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:22px;flex-wrap:wrap}
+#introBoard .introFooter small{font-size:11px;color:#c5d3dd}
+@media(max-width:650px){#results #countyResults{grid-template-columns:1fr!important}#introBoard .introFooter{flex-direction:column;align-items:stretch}#introBoard .introFooter button{width:100%}}
+
+/* V4 寬螢幕讀取封面：即時 3D 總部完整鋪滿橫向背景 */
+#loading{background:linear-gradient(92deg,rgba(213,226,233,.19),rgba(6,22,38,.31)),transparent!important;backdrop-filter:blur(2px) saturate(.78)!important}
+#loading .loadingCard{width:min(1180px,96vw)!important;min-height:min(75dvh,650px);aspect-ratio:16/9;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:clamp(22px,6vw,65px);border-radius:17px;background:linear-gradient(90deg,rgba(8,24,38,.92) 0%,rgba(15,37,52,.79) 39%,rgba(19,36,51,.35) 100%)!important;border:1px solid #c1e2f280;box-shadow:0 20px 70px #0008!important;position:relative;overflow:hidden}
+#loading .loadingCard:before{content:'';position:absolute;inset:10px;border:1px solid #daeef922;border-radius:11px;pointer-events:none}
+#loading .loadingCard>*{max-width:min(560px,100%);width:100%;position:relative}
+#loading .loadingCard .bigTitle{font-size:clamp(38px,6vw,78px)}
+#loading .loadingCard .eyebrow{font-size:clamp(10px,1.2vw,14px)}
+#btnPoll{background:linear-gradient(125deg,#fff0ad,#e9ae49)!important;color:#24261d!important;border:1px solid #fff0a5!important;box-shadow:0 0 22px #f1cb5860!important;font-weight:950}
+#btnPoll:hover{background:linear-gradient(125deg,#fff8cd,#eaca7f)!important;transform:translateY(-1px)}
+#sceneIndicator{position:absolute;left:50%;top:79px;transform:translateX(-50%);z-index:7;border-radius:12px;padding:7px 12px;display:flex;align-items:center;gap:12px;pointer-events:auto;font-size:12px;color:#f3dbac;white-space:nowrap}
+#sceneReturn{padding:5px 7px;font-size:11px}
+#placeMarkers{position:absolute;inset:0;z-index:5;pointer-events:none}
+.placeMark{position:absolute;transform:translate(-50%,-100%);background:#173c50e8;border:1px solid #dfeabe;border-radius:10px;color:#fff9d9;box-shadow:0 0 18px #ffd67b63;padding:7px 10px;text-align:center;min-width:102px;font-size:12px;font-weight:900;cursor:pointer;pointer-events:auto;animation:ping .85s infinite alternate}
+.placeMark.exit{background:#21584cdb;border-color:#9eebc8}
+.roomLabel{position:absolute;transform:translate(-50%,-50%);background:#0c2639bb;border:1px solid #d1dde180;border-radius:4px;color:#f2e1b1;font-size:12px;font-weight:900;padding:4px 9px;pointer-events:none;text-shadow:0 1px 6px #000}
+.pollMedium{align-items:center}.pollMedium b{font-size:11px}
+.pollMedium .pollNumbers{font-size:9px;color:#c8d9e6;white-space:nowrap;line-height:1.3;display:flex;flex-wrap:wrap;gap:2px 7px;margin-top:5px}
+#objective{z-index:7}
+#actionbar #hint{max-width:30vw;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:850px){
+ #loading .loadingCard{width:calc(100vw - 24px)!important;min-height:52dvh;aspect-ratio:auto;padding:20px 18px;justify-content:center}
+ #loading .loadingCard .bigTitle{font-size:clamp(34px,10vw,60px)}
+ .isMobile #topbar{top:6px;left:5px;right:5px;gap:3px;flex-wrap:wrap;align-items:center}
+ .isMobile #topbar .brand{min-width:unset;padding:5px 7px;flex:1 1 95px}.isMobile #topbar .brand b{font-size:13px}
+ .isMobile #topbar .stat{min-width:unset;flex:1 1 66px;padding:5px 6px}.isMobile #topbar .stat label{font-size:8px}.isMobile #topbar .stat b{font-size:12px}
+ .isMobile #topbar #dashBtns{width:100%;justify-content:flex-end;gap:4px}.isMobile #topbar #dashBtns button{font-size:10px;padding:6px 7px}
+ .isMobile #sceneIndicator{top:119px;font-size:10px;padding:5px 9px}
+ .isMobile #minimapBox{right:9px!important;bottom:10px!important;width:145px!important;z-index:8}
+ .isMobile #actionbar{left:auto!important;right:9px!important;bottom:211px!important;transform:none!important;width:clamp(135px,39vw,190px)!important;display:flex!important;flex-direction:column;padding:5px!important;gap:4px!important;z-index:9}
+ .isMobile #actionbar #hint{display:none!important}
+ .isMobile #actionbar button{white-space:normal!important;width:100%;padding:7px 6px;font-size:11px;line-height:1.25;min-height:36px}
+ .isMobile #objective{left:10px!important;bottom:190px!important;width:148px!important;max-width:148px!important;padding:7px!important;font-size:10px;z-index:7}
+ .isMobile #joystick{left:15px!important;bottom:20px!important;width:119px!important;height:119px!important}
+ .isMobile #side{top:145px!important;right:7px!important;width:160px!important;max-height:160px!important;opacity:.91}
+ .isMobile #radar{height:100px!important}.isMobile #side .sideCard{padding:6px!important}.isMobile #side .sideHead{font-size:10px}
+ .isMobile #lookHint{display:none!important}
+ .isMobile .placeMark{min-width:88px;font-size:10px}
+ .isMobile .roomLabel{font-size:9px}
+}
+@media(max-width:850px) and (orientation:landscape){
+ .isMobile #minimapBox{width:116px!important;bottom:6px!important}
+ .isMobile #actionbar{bottom:147px!important;width:150px!important}
+ .isMobile #objective{bottom:140px!important}
+ .isMobile #side{display:none!important}
+ .isMobile #sceneIndicator{top:77px!important}
+}
+
+/* V5: party cards show only the fictional party name and a thin colour cue. */
+#factionGrid .factionCard{min-height:110px;gap:11px;padding:18px 12px;position:relative;overflow:hidden}
+#factionGrid .factionCard .partyAccent{display:block;width:48px;height:5px;border-radius:8px;opacity:.95;box-shadow:0 0 11px #182a3d}
+#factionGrid .factionCard b{font-size:clamp(12px,1.7vw,18px);line-height:1.3;overflow-wrap:anywhere}
+/* Slightly lighter glass panels so the campaign HQ is still readable. */
+#topbar .glass{background:rgba(9,23,37,.75);backdrop-filter:blur(10px)}
+#side .glass{background:rgba(9,23,37,.72);backdrop-filter:blur(9px)}
+@media(max-width:850px){
+  #factionGrid{gap:9px}
+  #factionGrid .factionCard{min-height:88px;padding:13px 7px;gap:8px}
+  #factionGrid .factionCard b{font-size:clamp(11px,3.35vw,15px)}
+  /* All status panels hug the screen edges, leaving the scene's middle visible. */
+  .isMobile #topbar{position:absolute!important;display:block!important;top:max(6px,env(safe-area-inset-top))!important;left:6px!important;right:6px!important;height:177px!important;pointer-events:none!important}
+  .isMobile #topbar .brand{position:absolute!important;top:0!important;left:0!important;width:41%!important;height:51px!important;min-width:0!important;padding:7px 8px!important;justify-content:center!important;border-radius:10px!important;overflow:hidden!important}
+  .isMobile #topbar .brand b{font-size:clamp(12px,3.3vw,15px)!important;white-space:nowrap!important;letter-spacing:0!important}
+  .isMobile #topbar .brand small{font-size:clamp(8px,2vw,10px)!important;max-width:100%!important;overflow:hidden!important;white-space:nowrap!important;text-overflow:ellipsis!important}
+  .isMobile #topbar .stat{position:absolute!important;flex:none!important;min-width:0!important;margin:0!important;min-height:0!important;max-height:40px!important;padding:4px 6px!important;border-radius:9px!important;line-height:1.2!important}
+  .isMobile #topbar .stat label{font-size:clamp(8px,2vw,10px)!important;white-space:nowrap!important}
+  .isMobile #topbar .stat b{font-size:clamp(11px,3vw,14px)!important}
+  .isMobile #statDay{top:0!important;left:43%!important;width:27%!important;height:40px!important}
+  .isMobile #statFund{top:0!important;right:0!important;width:28%!important;height:40px!important}
+  .isMobile #statVoice{top:46px!important;left:43%!important;width:29%!important;height:38px!important}
+  /* The crisis box is shorter and directly beneath voice, not in a competing upper row. */
+  .isMobile #statCrisis{top:89px!important;left:43%!important;width:23%!important;height:34px!important}
+  /* Navigation occupies the right edge instead of covering the middle of the room. */
+  .isMobile #topbar #dashBtns{position:absolute!important;top:46px!important;right:0!important;width:26%!important;margin:0!important;display:grid!important;grid-template-columns:1fr!important;gap:3px!important;align-content:start!important;pointer-events:auto!important}
+  .isMobile #topbar #dashBtns button{font-size:clamp(9px,2.55vw,11px)!important;line-height:1.1!important;padding:5px 3px!important;min-height:29px!important;border-radius:8px!important;white-space:nowrap!important}
+  /* Ability radar is directly beneath the title panel, smaller than V4 and never at upper-right. */
+  .isMobile #side{position:absolute!important;top:60px!important;left:6px!important;right:auto!important;width:calc((100% - 12px) * .41)!important;max-height:132px!important;gap:0!important;opacity:.91!important;z-index:8!important;pointer-events:none!important}
+  .isMobile #side .sideCard{max-width:none!important;min-width:0!important;width:100%!important;padding:7px 5px!important;border-radius:10px!important}
+  .isMobile #side .sideHead{font-size:clamp(9px,2.45vw,11px)!important;margin:0 0 2px!important;display:block!important;white-space:nowrap!important;text-align:center!important}
+  .isMobile #side .sideHead span{display:none!important}
+  .isMobile #radar{width:100%!important;max-width:120px!important;height:88px!important;margin:0 auto!important}
+  /* The floating area label is lower than the HUD and compact. */
+  .isMobile #sceneIndicator{top:195px!important;left:50%!important;font-size:10px!important;background:rgba(8,23,35,.68)!important;padding:4px 9px!important;border-radius:9px!important;max-width:73vw!important;overflow:hidden!important;text-overflow:ellipsis!important;justify-content:center!important}
+  .isMobile .npcMark b{font-size:10px;padding:3px 5px}
+}
+@media(max-width:850px) and (orientation:landscape){
+  .isMobile #topbar{height:100px!important}
+  .isMobile #topbar .brand{height:38px!important;width:28%!important}
+  .isMobile #statDay{left:30%!important;width:17%!important;height:35px!important}
+  .isMobile #statFund{top:0!important;left:48%!important;right:auto!important;width:19%!important;height:35px!important}
+  .isMobile #statVoice{top:0!important;left:68%!important;width:17%!important;height:35px!important}
+  .isMobile #statCrisis{top:38px!important;left:68%!important;width:14%!important;height:31px!important}
+  .isMobile #topbar #dashBtns{top:39px!important;right:0!important;width:65%!important;grid-template-columns:repeat(5,1fr)!important}
+  .isMobile #side{display:flex!important;top:44px!important;left:6px!important;width:calc((100% - 12px) * .28)!important;max-height:83px!important}
+  .isMobile #side .sideCard{padding:3px 4px!important}
+  .isMobile #side .sideHead{font-size:9px!important}
+  .isMobile #radar{height:58px!important;max-width:90px!important}
+  .isMobile #sceneIndicator{top:102px!important}
+}
+
+/* V6: sleek top-running satire news strip and player name */
+#newsTicker{position:absolute;z-index:11;top:0;left:0;right:0;height:31px;display:flex;align-items:center;gap:10px;padding:0 11px;background:linear-gradient(90deg,#131f36f2,#20354deb);border-bottom:1px solid #eac4758c;box-shadow:0 2px 13px #0009;overflow:hidden;pointer-events:none}
+#newsTicker strong{white-space:nowrap;flex-shrink:0;color:#f9d990;font-size:13px;letter-spacing:2px}
+#newsClip{position:relative;overflow:hidden;flex:1;height:100%;display:flex;align-items:center;min-width:0}
+#newsLine{position:absolute;left:0;white-space:nowrap;color:#ebf2f8;font-size:12px;will-change:transform;line-height:31px}
+#newsLine.roll{animation:newsRoll var(--news-speed,10s) linear both}
+@keyframes newsRoll{0%{transform:translateX(var(--news-start,900px))}100%{transform:translateX(-105%)}}
+.tickerSatire{white-space:nowrap;flex-shrink:0;color:#c8b691;font-size:10px;letter-spacing:1px}
+#topbar:not(.hidden){top:43px}#side:not(.hidden){top:122px}#sceneIndicator:not(.hidden){top:111px}
+#playerNameTag{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;color:#fff2cc;font-size:11px;font-weight:900;letter-spacing:1px;padding:3px 7px;background:#0c1e30c7;border-radius:6px;border:1px solid #ffe0a365;box-shadow:0 1px 7px #000a;text-shadow:0 1px 3px #000;pointer-events:none}
+#results .resultsLayout{display:flex!important;flex-direction:column!important;gap:10px!important}
+#results .resultsLayout>div:nth-child(2){order:0!important}
+#results .resultsLayout>div:first-child{order:1!important}
+#results #countyResults{max-height:min(54vh,555px)!important;gap:9px!important}
+#results .countyLine{background:linear-gradient(135deg,#182f44,#091b2de6);border-color:#d5e7ff23}
+#results .countySummary{font-size:14px!important;border-bottom:1px solid #ffffff18;padding-bottom:7px}
+#results .candidateVote{display:grid;grid-template-columns:10px minmax(65px,1fr) minmax(56px,.9fr) auto;gap:7px!important;padding:5px 1px;align-items:center;border-bottom:1px dotted #ffffff14}
+#results .candidateVote b{font-size:12px;display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+#results .candidateVote .candidateRate{font-size:12px;font-style:normal;color:#f6d891;font-weight:900}
+#results .candidateVote .candidateName{overflow-wrap:anywhere}
+#results .mapBox{max-width:950px!important;min-height:360px!important;max-height:none!important;width:100%;overflow:hidden}
+#results #mapSvg{max-height:475px!important;max-width:780px;transform:translateX(-6%)}
+#votePiePanel{position:absolute;top:9px;left:9px;right:auto;width:160px;padding:8px;background:#071b2de8;border:1px solid #c7dae451;border-radius:14px;z-index:3;box-shadow:0 8px 25px #0007;backdrop-filter:blur(8px)}
+#votePiePanel .pieTitle{font-size:10px;font-weight:900;color:#f7dc9d;margin:0 0 5px;text-align:center}
+#votePie{display:block;width:80px;height:80px;margin:0 auto 5px}
+#pieLegend{display:grid;gap:3px}
+.pieLegendRow{display:flex;align-items:flex-start;gap:4px;font-size:9px;color:#d9e7f2}
+.pieLegendRow i{width:9px;height:9px;border-radius:50%;flex:none;margin-top:3px}
+.pieLegendRow b{margin-left:auto;display:block;text-align:right;font-size:9px;font-weight:700}
+.pieLegendRow small{display:block;font-size:8px;color:#f1d596}
+@media(max-width:850px){
+ .isMobile #topbar:not(.hidden){top:35px!important}
+ .isMobile #side:not(.hidden){top:95px!important}
+ .isMobile #topbar.hidden,.isMobile #side.hidden{display:none!important}
+ .isMobile #sceneIndicator:not(.hidden){top:251px!important}
+ #newsTicker{height:30px;padding:0 6px;gap:5px}
+ #newsTicker strong{font-size:11px;letter-spacing:1px}
+ #newsLine{font-size:10px}
+ .tickerSatire{font-size:8px}
+ #results #countyResults{max-height:58vh!important}
+ #results .mapBox{min-height:300px!important}
+ #results #mapSvg{max-height:335px!important;transform:translateX(-15%)}
+ #votePiePanel{top:5px;left:5px;right:auto;width:108px;padding:5px 4px;border-radius:8px}
+ #votePiePanel .pieTitle{font-size:8.5px;line-height:1.25}
+ #votePie{width:52px;height:52px;margin-bottom:3px}
+ .pieLegendRow{font-size:7.5px;gap:2px}
+ .pieLegendRow b{font-size:7px}
+ .pieLegendRow small{font-size:7px}
+ .pieLegendRow i{width:7px;height:7px}
+ #results .candidateVote{grid-template-columns:8px minmax(57px,1fr) minmax(40px,.7fr) auto;gap:4px!important}
+ #results .candidateVote .candidatePartyTag{font-size:8px;min-width:0}
+ #results .candidateVote b{font-size:10px}
+ #results .candidateVote .candidateRate{font-size:11px}
+ #playerNameTag{font-size:10px;padding:2px 5px}
+}
+@media(max-width:850px) and (orientation:landscape){.isMobile #side:not(.hidden){top:77px!important}.isMobile #sceneIndicator:not(.hidden){top:136px!important}}
+
+/* V7 小型計票圖例在海面留白區，縮小並限制超長文字不溢出 */
+#votePiePanel{max-width:36%;pointer-events:none}
+.pieLegendRow{min-width:0;overflow:hidden}
+.pieLegendRow span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pieLegendRow b{flex:0 0 auto;white-space:nowrap}
+@media(max-width:430px){#votePiePanel{max-width:112px}#votePiePanel .pieTitle{font-size:8px}.pieLegendRow span{font-size:7px;max-width:37px}.pieLegendRow b{font-size:6.8px}.pieLegendRow small{font-size:6.8px}}
+/* V10: 選區得票輕微浮動、主要候選人突顯、外勤會話標記 */
+#results .candidateVote.minor{opacity:.72;padding:2px 2px!important;grid-template-columns:7px minmax(58px,1fr) minmax(40px,.9fr) auto!important}
+#results .candidateVote.minor .candidateName{font-size:10px!important;font-weight:400;color:#aebdc9}
+#results .candidateVote.minor .candidatePartyTag{font-size:8px!important;color:#98abba}
+#results .candidateVote.minor b{font-size:10px!important;font-weight:500}
+#results .candidateVote.minor .candidateRate{font-size:9px!important;color:#c1d1dc}
+.venueNpcMark{border-radius:20px;background:#081927ec;border:1px solid #a7dcc8ae;color:#e6fff6;padding:5px 8px;font-size:11px;white-space:nowrap;box-shadow:0 3px 10px #0009;cursor:pointer;pointer-events:auto;position:absolute;transform:translate(-50%,-115%);text-shadow:0 1px 3px #000}
+.venueNpcMark.near{background:#125a59;border:2px solid #f1d58a}
+#btnFund{background:linear-gradient(130deg,#417e6a,#1c6259);color:#e9fff1;border-color:#a3d9aa}
+#btnFund:hover{background:#337963}
+@media(max-width:700px){#results .candidateVote.minor .candidateName{font-size:9px!important}#results .candidateVote.minor b{font-size:9px!important}}
+/* V8 bankruptcy ending: distinct from election night; blocks every further decision. */
+#bankruptScreen{z-index:110;background:radial-gradient(ellipse at 50% 20%,rgba(86,22,26,.80),rgba(3,11,22,.96) 75%);padding:20px;overflow-y:auto;align-items:center;justify-content:center}
+.bankruptCard{width:min(100%,540px);padding:clamp(26px,5vw,44px);border:1px solid rgba(255,130,130,.43);border-radius:23px;text-align:center;background:linear-gradient(155deg,#271d2a,#0e1724 78%);box-shadow:0 26px 90px #03030bad;color:#f9eef0}
+.bankruptSeal{width:72px;height:72px;border:2px solid #fa8b8b;color:#ffb5b5;border-radius:50%;font-size:45px;line-height:67px;margin:16px auto 8px;font-weight:900}
+.bankruptCard h1{font-size:clamp(44px,8vw,72px);letter-spacing:.08em;margin:0;color:#ff9999;text-shadow:0 0 25px #e93a3a44}
+.bankruptCard h2{margin:4px 0 20px;color:#f6e9df;font-size:clamp(21px,4vw,27px)}
+.bankruptCard p{color:#cbd5e1;line-height:1.8;margin:0 auto 20px}
+.bankruptCard .ballot{margin:0 0 20px;text-align:left;line-height:1.9}
+.bankruptCard .mainBtn{max-width:100%}
+@media(max-width:470px){.bankruptCard{padding:26px 20px}.bankruptSeal{width:60px;height:60px;font-size:38px;line-height:56px}}
+
+/* V12: campaign objective sheets and illuminated end-of-campaign awards */
+#introBoard .goalIntroGrid{display:grid;grid-template-columns:1fr;gap:12px;margin:18px 0 9px}
+#introBoard .goalIntro{background:linear-gradient(115deg,#294559,#172a3d);border:1px solid #d8c18a6c;border-left:5px solid var(--faction,#e3b16c);border-radius:13px;padding:13px 16px;box-shadow:0 7px 20px #0003}
+#introBoard .goalIntro b{display:block;color:#fff0c5;font-size:16px;margin-bottom:6px}
+#introBoard .goalIntro p{margin:0;font-size:13px;line-height:1.55;color:#d3e0ee}
+#goalResults{margin:15px 0 18px;padding:12px;background:#122d40e6;border:1px solid #d8bd8855;border-radius:15px}
+#goalResults .goalResultTitle{font-size:18px;color:#f4deb0;font-weight:900;margin-bottom:11px}
+#goalResults .goalResultGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:10px}
+#goalResults .goalAward{display:flex;align-items:flex-start;gap:10px;background:#193248;border-radius:12px;border:1px solid #627889;padding:13px 12px;min-height:94px}
+#goalResults .goalAward b{display:block;font-size:14px;color:#d6e5f0;margin:0 0 6px}
+#goalResults .goalAward small{display:block;font-size:12px;color:#c6d6e3;line-height:1.45}
+#goalResults .goalAward .goalMedal{font-size:24px;min-width:30px;line-height:1.2}
+#goalResults .goalAward.success{border:2px solid #f5ce72;background:linear-gradient(125deg,#514322,#222f39 70%);box-shadow:0 0 21px #f7d16b4d,inset 0 0 20px #c79b2f22}
+#goalResults .goalAward.success b{color:#ffe7a6}
+#goalResults .goalAward.success.silver{border-color:#e7efff;background:linear-gradient(115deg,#30445a,#1c3342);box-shadow:0 0 23px #c1e3ff63}
+@media(max-width:650px){#introBoard .introCard{margin:auto 0}#goalResults .goalResultGrid{grid-template-columns:1fr}}
+</style>
+
+<style>
+/* 突發事件專屬視窗：粉彩背景與清晰的深色字元，其他視窗維持原樣。 */
+#modalLayer.isSurprise .modal {
+ background:linear-gradient(145deg,#fff0f5 0%,#ffe0ed 54%,#f8ccdE 100%)!important;
+ color:#512841!important;
+ border:2px solid #d991b0!important;
+ box-shadow:0 24px 60px #34132a78,0 0 0 1px #ffeaf4 inset!important;
+}
+#modalLayer.isSurprise .modal h2{color:#852b57!important}
+#modalLayer.isSurprise .modal small{color:#a14870!important}
+#modalLayer.isSurprise .modal p{color:#573548!important}
+#modalLayer.isSurprise .modal .ballot {
+ background:#fff9fce6!important;border-color:#e9acc7!important;color:#64364d!important;
+}
+#modalLayer.isSurprise .modal .choice {
+ background:#fffbfdee!important;border:1px solid #d9a2ba!important;color:#682c4a!important;
+}
+#modalLayer.isSurprise .modal .choice:hover {background:#fff3f8!important;border-color:#b95a88!important}
+#modalLayer.isSurprise .modal .choice em{color:#955a75!important}
+#modalLayer.isSurprise .modal .mainBtn{background:linear-gradient(120deg,#f4add1,#ffd3e5)!important;color:#652a4b!important}
+</style>
+<style>
+/* 選戰主事件的獨立「今日頭條」閱讀區（不影響淡粉色突發事件視窗） */
+.todayHeadline{margin:17px 0 6px;padding:15px 17px;background:linear-gradient(135deg,#fdf6e9,#f5eddc);color:#27374a;border-radius:13px;border:1px solid #dfc790;box-shadow:0 5px 17px #0002}
+.todayHeadline .todayHeading{display:flex;align-items:center;gap:8px;margin:0 0 8px;padding-bottom:7px;border-bottom:1px solid #d0c1aa;font-weight:950;color:#8e4533;font-size:15px;letter-spacing:1px}
+.todayHeadline h3{color:#213b54;font-size:16px;margin:3px 0 9px;line-height:1.4}
+.todayHeadline p{color:#3c4148;font-size:13px;line-height:1.85;margin:0;text-align:justify;white-space:normal}
+@media(max-width:600px){.todayHeadline{padding:12px 13px;margin-top:14px}.todayHeadline h3{font-size:14px}.todayHeadline p{font-size:12px;line-height:1.8}}
+</style>
+</head>
+<body>
+<canvas id="world" aria-label="3D競選總部場景"></canvas>
+<div id="newsTicker" class="hidden" aria-label="鬼島趣聞跑馬燈"><strong>◉ 鬼島趣聞</strong><div id="newsClip"><div id="newsLine"></div></div><span class="tickerSatire">架空快訊</span></div>
+<header id="topbar" class="hidden">
+ <div class="brand glass"><b>2026<span style="color:#f1cd83">政壇爭霸</span></b><small id="partyName">競選總部 · 第三人稱</small></div>
+ <div id="statDay" class="stat glass"><label>選戰倒數</label><b id="dayLabel">100 天</b></div><div id="statFund" class="stat glass"><label>黨中央資金</label><b id="fundLabel">3,000 萬</b></div><div id="statVoice" class="stat glass"><label>全國聲量</label><b id="voiceLabel">50</b></div><div id="statCrisis" class="stat glass"><label>危機指數</label><b id="crisisLabel">20</b></div>
+ <div id="dashBtns"><button class="tinyBtn" id="btnPoll">選情戰報</button><button class="tinyBtn" id="btnFund">💰 籌措資金</button><button class="tinyBtn" id="btnTravel">外勤行程</button><button class="tinyBtn" id="btnInfo">戰情室</button><button class="tinyBtn" id="btnReset">重開</button></div>
+</header>
+<aside id="side" class="hidden"><div class="glass sideCard"><div class="sideHead">黨主席五大能力 <span>動態成長</span></div><svg id="radar" viewBox="0 0 240 183" role="img" aria-label="五邊形能力值圖"></svg></div></aside>
+<div id="minimapBox" class="glass hidden"><div id="minimapTitle">總部樓層圖 <span id="minimapCompass">N ↑</span></div><canvas id="minimap" width="240" height="240" aria-label="人物位置與閃爍目標小地圖"></canvas><div id="minimapLegend">● 玩家　<span class="blinkDot">◆</span> 下一位互動對象</div></div>
+<div id="objective" class="glass hidden"><b>目前目標</b><span id="objectiveText">尋找指定幕僚</span></div>
+<div id="markers" class="hidden"><div id="playerNameTag" class="hidden"></div></div><div id="placeMarkers" class="hidden"></div><div id="sceneIndicator" class="hidden glass"><span id="sceneName">中央競選總部</span><button id="sceneReturn" class="tinyBtn hidden">返回總部</button></div>
+<div id="actionbar" class="hidden"><span id="hint">WASD 移動｜拖曳畫面旋轉視角｜靠近人物互動</span><button id="btnEvent" class="mainBtn">處理選戰事件 →</button><button id="btnInteract" class="tinyBtn hidden">交談 E</button></div>
+<div id="joystick" class="hidden"><div id="stick"></div></div><div id="lookHint" class="hidden">右側滑動畫面旋轉視角 ↔</div><div id="controlsHelp" class="hidden">W A S D / 方向鍵 移動　·　拖曳視角　·　E 互動　·　滑鼠滾輪縮放</div>
+<div id="toast"></div>
+<div id="loading" class="cover"><div class="loadingCard"><div class="eyebrow">ELECTION CAMPAIGN · TAIWAN</div><h1 class="bigTitle">2026<br><span style="color:#f1cd8d">政壇爭霸</span></h1><p class="sub">決策在總部形成，選票在全台累積。</p><div class="loadingTrack"><div id="loadBar"></div></div><div class="largeNum" id="loadNumber">0%</div><div class="sub" id="loadText">正在建立競選總部...</div></div></div>
+<div id="setup" class="cover hidden"><div class="coverPanel"><div class="eyebrow">THE RACE FOR TAIWAN</div><h1 style="margin:6px 0 12px;font-size:clamp(25px,4vw,45px)">2026政壇爭霸</h1><div class="steps"><span class="step active" id="phase1">01 · 政黨與姓名</span><span class="step" id="phase2">02 · 主席辦公室</span><span class="step">03 · 離開辦公室</span></div><div id="setupOne"><div class="sectionTitle">選擇你的政治陣營</div><p class="sub">你將擔任所屬政黨的黨主席，領導全台 22 縣市的選戰。</p><div id="factionGrid"></div><div class="formline"><label for="playerInput">黨主席姓名</label><input id="playerInput" maxlength="20" class="input" placeholder="請輸入你的姓名" value=""><button id="goCards" class="mainBtn">下一步：選擇能力卡 →</button></div><div id="resumeBox" class="hidden" style="margin-top:18px;border-top:1px solid #ffffff22;padding-top:13px"><span class="sub">發現此瀏覽器先前的進度</span> <button class="tinyBtn" id="btnResume">繼續上次進度</button></div></div><div id="setupTwo" class="hidden"><div class="sectionTitle">選擇黨主席能力卡 <span class="badge">10 選 1</span></div><p class="sub">比較五項能力的長條圖，挑選最適合你的領導風格。</p><div id="cardGrid" class="cards"></div><div class="formline"><button id="backStep" class="tinyBtn">← 返回主席辦公室</button><span id="cardSummary" class="sub">請選擇一張卡片</span><button id="startPlay" class="mainBtn" disabled>收下能力卡 →</button></div></div><p class="footNote">本遊戲為架空政治諷刺創作。人名、黨名與媒體皆採戲仿名稱；候選人以 2026 年 10 月登記名冊為原型，姓名作錯字戲仿；情節、民調與開票均為架空創作，不構成對現實人物的指控或選情預測。</p></div></div>
+<div id="introBoard" class="hidden"><div class="introCard"><div class="introBadge">2026 · 選戰前夕</div><h2 id="introHeading"></h2><div id="introNarrative"></div><div class="introFooter"><small id="introSubtitle"></small><button class="mainBtn" id="introBegin">進入競選總部 →</button></div></div></div>
+<div id="modalLayer" class="modalBack hidden"><section class="modal"><small id="modalEye">競選總部 · 戰略會議</small><h2 id="modalTitle"></h2><div id="modalBody"></div><div id="modalChoices"></div><div id="modalFooter"></div></section></div>
+<div id="bankruptScreen" class="cover hidden" role="dialog" aria-label="選戰破產 GAME OVER"><div class="bankruptCard"><div class="eyebrow">THE CAMPAIGN IS OVER</div><div class="bankruptSeal">✕</div><h1>GAME OVER</h1><h2>黨中央資金耗盡</h2><p id="bankruptReason">競選資金已不足以維持選戰運作。</p><div id="bankruptSummary" class="ballot"></div><button id="btnBankruptRestart" class="mainBtn">重新開始選戰 →</button></div></div>
+<div id="results" class="cover hidden"><div class="resultsPanel"><div class="eyebrow">2026 · TAIWAN LOCAL ELECTION NIGHT</div><div class="resultsControls"><div><h2 style="margin:3px 0 5px">全台 22 縣市長即時開票中心</h2><small id="openStatus" style="color:#accde0">開票作業準備中</small></div><div style="display:flex;gap:6px"><button id="btnFast" class="tinyBtn">跳至最終結果</button><button id="btnNew" class="mainBtn hidden">展開新選戰</button></div></div><div class="resultsLayout"><div><div class="mapBox"><svg id="mapSvg" viewBox="0 0 760 930" preserveAspectRatio="xMidYMid meet" aria-label="台灣22縣市真實行政邊界地圖"></svg><div id="votePiePanel"><div class="pieTitle">全台政黨累計得票</div><svg id="votePie" viewBox="0 0 120 120" aria-label="各政黨累計得票率圓餅圖"></svg><div id="pieLegend"></div></div><div id="mapTip">滑過或點擊縣市以查看開票狀況</div></div><div class="source">行政邊界資料：twgeojson（國土資訊系統歷史縣市界圖簡化展示）；島嶼與本島位置按經緯度繪製。地圖顏色及開票結果皆為虛構模擬。</div></div><div><h3 class="sideHead" style="font-size:16px;margin:6px 0 10px">22 縣市候選人即時票數與得票率 <span id="reportProgress">開票率 0%</span></h3><div id="countyResults"></div><div id="conclusion" class="hidden"><div id="goalResults" aria-label="本局選戰目標成果"></div><h3 style="color:#eed59c;margin-bottom:5px">選後總評</h3><div id="review" class="finalReview"></div></div></div></div></div></div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);const COLORS={blue:'#397dd2',green:'#32b276',white:'#c9c9c9'};const PARTIES={blue:{name:'藍營',full:'中國國銘黨',color:'#397dd2',icon:'藍'},green:{name:'綠營',full:'民煮進步黨',color:'#32b276',icon:'綠'},white:{name:'白營',full:'台灣民眾檔',color:'#c9c9c9',icon:'白'}};const PKEYS=['blue','green','white'];const SKILLS=['領導統御','政策論述','基層組織','選戰策略','危機處理'];
+const CARDS=[['穩健領袖',[80,70,65,60,55],'統籌全局、凝聚士氣'],['辯論雄辯家',[61,80,58,70,61],'媒體溝通能力強'],['地方組織王',[60,55,80,70,65],'基層動員優勢'],['精算軍師',[60,68,61,80,61],'選區布局見長'],['危機拆彈手',[65,62,62,61,80],'爭議處理冷靜'],['平衡改革派',[66,66,66,66,66],'五項能力平均'],['社群風暴者',[59,76,65,75,55],'擅長青年與新媒體'],['務實行動派',[75,55,78,62,60],'重視地方服務'],['整合協調者',[76,61,73,55,65],'派系整合穩定'],['高壓決策者',[65,60,58,77,70],'擅長壓力下決策']];
+const COUNTY_DATA=[['臺北市',1360951,[.41,.38,.21]],['新北市',1846531,[.40,.40,.20]],['桃園市',1071763,[.42,.35,.23]],['臺中市',1346471,[.42,.35,.23]],['臺南市',888674,[.28,.54,.18]],['高雄市',1318733,[.29,.54,.17]],['基隆市',182893,[.46,.34,.20]],['新竹市',217941,[.32,.30,.38]],['新竹縣',258305,[.47,.32,.21]],['苗栗縣',292100,[.51,.32,.17]],['彰化縣',650424,[.46,.36,.18]],['南投縣',275499,[.50,.33,.17]],['雲林縣',366833,[.40,.43,.17]],['嘉義市',93813,[.39,.43,.18]],['嘉義縣',273294,[.32,.52,.16]],['屏東縣',443153,[.32,.51,.17]],['宜蘭縣',235281,[.37,.45,.18]],['花蓮縣',149307,[.55,.28,.17]],['臺東縣',112148,[.53,.29,.18]],['澎湖縣',51242,[.46,.36,.18]],['金門縣',47114,[.59,.26,.15]],['連江縣',8505,[.62,.24,.14]]];
+const EVENTS=[
+['黨內提名整合','地方派系不滿提名結果，數名核心幹部揚言退出輔選。','組織主任',[['親自召開協調會',-180,3,-9,0,5,3],['重新分配地方資源',-380,5,-2,2,5,4],['強硬維持黨中央決議',0,2,12,0,1,-2]]],
+['候選人直播失言','一段未經剪輯的直播片段在社群瘋傳，媒體要求黨中央回應。','發言人',[['立即開記者會道歉',-65,4,-8,4,0,2],['提出完整脈絡與逐字稿',-100,5,-6,1,3,3],['不予回應，觀察輿情',0,-5,9,-2,0,-3]]],
+['造勢場地爭奪','兩大陣營申請同一處廣場，地方政府表示場地抽籤結果即將公布。','組織主任',[['改辦深入社區的小型活動',-160,6,-2,0,4,5],['強攻主場辦大型造勢',-450,10,5,2,0,5],['轉成線上造勢直播',-110,5,1,2,2,2]]],
+['農業政策攻防','農漁業團體提出補助與冷鏈建設訴求，要求各黨表態。','政策幕僚',[['提出有預算來源的完整方案',-260,7,-3,1,4,5],['與農會代表深度座談',-160,5,-4,2,4,4],['暫不承諾，維持彈性',0,-3,4,0,1,-3]]],
+['青年論壇邀請','青年社團邀請黨主席出席跨黨辯論，直播預計有數十萬觀眾。','發言人',[['主席親自出席辯論',-90,8,-1,0,5,5],['派政策團隊深入回應',-70,5,-2,0,4,3],['婉拒以免失言',0,-5,3,-1,0,-3]]],
+['政治獻金爭議','網路傳出捐款來源不明的指控，財務室建議儘快公開帳目。','財務長',[['主動公布收支與查核機制',-90,6,-11,0,0,6],['委託第三方獨立查核',-230,4,-13,0,2,5],['以不實指控為由強力反擊',-20,0,8,0,2,-4]]],
+['颱風災後重建','部分地區道路受損，地方候選人希望黨中央派人協助救災。','組織主任',[['暫停造勢並參與志工支援',-350,9,-8,2,4,6],['捐出資源支援重建',-500,7,-7,2,2,5],['維持原本造勢行程',0,-6,12,-1,0,-5]]],
+['國際訪賓交流','一組海外地方治理交流團抵台，黨中央有機會提出城市政策。','政策幕僚',[['舉辦城市治理座談',-180,5,-1,1,4,4],['安排跨縣市政策工作坊',-320,6,-1,1,5,4],['讓各縣市候選人自行接待',0,1,0,1,0,0]]],
+['假訊息擴散','一則經查證不實的謠言快速擴散，地方支持者開始詢問是否屬實。','發言人',[['推出公開查證頁面',-180,7,-10,1,3,5],['請候選人逐一出面釐清',-150,5,-7,1,4,4],['與對手展開口水戰',-50,7,10,-1,1,0]]],
+['地方交通建設','民眾質疑捷運路線、停車與公車轉乘不足，選區競爭加劇。','政策幕僚',[['提出成本與期程完整的交通藍圖',-330,8,-2,0,5,6],['以地方公聽會蒐集需求',-160,5,-4,1,4,4],['推出吸睛但缺乏細節的口號',-85,4,8,0,0,0]]],
+['志工人力吃緊','基層連續多日掃街，志工反映體力與後勤物資快要不足。','組織主任',[['補足物資並安排輪班',-210,6,-5,2,5,4],['增加專職組織人員',-420,8,-3,2,4,5],['維持原排班以節省經費',0,-4,6,-1,-3,-4]]],
+['電視政見辯論','地方電視台邀請代表針對住宅、長照、交通進行公開政策辯論。','發言人',[['派最擅長論述的代表',-80,7,-1,0,4,4],['讓黨主席親自上場',-100,9,3,2,3,5],['只提供書面答覆',0,-3,3,0,0,-2]]],
+['選區資源之爭','數個選區同時要求增撥選戰經費，但黨中央預算相當有限。','財務長',[['集中投資膠著選區',-360,8,3,0,5,6],['各縣市平均分配經費',-280,5,-3,2,2,3],['全面緊縮以保留現金',180,-5,3,0,1,-4]]],
+['勞工團體座談','勞工團體希望候選人回應就業、職安與產業轉型議題。','政策幕僚',[['提出可執行的改革承諾',-270,7,-3,0,4,5],['安排企業與勞工三方對話',-160,5,-4,2,4,4],['採取模糊立場避免爭議',0,-4,5,0,0,-3]]],
+['社群平台演算法變動','各地候選人的短影片觸及率突然下滑，宣傳團隊需要重新配置預算。','發言人',[['投資內容品質及資訊查證',-190,7,-4,0,4,5],['加碼跨平台宣傳投放',-420,10,2,0,3,6],['暫時停止短影音宣傳',0,-5,0,0,0,-3]]],
+['地方觀光業訴求','觀光業者反映旅宿與交通問題，希望主要陣營提出具體對策。','政策幕僚',[['整合城市特色觀光政策',-240,7,-2,0,4,5],['和在地商圈進行走訪',-120,5,-3,0,4,4],['只發布宣傳影片',-60,3,3,0,0,-1]]],
+['對手大型聯合造勢','對手一口氣在三個縣市舉辦聯合造勢，媒體版面被大幅占據。','組織主任',[['聚焦自己的政策議題',-170,6,-3,1,4,4],['投入資源舉辦對抗型造勢',-490,10,6,1,2,5],['不跟進，等待熱度消退',0,-6,1,0,0,-3]]],
+['候選人健康傳聞','社群上出現對地方候選人健康狀況的未經證實傳聞。','發言人',[['尊重隱私並提供適當說明',-40,4,-7,0,3,3],['委請本人決定公開範圍',-20,3,-6,0,2,2],['轉發相似謠言攻擊對手',0,0,16,-3,0,-7]]],
+['公民團體質詢','公民團體針對環境保護與都市更新發出政策問卷。','政策幕僚',[['逐題公開完整承諾與依據',-170,7,-5,0,4,4],['邀請公民團體參與政策討論',-230,8,-4,2,3,5],['只發布簡短宣傳聲明',-30,2,5,0,0,-2]]],
+['地方候選人內訌','兩位地方要角公開批評彼此，地方組織因此產生明顯裂痕。','組織主任',[['雙方閉門溝通並訂合作原則',-140,5,-10,3,4,5],['請第三方資深人士協調',-220,5,-7,2,3,4],['要求雙方自行解決',0,-6,10,0,-2,-5]]],
+['直播訪談突襲提問','主播突然提出一項尚未定案的議題，等候黨主席做出表態。','發言人',[['說明現有資訊與待確認事項',-40,6,-5,0,4,4],['請幕僚補充數據後再答',-70,4,-7,0,3,2],['隨口承諾高額政策支出',-350,5,9,0,0,1]]],
+['終盤掃街規劃','選戰進入最後階段，各選區都要求黨主席親自站台。','組織主任',[['選擇重點選區密集掃街',-370,10,2,1,4,7],['全台分區安排輔選團隊',-280,7,-4,3,5,5],['保持最低限度行程',0,-5,1,0,1,-3]]],
+['選民服務案件暴增','地方服務處接到大量陳情，政策承諾與行政溝通需要同步回覆。','政策幕僚',[['成立跨縣市服務快速小組',-290,7,-6,2,4,5],['安排專人追蹤每一案件',-210,6,-4,1,4,4],['以社群公告統一回覆',-40,2,4,0,0,-1]]],
+['媒體邀請專題專訪','多家媒體安排選前專訪，廣告與報導資源必須有所取捨。','發言人',[['發表完整施政藍圖',-230,7,-3,0,5,5],['安排候選人分區專訪',-160,6,-2,1,4,4],['只投入付費廣告投放',-410,7,5,0,0,2]]],
+['募款晚會機會','企業界與小額捐款人希望舉辦公開募款活動，財務長提出三種方案。','財務長',[['舉辦公開透明的小額募款',360,5,-5,1,3,3],['採線上小額捐款串聯',260,6,-2,1,3,4],['依靠大額捐款並加強合規查核',550,2,4,0,2,1]]]
+];
+// 全部選戰事件屬於虛構政治諷刺；不指稱任何實際政治人物涉及事件。
+const SATIRE_EVENT_INPUT = [
+['消失的停電原因',`剛上任的經濟部長在記者會上信心滿滿保證「今年絕對不缺電」，話音剛落，全場燈光瞬間熄滅，連麥克風都發出尖銳的雜音。台下記者紛紛亮起手機手電筒，閃光燈刷成一片。
+
+隔天，幕僚緊急召開秘密會報。台電高層遞上報告，指出這次停電並不是備轉容量不足，而是「一隻身心不適的松鼠撞擊開關箱」。但公關團隊隨後補刀，表示監視器其實拍到了一隻台灣黑熊在附近出沒，也有民眾聲稱看到鄰國的無人機在電廠上方盤旋。消息一出，網路論壇已經演變成「松鼠抗中保台」與「黑熊電擊測試」的梗圖大戰。此時黨中央民調驟降 5%，記者再過半小時就要進場詢問最終調查結果。`,'發言人',[
+'定調為「境外勢力指示特務松鼠破壞」，召開國際記者會宣布啟動電網國安升級計畫。','承認是電網老化維護不力，並宣布成立「跨部會松鼠與電力和諧共處委員會」。','強調這不叫「停電」，而是「預防性跳電測試」，並頒發感謝狀給該區域耐熱成功的居民。']],
+['天價雞蛋與幽靈公司',`為了解決全國性蛋荒，主管機關緊急啟動專案進口方案。結果被媒體揭露，拿到數億元補貼款的進口商，竟然是一家資本額僅五十萬、登記在一家民宅雜貨店後方的小公司。
+
+面對質疑，官員在立法院備詢時慷慨激昂地表示：「這是熱心愛國國人為國分憂！」但記者現場實地走訪，發現該公司地址門口只貼著一張紙，上面寫著「請往內走尋找張先生」。更慘的是，幾天後衛生局抽驗發現，這批進口蛋有部分早已逾期，甚至被運往學校營養午餐使用。全民憤怒值達到頂峰，黨部大樓外開始有民眾聚集扔雞蛋。`,'財務長',[
+'批准主管機關首長辭職下台，公開所有進口合約與帳目供全民檢視。','說明「五十萬資本額代表台灣中小企業的靈活度」，並指責批評者「打擊愛國商人」。','宣布所有過期雞蛋將回收轉為「有機綠肥」，並推出「天天吃本土蛋」消費券來轉移焦點。']],
+['走私還是超買？',`國安局人員利用陪同元首出訪的契機，訂購了上萬條免稅香煙，並利用特勤車隊直接載出海關，試圖規避關稅。媒體曝光後，全台輿論譁然，痛批「利用國安特權集體走私」。
+
+總統府發言人在記者會上極力澄清，表示這並不是「走私」，而是「因為勤務繁忙所產生的預先超買行為」。這句「超買」迅速登上了年度流行語排行榜，民眾紛紛去超商買東西時詢問：「請問我這算偷竊還是超拿？」`,'發言人',[
+'將所有涉案特勤人員移送法辦，並撤換國安局長以昭公信。','堅持「超買」定調，並頒佈「國安人員勤務物資預購管理辦法」使其合法化。','宣布將該批香煙全數沒收，轉為「慰勞基層軍警之戰備物資」。']],
+['消失的石斑魚營養午餐',`政府曾盛大宣佈「班班吃石斑」政策，承諾全台灣的中小學生每學期都能吃到四次高品質的國產石斑魚。然而，學期已經過了一大半，許多學校連一次都沒吃到。
+
+主管機關官員在備詢時尷尬地坦承：「因為石斑魚太暢銷、加工量能不足，所以部分學校暫時改吃雞肉。」此言一出，「石斑魚變雞肉」成為家長群組裡的笑柄。更糟糕的是，部分有吃到石斑魚的學校，被家長反映魚肉裡夾雜著魚刺，導致學生差點噎到。`,'政策幕僚',[
+'向全國師生與家長致歉，停止「班班吃石斑」政策，改為務實的在地食材補貼。','強調「雞肉也是優質蛋白質」，並宣稱「改吃雞肉是為了照顧在地養雞戶」。','宣布推出「升級版：班班吃龍蝦」計畫，承諾下學期一定落實。']],
+['發放現金的藝術',`面對超徵的數千億稅額，民間要求「還稅於民、普發現金一萬元」的呼聲高漲。行政院長一開始斬釘截鐵地表示：「發現金是極其不負責的阿根廷式政策，會引發嚴重通膨！」
+
+然而，過了一週，因為黨內基層民代因選情告急集體發難，行政院突然改口宣布「決定普發六千元」。當記者詢問為什麼從「不發」變成「發六千」時，發言人尷尬地回答：「這不叫發現金，這叫共享經濟成果的全民振興方案。」輿論對於這種「打臉自己」的髮夾彎行為展開瘋狂嘲諷。`,'財務長',[
+'坦承政策轉彎是為了順應民意，並為先前的嚴詞拒絕向國人道歉。','堅持「六千元不是現金，而是數位振興點數」，要求民眾必須搭配 APP 使用。','宣布再加碼兩千元，將金額湊整數為八千元，並命名為「大吉大利紅包」。']],
+['認知作戰與神秘的第五縱隊',`不分區立委學者在立法院舉辦「認知作戰與全民防禦」講座，指稱台灣內部已經有高達十萬名「黑金與境外勢力結合的第五縱隊」，並宣稱這些人平時藏匿於社區發展協會、里長聯誼會甚至宮廟管理委員會中。
+
+當媒體問及是否有具體名單或名單從何而來時，該立委調整了一下黑框眼鏡，神秘地回答：「這是透過高階大數據模型分析與心理學演算法推算出來的概率，為了保護情資來源，細節不能公開。」這番言論引發全台里長與基層民眾的強烈不安與憤怒。`,'政策幕僚',[
+'約談該立委，要求其言論必須基於實據，避免無端造成社會集體恐慌與信任崩解。','力挺該立委的理論，並宣佈啟動「全民舉報身邊第五縱隊」的線上平台。','澄清該數字只是「學者研究的極限模型情境」，呼籲社會理性討論。']],
+['黑熊學院與民防神奇便當',`身為民防推動者的學者立委，大力推廣其創辦的民間防衛訓練課程。該課程一套收費數千元，內容包含教導民眾在戰時如何用避難背包、簡易止血帶以及吃「高卡路里民防能量便當」。
+
+然而，媒體隨後踢爆，該民防能量便當的生產廠商，竟然就是該立委助理自己開設的私人公司，且一盒便當成本不到五十元卻賣三百元。面對「肥水不落外人田」的質疑，立委憤怒地表示：「這是為了建立自主民防產業鏈，批評者都是在配合敵國打壓台灣自衛決心！」`,'財務長',[
+'要求該立委公開民防事業的所有財務帳目，並將商業行為與立委職權進行切割。','贊同「民防產業化」的概念，並建議國防部直接採購該款能量便當作為戰備物資。','宣布將該民防課程轉由黨中央青年部接辦，轉為免費的黨員培訓。']],
+['淘寶買防空物資的防禦專家',`該學者立委在電視節目上痛批政府採購大陸製無人機是「嚴重的國安漏洞、直接送死」，並呼籲全民抵制中國商品。然而隔天，網友在他的個人社群開箱影片中發現，他為自家民防團隊採購的防空止血帶、夜視鏡與無線電，包裝盒上全印著「Made in China」，甚至物流單號顯示是從淘寶直接下單進口。
+
+這波「口頭抗中、淘寶下單」的雙標行為遭到全民爆量嘲諷。立委緊急發文澄清：「這是為了進行『逆向工程檢測』，了解敵國產品的瑕疵所在。」`,'發言人',[
+'要求該立委停止發表雙重標準的言論，專注於立法院的實質法案審查。','採信「逆向工程檢測」的說法，並讚揚其為了國安不惜身先試卒的實驗精神。','宣布成立「國安產品本土替代供應鏈小組」，並委由該立委擔任召集人。']],
+['沉浸式演習與立法院打架',`在立法院一次關於重大法案的衝突中，該立委為了阻止對手表決，竟然在議場內頭戴戰術頭盔、身穿防彈背心，並掏出隨身攜帶的防狼噴霧與戰術手電筒，將立法議場當成了「黑熊民防演習戰場」。
+
+在推擠過程中，他不慎按到防狼噴霧，導致現場多位跨黨派立委與議事人員集體咳嗽流淚、眼眶紅腫。事後他在記者會上挺直腰桿宣稱：「這展現了我們面對暴政與不公時，絕對不退縮的戰術抵抗意志。」`,'組織主任',[
+'對該立委的議場過當行為進行黨紀處分，並向受影響的立委與議事人員致歉。','肯定其「戰術抵抗」的勇氣，並宣稱議場衝突是敵對勢力逼迫下的無奈選擇。','宣布未來黨團將統一配發「標準議場防護裝備」，避免類似意外傷害。']],
+['國會改革與認知作戰腦補',`立法院審議國會改革法案時，該立委在發言台上連續講述了四十五分鐘的「國務院對台認知作戰地圖」，指責現場所有支持改革法案的立委「全都已經被敵國心理操控」。
+
+當對手要求他針對法案具體條文進行實質討論時，他拍桌怒吼：「條文根本不重要！重要的是這整個法案背後的邪惡靈魂與認知威脅！」這段影片被截剪後在網路上瘋傳，引發法學界對其「無法進行理性法律討論」的質疑。`,'政策幕僚',[
+'要求黨內立委回歸法案條文的實質論辯，以理服人，拯救黨團的專業形象。','支持該立委的發言，並宣稱「法律條文只是敵國用來包裝認知作戰的工具」。','安排該立委轉為後方文宣論述核心，減少其在前端議事質詢的發言次數。']],
+['棒球場下的百寶箱',`耗資十二億改建的市立棒球場盛大開幕，首場比賽請來了當紅明星開球，氣氛熱烈。然而，比賽進行到第三局，明星外野手在撲接飛球時，竟然被場地上的碎石割傷，隨後球員們更是從淺草區陸續挖出了廢棄磚頭、電線甚至還有幾片破爛的洗手台瓷磚。
+
+運動員職業工會隨即發起無限期拒賽，輿論一夕之間演變成「垃圾場」。前任市長（現為黨內重臣）發文澄清這是「施工過程中的合理填土法」，但開挖現場的直播畫面早已被傳到國際論壇。眼看明天就是總冠軍賽，門票早已售罄，黨中央陷入危機。`,'組織主任',[
+'痛斬黨內重臣，成立獨立調查小組，將所有涉案廠商與官員移送法辦。','宣稱該場地設計為「全天候多功能極限運動公園」，棒球場只是其中一項功能。','宣布暫停比賽，並動員全黨民代帶隊前往「開挖除草」，順便現場開直播展現親民誠意。']],
+['水災中的橡皮艇',`極端氣候帶來豪雨，縣市淹水深達半個人高。市長穿著全新且乾淨的青蛙裝，搭乘救難橡皮艇前往災區視察。然而，民眾拍攝的側錄影片顯示，橡皮艇在水深僅到腳踝的巷口就停了下來，隨後秘書拿著水桶往市長身上潑水，營造出「涉水救災」的艱辛畫面。
+
+影片上傳後不到兩小時點閱率突破百萬，網友嘲諷這是「演出級別的救災現場」。市長辦公室急忙解釋「潑水是為了幫市長降溫防止中暑」，但這種說詞反而引來更多暴風洗版。防災中心裡，黨主席看著電視畫面，深吸了一口氣。`,'政策幕僚',[
+'撤換該名市長的競選連任資格，並向災民致歉、發放全額救助金。','聲稱潑水是「示範防範登革熱的消毒動作」，並控訴側錄者是惡意剪輯。','要求市長再次前往災區，且「不穿蛙鞋直接徒步泡在水裡六小時」以展現誠意。']],
+['消失的民調第一',`距離大選僅剩百日，黨內委託三家不同機構所做的民調同時出爐。令人震驚的是，原本遙遙領先的自家參選人，民調竟然掉到了第三名，落後給兩位無黨籍的網紅參選人。
+
+民調專家分析，主因是參選人在昨晚的直播中，誤將「基本工資」說成「大家只要努力就能領到的獎金」，引發年輕世代集體憤怒。黨內派系開始互相指責，有人主張換人，有人主張直接與第二名的網紅「藍白合」。黨主席辦公室外，十幾家媒體的麥克風已經架好，等待主席對民調結果發表看法。`,'發言人',[
+'坦承民調落後，宣布重組競選團隊，並邀請年輕世代座談檢討政見。','指責這三家民調機構均為「機構效應極強的假民調」，強調自家內部民調依然第一。','宣布參選人即日起閉門思過，並改由黨主席親自兼任競選總幹事全權主導。']],
+['市長的頂樓招待所與違建',`主打「清廉勤政」的熱門參選人，被爆料其名下位於市中心的豪宅頂樓，違法搭蓋了佔地上百坪的鋼骨玻璃屋招待所，裡面不僅有卡拉 OK、酒吧，甚至還有小型泳池。
+
+參選人第一時間出面澄清，表示這不是違建，而是「為了防漏水而搭蓋的綠能太陽能遮陽棚」。但隨後航照圖曝光，證實該玻璃屋已經存在了十年，且遮陽棚上面根本一片太陽能板也沒有。`,'政策幕僚',[
+'勸說參選人於二十四小時內自行僱工拆除，並向市民公開道歉。','協助參選人補辦太陽能板安裝手續，宣稱「這是一座正在升級中的綠能示範設施」。','指責爆料者侵犯個人隱私，並聲稱該玻璃屋是「歷史既成違建，免予優先拆除」。']],
+['消失的國籍與參選人',`黨內提名的不分區立委參選人，被爆出同時擁有敵對國家的護照與居留權。依照法令，具有雙重國籍者不得擔任公職。參選人在記者會上出示了一張「放棄國籍申請書」的影本，宣稱自己早已放棄。
+
+然而，隔天敵對國家的外交部發表聲明，指稱該申請書上的印章是假的，該參選人至今仍擁有該國國籍與合法公民身分。這場「偽造文件」風波迅速升級為國安等級的政治醜聞，黨內士氣低落到極點，距離政黨票投票僅剩十天。`,'發言人',[
+'立即撤銷該參選人的不分區提名，向全國選民致歉並重新調整名單。','指責敵對國家的外交部聲明是「介入台灣大選的認知作戰」，堅決不撤換。','宣稱該參選人擁有「雙重國籍」正好可以作為未來雙邊溝通的和平橋樑。']],
+['帥哥市長的節能深蹲',`新上任的貴族風格市長在接受媒體採訪時，為了推廣市府的「綠能低碳運動」，突發奇想宣佈市民只要在搭乘捷運前「連續深蹲二十下」，就能透過 AI 人臉辨識獲得免費捷運車票折抵。
+
+方案上路首日，捷運站閘門前擠滿了正在苦苦深蹲的上班族，造成大推擠與嚴重脫班。媒體現場捕捉到老人家因為深蹲差點摔倒，而市長則在鏡頭前展現標準的健身姿勢與完美微笑，回答記者：「這能有效提升全民心肺功能，是雙贏政策。」`,'政策幕僚',[
+'宣布暫緩該政策，將資源改用於優化捷運班次與直接票價補貼，以保障大眾通勤效率。','堅持政策方向，並加碼宣佈「公車深蹲三十下免費」，展現推動健康的決心。','宣布將深蹲次數降為五下，並在捷運站增設「市長親自錄音的深蹲加油聲」。']],
+['網紅舞蹈與深夜放假',`颱風即將襲台，市民極度關心是否停班停課。市長當天晚上在社群平台上發布了一支自己與市府團隊跳當紅流行舞蹈的短影音，文字寫著「大家要注意安全喔！」卻遲遲不宣布到底放不放假。
+
+到了深夜十一點，市民依然等不到答案，留言區被數萬條憤怒的通勤族洗版。隔天清晨六點，暴風圈已進入市區，市府才緊急宣布停班停課，導致許多已經出門上早班的民眾被迫在狂風暴雨中摸黑回家，險象環生。`,'組織主任',[
+'坦承決策延遲影響市民安全，公開道歉並建立「SOP 自動化早期放假機制」。','強調「延後宣布是為了精準預測風雨」，並讚揚短影音成功達到全民防颱宣傳效果。','宣布下一次颱風來襲時，將提前至晚間八點整由市長親自開直播宣布放假結果。']],
+['完美油頭與室內大瀑布',`號稱國際級的大巨蛋球場終於營運，但首場萬人棒球賽進行到一半，外頭下起大雨，場內竟也跟著下起「大雨」，觀眾席頓時變成瀑布，球迷被迫在室內撐傘看球。
+
+市長趕赴現場視察，面對滿場媒體的鏡頭，他穿著合身的西裝、梳著無懈可擊的油頭，眼神堅定地表示：「市府一定會要求廠商嚴格改善，絕不包庇，給市民一個完美的球場。」然而三個星期後的總冠軍賽，球場內部依然持續漏水，甚至漏到了球員休息區。`,'財務長',[
+'對營運廠商祭出鉅額開罰，若限期未改善即依合約收回球場自主營運權。','說明「大型建物初期微漏水屬於結構沉降之合理現象」，呼籲市民給予營運方耐心。','宣布給予受漏水影響的球迷發放「市府特製紀念雨衣與球場折價券」。']],
+['流利美音與零成果出訪',`市長受邀參加國際城市論壇，在台上全程使用極其流利且帶有標準美式腔調的英文發表演說，影片傳回國內後，被自家文宣團隊剪輯成高畫質短影音，配上「國際級市長、台灣的驕傲」標題大量投放廣告。
+
+然而，隔天市議會質詢時，議員踢爆該次國際出訪花了上千萬元預算，卻連一份實質的城市合作備忘錄（MOU）都沒有簽成，純粹是一場高價的個人形象公關秀。`,'發言人',[
+'緊縮市府國外出訪預算，要求未來的國際交流必須設有明確的經濟或產業 KPI。','強調「提升城市的國際能見度與高層形象是無價的投資」，繼續支持國際宣傳。','宣布成立「市府國際事務發言人小組」，將出訪成果包裝為常態性影音節目。']],
+['人形答錄機與閃躲大術',`在市議會總質詢期間，在野黨議員針對重大市政安全危機進行猛烈追問，要求市長給出明確的懲處名單與賠償時程。
+
+市長在備詢台上面帶微笑，頻繁使用「我們高度重視」、「我們會深入了解」、「一定依法辦理」等標準公務員套話回答了兩個小時，完全沒有給出任何具體的數字或承諾。議員氣到當場摔資料，指責他是「漂亮的答錄機」。`,'政策幕僚',[
+'要求市長與市府團隊於一週內提出具體的調查報告與懲處時程，挽回公信力。','讚揚市長「面對挑釁展現高度 EQ 與沉著冷靜」，指責議員是在進行政治表演。','安排市長召開專案記者會，讀稿宣讀市府既定的善後原則。']],
+['市長的姓氏與家族血統風波',`新上任的貴族風格市長，因父親當年高調「認祖歸宗」改姓，經常成為話題焦點。適逢市府文化局舉辦「本土姓氏與家族歷史文化展」，邀請市長親自主持開幕式並現場揮毫寫下自己的姓氏。
+
+沒想到開幕當天，有資深文史學者在現場展示了一份剛出土的古老戶籍檔案，指稱市長家族過去幾十年來在戶政登記上記錄的原始姓氏，與如今宣稱的昔日偉人血統存在法律與 DNA 上的嚴重爭議。學者甚至在現場拿出一本新編族譜，熱心表示：「如果市長要同時尊重母系與名義上的父系，建議將尊姓改為雙姓組合。」
+
+台下記者見狀蜂擁而上，紛紛將麥克風遞到市長面前，追問其身份證上的姓氏是否打算再次變更，以及是否承認過往改姓是為了政治資產。面對鏡頭，市長維持著無懈可擊的完美笑容，眼神堅定地表示：「無論姓甚麼，我都是全心全意為市民服務的台北市隊長。」
+
+然而，對手陣營立刻抓緊機會發動猛攻，要求戶政事務所調閱原始檔案，並發起全民討論「到底是用舊姓還是新姓在當市長」。眼看話題躍上熱搜，選情受到衝擊，黨中央緊急召開會報。`,'發言人',[
+'指示市長主動公開家族 DNA 檢測報告或完整戶籍演變史，以徹底終結血統爭議。','宣稱「姓氏屬於個人隱私與家族情感」，指責對手炒作血統話題是在進行階級鬥爭與政治獵巫。','建議市長響應民間創意，宣布未來公文書與宣傳品統一改用無姓氏的「帥哥市長」親切稱呼。']]
+];
+const SATIRE_EVENTS=SATIRE_EVENT_INPUT.map((e,i)=>[e[0],e[1],e[2],e[3].map((label,j)=>{
+ let funds=[-180,-70,-260][j]+(i%4)*15, voice=[7,-2,4][j]+i%3, crisis=[-8,8,4][j], skill=[3,-2,1][j], region=[5,-2,2][j];
+ // 對特定民生事件的回應會形成不同的財政與聲量代價
+ if(i===4&&j===2){funds=-660;voice=12;crisis=11;region=4}
+ if(i===11&&j===0){funds=-650;voice=11;crisis=-12}
+ if(i===15&&j===1){voice=-8;crisis=12}
+ return [label,funds,voice,crisis,skill,region,0]
+})]);
+// V8：額外十五種選戰事件。每組三個分支依序為 [敘述,資金,聲量,危機,能力調整,地方影響,保留]。
+const EXTRA_EVENTS=[
+ ['深夜市場掃街突襲',`一名市場攤商在候選人掃街時突然關掉攤位的直播音樂，要求所有政治人物回答冷藏電費與垃圾清運費為何同時上漲。鏡頭外的其他攤商也擠到攝影機前，將原本的握手拜票變成公開的生活成本聽證會。`, '組織主任',[
+ ['停止拜票，設置攤商政策即問即答站',-165,7,-5,4,5,0], ['隔天邀請各市場代表加入協商',-250,5,-8,3,6,0], ['照原行程離場並發布熱鬧花絮',-25,2,9,-2,-3,0]]],
+ ['租屋青年曝光空屋地圖',`租屋族製作了一張縣市空屋熱點地圖，痛批青年住不起、房屋卻長期閒置。地方候選人的先前政見只寫著「讓青年安居」，完全沒有財源與執行方案。論壇主持人要求黨中央在今晚提出數字。`, '政策幕僚',[
+ ['提出租屋補貼、空屋盤查與期程',-245,8,-6,5,6,0], ['邀房東房客共同討論管理制度',-130,5,-5,3,4,0], ['發布一支夢幻裝潢的形象廣告',-195,5,8,0,-1,0]]],
+ ['鄉間道路坑洞直播',`地方直播主挑戰連續行經十條鄉間道路，結果鏡頭裡的機車像在跳彈簧床。網友將片段配成洗腦舞曲，候選人則反指道路已編列改善預算。財務長拿出報告，發現部分工程至今仍未發包。`, '政策幕僚',[
+ ['公布路段清單與工程追蹤網站',-210,7,-8,4,6,0], ['優先補助最危險的路口',-340,8,-5,3,7,0], ['安排候選人開越野車體驗',-110,8,13,-2,-3,0]]],
+ ['政策宣傳車誤闖婚宴',`車隊導航故障，宣傳車竟開進一場戶外婚禮，擴音器大喊「唯一支持」。新郎以為有人搶親，新娘要求競選總部當晚公開說明，網路上開始瘋傳婚禮與造勢活動的混剪影片。`, '發言人',[
+ ['立即道歉並負擔場地復原費',-105,5,-8,3,3,0], ['派員送上祝福並檢討導航流程',-70,5,-5,3,2,0], ['順勢剪成幸福選戰宣傳片',-95,8,12,-1,-4,0]]],
+ ['河川污染吹到競選舞台',`候選人正在河岸廣場發表生態政見，一陣強風突然飄來濃厚異味。居民拿著前一天拍到的工廠排放影片包圍攝影團隊，質疑所有政黨是不是都只會在河邊拍漂亮照片。`, '政策幕僚',[
+ ['協助依法通報並承諾公開稽查資料',-155,7,-7,5,6,0], ['成立跨縣市水質監測小組',-305,8,-5,4,7,0], ['將活動地點移至上游取景',-80,2,11,-2,-4,0]]],
+ ['偏鄉公車突然停駛',`偏鄉唯一的公車路線因駕駛人力不足宣布減班，學童與長者必須多等一小時。地方候選人原先把「智慧交通」列為首要政見，但居民只想知道明天到底有沒有車能坐。`, '組織主任',[
+ ['和業者與居民協調最低基本班次',-240,7,-7,4,6,0], ['開設需求預約與社區接駁試辦',-350,8,-4,5,7,0], ['改推交通 App 讓民眾自行查詢',-90,1,9,-1,-4,0]]],
+ ['一夜三十張匿名檢舉單',`競選總部信箱突然收到三十封內容相似的匿名檢舉，指控不同縣市的候選人申報資料錯誤。調查員指出部分是筆誤、部分尚待查證，媒體卻已把三十個人排成巨大的醜聞排行榜。`, '發言人',[
+ ['逐件編號公開查核進度',-130,6,-9,5,6,0], ['聘請獨立法遵團隊交叉比對',-280,7,-12,4,6,0], ['一律稱為有組織的抹黑',-20,4,12,-3,-4,0]]],
+ ['醫院急診等待風暴',`市區醫院候診螢幕顯示等待時間超過五小時，候選人恰好在門口拍攝醫療政見短片。護理師請他別妨礙動線，陪病家屬則要求提出真正可執行的醫療人力方案。`, '政策幕僚',[
+ ['聽取醫護意見，公布人力及分流方案',-220,8,-8,5,6,0], ['協助建立急診資訊透明看板',-135,5,-5,3,4,0], ['安排主席親自演出一天急診志工',-45,6,10,-1,0,0]]],
+ ['假造的 AI 合照曝光',`一張候選人與國際巨星握手的照片瞬間爆紅，隨後被影像鑑識師判定為 AI 合成。競選團隊辯稱那是「未來願景示意圖」，但網站頁面從未標註，真偽混淆造成強烈反彈。`, '發言人',[
+ ['下架並標明所有合成素材',-75,5,-10,5,4,0], ['委託第三方建立素材查核制度',-165,6,-9,4,5,0], ['堅持這是創意不需要說明',-10,7,13,-3,-4,0]]],
+ ['觀光老街翻修爭議',`老街整修工程把百年招牌全部改成同一種字體，遊客拍照覺得整齊，店家卻抗議原有特色消失。民意代表希望候選人在開幕前表態，修復傳統或引入大型連鎖品牌。`, '組織主任',[
+ ['讓原店家參與設計與修復協調',-185,6,-6,3,6,0], ['聘文化保存團隊重新調整規劃',-310,7,-8,4,7,0], ['推出統一色調打卡濾鏡',-80,4,8,-1,-2,0]]],
+ ['豪雨造成農地災損',`連日強降雨造成作物泡水，產銷班成員在會議上拍桌，要求候選人別再只有口頭承諾。保險理賠進度與災損資料落差極大，地方媒體直播即將開始。`, '財務長',[
+ ['優先建立可核對的災損申報窗口',-180,7,-7,4,6,0], ['捐助緊急資源並公布收支',-390,9,-6,4,8,0], ['先發布慰問貼文等待主管機關',-15,0,10,-2,-5,0]]],
+ ['直播帶貨式政見發表',`文宣團隊提議用購物直播方式發布政見，每個政策旁邊都貼上「限時優惠」。觀眾一開始覺得新鮮，隨即有人質疑公共建設並不是網路購物，候選人到底能不能兌現承諾？`, '發言人',[
+ ['改成可以公開驗證的政見問答',-80,7,-6,4,5,0], ['讓專家逐一解析政策與財源',-165,6,-7,5,5,0], ['持續發送限量版政見折價券',-195,9,11,-2,-2,0]]],
+ ['跨黨地方議題合作',`某縣市三方議員共同提出改善通學步道的計畫，願意同台開記者會。黨內強硬派反對與其他陣營同框，認為這會稀釋自身特色，但家長團體認為孩子安全不應分黨派。`, '組織主任',[
+ ['支持跨黨合作並明確分工',-140,7,-8,5,7,0], ['提出各自獨立但互補的提案',-190,5,-4,3,4,0], ['要求所有人退出聯合提案',0,-3,9,-3,-5,0]]],
+ ['地方仕紳的神秘土地圖',`參加地方茶敘時，一名地方仕紳拿出一張畫滿紅圈的重劃區地圖，表示願意贊助大筆選戰資金，只希望候選人在當選後「注意一下」新道路選線。財務長在旁邊立刻示意暫停會談。`, '財務長',[
+ ['拒絕條件式捐款並完整紀錄',-45,5,-12,5,6,0], ['安排公開透明的地方建設說明會',-155,6,-8,4,5,0], ['私下承諾優先研究重劃方案',560,4,19,-6,-8,0]]],
+ ['造勢晚會音響被檢舉',`大型晚會剛要開始，附近住戶抗議喇叭聲超過管制標準，主辦單位卻堅稱「人民的聲音怎能被關掉」。警方抵達時，志工、居民與攤商都在等候你決定活動如何進行。`, '組織主任',[
+ ['降低音量並調整活動結束時間',-95,5,-6,4,5,0], ['協調改設隔音設備與導引區',-230,7,-5,4,6,0], ['加大音量展現支持者氣勢',-50,9,16,-4,-5,0]]]
+];
+EVENTS.splice(0,EVENTS.length,...SATIRE_EVENTS,...EXTRA_EVENTS);
+// 原本的中央機關場景在地方選舉模式改為四座直轄市的議會／市政府。
+const LOCAL_COUNCIL_CITIES=['台北市','台中市','高雄市','桃園市'];
+EVENTS.forEach((event,i)=>{
+ const city=LOCAL_COUNCIL_CITIES[i%LOCAL_COUNCIL_CITIES.length];
+ const localize=text=>typeof text==='string'?text.replaceAll('行政院長',city+'長').replaceAll('立法院',city+'議會').replaceAll('行政院',city+'政府'):text;
+ event[0]=localize(event[0]);event[1]=localize(event[1]);
+ event[3].forEach(choice=>{choice[0]=localize(choice[0])});
+});
+
+
+let chosenParty='blue',chosenCard=-1,game=null;const SAVE_KEY='political_dominion_2026_demo_4';const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));const fmt=n=>Math.round(n).toLocaleString('zh-TW');const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2800)}
+function save(){if(game)try{localStorage.setItem(SAVE_KEY,JSON.stringify(game))}catch(e){}}
+function existingSave(){try{const v=JSON.parse(localStorage.getItem(SAVE_KEY));return v&&v.party&&v.skills&&Array.isArray(v.skills)&&typeof v.day==='number'?v:null}catch(e){return null}}
+function makeSetup(){ $('factionGrid').innerHTML=PKEYS.map(p=>`<button type="button" class="factionCard ${p===chosenParty?'selected':''}" data-party="${p}"><span class="partyAccent" style="background:${COLORS[p]}"></span><b>${PARTIES[p].full}</b></button>`).join('');document.querySelectorAll('[data-party]').forEach(btn=>btn.onclick=()=>{chosenParty=btn.dataset.party;makeSetup()});$('cardGrid').innerHTML=CARDS.map((c,i)=>`<button type="button" class="abilityCard" data-card="${i}"><strong>${i+1}. ${c[0]}</strong><p>${c[2]}</p><div class="abilityBars">${c[1].map((v,j)=>`<div class="abilityBar"><span>${SKILLS[j].slice(0,2)}</span><i><em style="width:${v}%;background:${['#7da5e6','#65cdb3','#ecc278','#e68ea3','#a69be8'][j]}"></em></i><b>${v}</b></div>`).join('')}</div></button>`).join('');document.querySelectorAll('[data-card]').forEach(b=>b.onclick=()=>{chosenCard=+b.dataset.card;document.querySelectorAll('[data-card]').forEach(a=>a.classList.toggle('selected',a===b));$('cardSummary').textContent=CARDS[chosenCard][1].map((v,i)=>SKILLS[i].slice(0,2)+v).join(' · ');$('startPlay').disabled=false});$('resumeBox').classList.toggle('hidden',!existingSave())}
+function showSetup(){ $('setup').classList.remove('hidden');$('setupOne').classList.remove('hidden');$('setupTwo').classList.add('hidden');$('phase1').classList.add('active');$('phase2').classList.remove('active');makeSetup();}
+$('goCards').onclick=()=>{if(!$('playerInput').value.trim()){toast('請先輸入黨主席姓名');$('playerInput').focus();return}newOffice()};$('backStep').onclick=()=>{ $('setup').classList.add('hidden');$('setupOne').classList.remove('hidden');$('setupTwo').classList.add('hidden');updateObjective();toast('能力卡放在辦公桌上，靠近資料夾可重新翻閱。') };
+function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+
+const PARTY_INTROS={
+blue:{title:'藍營 · 雙城戰役',text:[
+'選前一百天。中國國銘黨主席辦公室的燈還亮著。選戰總部擬定台北市與高雄市為兩大主攻戰區，同時將中央施政作為政見攻防的核心。',
+'藍營策士提醒：部分地方提名整合不順，對外形象仍有疑慮，若只靠批評中央而無法拿出可信的候選人與市政治理規劃，競選路線將受到考驗。',
+'你必須走訪總部幕僚，衡量地方組織、資金和民意，決定這一百天能否成功凝聚支持者。']},
+green:{title:'綠營 · 國會攻防',text:[
+'民煮進步黨的選前記者會剛結束，中央黨部已進入全天候戰備。黨內主軸主張「藍白頻頻擋預算」，並以「民主富二代」說法作為選戰攻防議題。',
+'台北市成為全國宣傳焦點。沈伯揚投入選戰，文宣團隊試圖累積「陽流」話題，但競選策略仍得回到住宅、交通與生活成本等問題。',
+'地方選票並非全國聲量的複製品。你需要逐縣市調整政策與組織策略，也必須面對選情突變。']},
+white:{title:'白營 · 合作與突破',text:[
+'台灣民眾檔在選前一百天提出不一樣的戰略：資源先集中在新竹市、嘉義市，並以區域合作換取其他縣市的政治影響力。',
+'新竹市由無黨籍的高虹銨爭取連任；嘉義市有本黨提名的張啓偕。新北市採與藍營合作路線，支持李四釧；新竹縣則因竹北地方派系與藍營有所齟齬，轉而支持鄭朝芳。',
+'有些縣市沒有白營候選人。你必須權衡獨立候選人、合作協議與本黨聲量之間的取捨，讓每一步都能形成實際影響。']}}
+
+const MISSION_BRIEFS={
+ blue:[
+  ['限制綠營席次','全台開票後，民煮進步黨當選縣市不得超過 3 席。'],
+  ['四縣市高票過關','至少 4 個縣市的藍營候選人最終得票率超過 60%。'],
+  ['完成絕地反攻','最後公開民調仍落後的縣市，至少 1 個由藍營候選人逆轉勝。']
+ ],
+ green:[
+  ['翻轉三座縣市','相較遊戲採用的 2022 年地方選舉基準，至少 3 個藍營或白營執政縣市轉為綠營。'],
+  ['四縣市高票過關','至少 4 個縣市的綠營候選人最終得票率超過 60%。'],
+  ['兩場逆風翻盤','最後公開民調仍落後的縣市，至少 2 個由綠營候選人反敗為勝。']
+ ],
+ white:[
+  ['雙城突圍','新竹市由高虹銨當選，同時嘉義市由張啓偕當選。'],
+  ['新竹縣合作奏效','支持的鄭朝芳在新竹縣當選。'],
+  ['銀色挑戰','高虹銨或張啓偕至少一人的最終得票率超過 60%。']
+ ]
+};
+// 2022 年地方首長陣營（僅供遊戲的「翻轉席次」對照用）。
+const BASELINE_2022_TEAM={
+ '臺北市':'K','新北市':'K','桃園市':'K','臺中市':'K','臺南市':'D','高雄市':'D',
+ '基隆市':'K','新竹市':'W','新竹縣':'K','苗栗縣':'I','彰化縣':'K','南投縣':'K',
+ '雲林縣':'K','嘉義市':'K','嘉義縣':'D','屏東縣':'D','宜蘭縣':'K',
+ '花蓮縣':'K','臺東縣':'K','澎湖縣':'D','金門縣':'I','連江縣':'K'
+};
+function showPartyIntro(){
+ if(!game||game.phase!=='play')return;
+ if(!game.introSeen){
+  const d=PARTY_INTROS[game.party];$('introHeading').textContent=d.title;
+  $('introNarrative').innerHTML=d.text.map(p=>`<p>${esc(p)}</p>`).join('');
+  $('introSubtitle').textContent='選前倒數 '+game.day+' 天｜下一頁：主席的三項選戰目標';
+  $('introBegin').textContent='閱讀本局三大目標 →';
+  $('introBoard').classList.remove('hidden');return;
+ }
+ if(!game.goalsSeen){
+  $('introHeading').textContent=`${PARTIES[game.party].name}｜本局三大選戰目標`;
+  $('introNarrative').innerHTML=`<p>競選總部已擬好這次地方選戰的三項任務。開票結束後，將逐項檢視是否完成。</p><div class="goalIntroGrid">${MISSION_BRIEFS[game.party].map((goal,i)=>`<article class="goalIntro"><b>${String(i+1).padStart(2,'0')}　${esc(goal[0])}</b><p>${esc(goal[1])}</p></article>`).join('')}</div>`;
+  $('introSubtitle').textContent='將從選前倒數 '+game.day+' 天正式展開選戰';
+  $('introBegin').textContent='確認任務，展開選戰 →';
+  $('introBoard').classList.remove('hidden');return;
+ }
+ $('introBoard').classList.add('hidden');
+}
+$('introBegin').onclick=()=>{
+ if(!game)return;
+ if(!game.introSeen){game.introSeen=true;save();showPartyIntro();return;}
+ if(!game.goalsSeen){game.goalsSeen=true;save();}
+ $('introBoard').classList.add('hidden');updateObjective();toast('請依小地圖的閃爍標記，靠近幕僚交談。');
+};
+function electionWinner(e){return e.people[e.votes.indexOf(Math.max(...e.votes))]}
+function winForParty(e,key){const partyCode={blue:'K',green:'D',white:'W'}[key];return electionWinner(e).party===partyCode}
+function partyCountyVoteRate(e,code){return e.people.reduce((m,p,i)=>p.party===code?Math.max(m,e.votes[i]/e.totalVotes):m,0)}
+function turnaroundCount(partyCode){
+ let count=0;
+ for(const e of election){
+  const frozen=game?.lastPublicPoll?.[e.name];
+  if(!Array.isArray(frozen)||frozen.length!==e.people.length)continue;
+  const own=e.people.map((c,i)=>c.party===partyCode?i:-1).filter(i=>i>=0);
+  if(!own.length)continue;
+  const pollLeader=frozen.indexOf(Math.max(...frozen));
+  if(own.includes(pollLeader))continue;
+  const realWinner=e.votes.indexOf(Math.max(...e.votes));
+  if(own.includes(realWinner))count++;
+ }
+ return count;
+}
+function evaluateMissionResults(){
+ const byName=Object.fromEntries(election.map(e=>[e.name,e]));
+ const numParty=code=>election.filter(e=>electionWinner(e).party===code).length;
+ const landslide=code=>election.filter(e=>partyCountyVoteRate(e,code)>.60).length;
+ const cbK=turnaroundCount('K'),cbD=turnaroundCount('D');
+ const flipped=election.filter(e=>['K','W'].includes(BASELINE_2022_TEAM[e.name])&&electionWinner(e).party==='D').length;
+ const cH=byName['新竹市'],cC=byName['嘉義市'],cX=byName['新竹縣'];
+ const hWin=cH&&electionWinner(cH).name==='高虹銨';
+ const cWin=cC&&electionWinner(cC).name==='張啓偕';
+ const xWin=cX&&electionWinner(cX).name==='鄭朝芳';
+ const silverRate=Math.max(...[
+  cH?.people.findIndex(p=>p.name==='高虹銨')??-1,
+  cC?.people.findIndex(p=>p.name==='張啓偕')??-1
+ ].map((idx,k)=>idx>=0?(k===0?cH:cC).votes[idx]/(k===0?cH:cC).totalVotes:0));
+ const values={
+  blue:[{ok:numParty('D')<=3,detail:`綠營當選 ${numParty('D')} 席／目標至多 3 席`},
+   {ok:landslide('K')>=4,detail:`藍營超過六成：${landslide('K')} 縣市／目標 4 縣市`},
+   {ok:cbK>=1,detail:`封關前落後而勝選：${cbK} 縣市／目標 1 縣市`}],
+  green:[{ok:flipped>=3,detail:`藍、白轉綠：${flipped} 席／目標 3 席`},
+   {ok:landslide('D')>=4,detail:`綠營超過六成：${landslide('D')} 縣市／目標 4 縣市`},
+   {ok:cbD>=2,detail:`封關前落後而勝選：${cbD} 縣市／目標 2 縣市`}],
+  white:[{ok:!!(hWin&&cWin),detail:`新竹市 ${hWin?'✓':'—'}／嘉義市 ${cWin?'✓':'—'}`},
+   {ok:!!xWin,detail:`鄭朝芳：${xWin?'當選':'未當選'}`},
+   {ok:silverRate>.60,detail:`兩名主攻人選最高 ${ (silverRate*100).toFixed(2)}%／目標超過 60%` }]
+ };
+ return values[game.party].map((v,i)=>({...v,title:MISSION_BRIEFS[game.party][i][0],silver:game.party==='white'&&i===2}));
+}
+function renderMissionResults(entries){
+ const success=entries.filter(x=>x.ok).length;
+ $('goalResults').innerHTML=`<div class="goalResultTitle">🏆 三大選戰目標檢視　${success}／3 已達成</div><div class="goalResultGrid">${entries.map((e,i)=>`<div class="goalAward ${e.ok?'success':''} ${e.silver?'silver':''}"><span class="goalMedal">${e.ok?(e.silver?'🥈':'🏆'):'◇'}</span><div><b>${i+1}. ${esc(e.title)}　${e.ok?'達成':'未達成'}</b><small>${esc(e.detail)}</small></div></div>`).join('')}</div>`;
+}
+
+// 架空諷刺快訊：以戲仿名稱與荒謬情境呈現，不代表事實新聞。
+const FUN_NEWS=[
+'蔡瑛文論文檔案室迷航，館員建議讀者先確認書架編號',
+'韓國俞重推一瓶礦泉水、一碗滷肉飯，競選便當店推出懷舊套餐',
+'馬英玖鹿茸發言再成網路考題，動物園科普：鹿角不等於耳朵',
+'蔣萬銨究竟姓蔣、姓章還是姓郭？趣味族譜擂台引發熱議',
+'沈伯揚黑熊學院開設防災課，黑熊本人未出席剪綵',
+'選戰數位海報字體選不完，設計師宣告進入第十八輪決選',
+'競選總部咖啡機故障，十名幕僚提案成立跨部門提神小組',
+'政論名嘴互猜民調，主持人宣布改以抽籤決定發言順序',
+'候選人市場掃街握手太熱情，魚販問能否順便幫忙秤重',
+'紅布條掛到對手總部，工讀生表示顏色太多眼花',
+'造勢晚會煙火比政策多，主辦單位稱燈光也是一種溝通',
+'黨中央吵翻標語押韻，發言人堅持每句一定要八個字',
+'地方選戰神秘民調外流，唯一可靠數字是影印機耗紙量',
+'青年後援會直播到一半斷線，聊天室改成即席民意調查',
+'雨中掃街傘海成奇景，候選人撐傘角度引發派系爭論',
+'選舉車隊導航誤入喜宴，雙方致詞完才發現跑錯行程',
+'記者會舞台麥克風太多，講者半天找不到音量按鈕',
+'政見發表會推出懶人包，民眾追問可否再更懶一點',
+'競選團隊研究選民笑容，最後發現市場阿姨只想趕快買菜',
+'市民問答大賽登場，最受歡迎題目竟是今天有沒有停車位',
+'選前辯論猜謎環節失控，各黨互問計畫何時才有期程表',
+'縣市交界掛滿競選看板，路過遊客以為在參加色彩展覽',
+'競選志工發現宣傳品印錯日期，總部立刻成立校稿戰情室',
+'地方仕紳茶會討論太久，點心全沒了卻沒人提到政策',
+'選舉總部買千個環保杯，領杯隊伍一路排到對手總部',
+'一日市長體驗活動爆滿，報名者要求附帶加班補休',
+'社群經營課教大家做短影音，長輩要求順便教如何關閉通知',
+'媒體追問選戰秘辛，幕僚只肯透露晚餐是牛肉麵',
+'競選口號出現諧音梗，支持者直呼很好記但完全不懂意思',
+'投票前夕選戰算命師預言膠著，所有陣營都說預言對自己有利'
+];
+let newsOrder=[],newsIndex=0,newsTimer=0;
+function spinNews(){const el=$('newsLine');if(!el)return;if(!newsOrder.length||newsIndex>=newsOrder.length){newsOrder=shuffle([...Array(FUN_NEWS.length).keys()]);newsIndex=0;}const headline=FUN_NEWS[newsOrder[newsIndex++]];el.classList.remove('roll');el.textContent='【鬼島快訊】 '+headline;el.style.setProperty('--news-start',Math.max(280,$('newsClip').clientWidth)+'px');el.style.setProperty('--news-speed',(Math.max(13,(el.textContent.length*.24)+8)).toFixed(1)+'s');void el.offsetWidth;el.classList.add('roll');clearTimeout(newsTimer);newsTimer=setTimeout(spinNews,Math.max(13000,(el.textContent.length*.24+8)*1000));}
+
+const SURPRISES=[
+['直播訊號突然中斷','你剛做完決策，直播設備突然黑屏，記者正等候說明。', [['現場公開故障原因',-45,3,-4,4],['增租備援系統',-145,4,-6,5],['改用文字公告',-15,-2,2,1]]],
+['不明帳單寄到黨中央','財務長收到一疊找不到請款人的活動費帳單。',[['先停付並逐筆查核',-35,2,-8,5],['委外會計師稽核',-120,3,-11,5],['要求部門自行負責',0,-3,8,0]]],
+['候選人錯發群組訊息','一段原本要傳給幕僚的排程訊息被發到公開社群。',[['坦然解釋原意',-20,3,-4,3],['快速更正並製作圖卡',-80,4,-2,2],['假裝沒有這件事',0,-4,7,0]]],
+['對手臨時邀請辯論','剛結束記者會，對手突然要求今夜公開辯論。',[['接受並準備政策資料',-90,7,-2,5],['提議第三方主持',-55,4,-4,4],['拒絕臨時邀約',0,-3,3,-1]]],
+['競選布條整排掉落','一場強風吹落選戰布條，還好無人受傷。',[['安排專業人員全面加固',-135,3,-5,4],['暫時撤除高風險布條',-55,1,-7,4],['照舊繼續懸掛',0,1,12,-3]]],
+['年輕志工集體請假','數十名志工在考試週臨時請假，行程快排不下。',[['合理調整排班',-80,3,-4,5],['聘用短期後勤人員',-180,5,-2,3],['要求照常出勤',0,-5,9,-4]]],
+['街頭訪問意外爆紅','一位熱心阿姨在鏡頭前用幽默比喻評論你的政策。',[['邀請阿姨參與政策座談',-45,7,-2,5],['剪成創意短影音',-110,9,3,4],['保持低調',0,1,0,0]]],
+['交通路線大塞車','候選人車隊陷入交通壅塞，下午行程瀕臨延誤。',[['改搭大眾運輸',-15,5,-4,4],['優化整日行程動線',-80,3,-5,5],['取消地方行程',0,-5,6,-3]]],
+['爆料帳號冒名發言','匿名帳號假冒黨中央發布一則未證實訊息。',[['公開澄清並附證據',-40,5,-8,5],['發布官方認證提醒',-85,4,-6,4],['跟著轉傳反擊',0,2,11,-2]]],
+['選區志工尋回遺失皮夾','掃街途中志工撿到皮夾，裡面有大量現金與證件。',[['立即送交警方並公開表揚',-15,5,-5,5],['低調協助失主領回',-10,3,-4,4],['先拿來拍宣傳短片',-25,5,6,-2]]],
+['突如其來的雨勢','大型露天活動開始前大雨突至，設備急需保護。',[['先疏散群眾並暫停',-65,2,-8,5],['緊急改到室內會場',-240,5,-3,5],['照常維持活動',0,2,13,-2]]],
+['議題討論轉向生活成本','一場熱門論壇突然從政黨口水戰轉向物價與租金。',[['提出清楚的民生政策',-110,7,-5,5],['邀請地方住戶當面討論',-65,5,-4,4],['繼續原本的批評稿',0,-4,6,-2]]],
+['造勢音樂版權爭議','原訂演出的歌曲授權臨時發生爭議。',[['暫停播放並補辦授權',-85,2,-6,5],['改用自創競選歌',-125,6,-2,4],['繼續使用原曲',0,4,14,-4]]],
+['地方候選人臨時感冒','主力候選人身體不適，團隊必須調整兩天行程。',[['安排休息並由副手代行',-70,2,-5,5],['改辦線上政策直播',-60,4,-2,4],['要求照常高密度跑行程',0,3,9,-2]]],
+['鄰近縣市邀請跨區助講','隔壁縣市希望主席今晚臨時來助選，但本區行程已排滿。',[['協調時間兼顧兩地',-130,6,-2,5],['派出資深副主席代跑',-70,4,-2,3],['婉拒且不說明',0,-3,5,-2]]]
+];
+// V8：新增十五種不同於主要劇情的即時突發狀況。
+const EXTRA_SURPRISES=[
+ ['突發停電的電話會議','黨中央正在連線協調地方行程時，整層樓突然停電，備援電池警示只剩十五分鐘。', [['啟動紙本作業與行動熱點',-45,3,-5,4],['緊急租借備援發電機',-185,5,-7,5],['暫停所有協調會議',0,-4,7,-2]]],
+ ['文宣印刷廠臨時漲價','印刷廠通知紙價與物流費提高三成，兩萬份明日要發送的政見單還沒付尾款。', [['縮小傳單尺寸但維持重點',-85,2,-3,4],['支付差額準時印製',-260,5,-1,3],['取消傳單只靠口耳宣傳',0,-3,5,-2]]],
+ ['地方幹部帳號被盜','組織主任的社群帳號半夜發布一串奇怪貼文，各地志工誤以為隔天行程全面取消。', [['立即鎖定帳號並公告正確行程',-55,5,-7,5],['請資安顧問啟動帳號健檢',-160,4,-9,5],['等隔天再處理',0,-5,12,-3]]],
+ ['經費報表發現重複付款','財務長在結帳時發現兩筆舞台租賃費可能重複支付，承辦人員都在等候主席處理。', [['立即核對並追回款項',105,3,-6,5],['委託外部稽核逐項清查',-100,3,-9,5],['認列費用避免延誤',-210,-2,8,-3]]],
+ ['候選人遺失重要講稿','主講人上台前十分鐘找不到講稿，現場大螢幕卻已倒數讀秒。', [['請政策幕僚口頭提示重點',-30,4,-3,4],['改成開放式民眾問答',-50,6,-2,5],['直接取消演講',0,-5,6,-3]]],
+ ['應援旗幟顏色印錯','工廠出貨數百面顏色印錯的競選旗幟，現場志工不知道應不應該繼續懸掛。', [['全部重印以維持識別',-175,3,-2,3],['修正加註標誌後再使用',-65,4,-3,4],['照常發送當作彩蛋',0,5,7,-2]]],
+ ['造勢場地附近交通事故','支持者正準備進場，會場旁路口發生交通碰撞，救護車需要臨時清空通道。', [['暫停活動優先疏導救援',-75,5,-8,5],['更改舞台進出動線並通報',-120,4,-6,4],['繼續催促觀眾快點進場',0,0,15,-5]]],
+ ['網紅臨時取消站台','網紅合作對象在活動前兩小時稱身體不適，宣傳海報卻已在各平台大量投放。', [['向觀眾道歉並退還合作款項',85,2,-6,5],['改邀地方青年代表上台',-75,5,-4,4],['假裝網紅仍會到場',-20,3,12,-4]]],
+ ['競辦玻璃門貼反標語','志工把入口大型標語貼成從外面看完全顛倒，路過民眾瘋狂拍照上傳。', [['重貼並用幽默方式回應',-35,6,-4,4],['請設計師全面檢查場佈',-90,3,-6,5],['說是刻意製作的創意裝置',0,5,8,-1]]],
+ ['募款平台短暫當機','一場線上小額募款直播流量暴增，付款畫面開始不斷轉圈圈，支持者擔心被重複扣款。', [['暫停付款並公開金流查核結果',-65,3,-8,5],['升級系統並派專人處理訂單',-195,6,-7,5],['要求民眾持續重新整理',0,-5,13,-3]]],
+ ['候選人下錯車站','跨縣市造勢列車發生行程誤會，候選人在錯誤的車站下車，支持者空等半小時。', [['立刻說明並重新安排接駁',-90,4,-5,4],['同步線上問候與致歉',-45,3,-4,3],['把事件剪成「秘境探訪」影片',-65,7,7,-2]]],
+ ['大雨沖走活動背板','午後大雨把臨時架設的宣傳背板沖到街角，附近店家抱怨阻礙通行。', [['立即清理並檢查所有固定設備',-140,4,-7,5],['改用室內小型座談取代',-95,4,-4,4],['讓背板留著拍話題照片',0,3,13,-4]]],
+ ['一份民調表格算錯小數點','研究助理把支持度百分比誤植成十倍，記者已拿到初版圖表。', [['公開更正並解釋計算方式',-35,4,-8,5],['交由第三方重新核算',-115,4,-9,5],['稱圖表只是不同統計尺度',0,-3,11,-4]]],
+ ['直播主持人叫錯主席名字','政論節目主持人連續兩次把黨主席名字唸成其他人的名字，全場來賓都忍住笑。', [['幽默糾正並回到政策主題',-15,6,-4,5],['讓發言人補充正式介紹',-45,3,-4,3],['當場質疑主持人政治偏見',0,7,9,-3]]],
+ ['會場茶水供應不足','一場地方座談超出預期人數，茶水與座位不足，幾位長者已經站了二十分鐘。', [['優先補足座位與飲水',-85,5,-7,5],['啟動附近店家合作支援',-125,6,-5,5],['請大家忍耐到活動結束',0,-5,11,-4]]]
+];
+SURPRISES.push(...EXTRA_SURPRISES);
+
+// V14：擴充即時事件庫十種。維持每一事件三個不同抉擇與四個能力/資源效果。
+const V14_SURPRISES=[
+ ['夜市宣講場地突然取消','今晚原定在夜市旁舉辦小型政策座談，攤商自治會臨時通知此區不得架設舞台。群眾已開始聚集，工作人員等候新的地點。', [['改為徒步街訪並遵守攤商動線',-35,5,-5,5],['與自治會協商使用合法備用場地',-125,6,-7,5],['直接占用入口繼續開講',0,7,13,-4]]],
+ ['政見多語翻譯出了差錯','最新推出的客語與英語版政見圖卡，竟把一項補助金額的小數點位置排錯，地方文化團體已來電要求更正。', [['撤下錯誤圖卡並公開修訂說明',-45,4,-7,5],['邀請在地翻譯者重新共同校訂',-115,6,-8,6],['稱翻譯只是趣味版無須修正',0,-5,11,-3]]],
+ ['匿名捐款忽然遭銀行暫停','募款平台半夜出現多筆無法辨識來源的款項，銀行因風險控管暫停部分金流，財務長正在確認合法申報程序。', [['暫停可疑款項並依規查核退回',-65,4,-10,6],['聘請合規顧問全面盤點捐款',-150,5,-12,6],['無視通知先把款項入帳',170,2,17,-5]]],
+ ['手語翻譯員臨時缺席','選區公開政策論壇即將開始，原訂的手語翻譯員因交通延誤無法到場，現場有聽障民眾等待參與。', [['延後開場並提供逐字稿',-40,4,-7,5],['啟用遠距同步手語翻譯服務',-130,6,-8,6],['取消無障礙服務照常開始',0,-7,13,-4]]],
+ ['無障礙坡道被器材堵住','輪椅使用者反映地方競辦唯一的無障礙坡道堆滿宣傳看板，媒體攝影機已在門口準備拍攝。', [['立即清空坡道並致歉',-50,5,-7,5],['全面檢查各地競辦無障礙設施',-175,7,-10,6],['引導民眾改走後門樓梯',0,-7,16,-5]]],
+ ['錄音片段被剪成相反順序','網路上一段競選座談錄音遭人剪接，把主席原本的問答順序完全顛倒，地方記者要求提供完整脈絡。', [['公開完整影音與時間戳記',-55,6,-9,5],['請第三方媒體比對原始檔案',-110,5,-11,6],['不查證先指責所有轉傳者',0,5,12,-3]]],
+ ['兒童活動與宣傳隊撞期','地方親子閱讀日與助選車隊同時申請一處社區廣場，現場家長擔心擴音器妨礙孩子參加活動。', [['把宣傳車隊改道並降低音量',-45,5,-7,5],['改辦小型閱讀政策交流會',-120,7,-5,6],['提高宣傳音量搶占注意力',0,3,14,-4]]],
+ ['志工便當意外送錯會場','兩個不同縣市的志工團隊領到彼此訂購的便當，部分素食者拿到葷食，食材標示也有疏漏。', [['主動更換餐點並查明配送',-95,4,-7,5],['建立飲食標示與物流核對機制',-155,5,-9,6],['請大家自行交換便當',0,-5,10,-3]]],
+ ['智慧看板誤播去年的口號','競辦外的大型數位看板更新失敗，反覆播放去年尚未定案的政策草稿，路過民眾誤以為政策突然轉彎。', [['停播舊版並即時說明',-40,4,-7,5],['更新遠端管理系統並雙人審稿',-160,6,-8,6],['說這是刻意安排的懷舊特輯',0,4,12,-2]]],
+ ['一隻迷路小狗闖上講台','市集交流活動進行到一半，一隻戴著項圈的小狗突然衝上講台，現場歡呼聲蓋過了主持人的提問，主人正在焦急尋找。', [['暫停活動協助聯繫飼主',-20,6,-5,5],['安排志工護送到動保單位查晶片',-75,7,-7,6],['把小狗當成宣傳吉祥物帶走',0,7,13,-4]]]
+];
+SURPRISES.push(...V14_SURPRISES);
+
+
+// 每局隨機分配三十五篇約二百字的架空戲仿頭條，每篇最多只出現於一個選戰事件。
+const TODAY_HEADLINES=[["蔣萬銨的家族姓氏展引爆問答潮","台北市文化館推出架空的家族姓氏展，蔣萬銨受邀剪綵，卻發現現場互動機器會隨機跳出「蔣、章、郭」三種答案。主持人請他挑一張姓氏貼紙紀念，他笑說城市治理不是猜字遊戲，盼把焦點放在街道安全。台下記者卻接連詢問族譜與戶籍故事，讓策展人急忙拿出文化研究的說明板。市府最後把展區改成開放式家族記憶工作坊，邀請市民分享自己的姓氏由來，並強調任何家族傳聞都不應被當成已證實事實。原定十分鐘的開幕，意外延長成一場下午茶座談。"],["蔣萬銨的大巨蛋雨傘推廣日","台北某大型室內球場在遊戲劇情中舉辦防雨演練，主辦單位把透明雨傘排成一座會移動的看台模型。蔣萬銨穿著筆挺西裝現身，記者趁機詢問場館漏水議題，他決定先看完工程人員說明，再請廠商公開修繕時程。沒想到啟動灑水設備時，舞台背板的電子字瞬間變成「今天請自備泳圈」，現場球迷笑成一片。工作團隊趕緊修正字幕，並開放觀眾檢視施工紀錄。這場原本要拍形象影片的活動，最後成了市民討論公共工程透明度的小型論壇。"],["蔣萬銨深蹲捷運引起排隊研究","一段架空城市宣傳片邀請蔣萬銨到捷運站示範運動換車票，工作人員安排志工連做二十下深蹲，卻沒想到上下班旅客把活動區誤認為驗票入口。站務員緊急拉起分流帶，市民在旁邊計算深蹲速度是否比刷卡快。蔣萬銨後來提出應先確認無障礙需求與站內人流，再評估任何體驗活動。影片播出後，網友改編成「蹲完車已開走」的搞笑短片，交通局只好公布完整動線示意圖。候車月台上的長輩則表示，準時發車比任何舞蹈挑戰都有吸引力。"],["沈伯揚的黑熊學院便當評鑑","某民防主題博覽會在架空劇情裡設置黑熊學院體驗攤位，沈伯揚受邀解說背包、水與急救物資的用途。活動尾聲，主辦方推出「民防能量便當」評比，沒想到觀眾更關心有沒有素食、保存日期與價格明細。網紅把一盒白飯拍成大型戰術裝備，立即引來轉發。沈伯揚在台上強調活動應讓不同年齡的人都能參加，現場也安排專業人員說明急救課程。主辦單位隨後公開採購清單與標示方式，將原本吵鬧的網路討論變成食品透明度與民間訓練的問答會。"],["沈伯揚喊出台北順起來卻遇到塞車","沈伯揚在架空的台北街頭宣講中喊出「台北順起來」，工作人員原本準備播放節奏明快的宣傳音樂，附近路口卻因臨時道路施工排起長長車龍。台下民眾笑問既然要順起來，能否先讓公車準時進站。主持人當場收起手卡，改請交通志工說明幹道壅塞與轉乘需求，現場也讓市民用貼紙標出最常卡住的路口。隔天社群上流傳「順起來導航圖」，有人把施工圍籬畫成迷宮。競辦最後決定把宣傳標語旁加上交通改善草案，免得口號只剩笑話。"],["沈伯揚的認知戰簡報出現熊掌游標","在一場虛構的城市議題論壇裡，沈伯揚準備分享媒體識讀技巧，投影機卻突然把滑鼠游標變成巨大的黑熊掌印，遮住關鍵圖表。現場來賓以為這是互動教材，開始猜測每一道題目的答案。沈伯揚乾脆請技術人員暫停播放，改以紙本資料講解如何核對訊息來源與原始影片。最後觀眾分組查證一則不存在的假新聞，才發現很多人只看標題便轉發。活動結束後，主辦單位決定把設備檢查納入流程，也提醒各陣營不該把不同意見一律當成陰謀。"],["馬英玖談鹿茸意外變成動物百科","馬英玖參加一場農業與保育教育活動，主持人拿出以「鹿茸」為題的舊式趣味題卡，要求貴賓分辨鹿角、鹿茸與一般民間傳說。舞台旁的展示模型突然倒下，現場孩子卻以為是猜謎道具，爭相舉手回答。馬英玖笑著把話題交給獸醫師與生態研究者，讓專業人員介紹鹿科動物的生理特徵及保育概念。社群網友隨後做出「鹿茸不是萬用答案」貼圖，主辦方也趁勢宣布推出科普手冊。這則架空趣聞讓本來十來人的講座坐滿了旁聽群眾。"],["蔡瑛文論文與一點五個博士玩笑","大學校園舉辦架空學術誠信展，蔡瑛文在錄製的短片中談研究資料整理，現場卻有學生舉起寫著「1.5個博士怎麼算」的諧音道具牌。策展教師立即解釋這只是數學社團設計的趣味題，並提醒學位資訊應以正式機構公開資料為準，不能拿網路玩笑代替查證。學生們隨後把問題改成「學分能不能算小數」，引發一連串課程規則討論。展區最受歡迎的不是政治看板，而是一台教大家辨認論文引用格式的自動改錯機，從早排隊到晚。"],["柯文喆口誤把賴清徳喊成賴祥徳","在架空的政論節目直播現場，柯文喆談到跨黨協商時，忽然把賴清徳的名字說成「賴祥徳」。主持人愣了一秒，還以為有新來賓即將進棚，導播甚至在字幕打出一行問號。柯文喆隨即更正並笑說連續跑行程容易口誤，請大家還是聚焦討論財政與市政分工。網友卻迅速製作「祥德是誰」的人物介紹卡，連帶讓節目原先的交通預算主題失去焦點。製作人隔天決定在直播流程增加姓名核對機制，並把那張問號字幕做成工作桌墊。"],["賴清徳的功德院辦成加班心理測驗","架空企業展以「功德院」為主題做了一個上班族壓力體驗室，主辦方邀請賴清徳參觀。參觀者只要按下「再努力一下」按鈕，燈箱就會顯示假想加班時數，最後還送一張「請記得休息」的提醒卡。賴清徳聽完策展內容後表示，勞動政策應討論實際工時與休息制度，而不是讓一個綽號取代完整論述。現場年輕人最熱衷的是測試如何準時打卡下班，幾乎沒人想挑戰滿分。節目播出後，各政黨幕僚竟然都拿活動提醒卡貼在辦公桌上。"],["黃國倡連喊太離譜了引發回聲挑戰","一場架空直播辯論出現音效設備故障，黃國倡剛說出「太離譜了！太離譜了！」，會場喇叭便連續重播四次，觀眾還以為節目安排了回聲遊戲。主持人請工程師關閉混音器，同時邀請來賓重新回到公共建設追加預算的具體數字。黃國倡拿起筆在白板寫下支出明細，現場氣氛才從笑聲轉成認真詢答。網路短片流出後，網友把回聲剪成手機鈴聲，節目組不得不公告原始完整對談，提醒不要讓一段音效掩蓋討論的關鍵內容。"],["韓國榆談礦泉水與滷肉飯的日常","韓國榆在架空的地方觀光論壇上提起「一瓶礦泉水、一碗滷肉飯」的節約故事，主持人便邀請觀眾思考一份平價套餐究竟能否反映不同城市的生活成本。現場攤商拿出原物料價目表，一名學生則用手機整理各地餐費，突然把論壇變成民生價格實況調查。韓國榆表示菜單價格只是討論起點，交通、租金與薪資同樣重要。活動結束後，主辦方把觀眾提出的問題整理成二十條政策提問，還意外收到網友設計的「滷肉飯物價指數」圖卡。"],["盧秀艶遇見一條不肯開走的公車","台中市舉辦假日交通體驗日，盧秀艶準備搭上展示用的電動公車，車門卻因安全偵測器反覆響起警示音而無法關閉。工作人員請所有乘客稍候，現場長輩趁機反映候車椅太少、即時看板不夠清楚。盧秀艶便改在站牌旁舉辦小型座談，請業者說明維修與候車資訊更新機制。原本的啟動儀式延後二十分鐘，卻收集到一疊貼近生活的問題。活動影片上網後，大家戲稱這輛車「最會傾聽民意」，交通團隊則承諾優先解決實際乘車不便。"],["侯友誼的防災沙盤被風吹成沙灘","一場模擬防災演練在河堤旁登場，侯友誼面對大型沙盤準備介紹疏散路線，強風吹來卻把彩色模型吹向觀眾席。幕僚急忙追著迷你橋梁跑，消防隊員則改以實際地形圖說明避難場所。侯友誼提醒民眾警報與撤離資訊需要定期演練，不能只靠漂亮的展示模型。現場孩子把散落的小樹模型排成迷你公園，活動因此延長為親子防災課。隔天有人開玩笑說沙盤比人還想先撤退，但真正受到注意的，是市府公布的避難場所查詢方法。"],["陳其麥的演唱會接駁車路線大考","高雄某架空演唱會活動公布接駁路線，陳其麥到車站體驗轉乘流程，卻發現宣傳手冊把東西出口標示顛倒，讓大批歌迷在同一個樓梯口繞圈。市府人員當場更換指標並增加引導志工，歌迷則用手機即時更新自己的路線圖。陳其麥要求交通單位公開尖峰人潮分流規劃，讓演出活動和居民日常通勤能夠兼顧。網友把錯誤箭頭製作成迷因貼圖，主辦方最後把檢查標示列入演唱會前的必做清單，連計程車排班區也重新整理。"],["黃偉喆的鹹甜粽辯論打成平手","台南市的美食節請黃偉喆擔任活動嘉賓，主持人安排鹹甜粽口味盲測，原想靠一張投票卡決出冠軍，卻因民眾不停加註「我都要」而無法統計。黃偉喆提議乾脆把投票桌改成在地食材展示區，邀請農友說明產地、食安與合理售價。台下觀眾一邊排隊試吃，一邊詢問傳統市場停車與攤商改善措施，讓小小的料理比賽意外長成完整的市政交流。活動結束前，主辦單位宣布不公布勝負，只公布最受歡迎的食材供應商名單。"],["柯志嗯的夜市問卷被香味打亂","高雄架空夜市推出市政意見交換活動，柯志嗯準備以平板蒐集交通與環境意見，身旁烤魷魚攤卻突然飄來陣陣香味，讓不少民眾先跑去排隊再回來填問卷。工作人員乾脆把問卷改成可以邊走邊掃的簡易題目，請攤商協助提醒食安與垃圾分類。柯志嗯在現場詢問攤販如何看待人潮與停車管理，並記下多項改善提案。直播畫面播出後，留言區最熱門的不是政見，而是「到底買哪一家」，活動團隊只好附上完整夜市導覽圖。"],["鄭朝芳的竹北交通模型變樂高展","新竹縣的一場架空交通說明會邀請鄭朝芳展示竹北與周邊鄉鎮的道路改善提案，團隊用積木搭建號誌路口，沒想到有小朋友偷偷加上一座超高摩天輪。鄭朝芳笑說模型可以天馬行空，但真正的交通規劃仍應看車流資料、行人安全和預算。現場家長接著提出學區接送問題，工程師便把積木重新排列，模擬早上七點半的道路情況。活動最終蒐集了三十多項建議，摩天輪則成為社群熱門照片，象徵市民期待公共空間能更多元。"],["高虹銨參加科技展卻被機器人問倒","新竹某科技展安排互動機器人與來賓對話，高虹銨上台體驗時，機器人連續詢問「今天的公車多久會來」「行人路口何時改善」，讓原本的人工智慧展示變成民生問題問答。工程師說這是系統從開放市政資料中整理出的熱門提問，現場觀眾立刻要求公開資料更新頻率。高虹銨把問題記錄下來，請工作人員彙整後續答覆。社群上有人把機器人戲稱為「最認真的議員」，主辦方則宣布新增資料查核區，讓參觀者理解演算法的限制。"],["張善正的智慧路燈開始說冷笑話","桃園市的智慧路燈展示會邀請張善正體驗語音服務，路燈卻因測試資料混入笑話集，在詢問路況時回答「今天的車流有點塞，因為大家都想發光」。現場工程師尷尬地切換回正式模式，並示範如何查詢公共照明故障與報修進度。張善正要求團隊先確保基本功能可靠，再增加有趣的互動設計。附近居民最關心的仍是照明亮度和施工噪音，市府便另外開出線上回報表。展示結束後，這支會講冷笑話的路燈反而成為孩子最喜歡的拍照背景。"],["周春咪的水果市集刮起貼紙風潮","屏東水果節邀請周春咪與農民交流，活動現場推出貼紙集點卡，想讓遊客認識不同產地，卻沒想到有人把貼紙貼滿帽子和水壺，形成一股意外的裝飾風潮。周春咪趁勢請農友介紹產季、通路和冷鏈物流，強調市集熱鬧之外，也應讓生產者得到合理收入。小朋友們則拿著集點卡到處尋找鳳梨與蓮霧攤位，忙得不亦樂乎。活動後主辦方統計最常被問的問題，發現「怎麼保存水果」比「誰拿到最多貼紙」更受歡迎。"],["蘇巧蕙的親子政策直播遇上故事時間","新北市某架空親子政策直播邀請蘇巧蕙談托育與課後照顧，背景的圖書館忽然響起說故事活動鈴聲，孩子們一擁而入，讓直播暫時無法收音。蘇巧蕙於是把行程改成實地聽取家長經驗，請圖書館員介紹免費閱讀資源與預約制度。家長提出的問題涵蓋交通接送、延長照顧與特殊需求，幕僚逐題記錄。直播結束後，網友稱這段節目比原訂的宣傳片更有現場感，團隊便把家長提問整理成公開回覆表，避免只剩剪輯後的漂亮口號。"],["吳宗賢的宜蘭溫泉問答卡變集章本","宜蘭一場旅遊推廣會請吳宗賢介紹地方溫泉與觀光交通，設計團隊準備的問答卡卻被遊客誤當成集章護照，大家拿著卡片四處要求蓋紀念章。吳宗賢索性邀請導覽員說明溫泉水資源保護及無障礙路線，鼓勵遊客不只拍照，也關心環境維護。會場另一側的業者趁機提出淡季住房與公車班次問題，主辦方把意見整理成清單。活動最後真的推出小型紀念章，讓原本的誤會成為旅遊宣導創意，觀眾則期待後續政策能跟上熱度。"],["徐欣瀅的地方座談投影出錯時區","新竹縣一場科技產業座談由徐欣瀅參與，簡報系統卻把國際供應鏈會議的時區標錯，螢幕上顯示廠商將在凌晨三點出席午餐會，台下來賓先是一愣，接著笑成一片。徐欣瀅請工作人員更正資料，並邀請企業代表具體說明缺工、通勤與用地規劃的問題。工程師臨時用白板列出不同時區的對照表，反而成為整場最受歡迎的教材。座談最後公布會議紀錄，避免一句玩笑掩蓋產業發展需要的長期準備。"],["陳素玥的彰化自行車道導覽變尋寶","彰化某架空自行車道開放日邀請陳素玥參與，工作人員原本要帶大家查看鋪面改善成果，卻把導覽地圖印成遊戲尋寶卡，讓數十名騎士開始找尋「秘密補給站」。陳素玥請領騎志工重新確認安全路線與車速，並安排休息區向居民蒐集意見。有人反映道路標線不清楚，另有人希望增加飲水與自行車停放處，現場隨即記下改善項目。導覽結束後，主辦單位決定保留尋寶創意，但把所有路口安全提醒印得更醒目。"],["謝國粱的基隆雨衣展示變水族館","基隆的架空雨季宣傳活動邀請謝國粱介紹防雨用品與候車設施，舞台後方卻因投影動畫設定錯誤，出現滿滿熱帶魚，讓觀眾以為要開設新的海洋館。謝國粱順勢請工作人員分享港市降雨、排水與通勤資訊，並要求現場展示實際的候車遮雨設備。台下家長問起積水路段與兒童通學安全，活動一度變成交通公聽會。最終工程師把投影換回正確畫面，孩子們卻央求保留魚群動畫，主辦方只好把這段意外剪進活動花絮。"],["張啓偕的嘉義市街訪抽中同一位阿姨","嘉義市的架空市政街訪邀請張啓偕在商圈詢問店家需求，工作人員安排隨機抽訪，卻連續三次抽中同一位熱心阿姨，她每次都提出不同問題，從停車位談到人行道再談到市場廁所。張啓偕笑稱這位阿姨比題庫還完整，乾脆開放現場更多居民排隊發問。志工把問題分類寫在白板上，邀請專業幕僚整理處理期限。活動直播後，觀眾不再爭論抽籤是不是壞掉，而是希望每一項建議都能得到公開答覆，讓民眾知道誰會負責追蹤。"],["游淑真的花蓮山海交流碰上迷路嚮導","花蓮的架空觀光交流活動由游淑真參與，登山步道嚮導拿著一張多年前的舊地圖，竟把大家帶向已經封閉的觀景平台入口。隊伍立即停下來重新確認標示，遊客趁機反映指引不足與交通接駁問題。游淑真請主管單位整理最新的路線資訊，也提醒觀光發展必須以自然環境安全為先。工作人員改以安全的替代路線帶領導覽，還安排在地店家介紹小農產品。那張舊地圖最後被放進展示箱，成為提醒大家定期更新公共資訊的有趣教材。"],["陳玉貞的金門風獅爺導覽被考倒","金門舉辦架空文化導覽問答，陳玉貞受邀擔任嘉賓，主持人問她一座風獅爺石像的朝向，台下在地耆老卻同時給出三種不同答案。導覽員解釋文化記憶常有不同版本，應比對地方文史與實地紀錄。陳玉貞轉而詢問古蹟維護、交通接駁與居民參與，讓原本的搶答遊戲變成文化保存討論。孩子們最關心能否設計無障礙參觀路線，主辦方立即記下。當天最受歡迎的紀念品是一張會提醒「答案要查資料」的風獅爺書籤。"],["王忠明的馬祖交通時刻表大亂鬥","馬祖舉辦架空海空交通座談，王忠明參與說明季節性航班安排，投影螢幕卻誤把船班與飛機班次混排，出現「早上搭船、下午在雲端轉乘」的奇特路線。現場居民笑說這比實際轉機還複雜，工作人員隨即拿出正確表格重新說明。王忠明請相關單位公開天候異動資訊與退票規則，也聽取居民對醫療交通的需求。座談結束後，志工把時刻表製作成清楚的單頁版本，讓原本的烏龍變成一次改善資訊呈現的契機。"],["陳其麥震怒：會議室的紅燈竟是咖啡機","高雄市府在架空劇情裡召開交通改善會議，陳其麥聽聞簡報系統又當機，當場拍桌表示「這樣市民怎麼看成果」，被旁邊速記員寫成「市長震怒」。沒想到幕僚追查後發現，讓整間會議室閃紅燈的不是危機警示，而是咖啡機提醒水箱已空。記者蜂擁而至，追問究竟是交通塞車還是咖啡塞車。陳其麥只好要求設備組把警示燈顏色分開，並公開真正的交通改善時程。網友當晚製作「怒氣值與咖啡因」比較圖，還有人提議把紅燈放到路口當成臨時號誌。幕僚最後在會議紀錄附上註解：標題很大聲，問題仍要逐項解決。"],["陳其麥連放三天颱風假，市民開始問第四天","一場虛構的颱風模擬演練中，陳其麥收到三天連續的停班停課情境通知，防災中心立刻忙著安排抽水機、物資運送與避難所人力。宣傳組卻把演練排程誤貼成真正的放假公告，社群上一夕出現「三天連假套餐」與「市長能不能順便發第四天」的搞笑留言。市府趕緊澄清這只是一場桌上推演，實際停班停課應依法依據風雨預測與災害風險判斷，不能靠留言投票。陳其麥要求團隊重新檢查資訊發布流程，並將民眾最常問的交通、垃圾清運及返校安排整理成圖卡。網友表示，比起連放幾天，更希望收到清楚而且準時的通知。"],["韓國榆批媒體沒水準：「要不要問我幾歲以前還是處男？」","架空政論節目邀請韓國榆聊地方觀光，主持人原本準備詢問一瓶礦泉水與一碗滷肉飯的生活哲學，現場記者卻接連拋出與施政無關的私人問題。韓國榆先感嘆問題「很沒水準」，隨即反問：「要不要乾脆問我幾歲以前還是處男？」全場先是一愣，導播連忙把字幕切成一排問號，來賓席則傳來笑聲。節目播出後，網路討論瞬間歪樓，觀眾甚至替記者發明「離題指數」排行榜。製作人事後表示，這段是節目安排的政治幽默橋段，提醒問政仍應聚焦公共事務。韓國榆最後拿起桌上的礦泉水，說真正值得問的是交通、物價與青年就業，不如先把問題導回市民最在意的事。"],["趙少慷疑似暗助沈伯揚？遭戲稱「綠少慷」","在一段架空媒體戲仿橋段裡，趙少慷評論沈伯揚的競選口號時，意外稱讚其中一項交通提案有討論價值。某位觀眾隨即開玩笑說他是不是暗中相助，並在節目留言區戲稱他為「綠少慷」，還把原本藍色的節目背板改成綠色梗圖。隔天他進棚時，工作人員偷偷擺了藍綠兩支麥克風，問他要選哪一支。趙少慷笑稱評論提案不代表支持某個候選人，請大家先看看內容是否可行。主持人索性請所有來賓提出一項不同陣營也願意研究的公共政策，原本的互嗆環節竟變成交通和住宅政策大集合。網友笑說棚內唯一真正跨黨合作的，恐怕是那台始終不斷電的混音器。"],["沈伯揚遭揶揄「大罷免大失敗」，海報出現大大的問號","一場虛構的地方選戰話題論壇中，沈伯揚準備就公民參與發表看法，會場外有人拿著「大罷免大失敗」的諷刺標語拍照。偏偏設計師不小心把活動海報印成「大罷免大失□」，最後一個字變成空白格，讓現場民眾玩起填字遊戲，有人填「敗」，也有人寫「問」。沈伯揚表示，選舉及公民投票的不同立場都應回到程序與實際投票資料討論，不能只看一張改圖就下結論。論壇主持人安排支持與反對的來賓各自提出可查核的論點，並請觀眾用便利貼貼出最關心的地方議題。最後討論最多的竟然是候車亭與人行道，讓設計師決定下次先檢查文字再送印。"]];
+function uniqueHeadlinesForTurn(){
+ if(!game)return null;
+ game.headlineByTurn=game.headlineByTurn||{};
+ game.seenHeadlineIds=Array.isArray(game.seenHeadlineIds)?game.seenHeadlineIds:[];
+ const key=String(game.turn);
+ if(Number.isInteger(game.headlineByTurn[key])&&TODAY_HEADLINES[game.headlineByTurn[key]])return TODAY_HEADLINES[game.headlineByTurn[key]];
+ const pool=TODAY_HEADLINES.map((_,i)=>i).filter(i=>!game.seenHeadlineIds.includes(i));
+ if(!pool.length)return null;
+ const picked=pool[Math.floor(Math.random()*pool.length)];
+ game.headlineByTurn[key]=picked;game.seenHeadlineIds.push(picked);
+ save();
+ return TODAY_HEADLINES[picked];
+}
+function renderDailyHeadline(news){
+ if(!news)return '';
+ const [title,body]=news;
+ return `<aside class="todayHeadline" aria-label="今日頭條"><div class="todayHeading">📰 今日頭條</div><h3>${esc(title)}</h3><p>${esc(body)}</p></aside>`;
+}
+// 新舊存檔均保證突發事件不重複：已完成的事件從歷史紀錄反查。
+function rollUniqueSurprise(){
+ if(Math.random()>=.30)return null;
+ if(!Array.isArray(game.seenSurpriseIds))game.seenSurpriseIds=[];
+ const used=new Set(game.seenSurpriseIds);
+ (game.history||[]).filter(h=>h.surprise).forEach(h=>{
+  const k=SURPRISES.findIndex(ev=>'⚡ '+ev[0]===h.title);
+  if(k>=0)used.add(k);
+ });
+ if(game.pendingSurprise!=null)used.add(game.pendingSurprise);
+ const pool=SURPRISES.map((_,i)=>i).filter(i=>!used.has(i));
+ if(!pool.length)return null;
+ const choice=pool[Math.floor(Math.random()*pool.length)];
+ game.seenSurpriseIds=[...used,choice];
+ return choice;
+}
+
+function openSurprise(){if(!game||game.phase==='bankrupt'||game.pendingSurprise==null)return;const i=game.pendingSurprise,ev=SURPRISES[i%SURPRISES.length];modalOpen('⚡ 突發事件 · 戰情速報',ev[0],`<p>${esc(ev[1])}</p><div class="ballot">突發情況需要黨主席立即決定應對方式。</div>`,ev[2].map((o,k)=>`<button class="choice" data-surprise="${k}"><b>${String.fromCharCode(65+k)} · ${esc(o[0])}</b><em>資金 ${o[1]>=0?'+':''}${o[1]} 萬 ／ 聲量 ${o[2]>=0?'+':''}${o[2]} ／ 危機 ${o[3]>=0?'+':''}${o[3]}</em></button>`).join(''));document.querySelectorAll('[data-surprise]').forEach(btn=>btn.onclick=()=>{const o=ev[2][+btn.dataset.surprise];game.funds=Math.min(30000,game.funds+o[1]);game.voice=clamp(game.voice+o[2],0,100);game.crisis=clamp(game.crisis+o[3],0,100);const skillIdx=(game.turn+i)%5;game.skills[skillIdx]=clamp(game.skills[skillIdx]+o[4],10,100);game.regional[game.target]=(game.regional[game.target]||0)+o[2]*.18;game.history.push({title:'⚡ '+ev[0],choice:o[0],target:game.target,surprise:true});game.pendingSurprise=null;save();updateHud();updateObjective();if(checkBankruptcy('突發事件「'+ev[0]+'」造成資金耗盡'))return;modalOpen('⚡ 突發事件結案',ev[0],`<p>你選擇了「${esc(o[0])}」。</p><p>幕僚已將應對結果納入下一階段地方布局。</p><div class="ballot">資金 ${fmt(game.funds)} 萬　｜　聲量 ${Math.round(game.voice)}　｜　危機 ${Math.round(game.crisis)}</div>`,`<button class="mainBtn" id="surpriseDone">繼續選戰 →</button>`);$('surpriseDone').onclick=()=>{modalClose();setScene('hq')}});}
+
+// 破產是終局狀態，不能由負數夾回 0 後讓選戰繼續。
+function showBankruptcy(reason){
+ if(!game)return;
+ game.funds=0;
+ game.phase='bankrupt';
+ game.pendingSurprise=null;
+ game.missionGate=false;
+ game.bankruptReason=reason||game.bankruptReason||'所有競選資源皆已用盡。';
+ save();
+ updateHud();updateObjective();updateGateButton();
+ modalClose();
+ $('results').classList.add('hidden');$('introBoard').classList.add('hidden');$('setup').classList.add('hidden');
+ $('bankruptReason').textContent=`${game.bankruptReason}。競選經費歸零，黨中央必須停止剩餘活動，本局提前結束，無法進入開票。`;
+ $('bankruptSummary').innerHTML=`選戰倒數：<strong>${game.day} 天</strong><br>已處理選戰決策：<strong>${game.turn} 場</strong><br>剩餘競選資金：<strong style="color:#ff9999">0 萬</strong>`;
+ $('bankruptScreen').classList.remove('hidden');
+}
+function checkBankruptcy(reason){if(game&&['play','count'].includes(game.phase)&&game.funds<=0){showBankruptcy(reason);return true}return false}
+$('btnBankruptRestart').onclick=()=>{
+ game=null;chosenCard=-1;
+ try{localStorage.removeItem(SAVE_KEY)}catch(e){}
+ $('bankruptScreen').classList.add('hidden');$('results').classList.add('hidden');
+ ['newsTicker','topbar','side','markers','placeMarkers','sceneIndicator','actionbar','controlsHelp','joystick','lookHint','minimapBox','objective'].forEach(id=>$(id).classList.add('hidden'));
+ showSetup();
+};
+function newOffice(){chosenCard=-1;game={party:chosenParty,name:$('playerInput').value.trim().slice(0,20),card:-1,skills:[65,65,65,65,70],funds:3000,voice:50,crisis:18,day:$('playerInput').value.trim()==='IAMTHECHAIRMAN'?1:100,turn:0,boost:{blue:0,green:0,white:0},target:'臺北市',regional:{},eventOrder:shuffle([...Array(EVENTS.length).keys()]).slice(0,20),history:[],headlineByTurn:{},seenHeadlineIds:[],seenSurpriseIds:[],rallyDone:false,phase:'chooseCard',seed:Math.random()*100000|0,staffUsed:{},missionGate:false,introSeen:false,goalsSeen:false,requiredCount:0,scene:'hq'};startWorld();officeInstruction();}
+function officeInstruction(){modalOpen('競選總部 · 主席辦公室','黨主席，請先查看辦公桌',`<p>${esc(game.name)}主席，歡迎來到${PARTIES[game.party].full}。</p><p>秘書已將十份能力評估資料放在您辦公桌的<strong>金色資料夾</strong>裡。請先查看並選擇一張能力卡，然後<strong>親自走出主席辦公室</strong>，選戰才正式開始。</p><div class="ballot">桌面資料夾：位於你的左前方，按「閱讀資料夾」或靠近按 E 互動。</div>`,`<button class="mainBtn" id="officeOk">我知道了，前往辦公桌</button>`);$('officeOk').onclick=()=>{modalClose();updateOfficeUI();}}
+function openCardFolder(){if(!game||game.phase!=='chooseCard')return;if(Math.hypot(player.x-11,player.z-12)>6){toast('請先靠近辦公桌上的金色資料夾');return}$('setupOne').classList.add('hidden');$('setupTwo').classList.remove('hidden');$('setup').classList.remove('hidden');$('phase1').classList.remove('active');$('phase2').classList.add('active');makeSetup();$('cardSummary').textContent='選取五大能力卡，然後再走出辦公室';$('startPlay').disabled=true}
+$('startPlay').onclick=()=>{if(chosenCard<0||!game)return;game.card=chosenCard;game.skills=[...CARDS[chosenCard][1]];game.phase='exitOffice';$('setup').classList.add('hidden');player.x=11.2;player.z=14.2;camera.yaw=-.12;camera.pitch=.72;camera.dist=6.8;buildScene();updateObjective();updateOfficeUI();save();toast('能力卡已收下！請由發光出口走出黨主席辦公室。')};$('btnResume').onclick=()=>{game=existingSave();if(game){startWorld();if(game.phase==='bankrupt')showBankruptcy(game.bankruptReason);else if(game.phase==='done'||game.phase==='count'){const wasFinished=game.phase==='done';beginCount();if(wasFinished)showCount(1)}else if(game.pendingSurprise!=null)openSurprise();else showPartyIntro()}};
+function startWorld(){ $('setup').classList.add('hidden');$('loading').classList.add('hidden');$('results').classList.add('hidden');$('newsTicker').classList.remove('hidden');spinNews();$('topbar').classList.remove('hidden');$('side').classList.remove('hidden');$('markers').classList.remove('hidden');$('placeMarkers').classList.remove('hidden');$('sceneIndicator').classList.remove('hidden');$('actionbar').classList.remove('hidden');$('controlsHelp').classList.remove('hidden');$('joystick').classList.remove('hidden');$('lookHint').classList.remove('hidden');$('minimapBox').classList.remove('hidden');$('objective').classList.remove('hidden');document.documentElement.style.setProperty('--faction',COLORS[game.party]);SCENE=game.scene||'hq';buildScene();camera.yaw=(game.phase==='chooseCard'||game.phase==='exitOffice')?-.12:.45;camera.pitch=(game.phase==='chooseCard'||game.phase==='exitOffice')?.72:.35;camera.dist=(game.phase==='chooseCard'||game.phase==='exitOffice')?6.8:15.8;player.x=(game.phase==='chooseCard'||game.phase==='exitOffice')?11.2:0;player.z=(game.phase==='chooseCard'||game.phase==='exitOffice')?14.2:7.2;player.dir=Math.PI;buildMarkers();if(game.missionGate===undefined)game.missionGate=false;updateHud();updatePoll();updateObjective();updateGateButton();updateOfficeUI();updateSceneIndicator();save();if(!gl)toast('目前使用相容性3D模式，建議使用 Chrome 或 Edge 開啟 WebGL 以獲得更佳效能')}
+function updateHud(){if(!game)return;$('partyName').textContent=`${PARTIES[game.party].full}｜主席：${game.name}`;$('dayLabel').textContent=game.day+' 天';$('fundLabel').textContent=fmt(game.funds)+' 萬';$('voiceLabel').textContent=Math.round(game.voice)+'/100';$('crisisLabel').textContent=Math.round(game.crisis)+'/100';$('btnEvent').textContent=game.day===1?'前進選前之夜 →':'處理選戰事件 →';updateRadar()}
+function updateRadar(){let val=game.skills;let cx=120,cy=91,r=67;let point=(i,v)=>{let a=-Math.PI/2+i*2*Math.PI/5;return `${(cx+Math.cos(a)*r*v/100).toFixed(1)},${(cy+Math.sin(a)*r*v/100).toFixed(1)}`};let s='';for(let n=20;n<=100;n+=20)s+=`<polygon points="${SKILLS.map((_,i)=>point(i,n)).join(' ')}" fill="none" stroke="#9fcbe4" stroke-opacity=".2" stroke-width="1"/>`;s+=SKILLS.map((_,i)=>`<line x1="${cx}" y1="${cy}" x2="${point(i,100).split(',')[0]}" y2="${point(i,100).split(',')[1]}" stroke="#9fcbe4" stroke-opacity=".21"/>`).join('');s+=`<polygon points="${val.map((v,i)=>point(i,v)).join(' ')}" fill="${COLORS[game.party]}" fill-opacity=".34" stroke="#f6d087" stroke-width="2.6"/>`;for(let i=0;i<5;i++){let [x,y]=point(i,114).split(',').map(Number);s+=`<text x="${x}" y="${y+2}" text-anchor="middle" fill="#d6e5f1" font-size="10">${SKILLS[i].slice(0,2)}</text>`;let [vx,vy]=point(i,val[i]).split(',');s+=`<circle cx="${vx}" cy="${vy}" r="3.2" fill="#f7deaf"/>`}s+=`<text x="120" y="177" text-anchor="middle" font-size="11" fill="#f7d79c">${val.join(' / ')}</text>`;$('radar').innerHTML=s}
+function currentShares(name='臺北市',offset=0){const dist=districtWeights(name,offset);const totals=[0,0,0];ballot(name).forEach((c,i)=>{const p=c.party==='K'?0:c.party==='D'?1:c.party==='W'?2:-1;if(p>=0)totals[p]+=dist[i]});return totals}
+// 各地登記名單的改字戲仿版；補入的第三勢力候選人亦是架空人物。
+const PARODY_MEDIA=['TVB5','三力新聞','聯盒報','自游時報','菱傅媒','匯留新聞'];
+// 依公眾選舉名單改字，無登記政黨參選人之處為戲仿的架空情境。
+
+// 2026-10-16 縣市長候選人資格審定、2022 縣市長與 2024 總統大選數據為歷史基準。
+// 候選人姓名為戲仿改字，所有民調與結果均為程式模擬。
+const BALLOTS={"臺北市":[["蔣萬銨","K"],["沈伯揚","D"],["郭禧","O"],["蕭文亁","O"],["唐新文","O"],["林志誠","I"]],"新北市":[["李四釧","K"],["蘇巧惠","D"],["蘇輝煌","I"]],"桃園市":[["張善正","K"],["黃世傑","D"]],"臺中市":[["江啓臣","K"],["何欣淳","D"],["洪麗樺","O"]],"臺南市":[["謝龍价","K"],["陳亭菲","D"],["蕭燐宏","O"],["葉人汶","I"]],"高雄市":[["柯志嗯","K"],["賴瑞瓏","D"],["張靖","O"],["王肇文","I"],["洪方龍","I"]],"基隆市":[["謝國粱","K"],["童子偉","D"],["魏造雯","I"]],"新竹市":[["高虹銨","I"],["莊競呈","D"],["何志永","I"]],"新竹縣":[["徐欣瀅","K"],["鄭朝芳","D"],["朱定瑜","I"]],"苗栗縣":[["鍾東綿","K"],["陳品桉","D"]],"彰化縣":[["魏平正","K"],["陳素玥","D"],["陳重加","I"],["邱建福","I"]],"南投縣":[["許淑樺","K"],["温世正","D"]],"雲林縣":[["張嘉珺","K"],["劉建郭","D"],["吳炳暉","I"],["林佳瑜","I"]],"嘉義縣":[["蔡易瑜","D"],["吳品睿","I"]],"嘉義市":[["張啓偕","W"],["王美慧","D"],["黃宏城台灣阿成世界偉人財神總統","I"],["陳愷煌","I"],["王義誠","I"]],"屏東縣":[["蘇清湶","K"],["周春咪","D"]],"宜蘭縣":[["吳宗賢","K"],["林國璋","D"],["陳宏義","I"],["劉燦暉","I"],["楊鉯庭","I"]],"花蓮縣":[["游淑真","K"],["張竣","I"],["魏嘉憲","I"],["羅佩琴","O"]],"臺東縣":[["吳秀樺","K"],["陳螢","D"],["李吳穎治","I"],["王志維","I"]],"澎湖縣":[["陳振忠","K"],["吳淑謹","D"],["周倪荌","O"],["許智福","I"],["陳盡巛","I"],["葉竹琳","I"]],"金門縣":[["陳玉貞","K"],["洪和誠","I"],["李文亮","I"],["黃世團","I"],["張國偉","I"],["梁文滔","I"],["張火沐","I"]],"連江縣":[["王忠明","K"],["曹爾圓","I"]]};
+const HISTORY22={"臺北市":[42.29,31.93,25.14],"新北市":[62.42,37.58,0],"桃園市":[52.02,40.03,5.12],"臺中市":[59.35,38.93,0],"臺南市":[43.63,48.8,0],"高雄市":[40.16,58.1,0],"基隆市":[52.92,39.01,0],"新竹市":[18.07,35.68,45.02],"新竹縣":[63.36,32.4,0],"苗栗縣":[10.96,31.24,0],"彰化縣":[56.75,41.94,0],"南投縣":[55.99,42.83,0],"雲林縣":[56.57,41.6,0],"嘉義縣":[37.15,62.85,0],"嘉義市":[63.82,34.95,0],"屏東縣":[46.59,49.09,0],"宜蘭縣":[50.76,41.13,6.98],"花蓮縣":[64.73,32.04,0],"臺東縣":[61.22,36.65,0],"澎湖縣":[33.33,36.64,0],"金門縣":[41.05,0,0],"連江縣":[93.11,6.89,0]};
+const HISTORY24={"臺北市":[38.08,38.13,23.79],"新北市":[35.17,38.59,26.24],"桃園市":[34.12,35.27,30.61],"臺中市":[32.37,37.58,30.05],"臺南市":[25.61,50.95,23.44],"高雄市":[29.23,48.89,21.88],"基隆市":[38.63,34.77,26.6],"新竹市":[30.9,34.79,34.3],"新竹縣":[37.03,27.42,35.55],"苗栗縣":[41.18,28.81,30.01],"彰化縣":[32.93,38.11,28.96],"南投縣":[38.0,35.95,26.05],"雲林縣":[29.33,44.54,26.13],"嘉義縣":[29.28,47.69,23.03],"嘉義市":[31.4,43.26,25.34],"屏東縣":[30.84,47.51,21.65],"宜蘭縣":[28.99,44.74,26.27],"花蓮縣":[50.5,24.78,24.72],"臺東縣":[49.32,27.41,23.28],"澎湖縣":[36.63,38.6,24.76],"金門縣":[61.4,10.02,28.58],"連江縣":[62.67,10.52,26.81]};
+const TEAM_COLOR={K:'#397dd2',D:'#32b276',W:'#d5d5d5',I:'#d9a967',O:'#8b92bb'};
+const TEAM_LABEL={K:'中國國銘黨',D:'民煮進步黨',W:'台灣民眾檔',I:'無黨籍',O:'其他政黨'};
+const ALLIANCE={ '新北市':{W:'K'},'新竹縣':{W:'D'},'新竹市':{W:'I'},'苗栗縣':{W:'K'} };
+function ballot(name){return (BALLOTS[name]||[]).map(([n,p],i)=>({name:n,party:p,id:i,bloc:p==='K'?'blue':p==='D'?'green':p==='W'?'white':'other'}));}
+function candidateColor(c){return TEAM_COLOR[c.party]||TEAM_COLOR.I}
+function baseShares(name){
+ const h=HISTORY22[name],p=HISTORY24[name];
+ let independent=Math.max(0,100-h[0]-h[1]-h[2]);
+ // 無黨籍2022地方票部分按地區具體屬性分配，另保留約 25% 獨立票基礎
+ let supplement=name==='苗栗縣'?.63:name==='金門縣'?.55:.24;
+ let independentKeep=independent*supplement;
+ let local=[h[0]+(independent-independentKeep)*.48,h[1]+(independent-independentKeep)*.24,h[2]+(independent-independentKeep)*.28];
+ if(name==='苗栗縣'){local=[58.3,31.24,10.46];independentKeep=0}
+ if(name==='金門縣'){local=[65,9,19];independentKeep=7}
+ let mix=local.map((v,i)=>v*.55+p[i]*.45);
+ return {K:mix[0],D:mix[1],W:mix[2],I:Math.max(0,100-mix.reduce((a,b)=>a+b,0))};
+}
+function districtWeights(name,offset=0){
+ const all=ballot(name),b=baseShares(name),sumBase=b.K+b.D+b.W+b.I;
+ const targets={K:[],D:[],W:[],I:[]};all.forEach(c=>targets[c.party==='O'?'I':c.party].push(c));
+ let weight=[...all].map((c,i)=>0);
+ // 廣泛地域效應與 2024 支持基礎保留：只有實際登記者才列入得票。
+ for(const t of ['K','D','W','I']){
+  const direct=targets[t];let pool=b[t];
+  if(t==='I'&&name==='新竹市')pool+=b.W*.83;
+  if(t==='W'&&name==='新竹市')pool*=.17;
+  if(!direct.length){
+    if(t==='W'&&name==='新北市') targets.K.length?pool=(b.W*.74):pool=0;
+    const ally=t==='W'&&name==='新竹縣'?'D':t==='W'&&name==='新北市'?'K':t==='W'&&name==='新竹市'?'I':null;
+    let keys=ally?[ally]:['K','D','W','I'].filter(k=>targets[k].length&&k!==t);
+    if(keys.length){let total=keys.reduce((v,k)=>v+Math.max(5,b[k]),0);for(let k of keys){const share=pool*Math.max(5,b[k])/total, candidates=targets[k];candidates.forEach(c=>weight[c.id]+=share/candidates.length)}}
+  }else{
+    direct.forEach((c,ix)=>weight[c.id]+=pool*(direct.length===1?1:(ix===0?.72:.28/(direct.length-1))))
+  }
+ }
+ if(name==='新竹市'){
+   // 高虹銨是無黨籍，白營地方合作支持她，不另列白營候選人。
+   const g=all.find(c=>c.name==='高虹銨');if(g)weight[g.id]+=b.W*.33;
+ }
+ if(name==='新竹市'){
+ // 2022 高虹安在新竹市地方選舉獲約45%，按合作路線將2022在地票優先歸屬無黨籍現任者。
+ const g=all.find(c=>c.name==='高虹銨'),d=all.find(c=>c.party==='D');
+ if(g&&d){weight[g.id]+=8;weight[d.id]=Math.max(2,weight[d.id]-8)}
+}
+let sum=weight.reduce((a,b)=>a+b,0);
+ let result=weight.map((v,i)=>Math.max(.001,(v/sum)+Math.sin((game?.seed||1)*.09+i*3.22+offset+name.length)*.006));
+ const bonus=(game?(game.voice-50)*.0009+(game.skills[3]-65)*.0011-(game.crisis-18)*.0012+game.boost[game.party]*.0013:0);
+ result=result.map((v,i)=>{const c=all[i];const ally=game?.party==='white'?ALLIANCE[name]?.W:null;const supported=game&&(c.party===({'blue':'K','green':'D','white':'W'}[game.party]) || !!ally&&c.party===ally&&(name!=='新竹市'||c.name==='高虹銨'));
+ return Math.max(.001,v+(supported?bonus+(game.regional[name]||0)*.0026:0));});
+ let norm=result.reduce((a,b)=>a+b,0);return result.map(v=>v/norm);
+}
+function candidateDistribution(name,mi=0){let v=districtWeights(name,mi*.5);let shifted=v.map((p,i)=>Math.max(.001,p+Math.sin((game?.seed||7)*.002+mi*5.72+i*3.4+name.length*.8)*.017));let sum=shifted.reduce((a,b)=>a+b,0);return shifted.map(p=>p/sum)}
+
+function cands(county){return ballot(county).map(c=>c.name)}
+function eNextStaff(){if(!game||game.phase!=='play')return null;return game.day===1?'組織主任':EVENTS[game.eventOrder[game.turn%game.eventOrder.length]]?.[2]||'發言人'}
+function updateObjective(){if(!game)return;if(game.phase==='bankrupt'){$('objectiveText').textContent='GAME OVER · 黨中央資金耗盡';updateGateButton();return;}if(game.phase==='chooseCard'||game.phase==='exitOffice'){ $('objectiveText').textContent=game.phase==='chooseCard'?'◆ 查看主席辦公桌上的能力卡':'◆ 走向辦公室出口，正式開始選戰';updateGateButton();return}const target=eNextStaff();$('objectiveText').textContent=game.missionGate?`已向${target}完成報告，前往決策。`:`必須先與${target}交談｜小地圖閃爍 ◆ 指引`;
+updateGateButton()}
+function updateGateButton(){if(!game)return;const b=$('btnEvent');if(game.phase==='chooseCard'){b.disabled=false;b.textContent='📂 閱讀桌上能力卡';return}if(game.phase==='exitOffice'){b.disabled=true;b.textContent='請親自走出主席辦公室';return}if(game.phase!=='play'){b.disabled=true;return}const ready=!!game.missionGate;b.disabled=!ready;b.textContent=ready?(SCENE!==(game.day===1?'mega':eventSceneFor())?`前往${SCENE_NAMES[game.day===1?'mega':eventSceneFor()]} →`:game.day===1?'進行最後大造勢 →':'處理選戰事件 →'):`待與${eNextStaff()}互動`;}
+
+function pollFor(name,mi){
+ // 六家媒體共享同一份地方選情基礎，僅保留少量方法差異和抽樣誤差。
+ const people=ballot(name),base=predictedVoteShares(name),favored=(mi===0||mi===2)?'K':(mi===1||mi===3)?'D':'W';
+ const support=favored==='W'?ALLIANCE[name]?.W:null;
+ const shifted=base.map((v,j)=>{
+   const c=people[j],fav=c.party===favored || (support&&c.party===support && (name!=='新竹市'||c.name==='高虹銨'));
+   const bias=fav?.0075:-.0024;
+   const noise=Math.sin((game?.seed||1)*.003+mi*12.41+j*4.17+name.length*2.7)*.0018;
+   return Math.max(.00001,v+bias+noise);
+ });
+ const s=shifted.reduce((x,y)=>x+y,0);return shifted.map(v=>v/s);
+}
+function showPollWindow(){if(!game)return;
+if(game.day<=10){modalOpen('選情戰報 · 已封關','最後十天｜民調封關','<p>依遊戲規則，距離選舉日十天內停止對外公布民調。此時仍可調整選戰策略。</p>','<button id="exitPoll" class="mainBtn">返回總部</button>');$('exitPoll').onclick=modalClose;return}
+const html=`<div class="pollTool"><label>快速定位縣市　<select class="input" id="pollJump">${COUNTY_NAMES.map(n=>`<option value="${n}">${n}</option>`).join('')}</select></label><span>六家戲仿媒體 · 全台 22 縣市</span></div><div class="pollCountyGrid">${COUNTY_NAMES.map(n=>{
+const cs=ballot(n),m=Array.from({length:6},(_,j)=>pollFor(n,j));let avg=cs.map((c,i)=>m.reduce((sum,v)=>sum+v[i],0)/6);let order=cs.map((c,i)=>i).sort((a,b)=>avg[b]-avg[a]);return `<article class="pollCounty" id="poll-${n}"><div class="pollCountyTop"><strong>${n}</strong><small>領先：${cs[order[0]].name}　${(avg[order[0]]*100).toFixed(1)}%</small></div><div class="pollCandidates">${order.map((i,j)=>`<div class="${j<2?'pollCandidateMain':'pollCandidateMinor'}" style="border-left:3px solid ${candidateColor(cs[i])}"><b>${cs[i].name}</b><small>${TEAM_LABEL[cs[i].party]}　${(avg[i]*100).toFixed(1)}%</small></div>`).join('')}</div><div class="pollMediums">${m.map((row,j)=>`<div class="pollMedium"><span>${PARODY_MEDIA[j]}</span><div class="pollMiniTrack">${row.map((v,i)=>`<i title="${cs[i].name}：${(v*100).toFixed(1)}%" style="width:${(v*100).toFixed(1)}%;background:${candidateColor(cs[i])}"></i>`).join('')}</div><b>${(row[order[0]]*100).toFixed(1)}%</b></div>`).join('')}</div></article>`}).join('')}</div>`;
+modalOpen('全台選情 · 模擬民調','選情戰報',html,'<button id="exitPoll" class="mainBtn">返回競選總部</button>');$('exitPoll').onclick=modalClose;$('pollJump').onchange=e=>{let t=$('poll-'+e.target.value);if(t)t.scrollIntoView({block:'start',behavior:'smooth'})}
+}
+$('btnPoll').onclick=showPollWindow;
+
+function updatePoll(){/* 民調已移至「選情戰報」彈出視窗，右側固定欄位移除。 */}
+const COUNTY_NAMES=COUNTY_DATA.map(v=>v[0]);function countySelect(){return `<div class="countyPicker"><label>本次資源調度選區</label><select id="targetCounty" class="input" style="min-width:150px">${COUNTY_NAMES.map(n=>`<option ${game.target===n?'selected':''}>${n}</option>`).join('')}</select></div>`}
+function modalOpen(eye,title,body,choices,footer=''){ $('modalLayer').classList.remove('hidden');$('modalLayer').classList.toggle('isSurprise',String(eye).includes('突發事件'));$('modalEye').textContent=eye;$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modalChoices').innerHTML=choices;$('modalFooter').innerHTML=footer}
+function modalClose(){$('modalLayer').classList.add('hidden')}
+function eventOpen(){if(!game||game.phase!=='play')return;if(!game.missionGate){toast('必須先依小地圖找到 '+eNextStaff()+' 並完成交談，才可處理事件');return}if(game.day===1){if(SCENE!=='mega'){modalClose();setScene('mega');toast('已抵達選前萬人大造勢現場，走向舞台準備演說');return}rallyOpen();return}const destination=eventSceneFor();if(SCENE!==destination){modalClose();setScene(destination);toast('抵達'+SCENE_NAMES[destination]+'，可四處走動或進行決策。');return}let e=EVENTS[game.eventOrder[game.turn%game.eventOrder.length]];let now=game.day;let body=`<div class="eventNarrative">${esc(e[1]).split('\n\n').map(t=>'<p>'+t+'</p>').join('')}</div><div class="ballot"><span style="color:#e8cd95">選前倒數 ${now} 天｜${esc(e[2])}向你報告</span><br><span class="muted">你做出的決策，將影響選區支持、資金、危機與五大能力。</span></div>${countySelect()}`;let c=e[3].map((o,i)=>`<button class="choice" data-option="${i}"><b>${String.fromCharCode(65+i)} · ${esc(o[0])}</b><em>${o[1]>=0?'資金 +':'資金 '}${o[1]} 萬　｜　聲量 ${o[2]>=0?'+':''}${o[2]}　｜　危機 ${o[3]>=0?'+':''}${o[3]}</em></button>`).join('');modalOpen('選戰決策 · DAY '+now,e[0],body,c+renderDailyHeadline(uniqueHeadlinesForTurn()));$('targetCounty').onchange=e=>{game.target=e.target.value;updatePoll()};document.querySelectorAll('[data-option]').forEach(b=>b.onclick=()=>{game.target=$('targetCounty').value;applyChoice(e[3][+b.dataset.option],e[0]);})}
+function applyChoice(o,title){if(game.day>10&&game.day<=15&&!game.lastPublicPoll){game.lastPublicPoll=Object.fromEntries(COUNTY_NAMES.map(n=>[n,predictedVoteShares(n)]));}game.funds=Math.min(30000,game.funds+o[1]);game.voice=clamp(game.voice+o[2],0,100);game.crisis=clamp(game.crisis+o[3],0,100);const skillIdx=game.turn%5;game.skills[skillIdx]=clamp(game.skills[skillIdx]+o[4],10,100);game.skills[(skillIdx+3)%5]=clamp(game.skills[(skillIdx+3)%5]+Math.sign(o[3])*-1,10,100);game.regional[game.target]=(game.regional[game.target]||0)+o[5];game.boost[game.party]+=o[5]*.19;const old=game.day;game.day=old>5?old-5:1;game.turn++;game.history.push({title,choice:o[0],target:game.target,mode:EVENTS[game.eventOrder[(game.turn-1)%game.eventOrder.length]][3].indexOf(o)});game.staffUsed={};game.missionGate=false;game.pendingSurprise=rollUniqueSurprise();updateHud();updatePoll();updateObjective();save();if(game.funds<=0){game.day=old;updateHud()}if(checkBankruptcy('選戰決策「'+title+'」使黨中央無力支付後續選務費用'))return;const decisionIndex=game.history.length-1;const mode=game.history[decisionIndex]?.mode??0;const consequence=mode===0?'黨中央提出公開的後續查核與改善清單，危機應對獲得部分支持，但仍需時間修復信任。':mode===1?'幕僚將你的強勢說法發布後，社群立即陷入激烈論戰，支持者與質疑者各自轉傳不同的剪輯版本。':'這項出乎意料的宣布迅速登上熱搜，現場記者持續追問執行細節，網路討論與政治風險同步升高。';const warning=game.funds<100?'資金即將耗盡，必須審慎分配後續資源。':game.crisis>=75?'危機指數偏高，後續事件將更難掌控。':o[5]>0?`${esc(game.target)}的選民動員取得進展。`:'部分選區出現反彈，選戰情勢更加膠著。';modalOpen('主席決策已執行',game.day===1?'最後決戰｜選前之夜':`${title} · 決策回報`,`<p>你選擇了「${esc(o[0])}」。</p><p>${consequence}</p><p>${warning}</p><div class="ballot">目前資金：${fmt(game.funds)} 萬　｜　聲量：${Math.round(game.voice)}　｜　危機：${Math.round(game.crisis)}<br>下一階段：${game.day===1?'選前 1 天，大型聯合造勢':`選前倒數 ${game.day} 天`}</div>`,`<button class="mainBtn" id="continueAfter">${game.day===1?'準備選前大造勢':'返回競選總部'} →</button>`);$('continueAfter').onclick=()=>{modalClose();if(game.pendingSurprise!=null){openSurprise();return}setScene('hq');if(game.day===1)toast('選前最後一夜，準備登台造勢！')}}
+function rallyOpen(){
+ const focuses=game.party==='white'?['新竹市','嘉義市']:['臺北市','高雄市'];
+ const strategic=[['萬人主場晚會',-540,13,-1,8],['分區串聯、主場領頭',-360,10,-3,6],['草根直播與實體雙軌',-160,7,-7,4]];
+ if(!focuses.includes(game.rallyFocus))game.rallyFocus=focuses[0];
+ const buttons=focuses.map((county,i)=>`<button class="choice" data-focus="${i}" style="border-color:${game.rallyFocus===county?'#f4d28e':'#6c92a75c'}"><b>${game.rallyFocus===county?'✓ ':''}聚焦 ${county}</b><em>將主場組織動員資源集中於${county}</em></button>`).join('');
+ modalOpen('選前 1 天 · 大造勢','決戰前夜｜主場選擇',`<p>選戰倒數最後一夜，候選人、志工與各縣市代表都已抵達會場。請先決定大造勢聚焦城市，再選擇動員規模。</p><div class="ballot">目前主場：<b>${game.rallyFocus}</b><br>可用資金：${fmt(game.funds)} 萬</div>`,
+ buttons+'<button class="mainBtn" id="rallyContinue" style="margin-top:12px">確認主場，規劃大造勢 →</button>');
+ document.querySelectorAll('[data-focus]').forEach(b=>b.onclick=()=>{game.rallyFocus=focuses[+b.dataset.focus];save();rallyOpen()});
+ $('rallyContinue').onclick=()=>{
+ modalOpen('選前 1 天 · 大造勢',`${game.rallyFocus}｜最後動員`,
+ `<p>舞台燈光亮起，廣場人潮聚集。${esc(game.name)}主席，即將迎來正式開票前的最後一場集會。</p><div class="ballot rallyGlow">主場：${esc(game.rallyFocus)}　｜　資金：${fmt(game.funds)} 萬</div>`,
+ strategic.map((o,i)=>`<button class="choice" data-rally="${i}"><b>${esc(o[0])}</b><em>支出 ${fmt(-o[1])} 萬　｜　聲量 +${o[2]}　｜　地方動員 +${o[4]}</em></button>`).join(''));
+ document.querySelectorAll('[data-rally]').forEach(b=>b.onclick=()=>{const o=strategic[+b.dataset.rally];game.target=game.rallyFocus;game.funds=Math.min(30000,game.funds+o[1]);game.voice=clamp(game.voice+o[2],0,100);game.crisis=clamp(game.crisis+o[3],0,100);game.regional[game.target]=(game.regional[game.target]||0)+o[4];game.skills[0]=clamp(game.skills[0]+2,0,100);if(checkBankruptcy('選前大造勢支出超過黨中央可用預算'))return;game.rallyDone=true;game.phase='count';game.history.push({title:'選前大造勢',choice:o[0],target:game.rallyFocus});save();modalClose();beginCount()})
+ };
+}
+function briefOpen(npc){if(!game||game.phase!=='play')return;const found=NPCS.find(n=>n.name===npc);if(!found)return;if(Math.hypot(player.x-(found.rx??found.x),player.z-(found.rz??found.z))>4){toast('請先走近 '+npc+' 才能交談');return}const used=game.staffUsed[npc];const ops={ '財務長':['啟動合規募款方案','黨中央資金 +190 萬、危機 -2',190,1,-2,4], '發言人':['調整今日媒體應對策略','聲量 +3、危機 -2',-50,3,-2,1], '組織主任':['安排地方基層行程','聲量 +2、區域組織力 +3',-100,2,-1,2], '政策幕僚':['進行政策討論與問答','政策能力 +2、聲量 +1',-60,1,-1,1]};const o=ops[npc];const isGoal=(npc===eNextStaff());if(isGoal&&!game.missionGate){game.missionGate=true;game.requiredCount=(game.requiredCount||0)+1;save();updateObjective()}modalOpen('競選總部 · 人物互動',npc,`<p>${found.talk}</p><div class="ballot">${used?'你已完成這個選戰階段的交談。':'人物交談任務已記錄。現在可聽取選戰事件，或選擇幕僚協助取得額外加成。'}</div>`,used?`${isGoal?'<button class="choice" id="doEventFromNpc"><b>◆ 聽取本次重要選戰事件</b></button>':''}<button class="mainBtn" id="leaveBrief">返回總部</button>`:`${isGoal?'<button class="choice" id="doEventFromNpc"><b>◆ 聽取本次重要選戰事件</b></button>':''}<button class="choice" id="doBrief"><b>${o[0]}</b><em>${o[1]}</em></button><button class="tinyBtn" style="margin-top:12px" id="leaveBrief">稍後再說</button>`);$('leaveBrief').onclick=modalClose;if(npc==='財務長'){$('modalChoices').insertAdjacentHTML('beforeend','<button class="choice" id="openFundingHere"><b>💰 募集選戰經費</b><em>小額捐款、直播斗內、政治獻金、大財團金主</em></button>');$('openFundingHere').onclick=openFundraising}if(isGoal)$('doEventFromNpc').onclick=eventOpen;if(!used)$('doBrief').onclick=()=>{game.funds=Math.min(30000,game.funds+o[2]);game.voice=clamp(game.voice+o[3],0,100);game.crisis=clamp(game.crisis+o[4],0,100);game.skills[o[5]]=clamp(game.skills[o[5]]+2,0,100);if(npc==='組織主任')game.regional[game.target]=(game.regional[game.target]||0)+3;game.staffUsed[npc]=true;updateHud();updatePoll();save();if(checkBankruptcy('幕僚「'+npc+'」的執行費用使黨中央資金耗盡'))return;modalClose();toast(npc+'：安排完成')}}
+$('btnEvent').onclick=()=>{if(game?.phase==='chooseCard')openCardFolder();else eventOpen()};$('btnInteract').onclick=()=>{if(game?.phase==='chooseCard')openCardFolder();else if(game?.phase==='exitOffice')exitChairOffice();else if(nearNpc)briefOpen(nearNpc.name);else if(nearVenueNpc)talkVenue(nearVenueNpc.id)};$('btnInfo').onclick=()=>{if(!game)return;modalOpen('競選情報中心','全台選戰概況',`<p>主席：${esc(game.name)}｜${PARTIES[game.party].full}<br>選戰倒數 ${game.day} 天｜已完成 ${game.turn} 場戰略決策。</p><div class="ballot">資金：${fmt(game.funds)} 萬<br>全國聲量：${Math.round(game.voice)}/100<br>危機指數：${Math.round(game.crisis)}/100<br>重點經營選區：${esc(game.target)}</div><p>選舉議題、各地支持度與開票均為遊戲模擬。你可以在現場自由行走，靠近幕僚交談，本局每個選戰階段都必須先找到指定幕僚完成交談，無法跳過互動。</p>`,`<button id="closeInfo" class="mainBtn">返回總部</button>`);$('closeInfo').onclick=modalClose};$('btnReset').onclick=()=>{modalOpen('重新開始','確定重新開始嗎？','<p>目前的單局進度將被新一局覆蓋。你可以重新選擇政黨、姓名與能力卡。</p>',`<button id="yesReset" class="choice"><b>確認重新開始</b></button><button id="noReset" class="tinyBtn" style="margin-top:10px">取消</button>`);$('noReset').onclick=modalClose;$('yesReset').onclick=()=>{game=null;try{localStorage.removeItem(SAVE_KEY)}catch(e){}modalClose();['newsTicker','topbar','side','markers','placeMarkers','sceneIndicator','actionbar','controlsHelp','joystick','lookHint','minimapBox','objective'].forEach(id=>$(id).classList.add('hidden'));showSetup()}};
+// 各縣市多邊形由 twgeojson 2011 縣市地理邊界簡化成離線座標，包含台澎金馬。
+// 格式：每四字元為兩個 base64 座標；實際經緯度=(118+x/200,21+y/200)。
+const MAP_SHAPES=`臺東縣:aO7FaX7CaR7faK79aI6ZaD6VaE6HaJ6Fax6zan6daa5V9-5Oa05E9X5v9t5b934b933V8Z3S8P3Z8M3X8N418H458L478K4b8B4h8D4p8K4s8H4y8C4A8F4H8A4V8J5j8T5j8W5n915n935s955E8Y5J8-5Q8S5Z8Q688Y6i8Y6m906n8-6s926C8_6K966Q97709j789w7c9A799E6_9O6Z9R6U9-6Va26Jac6Fae6Aan6Cao6OaA76aA7caJ7naE7taO7F/ba3pb93gbg3cbe38a-3haY3oba3p/aW5ga-5ga-57aT59aR5faW5g;花蓮縣:bmaxbvasbPambJacbt9_bt9Pbk9Fbk9ybp9qbh9fbg90b68vaX7DaN7FaI7AaE7taI7naA7caA76ao6Oao6Dae6Aac6Fa26J9-6V9R6U9O6Z9E6_9z7a9u7b9y7h9m7q9u7x9r7D9A7I9w7L9C7U9P7T9S7V9T85a187a58da88xa18Ga68Ka88Uae91ac95af96ag9hac9mah9zap9Faq9Kag9Pah9Xaua0aua9aBabaAagaLaoaOaxbhambfaqbkatbnarbkaxbmax;苗栗縣:96bH97bD9cbB9jbC9hbx9ybj9Dbi9Fbe9Ab89Eb49CaYa3a_adaPa6aB9_aD9Waw9Qaw9Gao9Dap9yaj9paq9bat97ar96aj8Vai8taw8haG8caM8laV8vbg8Ibt8Rbv8_bI96bH;雲林縣:6-8V7e8Q7D8S7S8M8g8J8j8z8g8y8i8p8e8c8j8e8m8a8w8e8z828i828h8784847X877R8f7B8c7x8f7a81767W717Z707S6K7U6H8c6Q8s6O8w6M8w6V8I6O8D6M8I6O8G6R8M6L8J6U8R6-8P6X8Q6-8V/6w7V6z7S6r7O6t7M6p7L6p7P6l7I6i7J6k7D6g7L6w7V;高雄市:9i7K9q7I9u7A9l7o9s7m9y7f9i789770966Q8_6K926C8-6s906n8Y6m8Y6i8Q688S5Z8Z5T8Z5N8R5R8I5L8x5U8m5P8h5V895T7_5K7L5L7D5c7F4W7B4M7B4D7v4E7c4R7d4V7354725c745i775h775l745j6X5F6S5H6V5J6S5M6P5-6-5_735X795Z7m5W7s607z5_7I6h7M6h7_6u8g6R8j6Y8h7b8s798E7l8J7k8N7q8R7q8W7A947H9i7K;南投縣:aea7ara6aua0ah9Xag9Paq9Lap9Fah9zac9mag9had8_a88Ua68Ka18Ga78Ca78la3889T859S7V9P7T9C7U9w7L9A7I9r7D9q7I9k7K8T7L8O7X8Q888y8a8w8e8m8a8j8e8e8c8i8p8g8y8j8z8g8J8p8M8n8Q8i8P8b8U8f948d9f8h9g8i9l8g9p8o9r8B9o8S9C8V9N909K909F929L989J9e9O9m9M9s9U9z9T9Wa59Ya2a4a6a8a4aca9aea7;嘉義縣:7P8f7X8784848h878i828z828x898C8b8P888R858O7X8T7L9f7K8W7A8R7q8N7q8J7k8E7l8s798h7b8i6Z8a6Z8670846X7V6-7V7e7Y7i7R7l7R7q7N7q7P7v7M7u7E7z7f7u6W7a6Q7a6D7k6L7s6F7t6L7s6N7v6K7x6K7H6H7G6L7O6O7O6F7O6E7U6_7R717Z767W7a817w8f7B8c7P8f;宜蘭縣:cocucacjbZc0bYbNc0bsc4bjc9bgc3bgc6bbc8bfc7b3c0a-c4aUbYaQbUaKbPanbvasbmaybkaxbnarbkatbfaqbhamb5asaXasaLaBaAaxaxaCapaEaoaOaEb2aFbeaKbhaQbvaXbvbbbCbgbGbebSblbTblbWbybXbGc3bPc5bSccb-cdc3chc0clc1cococu;屏東縣:8i5T8m5P8x5U8I5L8T5R8Y5O8-5H955E915n8J5j8A4T8F4H8C4A8H4y8K4s8D4p8B4h8K4b8L478I448N418M3X8P3Z8Y3S933V943T933B913y943t923p943f8_388V368U308Y2P8Q2X8F308B2Z8A2U8u2X8v348p3d8v3t8p3O8i3X8h45854i7G4x7B4D7F4Z7D5c7K5K7_5K895T8i5T/7s4f7t4c7n497s4f;新北市:b3dsbkdobud8bAdbbxd6bAd2blcYbxcLbGcHbNcIbPcKbKcSbTcTbVcXbZcXbYcUchcWcfcOcicDcxcycpcsc1coc0clc3chb_cebSccbPc5bGc3bybXblbWblbTbebSbfbGb5bBb3byaUbvaJbMaObRaLbWaFc1azb_arc1awc3atc5avc7aoccaocfascianckaqclapcraycraFcwaCcyaGcAaCcEaEcGahcSajcVaCcZaPdjb3ds;桃園市:a8cUahcTaucMascLavcJaCcIaGcAaCczaFcwaycrapcsaqclanckasciaocfaoccavc7atc5awc3arc1aFc0aObSaJbMaUbvaQbvaKbhaDbdaxbhavbuasbtapbzakbzakbNacbQa9bWa4bU9Sc19Tc89Acd9xcl9lck9ycEa8cU;臺中市:apaLapaEaxaCazayaLaBaOaxaLaoaAagaBabaua9ata5aga6ada9a8a4a4a69Ya29Wa59z9T9s9U9m9M9e9O989J929L909F909K8V9N8S9C8B9o8d9u8a9J7Z9L7S9Z7N9_7Pa37Ia37Sah7Oak7Saj7Uan7-al7Yap7_ap8caM8rax8Wai96aj97ar9bat9paq9yaj9Dap9Gao9Qaw9Waw9_aDa6aBacaMaeaJapaL;臺北市:b9d8bdd7bbd1bicWbfcSblcPbkcFbtcCbgczbgcrbkcqbgcob8cpb0cAaWcyaVcDaZcGaZcLaPcSaZd3b0d2b7dab9d8;臺南市:7E7z7M7u7P7v7N7q7R7q7R7l7Y7i7V7e7W737U70846X86708a6Z8j6Z8g6R7_6u7M6h7I6h7z5_7s607m5W795Z735X6-5_6P5-6O676K686L6a6J696M6b6I6f6r6o6l6v6r6G6D7k6Q7a6W7a7f7u7E7z;金門縣:0UaH0-aK0WaU0_aW1baQ1ib21uaU1vaM1oaG1maJ1daL16aI11aB0UaH/0GaH0KaO0RaN0QaI0JaF0GaH;連江縣:6agg6bgk6ggn6kgl6jgj6cgj6cge6agg/5_g560gb64g76bg965g45_g5/7LgO7NgQ7NgO7RgP7TgN7OgL7NgP7LgO/69fu6cfz6ffy69fu/62fz67fA64fx62fz;澎湖縣:4Y8m518k4_8f528e5287568955835b895j7-597_517V517R4X7R4Q7X4S7-4T7V4X7T517X4U7Z4X814T804U844Y864_8152884_8a518c4Z8b4Y8j4L8c4L804B7_4I834G864J864K8i4P8f4T8l4Y8m/4H7u4M7p4L7l4G7m4H7u/4x6X4x6T4v6Q4s6R4r6W4x6X/528C548A508w4-8z528C/4Q7q4R7o4N7n4Q7q/487x4a7v487u487x;嘉義市:7G7U7Q7O7S7L7P7H7K7I7E7E7C7I7v7J7u7Q7G7U;基隆市:bBd3bLd0bIcWbOc-bLd1bTcYbWcZbUcTbKcSbPcKbNcIbGcHbycKbmcXbBd3;彰化縣:7N9_7S9Z7Z9L8a9J8d9u8o9r8g9p8i9l8h9g8d9f8f948b8U8i8P8n8Q8p8M8g8J7S8M7D8S7e8Q738T6Y8Z7393799f7j9r7l9C7t9G7C9G7D9M7s9H7E9U7J9U7N9_;新竹市:9ac39qbX9vbN9sbL9nbQ9dbJ9bbD97bD96bI8_bI94bN92bT97c39ac3;新竹縣:9wcl9Acj9Acd9Tc89Sc1a4bUa9bWacbQakbNakbzapbzasbtavbuaxbhaGbcaDb7aEb2alaLacaKadaPa3a_9CaY9Eb49Ab89Fbe9Dbi9ybj9hbx9jbC9bbD9dbJ9lbP9sbL9vbN9qbX99c39kck9wcl`;
+const GEOABC='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
+function mapPaths(){return MAP_SHAPES.split(';').map(s=>{let [name,data]=s.split(':');let paths=data.split('/').map(r=>{let pts=[];for(let i=0;i+3<r.length;i+=4){let x=(GEOABC.indexOf(r[i])*64+GEOABC.indexOf(r[i+1]))/200+118;let y=(GEOABC.indexOf(r[i+2])*64+GEOABC.indexOf(r[i+3]))/200+21;pts.push([(x-117.6)*175,(26.6-y)*174])}return pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join('')+'Z'});return {name,d:paths.join('')}})}
+const SHAPES=mapPaths();let election=[],countStart=0,countDone=false;
+// 六處重點選區的劇情得票帶：使用實際模擬得票的連續函數，不限制其他候選人如何分票。
+// 參數僅供運算，未顯示於遊戲介面。所有人物名字沿用既有戲仿名單。
+const REGION_VOTE_BANDS={
+ '臺北市':{surname:'蔣',low:.47,high:.55,reference:.45},
+ '新北市':{surname:'李',low:.45,high:.53,reference:.48},
+  '臺中市':{name:'江啓臣',surname:'江',low:.55,high:.63,reference:.59},
+ '臺南市':{name:'謝龍价',surname:'謝',low:.41,high:.46,reference:.44},
+ '桃園市':{surname:'張',low:.49,high:.60,reference:.52},
+ '嘉義縣':{surname:'蔡',low:.55,high:.62,reference:.58},
+ '高雄市':{surname:'柯',low:.46,high:.55,reference:.40},
+ '屏東縣':{surname:'周',low:.48,high:.55,reference:.51},
+ '金門縣':{surname:'陳',low:.60,high:.65,reference:.60},
+ '連江縣':{surname:'王',low:.65,high:.70,reference:.70},
+ '嘉義市':{surname:'張',low:.45,high:.52,reference:.43},
+  '新竹市':{surname:'高',low:.46,high:.53,reference:.45},
+  '新竹縣':{name:'鄭朝芳',surname:'鄭',low:.44,high:.54,reference:.37},
+  '彰化縣':{name:'陳素玥',surname:'陳',low:.47,high:.55,reference:.39},
+  '基隆市':{name:'謝國粱',surname:'謝',low:.48,high:.58,reference:.53}
+};
+function adjustRegionVotes(county,people,shares,randomValue){
+ const band=REGION_VOTE_BANDS[county];if(!band)return shares;
+ const idx=people.findIndex(c=>band.name?c.name===band.name:c.name.startsWith(band.surname));if(idx<0)return shares;
+ const midpoint=(band.low+band.high)/2,half=(band.high-band.low)/2;
+ // 實際資金、地方聲量、危機、能力與選區動員已反映在 shares 中；
+ // 以平滑壓縮映射至劇情區間，使玩家每次決策仍改變該候選人的得票。
+ const desired=clamp(midpoint+half*.975*Math.tanh((shares[idx]-band.reference)/.115+(randomValue-.5)*.24),band.low,band.high);
+ const otherSum=shares.reduce((a,b,j)=>a+(j===idx?0:b),0);
+ return shares.map((p,j)=>j===idx?desired:(otherSum>0?p/otherSum*(1-desired):(1-desired)/(shares.length-1)));
+}
+// 民調與開票共用的預測核心；固定特殊選區範圍，並讓小眾候選人票數明顯分層。
+function normalizeVotes(v){const sum=v.reduce((a,b)=>a+b,0);return v.map(n=>n/sum)}
+function minorTierShares(people,shares){
+ if(people.length<=3)return shares;
+ // 主要兩名以外的候選人，依原支持度排序分配不同層級的份額。
+ const order=shares.map((_,i)=>i).sort((a,b)=>shares[b]-shares[a]);
+ const minors=order.slice(2);if(minors.length<2)return shares;
+ const pool=minors.reduce((s,j)=>s+shares[j],0);
+ const weights=minors.map((j,k)=>Math.pow(.48,k)*(1+(shares[j]-shares[minors.at(-1)])*.15));
+ const total=weights.reduce((a,b)=>a+b,0),result=[...shares];
+ minors.forEach((j,k)=>{result[j]=pool*weights[k]/total});
+ return normalizeVotes(result);
+}
+function isWhiteBreakout(name){
+ // 白營在兩大主攻城市長期經營，才可能完成超過六成的銀色挑戰。
+ return !!game && game.party==='white' && (name==='新竹市'||name==='嘉義市') &&
+  (game.regional?.[name]||0)>=14 && game.voice>=63 && game.skills[2]>=65;
+}
+function ensureRegionBand(name,people,shares){
+ const band=REGION_VOTE_BANDS[name];if(!band)return shares;
+ const idx=people.findIndex(p=>band.name?p.name===band.name:p.name.startsWith(band.surname));if(idx<0)return shares;
+ const breakthrough=isWhiteBreakout(name);
+ const desired=breakthrough?clamp(.605+Math.max(0,(game.regional[name]-14))*.0028,.605,.655):clamp(shares[idx],band.low+.0015,band.high-.0015);
+ const others=shares.reduce((sum,v,i)=>sum+(idx===i?0:v),0);
+ return shares.map((v,i)=>i===idx?desired:(others>0?v/others*(1-desired):(1-desired)/Math.max(1,shares.length-1)));
+}
+function adjustHualienVotes(name,people,shares){
+ if(name!=='花蓮縣')return shares;
+ const positions=['游','魏','張'].map(ch=>people.findIndex(p=>p.name.startsWith(ch)));
+ if(positions.some(i=>i<0))return shares;
+ const leftover=people.map((_,i)=>i).filter(i=>!positions.includes(i));
+ // 少量其他候選人票，不妨礙三人的七比五比三。
+ const othersTotal=leftover.length?clamp(leftover.reduce((n,i)=>n+shares[i],0),.015,.055):0;
+ const bases=[7,5,3],refs=[.46,.33,.20];
+ const rawWeights=positions.map((idx,i)=>bases[i]*(1+clamp((shares[idx]-refs[i])*.18,-.075,.075)));
+ const total=rawWeights.reduce((a,b)=>a+b,0),result=shares.slice();
+ positions.forEach((idx,i)=>result[idx]=(1-othersTotal)*rawWeights[i]/total);
+ const oldTotal=leftover.reduce((n,i)=>n+shares[i],0);
+ leftover.forEach(idx=>result[idx]=oldTotal>0?shares[idx]/oldTotal*othersTotal:othersTotal/Math.max(1,leftover.length));
+ return result;
+}
+function predictedVoteShares(name){
+ const i=COUNTY_NAMES.indexOf(name),people=ballot(name),party=game.party,initial=candidateDistribution(name,i%3);
+ const playerBonus=((game.voice-50)*.0017+(game.skills[2]-65)*.0013-(game.crisis-18)*.0016)+(game.regional[name]||0)*.0031+(game.funds-1500)*.0000027+(rand2(i,4)-.5)*.035;
+ const ally=party==='white'?ALLIANCE[name]?.W:null;
+ let scores=initial.map((share,j)=>{
+   const c=people[j];const supported=c.party===({blue:'K',green:'D',white:'W'}[party]) || (!!ally&&c.party===ally&&(name!=='新竹市'||c.name==='高虹銨'));
+   return Math.max(.00001,share+(supported?playerBonus:-playerBonus/Math.max(2,people.length-1)));
+ });
+ scores=normalizeVotes(scores);
+ scores=adjustRegionVotes(name,people,scores,rand2(i,32));
+ scores=minorTierShares(people,scores);
+ return adjustHualienVotes(name,people,ensureRegionBand(name,people,scores));
+}
+// 以城市投票開出順序的差異實現自然逆轉：所有人的累計票數必須單調遞增。
+// 各縣市由多個投票區依序開票：每人的累計票數只增加，候選人得票率則會在每批次略為擺動。
+// 台北與新北有約七成機會使兩位主要候選人的先後順位逆轉，一次或多次皆有可能。
+function makePrecinctWaves(entry,countyIndex){
+ const waveCount=12,people=entry.people.length,final=entry.votes.map(v=>v/entry.totalVotes);
+ const ranked=final.map((_,j)=>j).sort((a,b)=>final[b]-final[a]),first=ranked[0],second=ranked[1];
+ const isMetro=entry.name==='臺北市'||entry.name==='新北市';
+ const reversal=isMetro&&people>=2&&rand2(countyIndex,27)<.70;
+ const accumulated=Array(people).fill(0),all=Array.from({length:people},()=>[]);
+ for(let k=1;k<=waveCount;k++){
+  const progress=k/waveCount,sh=final.map((s,j)=>{
+    const pulse=Math.sin(k*1.83+j*2.29+rand2(countyIndex,j+201)*3.2);
+    return Math.max(.00001,s+(k===waveCount?0:(1-progress)*.006*pulse));
+  });
+  let norm=normalizeVotes(sh);
+  if(isMetro && k<=5 && second!=null){
+    // 前期兩大主要候選人差距控制在 15 個百分點內。
+    const mainSum=norm[first]+norm[second];
+    let gap=clamp(norm[first]-norm[second],-.125,.125);
+    if(reversal){
+      // 分批計票票源不同：前五批以小幅度交替領先，可能反覆反超。
+      gap=[-.038,.036,-.028,.024,-.014][k-1];
+    }
+    norm[first]=(mainSum+gap)/2;norm[second]=(mainSum-gap)/2;
+  } else if(reversal && second!=null && k<12){
+    // 由前段劇烈競逐，平滑回到最終得票率；維持各候選人總票數不變。
+    const factor=(waveCount-k)/(waveCount-5),mainSum=norm[first]+norm[second];
+    const targetGap=(norm[first]-norm[second])*(1-factor)+(-.014)*factor;
+    norm[first]=(mainSum+targetGap)/2;norm[second]=(mainSum-targetGap)/2;
+  }
+  norm=normalizeVotes(norm);
+  for(let j=0;j<people;j++){
+    let target=k===waveCount?entry.votes[j]:Math.round(entry.totalVotes*progress*norm[j]);
+    // 開票數不減少，且不能超過該人最終得票；各批次保有獨立波動。
+    target=Math.max(accumulated[j],Math.min(entry.votes[j],target));
+    all[j].push(target-accumulated[j]);accumulated[j]=target;
+  }
+ }
+ entry.reversal=reversal;entry.precincts=all;
+}
+function countedVotes(entry){
+  const t=clamp(entry.reported,0,1),waveCount=12,waveT=t*waveCount,whole=Math.min(waveCount,Math.floor(waveT)),fraction=waveT-whole;
+  if(t>=1)return [...entry.votes];
+  // 讓全部候選人從開票開始即持續累積票數；小眾候選人不會因單一批票源提前停住。
+  // 僅顯示次要候選人的連續插值，主要兩人的票差與翻轉計算仍由投票區批次主導。
+  const ranked=entry.votes.map((_,j)=>j).sort((a,b)=>entry.votes[b]-entry.votes[a]);
+  const main=new Set(ranked.slice(0,2));
+  return entry.votes.map((v,j)=>{
+    if(!main.has(j)){
+      const wobble=.016*Math.sin(t*Math.PI*8+j*1.21)*t*(1-t);
+      const minorRatio=clamp(t+wobble,0,1);
+      return Math.min(v,Math.floor(v*minorRatio));
+    }
+    if(!entry.precincts)return Math.floor(v*t);
+    let cumulative=0;for(let k=0;k<whole;k++)cumulative+=entry.precincts[j][k];
+    if(whole<waveCount)cumulative+=Math.floor(entry.precincts[j][whole]*fraction);
+    return Math.min(v,cumulative);
+  });
+}
+function rand2(i,k){let x=Math.sin(game.seed*.007+1049.7*i+k*88.91)*34376.726;return x-Math.floor(x)}
+// 固定在單局種子上，重新載入或恢復開票不會改變票數。
+// 僅三個指定城市採遊戲內模擬總投票數，其餘沿用 2022 地方選舉基準。
+const CUSTOM_CITY_VOTE_TOTALS={
+ '臺北市':[1350000,1420000],
+ '新北市':[2050000,2120000],
+ '嘉義市':[150000,160000]
+};
+function countyVoteTotal(name,base,index){
+ const interval=CUSTOM_CITY_VOTE_TOTALS[name];
+ if(!interval)return base;
+ const [lo,hi]=interval;
+ return lo+Math.floor(rand2(index,1739)*(hi-lo+1));
+}
+function electionPlan(){election=COUNTY_DATA.map((c,i)=>{
+ const people=ballot(c[0]);let final=predictedVoteShares(c[0]);
+ const cityTotal=countyVoteTotal(c[0],c[1],i);
+ // 封關時保存最後一次允許公布的支持度，開票與封關前民調不會有失真的大落差。
+ const last=game.lastPublicPoll?.[c[0]];
+ if(Array.isArray(last)&&last.length===final.length){
+   final=normalizeVotes(final.map((s,j)=>clamp(s,last[j]-.025,last[j]+.025)));
+ }
+ // 模擬最後未表態選民的極小幅度變化。
+ final=normalizeVotes(final.map((s,j)=>Math.max(.00001,s+(rand2(i,j+95)-.5)*.005)));
+ final=minorTierShares(people,final);
+ final=adjustHualienVotes(c[0],people,ensureRegionBand(c[0],people,final));
+ const votes=final.map(x=>Math.floor(cityTotal*x));
+ votes[final.indexOf(Math.max(...final))]+=cityTotal-votes.reduce((x,y)=>x+y,0);
+ // 極小得票的獨立候選人也不得同票，保持段落差。
+ for(let j=1;j<votes.length;j++){
+   let guard=0;while(votes.slice(0,j).includes(votes[j])&&guard++<25){
+     const donor=votes.indexOf(Math.max(...votes));
+     if(donor===j||votes[donor]<2)break;
+     votes[j]++;votes[donor]--;
+   }
+ }
+ const entry={name:c[0],people,votes,totalVotes:cityTotal,reversal:false,reported:0,winner:0};
+ makePrecinctWaves(entry,i);
+ return entry;
+})}
+const VOTE_PIE_LABELS=['中國國銘黨','民煮進步黨','台灣民眾檔','無黨籍／其他'];
+const VOTE_PIE_COLORS=['#397dd2','#32b276','#dadada','#e5b15f'];
+const VOTE_PIE_SHORT_LABELS=['國銘黨','民煮黨','民眾檔','無黨籍'];
+function renderVotePie(tally){let sum=tally.reduce((a,b)=>a+b,0),svg=$('votePie'),pieces='',ang=-Math.PI/2;
+ for(let i=0;i<4;i++){let share=sum>0?tally[i]/sum:0;if(share<=0)continue;let end=ang+share*Math.PI*2;const point=a=>[60+53*Math.cos(a),60+53*Math.sin(a)];let [x1,y1]=point(ang),[x2,y2]=point(end);if(share>.9999){pieces+=`<circle cx="60" cy="60" r="53" fill="${VOTE_PIE_COLORS[i]}"/>`;}else{pieces+=`<path d="M60 60 L${x1.toFixed(3)} ${y1.toFixed(3)} A53 53 0 ${share>.5?1:0} 1 ${x2.toFixed(3)} ${y2.toFixed(3)} Z" fill="${VOTE_PIE_COLORS[i]}" stroke="#17293b" stroke-width=".9"/>`;}ang=end;}
+ svg.innerHTML=pieces||'<circle cx="60" cy="60" r="53" fill="#32475b"/><text x="60" y="65" font-size="12" text-anchor="middle" fill="#dae7f2">待開票</text>';
+ $('pieLegend').innerHTML=tally.map((v,i)=>`<div class="pieLegendRow"><i style="background:${VOTE_PIE_COLORS[i]}"></i><span>${innerWidth<650?VOTE_PIE_SHORT_LABELS[i]:VOTE_PIE_LABELS[i]}</span><b>${fmt(v)} 票<small>${sum?(v/sum*100).toFixed(2):'0.00'}%</small></b></div>`).join('');}
+function beginCount(){game.phase='count';save();electionPlan();countStart=performance.now();countDone=false;$('results').classList.remove('hidden');$('conclusion').classList.add('hidden');$('btnNew').classList.add('hidden');$('btnFast').classList.remove('hidden');$('openStatus').textContent='開票開始｜預計約 1 分 30 秒，逐批開出各縣市投票區';$('mapSvg').innerHTML=SHAPES.map((s,i)=>`<path data-geo="${esc(s.name)}" d="${s.d}" fill="#365069"><title>${esc(s.name)}</title></path>`).join('');$('mapSvg').querySelectorAll('path').forEach(p=>{p.onpointerenter=()=>tipCounty(p.dataset.geo);p.onclick=()=>tipCounty(p.dataset.geo)});showCount(0);}
+function tipCounty(name){const e=election.find(x=>x.name===name);if(!e)return;const votes=countedVotes(e);let j=votes.indexOf(Math.max(...votes));$('mapTip').textContent=`${name}｜開票 ${Math.round(e.reported*100)}%｜${e.reported>0?e.people[j].name+' 暫時領先':'尚未開票'}｜${fmt(votes.reduce((a,b)=>a+b,0))} 票`;}
+function showCount(progress){if(!election.length)return;let tally=[0,0,0,0],won=[0,0,0,0],parts=[];const final=progress>=1;
+for(let i=0;i<election.length;i++){
+ const e=election[i];e.reported=final?1:clamp((progress*1.34-(i%7)*.051-(rand2(i,8)-.5)*.045)*1.035,0,1);
+ const counts=countedVotes(e);let w=counts.indexOf(Math.max(...counts));e.winner=w;
+ counts.forEach((v,j)=>{let p=e.people[j].party,idx=p==='K'?0:p==='D'?1:p==='W'?2:3;tally[idx]+=v});
+ if(final){const c=e.people[e.votes.indexOf(Math.max(...e.votes))];won[c.party==='K'?0:c.party==='D'?1:c.party==='W'?2:3]++}
+ const paint=counts.every(v=>v===0)?'#34546a':candidateColor(e.people[w]);
+ const path=$('mapSvg').querySelector(`[data-geo="${e.name}"]`);if(path)path.setAttribute('fill',paint);
+ const opened=counts.reduce((a,b)=>a+b,0);const ordered=counts.map((v,j)=>j).sort((a,b)=>counts[b]-counts[a]);const principal=new Set(e.votes.map((_,j)=>j).sort((a,b)=>e.votes[b]-e.votes[a]).slice(0,2));parts.push(`<div class="countyLine"><div class="countySummary"><span>${e.name} <small>${Math.round(e.reported*100)}%</small></span><b style="color:${paint}">${e.reported<.005?'等待開票':e.people[w].name+' 領先'}</b></div><div class="candidatesVotes">${ordered.map(j=>`<div class="candidateVote ${principal.has(j)?'':'minor'}"><span class="candidateSymbol" style="background:${candidateColor(e.people[j])}"></span><span class="candidateName">${esc(e.people[j].name)}</span><small class="candidatePartyTag">${TEAM_LABEL[e.people[j].party]}</small><b>${fmt(counts[j])} 票<em class="candidateRate">${opened?(counts[j]/opened*100).toFixed(1):'0.0'}%</em></b></div>`).join('')}</div></div>`)}
+ renderVotePie(tally);
+ const countyScroll=$('countyResults').scrollTop;$('countyResults').innerHTML=parts.join('');$('countyResults').scrollTop=countyScroll;$('reportProgress').textContent='開票率 '+Math.round(election.reduce((a,b)=>a+b.reported,0)/election.length*100)+'%';$('openStatus').textContent=final?'全台 22 縣市開票完成｜結果為架空模擬':'逐縣市開票中 · 每名候選人票數持續更新';if(final&&!countDone)finishElection(won,tally);
+}
+function finishElection(won,tally){
+ countDone=true;game.phase='done';
+ const goals=evaluateMissionResults(),success=goals.filter(x=>x.ok).length;
+ const myCode={blue:'K',green:'D',white:'W'}[game.party];
+ const n=won[PKEYS.indexOf(game.party)];
+ const cooperated=game.party==='white'?election.filter(e=>{const c=electionWinner(e);return ALLIANCE[e.name]?.W===c.party}).length:0;
+ const goalMain=goals.map(x=>x.title+(x.ok?'完成':'未完成')).join('、');
+ const priority=election.filter(e=>e.people.some(p=>p.party===myCode)&&electionWinner(e).party===myCode).map(e=>e.name);
+ const countyExample=priority.slice(0,3).join('、')||'幾個關鍵地區';
+ const best=SKILLS[game.skills.indexOf(Math.max(...game.skills))];
+ const biggest=election.slice().sort((a,b)=>b.totalVotes-a.totalVotes)[0].name;
+ const ledger=game.funds<600?'選戰後期的資金壓力持續升高，部分宣傳行程不得不重新排序。':game.funds>3500?'募款和支出尚保有彈性，讓不同選區能獲得必要的人力支援。':'資金雖未完全充裕，但中央仍努力在多個選區之間取得平衡。';
+ const crisis=game.crisis>=60?'選戰期間的爭議事件累積，說明危機溝通與地方回應仍有改善空間。':'面對突發爭議，幕僚和地方團隊維持了大致穩定的處理節奏。';
+ const summary=success===3?'三項目標全數達成，象徵本局設定的戰略順利落實。':success===0?'三項任務均未完成，顯示既定策略與實際選票之間仍有落差。':`三項戰略任務之中完成了${success}項，其餘目標則仍有差距。`;
+ let review=`二〇二六年縣市長選舉模擬開票結束，${PARTIES[game.party].full}在全台二十二縣市獲得${n}席${game.party==='white'?`，另外有${cooperated}席合作陣營勝出`:''}。`+
+ `從倒數百日的團隊整合，到政論節目、傳統市場與地方造勢，你先後投入資金、協調幕僚並回應多項事件。`+
+ `本次選戰以${countyExample}等地的得票表現最受矚目，${biggest}的票數消長也牽動全國開票氣氛。`+
+ `${ledger}${crisis}`+
+ `主席五大能力中，「${best}」仍是最突出的面向，但單一強項不足以涵蓋組織、政策與財務的所有挑戰。`+
+ `${summary}選後檢視結果為：${goalMain}。`+
+ `未來若要調整布局，應檢視各地投票區差異、最後公開民調與實際投票之間的變化，持續建立能受檢驗的公共政策與地方服務。`;
+ // 保持 200～300 字，優先以完整句子調整，避免截斷評語。
+ const optional='本次結果只是這一局的劇情發展；不同的決策選擇，仍可能改寫下一場選戰。';
+ if(review.length<200)review+=optional;
+ if(review.length>300){
+  review=review.replace(`本次選戰以${countyExample}等地的得票表現最受矚目，${biggest}的票數消長也牽動全國開票氣氛。`,'');
+ }
+ if(review.length>300){review=review.replace(`選後檢視結果為：${goalMain}。`,'');}
+ if(review.length>300){review=review.replace('從倒數百日的團隊整合，到政論節目、傳統市場與地方造勢，你先後投入資金、協調幕僚並回應多項事件。','整個選戰期間，你持續調度資金並回應各地事件。');}
+ if(review.length<200)review+=optional;
+ game.finalResult={won,tally,goals,review};save();
+ renderMissionResults(goals);$('review').textContent=review;
+ $('conclusion').classList.remove('hidden');$('btnNew').classList.remove('hidden');$('btnFast').classList.add('hidden');
+ $('openStatus').textContent+=`｜${PARTIES[game.party].name}獲得 ${n} 席｜三大目標 ${success}／3`;
+ $('mapTip').textContent=`全台開票完畢｜${PARTIES[game.party].name}贏得 ${n}／22 席｜完成 ${success} 項目標`;
+}
+$('btnFast').onclick=()=>showCount(1);$('btnNew').onclick=()=>{game=null;try{localStorage.removeItem(SAVE_KEY)}catch(e){}$('results').classList.add('hidden');['newsTicker','topbar','side','markers','placeMarkers','sceneIndicator','actionbar','controlsHelp','joystick','lookHint','minimapBox','objective'].forEach(id=>$(id).classList.add('hidden'));showSetup()};
+// 完全內建、無外部套件的 WebGL 3D 場景；不仰賴 CDN，即可本機開啟。
+const canvas=$('world');let gl=null,shader=null,posLoc=null,colLoc=null,viewLoc=null,projLoc=null,staticGpu=null,dynGpu=null,ctx2d=null,staticCPU=null,softwareLast=0;
+const player={x:0,z:7.2,dir:Math.PI,walk:0};const camera={yaw:.45,pitch:.49,dist:14};const input={keys:{},joyX:0,joyY:0,drag:false,pointer:null,lx:0,ly:0};const NPCS=[
+{name:'財務長',x:-9,z:1.0,talk:'主席，地方選戰資金的流向必須透明，也要確保每筆活動開銷都有適當紀錄。',suit:'#c5a47d',hair:'#332b26'},
+{name:'發言人',x:9,z:1.0,talk:'主席，媒體正在等候黨中央的最新說法。一次清楚的溝通可能改變整個選戰氛圍。',suit:'#547d9b',hair:'#211d20'},
+{name:'組織主任',x:-9,z:-7.4,talk:'主席，各地後援會已經開始動員，我建議安排深入社區的掃街與座談行程。',suit:'#648a74',hair:'#272a31'},
+{name:'政策幕僚',x:9,z:-7.4,talk:'主席，民眾最關切的是生活問題；交通、住宅、勞動與照護政策要有具體內容。',suit:'#8f718c',hair:'#332b31'}];
+let nearNpc=null;const BOXCOLL=[];const STAFF_WANDER=[[-1.65,-1.8],[1.55,-1.3],[-1.45,1.75],[1.65,1.5]];
+function rgb(hex){let s=hex.replace('#','');if(s.length===3)s=[...s].map(c=>c+c).join('');return [parseInt(s.slice(0,2),16)/255,parseInt(s.slice(2,4),16)/255,parseInt(s.slice(4,6),16)/255]}
+class Mesh{
+constructor(){this.v=[];this.c=[]}
+tri(a,b,c,col,shade=1){const color=rgb(col),r=Math.min(1,color[0]*shade),g=Math.min(1,color[1]*shade),bl=Math.min(1,color[2]*shade);for(let p of [a,b,c]){this.v.push(...p);this.c.push(r,g,bl)}}
+quad(a,b,c,d,col,s=1){this.tri(a,b,c,col,s);this.tri(a,c,d,col,s)}
+box(x,y,z,w,h,d,col){let l=x-w/2,r=x+w/2,lo=y-h/2,hi=y+h/2,n=z-d/2,f=z+d/2;this.quad([l,hi,n],[r,hi,n],[r,hi,f],[l,hi,f],col,1.18);this.quad([l,lo,f],[r,lo,f],[r,lo,n],[l,lo,n],col,.6);this.quad([l,lo,f],[l,hi,f],[r,hi,f],[r,lo,f],col,1.0);this.quad([r,lo,n],[r,hi,n],[l,hi,n],[l,lo,n],col,.8);this.quad([l,lo,n],[l,hi,n],[l,hi,f],[l,lo,f],col,.76);this.quad([r,lo,f],[r,hi,f],[r,hi,n],[r,lo,n],col,.87)}
+cylinder(x,y,z,r,h,col,n=11){let top=y+h;for(let i=0;i<n;i++){let a=i/n*Math.PI*2,b=(i+1)/n*Math.PI*2,ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(b),sb=Math.sin(b);let p=[x+r*ca,y,z+r*sa],q=[x+r*cb,y,z+r*sb],P=[x+r*ca,top,z+r*sa],Q=[x+r*cb,top,z+r*sb];this.quad(p,q,Q,P,col,.72+.3*Math.abs(Math.sin(a+.6)));this.tri([x,top,z],P,Q,col,1.14)}}
+sphere(x,y,z,r,col,rows=6,segs=10){for(let j=0;j<rows;j++){let v1=-Math.PI/2+j/rows*Math.PI,v2=-Math.PI/2+(j+1)/rows*Math.PI;for(let i=0;i<segs;i++){let a=i*2*Math.PI/segs,b=(i+1)*2*Math.PI/segs;let P=(v,a)=>[x+r*Math.cos(v)*Math.cos(a),y+r*Math.sin(v),z+r*Math.cos(v)*Math.sin(a)];this.quad(P(v1,a),P(v1,b),P(v2,b),P(v2,a),col,.79+.27*Math.max(0,Math.sin(v2)))}}}
+}
+function compile(t,source){const s=gl.createShader(t);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s}
+function gpuMesh(mesh,prev){const b=prev||{v:gl.createBuffer(),c:gl.createBuffer(),n:0};gl.bindBuffer(gl.ARRAY_BUFFER,b.v);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(mesh.v),gl.DYNAMIC_DRAW);gl.bindBuffer(gl.ARRAY_BUFFER,b.c);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(mesh.c),gl.DYNAMIC_DRAW);b.n=mesh.v.length/3;return b}
+function drawMesh(b){if(!b||!b.n)return;gl.bindBuffer(gl.ARRAY_BUFFER,b.v);gl.vertexAttribPointer(posLoc,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(posLoc);gl.bindBuffer(gl.ARRAY_BUFFER,b.c);gl.vertexAttribPointer(colLoc,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(colLoc);gl.drawArrays(gl.TRIANGLES,0,b.n)}
+function chair(m,x,z,color='#485e70'){m.cylinder(x,0,z,.43,.08,'#172d40',9);m.cylinder(x,.1,z,.06,.78,'#566b7a');m.box(x,.54,z,.84,.12,.74,color);m.box(x,1.1,z+.31,.86,1,.12,color);m.box(x,.83,z,.08,.55,.08,'#697d87')}
+function desk(m,x,z,w=3.2,wood='#7b6752'){m.box(x,.89,z,w,.16,1.52,wood);m.box(x-w*.42,.42,z,.15,.82,1.25,'#536273');m.box(x+w*.42,.42,z,.15,.82,1.25,'#536273');m.box(x,.8,z-.62,w*.8,.6,.13,'#354b5c');m.box(x,1.28,z-.13,.94,.63,.11,'#202d39');m.box(x,1.28,z-.06,.81,.49,.04,'#6dbac9');m.box(x,.98,z-.13,.14,.16,.14,'#8ea4b7');m.box(x,.982,z+.35,1.1,.025,.38,'#34414d');m.box(x+.93,1.05,z+.34,.11,.18,.16,'#eee1ba');chair(m,x,z+1.15);BOXCOLL.push({x,z,r:1.4})}
+function pot(m,x,z){m.cylinder(x,0,z,.34,.55,'#ac967d',10);m.cylinder(x,.52,z,.25,.10,'#c9b29b',10);m.cylinder(x,.58,z,.095,.92,'#45614d',8);for(let j=0;j<5;j++){let a=j*Math.PI*2/5;m.sphere(x+Math.sin(a)*.32,1.25+Math.sin(j*5)*.16,z+Math.cos(a)*.32,.3,'#47775a',5,8)}}
+function banner(m,x,z,color){m.box(x,3.55,z,3.4,4,.08,'#e2e8ec');m.box(x,3.65,z-.06,2.9,3.25,.04,color);m.box(x,1.4,z-.05,3.3,.12,.16,'#ccaa6e');for(let j=0;j<3;j++)m.box(x+(j-1)*.65,3.6,z-.09,.44,.09,.07,'#f5d796')}
+function light(m,x,z){m.box(x,6.42,z,3.4,.12,.52,'#aab6ba');m.box(x,6.33,z,3.15,.08,.37,'#f2e6bb')}
+function buildScene(){const m=new Mesh();BOXCOLL.length=0;if(SCENE!=='hq'){buildVenue(m,SCENE);staticCPU=m;if(gl)staticGpu=gpuMesh(m,staticGpu);return}m.box(0,-.17,0,40,.33,40,'#7b8991');m.box(0,-.005,0,36,.017,36,'#394756');m.box(0,.006,5,35,.022,7.7,'#31485c');for(let x=-17;x<=17;x+=2)m.box(x,.025,0,.025,.015,34,'#819099');for(let z=-17;z<=17;z+=2)m.box(0,.026,z,34,.015,.025,'#8292a0');m.box(0,.04,-4,8,.03,20,'#293d52');m.box(0,.043,3.1,7,.035,7,'#455669');m.box(0,3.5,-17.5,38,7,.43,'#c2ced3');m.box(-18.0,3.5,-1,.45,7,33,'#c0cbd0');m.box(18.0,3.5,-1,.45,7,33,'#becbd1');m.box(0,.25,17.7,38,.5,.5,'#d0d5d6');for(let x of [-17,17]){m.box(x,4.4,-15,.5,3,5,'#628499');m.box(x,6.85,0,1.0,.2,35,'#63798b')}m.box(0,6.9,-17.6,38,.35,.95,'#506678');m.box(0,.85,-17.3,37,1.8,.18,'#283d50');
+// 玻璃窗框與採光窗
+for(let x=-16;x<17;x+=2.65){m.box(x,4.0,-17.22,2.48,2.8,.1,'#759ab1');m.box(x,4.0,-17.14,2.25,2.45,.045,'#afd0dd');m.box(x,5.45,-17.0,.08,3.2,.12,'#263c4b')}
+for(let z=-15;z<=13;z+=5.6){m.box(-17.73,4.0,z, .08,2.7,4.7,'#7595a7');m.box(17.73,4.0,z, .08,2.7,4.7,'#7995a7');m.box(-17.65,4,z,.04,2.4,4.5,'#b2ced9');m.box(17.65,4,z,.04,2.4,4.5,'#b1c9d4')}/* 總部天花板固定六組線型燈具，採兩排三列佈局 */for(let x of [-10,0,10])for(let z of [-7,8])light(m,x,z);
+// 黨中央大螢幕與發言舞台
+m.box(0,2.7,-16.9,12,4,.2,'#12283d');m.box(0,2.7,-16.75,11.3,3.38,.13,'#184a67');m.box(0,4.15,-16.60,11,.12,.11,'#d6bd87');m.box(0,1.4,-15.8,7,.38,3.2,'#9a754b');m.box(0,1.1,-13.5,3.1,1.5,1.4,'#485b6d');m.box(0,1.86,-13.5,2.65,.11,1.35,'#d5b47a');m.cylinder(0,1.45,-12.79,.1,.74,'#243d51');m.sphere(0,2.25,-12.8,.17,'#a5bbca');for(let i=0;i<16;i++){let x=-15+i*2; m.box(x,6.15,-16.95,.7,.12,.12,['#397dd2','#32b276','#d3d3d3'][i%3])}
+// 左右工作桌、議事桌、書櫃、咖啡區
+/* 工作桌靠牆配置，空出中間通道 */for(let z of [-9,4]){desk(m,-11.5,z,3.05,'#896a53');desk(m,11.5,z,3.05,'#896a53')}
+/* 小型會議桌靠近舞台，釋放前景空間 */m.box(0,.72,-7.0,4.4,.16,1.7,'#967550');for(let x of [-1.38,1.38]){m.box(x,.34,-7.0,.14,.66,1.1,'#4c5763');chair(m,x,-5.65,'#415c70')}m.box(0,2.2,-10.9,7,.35,.45,'#718c9c');for(let x of [-4.5,4.5]){m.cylinder(x,0,-12,.4,4,'#7b8f9e');m.cylinder(x,4,-12,.55,.12,'#b1c1c8')}
+for(let x of [-15.5,15.5]){for(let z of [-12,7.7]){m.box(x,1.18,z,1.1,2.3,2.0,'#576c7a');for(let k=0;k<3;k++)m.box(x+(x>0?-.57:.57),.4+k*.66,z,.055,.085,1.83,'#c9d0cb')}}
+/* 盆栽留在牆邊和角落，不再佔用中央走道 */for(let [x,z] of [[-15,12],[-15,-13],[15,12],[15,-13],[-5,14]])pot(m,x,z);
+for(let x of [-12,-6,6,12]){m.box(x,.12,15.4,2.7,.24,.24,'#abb3b6');m.box(x,1.2,15.5,.11,2.0,.1,'#b9cbd3')}
+// 輔選站台與三色布條
+banner(m,-6.8,-16.4,'#397dd2');banner(m,6.8,-16.4,'#32b276');m.box(0,4.8,-16.40,1.95,.33,.04,'#e2d1ae');m.box(0,4.45,-16.45,1.45,.08,.04,'#cad5de');
+// 將中央資訊台改為右側壁掛式導覽設備，中央形成連續寬敞走道
+ m.box(5.3,1.55,6.0,.30,2.9,1.9,'#2d485d');m.box(5.09,1.67,6.0,.12,1.7,1.55,'#699db0');m.box(5.0,.50,6.0,.12,.7,1.2,'#bd9e70');
+for(let x of [-17.3,17.3])for(let z of [-13,10]){m.cylinder(x,0,z,.3,6.5,'#647987');m.cylinder(x,6.5,z,.45,.22,'#d8e4e6')}
+
+ // 街景：從玻璃幕牆外看見的高樓、道路、車道、人行道與植栽；室內保留完整可行走路徑。
+ for(let i=0;i<27;i++){let xx=-34+i*2.55,zz=-42-(i%4)*1.6, hh=8+((i*13)%15), cc=['#788f9e','#526c81','#6d8798','#899ea9'][i%4];m.box(xx,hh*.5,zz,2.0,hh,2.0,cc);for(let yy=3;yy<hh;yy+=2.5)m.box(xx,yy,zz+1.05,1.45,.6,.055,i%3?'#bfd5d4':'#c8b98f')}
+ m.box(0,-.24,-33,90,.3,12,'#253743');for(let x=-37;x<=37;x+=7)m.box(x,-.07,-33,3,.014,.14,'#ebd39c');
+ for(let i=0;i<9;i++){let x=-33+i*8.5;m.cylinder(x,0,-24,.20,.85,'#505d55',8);m.sphere(x,.95,-24,.9,'#426354',6,10)}
+ // 櫃台、螢幕、盆栽、報紙、內嵌燈、新聞採訪設備。
+ for(let x of [-11.5,11.5])for(let z of [-9,4]){m.box(x,.97,z-.22,1.03,.72,.065,'#20303b');m.box(x,1.06,z-.18,.97,.56,.02,'#458198');m.box(x,.65,z-.10,.12,.34,.16,'#858d89');m.box(x,.91,z+.32,1.05,.045,.32,'#bbb0a0');m.box(x+.87,.91,z+.38,.32,.025,.40,'#ddcfb7');m.cylinder(x-1.15,.86,z+.25,.07,.22,'#d1d9cf',8)}
+ /* V7 已以六組 light() 燈具取代原本密集的額外十二組日光燈，避免擁擠與重複。 */
+ for(let x of [-8.3,8.3]){m.cylinder(x,0,-14,.18,1.65,'#303a45',12);m.box(x,1.7,-14,.86,.65,.8,'#222c36');m.cylinder(x,1.43,-14,.40,.18,'#587387',16)}
+ for(let z of [-12,3,11]){m.box(-17.4,2.48,z,.08,1.3,2.0,'#e1d8c9');m.box(17.4,2.48,z,.08,1.3,2.0,'#e1d8c9')}
+ // 室內地毯柔和陰影與走道不規則石材
+ for(let i=0;i<45;i++){let x=-15+(i*17%30),z=-14+(i*29%29);if(Math.abs(x)<6&&Math.abs(z)<9)continue;m.box(x,.055,z,.21,.008,.24,i%2?'#435564':'#516271')}
+
+// 主席辦公室：東南角，玻璃隔間與打開的門口、可閱讀的金色能力資料夾
+function partition(x,z,w,d){m.box(x,.31,z,w,.6,d,'#8094a0');m.box(x,3.15,z,w,.19,d,'#41596e');const horizontal=w>d;const L=Math.max(w,d);for(let t=-L*.46;t<L*.5;t+=2.1)m.box(x+(horizontal?t:0),1.75,z+(horizontal?0:t),.09,2.7,.09,'#597589')}
+partition(11.8,8.8,10,.17);partition(16.5,12.4,.18,7.3);if(!game||!(['chooseCard','exitOffice'].includes(game.phase)))partition(11.5,16.3,10,.17);partition(6.85,15.0,.18,2.6);partition(6.85,9.9,.18,2.1);
+// 主席辦公室豪華書桌、文件、座椅、窗簾與地毯
+m.box(11.3,.052,12.8,7.8,.06,5.5,'#486274');desk(m,11.4,11.5,3.4,'#8b5f40');m.box(11,1.07,12.0,.95,.05,.68,'#c6a253');m.box(11,1.11,12.0,.75,.025,.48,'#f8e4a8');m.box(14.9,2,15.6,2.2,3.8,.35,'#6b6159');for(let y=.5;y<3.6;y+=.47)m.box(14.6,y,15.4,1.5,.14,.12,'#c8b493');pot(m,8.2,15.4);m.box(13.5,3.0,8.55,3.7,1.3,.1,'#1c4257');m.box(13.5,3.7,8.47,3.35,.12,.12,'#ddc287');
+// 財務長與組織主任各有獨立辦公室：保留面向中走廊的開放門
+partition(-11.5,4.7,10,.18);partition(-11.5,-2.1,10,.18);partition(-16.4,1.3,.18,6.8);partition(-6.5,3.8,.18,1.8);partition(-6.5,-.95,.18,2.15);
+partition(-11.5,-4.5,10,.18);partition(-11.5,-11.6,10,.18);partition(-16.4,-8,.18,7.2);partition(-6.5,-5.4,.18,1.75);partition(-6.5,-10.4,.18,2.0);
+for(let [x,z] of [[-14.2,3.8],[-14.2,-10.5]]){m.box(x,1.6,z,1.1,2.7,.4,'#766a5e');m.box(x,2.45,z,.84,.08,.42,'#e9d5aa')}
+for(let [x,z] of [[-8.1,3.0],[-8.1,-10.5]]){m.box(x,.12,z,2.4,.08,2.3,'#496372');m.box(x,.8,z,1.9,.06,1.5,'#526776')}
+staticCPU=m;if(gl)staticGpu=gpuMesh(m,staticGpu)}
+function human(m,x,z,coat='#365a7d',dir=0,t=0,playerCharacter=false,hair='#282932'){
+const yBob=Math.abs(Math.sin(t*5))*.035,move=Math.sin(t*9)*(playerCharacter?.17:.055),cSkin=playerCharacter?'#e0ad88':'#e3b899',spin=dir;function rot(xx,zz){return [x+xx*Math.cos(spin)-zz*Math.sin(spin),z+xx*Math.sin(spin)+zz*Math.cos(spin)]}function boxR(dx,yy,dz,w,h,d,col){let [a,b]=rot(dx,dz);m.box(a,yy+yBob,b,w,h,d,col)}function cylR(dx,yy,dz,r,h,col){let [a,b]=rot(dx,dz);m.cylinder(a,yy+yBob,b,r,h,col)}
+// 鞋、褲、襯衫、外套、肩、頸、面容與頭髮
+boxR(-.20,.40,-move*.22,.25,.75,.27,'#223247');boxR(.20,.40,move*.22,.25,.75,.27,'#24364b');boxR(-.20,.095,-move*.3,.34,.19,.43,'#19232f');boxR(.20,.095,move*.3,.34,.19,.43,'#19232f');boxR(0,1.24,0,.78,1.02,.45,coat);boxR(0,1.40,-.245,.20,.69,.048,playerCharacter?'#f3f1ee':'#f1e8d8');boxR(0,1.47,-.276,.095,.42,.06,playerCharacter?'#c29156':'#607b91');boxR(-.51,1.14,move*.28,.21,.78,.26,coat);boxR(.51,1.14,-move*.28,.21,.78,.26,coat);cylR(-.50,.69,0,.115,.21,cSkin);cylR(.50,.69,0,.115,.21,cSkin);cylR(0,1.79,0,.14,.18,cSkin);m.sphere(x,2.13+yBob,z,.335,cSkin,7,12);m.sphere(x,2.37+yBob,z+.025,.325,hair,5,12);boxR(-.12,2.15,-.31,.045,.047,.032,'#34303b');boxR(.12,2.15,-.31,.045,.047,.032,'#34303b');boxR(0,2.04,-.335,.105,.028,.033,'#a86766')}
+function crowd(m,time){const visitors=[[-5,0.8,'#756f8d'],[5,1.2,'#697e81'],[-6,-2.1,'#91836f'],[6,-3.2,'#776b80'],[-2,9,'#466a72'],[4,10.1,'#6e7f8d'],[-4,-9.8,'#8b7975'],[5,-11.3,'#647e90'],[-11,9,'#566b77'],[12,10,'#89908e'],[-5,-12,'#516373'],[8,-12,'#7a777a']];visitors.forEach((p,i)=>{let t=time*(.43+(i%3)*.10)+i*2.45;let rr=1.3+(i%4)*.35,x=p[0]+Math.sin(t)*rr,z=p[1]+Math.cos(t)*rr*.72;let dir=Math.atan2(Math.cos(t),-Math.sin(t));human(m,x,z,p[2],dir,time*1.7+i,false,i%2?'#2b292c':'#604832')})}
+function makeDynamic(time){const m=new Mesh();const c=game?COLORS[game.party]:'#397dd2';let moving=Math.abs(input.joyX)+Math.abs(input.joyY)+Number(!!input.keys.KeyW||!!input.keys.KeyA||!!input.keys.KeyS||!!input.keys.KeyD||!!input.keys.ArrowUp||!!input.keys.ArrowDown);m.cylinder(player.x,.02,player.z,.48,.017,'#213244',12);human(m,player.x,player.z,c,player.dir,moving?player.walk:0,true,'#29282d');if(SCENE==='hq')for(let i=0;i<NPCS.length;i++){let n=NPCS[i];let t=time*.35+i*1.45,ox=STAFF_WANDER[i][0],oz=STAFF_WANDER[i][1];let x=n.x+Math.sin(t)*Math.abs(ox),z=n.z+Math.cos(t)*Math.abs(oz);n.rx=x;n.rz=z;let theta=Math.atan2(Math.cos(t)*ox,-Math.sin(t)*oz);m.cylinder(x,.009,z,.38,.012,'#253442',12);m.cylinder(x,.026,z,.53,.012,game&&game.staffUsed[n.name]?'#6c7784':'#d8b16f',12);human(m,x,z,n.suit,theta,time*2+i*1.6,false,n.hair)}if(game?.phase==='chooseCard'||game?.phase==='exitOffice')m.box(11,1.15+Math.sin(time*3)*.05,12.0,.88,.04,.61,'#f6d578');crowd(m,time);if(SCENE!=='hq'&&game?.phase==='play')venuePeople().forEach((n,i)=>{let phase=time*.42+i*2.1;human(m,n.x+Math.sin(phase)*.35,n.z+Math.cos(phase)*.30,['#a37e67','#5e8a7f','#876d96','#607f9d','#9b8f65'][i],phase*.6,time+i,false)});return m}
+function matPerspective(fov,aspect,near,far){const f=1/Math.tan(fov/2),o=new Float32Array(16);o[0]=f/aspect;o[5]=f;o[10]=(far+near)/(near-far);o[11]=-1;o[14]=2*far*near/(near-far);return o}
+function matLook(eye,center){let z=[eye[0]-center[0],eye[1]-center[1],eye[2]-center[2]];let len=Math.hypot(...z)||1;z=z.map(a=>a/len);let x=[z[2],0,-z[0]];len=Math.hypot(...x)||1;x=x.map(a=>a/len);const y=[z[1]*x[2]-z[2]*x[1],z[2]*x[0]-z[0]*x[2],z[0]*x[1]-z[1]*x[0]];const o=new Float32Array(16);o[0]=x[0];o[1]=y[0];o[2]=z[0];o[4]=x[1];o[5]=y[1];o[6]=z[1];o[8]=x[2];o[9]=y[2];o[10]=z[2];o[12]=-x[0]*eye[0]-x[1]*eye[1]-x[2]*eye[2];o[13]=-y[0]*eye[0]-y[1]*eye[1]-y[2]*eye[2];o[14]=-z[0]*eye[0]-z[1]*eye[1]-z[2]*eye[2];o[15]=1;return o}
+let currView,currProj;
+function transform(m,v){return [m[0]*v[0]+m[4]*v[1]+m[8]*v[2]+m[12]*v[3],m[1]*v[0]+m[5]*v[1]+m[9]*v[2]+m[13]*v[3],m[2]*v[0]+m[6]*v[1]+m[10]*v[2]+m[14]*v[3],m[3]*v[0]+m[7]*v[1]+m[11]*v[2]+m[15]*v[3]]}
+function project(x,y,z){const v=transform(currProj,transform(currView,[x,y,z,1]));if(v[3]<=0.05)return null;return {x:(v[0]/v[3]*.5+.5)*innerWidth,y:(-.5*v[1]/v[3]+.5)*innerHeight,visible:Math.abs(v[0]/v[3])<1.16&&Math.abs(v[1]/v[3])<1.16}}
+function makeMarkers(){const root=$('markers');root.innerHTML='<div id="playerNameTag" class="hidden"></div>'+NPCS.map(n=>`<div class="npcMark" id="npc-${n.name}"><small>◆ 可交談</small><b>${n.name}</b></div>`).join('')+Array.from({length:5},(_,i)=>`<div id="venue-npc-${i}" class="venueNpcMark" style="display:none"></div>`).join('');for(let i=0;i<5;i++)$('venue-npc-'+i).onclick=()=>talkVenue(i);NPCS.forEach(n=>{$('npc-'+n.name).onclick=()=>briefOpen(n.name)})}
+function buildMarkers(){if(!$('npc-'+NPCS[0].name))makeMarkers()}
+function updateMarkers(){if(!game||!currProj)return;updatePlaceMarkers();const tag=$('playerNameTag');if(tag){let pt=project(player.x,2.93,player.z);tag.textContent=game.name;tag.classList.toggle('hidden',!pt||!pt.visible);if(pt?.visible){tag.style.left=pt.x+'px';tag.style.top=pt.y+'px'}}nearNpc=null;let nearest=4.0;for(let n of NPCS){let el=$('npc-'+n.name),d=Math.hypot(player.x-(n.rx||n.x),player.z-(n.rz||n.z));if(game.phase!=='play'||SCENE!=='hq'){el.style.display='none';continue}if(d<nearest){nearest=d;nearNpc=n}let p=project(n.rx||n.x,2.95,n.rz||n.z);if(p&&p.visible){el.style.display='flex';el.style.left=p.x+'px';el.style.top=p.y+'px'}else el.style.display='none';el.classList.toggle('near',d<4.0);el.classList.toggle('quest',!!game&&game.phase==='play'&&eNextStaff()===n.name&&!game.missionGate)}nearVenueNpc=null;let nearestVenue=4.4;const venues=venuePeople();for(let i=0;i<5;i++){
+ let el=$('venue-npc-'+i),n=venues[i];if(!el)continue;if(!n){el.style.display='none';continue}
+ const d=Math.hypot(player.x-n.x,player.z-n.z),p=project(n.x,2.93,n.z);
+ if(d<nearestVenue){nearestVenue=d;nearVenueNpc=n}
+ if(p?.visible){el.style.display='block';el.style.left=p.x+'px';el.style.top=p.y+'px';el.textContent='◆ '+n.name}else el.style.display='none';el.classList.toggle('near',d<4.4);
+ }
+$('btnInteract').classList.toggle('hidden',!nearNpc&&!nearVenueNpc&&game.phase!=='chooseCard'&&game.phase!=='exitOffice');if(game.phase==='chooseCard')$('btnInteract').textContent='📁 桌上資料夾';else if(game.phase==='exitOffice')$('btnInteract').textContent='走向出口';else $('btnInteract').textContent=nearNpc?'交談 '+nearNpc.name:nearVenueNpc?'交談 '+nearVenueNpc.name:'交談 E';}
+
+function drawMiniMap(ts){if(!game||$('minimapBox').classList.contains('hidden'))return;const c=$('minimap'),ctx=c.getContext('2d');if(!ctx)return;let w=c.width,h=c.height;
+ctx.clearRect(0,0,w,h);const grad=ctx.createLinearGradient(0,0,w,h);grad.addColorStop(0,'#112837');grad.addColorStop(1,'#233746');ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+const X=x=>(x+18)/36*w, Y=z=>(z+18)/36*h;
+ctx.strokeStyle='#92b3bf55';ctx.lineWidth=2;ctx.strokeRect(X(-17.5),Y(-17.5),X(17.5)-X(-17.5),Y(17.5)-Y(-17.5));
+ctx.strokeStyle='#8aadb72c';ctx.lineWidth=1;for(let a=-12;a<=12;a+=6){ctx.beginPath();ctx.moveTo(X(-17),Y(a));ctx.lineTo(X(17),Y(a));ctx.moveTo(X(a),Y(-17));ctx.lineTo(X(a),Y(17));ctx.stroke()}
+if(SCENE==='hq'){
+ctx.fillStyle='#d0a67d79';for(let z of [-9,-3,4])for(let x of [-11.5,11.5])ctx.fillRect(X(x-1.6),Y(z-.8),22,9);
+ctx.strokeStyle='#f5dc9a';ctx.lineWidth=2;ctx.strokeRect(X(7),Y(9),X(16.2)-X(7),Y(16)-Y(9));ctx.strokeRect(X(-16),Y(-2),X(-7)-X(-16),Y(4.3)-Y(-2));ctx.strokeRect(X(-16),Y(-11.4),X(-7)-X(-16),Y(-4.8)-Y(-11.4));}
+else{ctx.fillStyle='#cfaf7b44';ctx.fillRect(X(-13),Y(-10),X(13)-X(-13),Y(-5)-Y(-10));ctx.fillRect(X(-14),Y(0),X(-12)-X(-14),Y(13)-Y(0));}
+
+ctx.fillStyle='#c7c0a38a';ctx.fillRect(X(-3.2),Y(-5.3),43,10);ctx.fillRect(X(-6),Y(-16),85,19);
+let pulser=.3+.7*(.5+.5*Math.sin(ts*.009));
+for(let n of (SCENE==='hq'&&game.phase==='play'?NPCS:[])){const x=X(n.rx??n.x),y=Y(n.rz??n.z),quest=n.name===eNextStaff()&&!game.missionGate;if(quest){ctx.beginPath();ctx.arc(x,y,6+5*pulser,0,Math.PI*2);ctx.strokeStyle=`rgba(255,212,94,${pulser})`;ctx.lineWidth=3;ctx.stroke()}ctx.fillStyle=quest?'#f6d576':'#92c4c6';ctx.beginPath();ctx.arc(x,y,quest?5:3.2,0,Math.PI*2);ctx.fill()}
+if(SCENE!=='hq'){ctx.fillStyle='#79d5ca';for(const n of venuePeople()){ctx.beginPath();ctx.arc(X(n.x),Y(n.z),3.3,0,Math.PI*2);ctx.fill()}}
+if(SCENE==='hq'&&(game.phase==='chooseCard'||game.phase==='exitOffice')){const goal=game.phase==='chooseCard'?[11,12]:[6.7,12.6];ctx.strokeStyle='#f7d27b';ctx.lineWidth=3;ctx.beginPath();ctx.arc(X(goal[0]),Y(goal[1]),8+3*Math.sin(ts*.011),0,Math.PI*2);ctx.stroke()};ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(X(player.x),Y(player.z),5.7,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#263b4e';ctx.lineWidth=2;ctx.stroke();
+ctx.save();ctx.translate(X(player.x),Y(player.z));ctx.rotate(camera.yaw);ctx.fillStyle='#b7ddff';ctx.beginPath();ctx.moveTo(0,-13);ctx.lineTo(-5,-5);ctx.lineTo(5,-5);ctx.fill();ctx.restore();
+}
+
+
+// 五處外勤地點：每處五個交談人物，每人各有兩段不同的劇情對話，合計五十段。
+// 玩家靠近 NPC 後按 E 或點選名稱；同一位人物再次交談會切換到下一段。
+const VENUE_DIALOGUES={
+ market:[
+  ['蔬菜攤老闆','這季菜價一下高一下低，攤商最怕的是明天的進貨成本沒辦法預測。','我會請政策團隊把進貨、運輸和資訊透明一起納入討論。'],
+  ['蔬菜攤老闆','候選人每次來都只拍我手上的青菜，卻很少問市場排水溝多久清一次。','市場設施改善比拍照重要，我會記下排水和清潔問題。'],
+  ['魚販阿秀','冷凍設備電費提高，我們又不能讓魚不新鮮，這筆成本到底怎麼算？','我們會查明用電和冷鏈補助有哪些可行方案。'],
+  ['魚販阿秀','有人來市場送宣傳扇子，拿了一大包回去，買魚卻連十塊錢都想殺。','宣傳活動不該干擾買賣，團隊會重新檢討安排。'],
+  ['水果攤學徒','上班族都趕在下班前來買水果，市場旁邊卻沒有安全的人行道。','交通動線會列進地方政見討論。'],
+  ['水果攤學徒','夜市和傳統市場的垃圾分類辦法不同，大家常常搞錯。','應該用更清楚的指示和分類設施協助攤商。'],
+  ['市場自治會長','消防通道總是被機車與貨車占住，若真出事，誰都跑不了。','會與自治會和消防單位討論出入及卸貨時段。'],
+  ['市場自治會長','不少攤商年紀大了，不會線上申請補助，表格越多他們越頭痛。','申辦制度應保留現場窗口，減少不必要的行政程序。'],
+  ['買菜的阿姨','我只想知道你們對物價有沒有實際方案，不能每次都只送面紙。','我會請幕僚提出具體且可查核的說明。'],
+  ['買菜的阿姨','你今天說要聽民意，明年是不是還會走進來聽我們說話？','我會把定期走訪和公開回報納入工作計畫。']
+ ],
+ studio:[
+  ['政論節目主持人','歡迎來到直播現場，觀眾最想知道的是政策從哪裡編預算。','每項政見都需要說明經費來源及優先順序。'],
+  ['政論節目主持人','本台不接受只有一句口號的回答，請至少解釋具體執行時程。','我會把實際措施和期程說清楚。'],
+  ['資深媒體人','現在的短影音剪得很快，一句話被拿掉前後文，意思可能完全不同。','完整逐字稿和原始影片應同步提供。'],
+  ['資深媒體人','如果明天不同媒體公布差異很大的數字，你會先檢查什麼？','先確認抽樣對象、調查日期、樣本數和題目設計。'],
+  ['現場來賓','年輕人想聽到租金、薪資與通勤，而不是每天互相貼標籤。','把討論拉回生活成本與公共政策。'],
+  ['現場來賓','主持人說每位來賓只能講三十秒，但政策至少要講三分鐘。','可以先講核心，再放完整公開資料供觀眾核對。'],
+  ['導播','倒數五秒準備進廣告！記得看鏡頭，不要再把話筒塞進茶杯。','收到，我會配合節目流程。'],
+  ['導播','字幕機突然跑出去年的標題，整個攝影棚都看傻了。','請先更正字幕，資訊正確比搶快更重要。'],
+  ['事實查核編輯','有一張圖表沒有註明來源，你確定想在全國觀眾面前引用嗎？','先補上出處與方法，沒有來源就不要直接使用。'],
+  ['事實查核編輯','數據是有年份和適用範圍的，引用舊資料卻說成今天，容易誤導。','我會在簡報清楚標示時間與資料涵蓋範圍。']
+ ],
+ home:[
+  ['地方仕紳','這塊地的道路拓寬討論了十年，每一屆都來聽我們說。','我會先檢視公開的交通與土地規劃資料。'],
+  ['地方仕紳','有人要我幫忙辦餐會，我只希望雙方遵守公開透明的原則。','所有活動開銷與政治獻金都應依規定申報。'],
+  ['商會理事','小工廠面臨缺工，但年輕人又擔心工時太長、薪資不足。','可以同時安排勞資及技職教育代表共同對話。'],
+  ['商會理事','地方招商若只有優惠卻沒有公共交通，通勤問題最後仍是居民承擔。','招商政策應一併評估社區承載和交通需求。'],
+  ['社區媽媽','兒童遊戲場的遮蔭太少，下午根本沒有家長敢帶孩子出來。','可以先盤點公園設施與安全需求。'],
+  ['社區媽媽','隔壁街有空屋卻租不起，社區年輕人都搬去外縣市了。','住宅資料需要公開透明，再討論適當的居住方案。'],
+  ['退休教師','偏鄉學生補習資源少，想做教育改革別只看大城市。','會把城鄉資源落差列入政策討論。'],
+  ['退休教師','台上的人要記得，辯論可以有立場，數字不能隨便說。','有道理，我會請團隊再次核對各項資料。'],
+  ['地方醫師','社區診所最擔心醫護人力斷層，病人不會因為選舉而不生病。','我會先聽取醫護與民眾的實際需求。'],
+  ['地方醫師','長者回診的交通費對他們是一筆負擔，接駁規劃可以更好。','就醫交通與照護資源應該一起設計。']
+ ],
+ rally:[
+  ['舞台主持人','音響測試，後排聽得到嗎？還有兩分鐘就要開場！','請再確認安全出口與動線。'],
+  ['舞台主持人','今天的演說時間有限，先講清楚這座城市最需要什麼。','我會把重點放在具體的城市議題。'],
+  ['活動志工','我們從清晨就開始擺椅子，附近居民問散場會不會太吵。','散場時間和音量要遵守規範。'],
+  ['活動志工','有人帶小朋友入場，需要更多飲水與休息空間。','請後勤立即加設休息處與補水站。'],
+  ['旗幟製作師','這批旗幟顏色印錯了，混到一半有人以為是別黨的活動。','先分開整理，不要在混亂中硬用。'],
+  ['旗幟製作師','大風要來了，旗幟和大型背板都得重新固定。','安全優先，必要時撤除設備。'],
+  ['急救站護理師','台前太擠，有長輩不舒服，請不要堵住急救通道。','立刻請主持人提醒群眾讓出走道。'],
+  ['急救站護理師','雖然熱鬧，大家還是要記得喝水、適時休息。','讓工作人員與觀眾都有休息時間。'],
+  ['記者','這場活動的費用誰負擔？是否有公開可查的明細？','主辦方會依規定整理並公開可查的收支資料。'],
+  ['記者','今晚的人潮很多，但人數估算方式你們有統一嗎？','請用一致、透明的方法公布估算，不任意誇大。']
+ ],
+ mega:[
+  ['總舞台主持人','倒數一夜，各縣市代表已在後台集合，準備最後的聯合演說。','請讓每一位候選人都有公平的上台時間。'],
+  ['總舞台主持人','無人機空拍機位確認完畢，現場正等待黨主席登台。','先確認安全，再依程序進行。'],
+  ['全國總幹事','最後一天的動員若過度集中，其他選區可能缺少人力。','採取選區協調，不要忽略其他地方的需求。'],
+  ['全國總幹事','各地後援會都在詢問選後是否有正式的感謝與檢討會。','不論結果，都應公開檢討並感謝志工。'],
+  ['青年志工','我們關心選後能不能真的推動政策，不只是台下喊口號。','具體承諾需要後續進度追蹤。'],
+  ['青年志工','志工群的訊息已經快兩萬則了，還有人不知道集合在哪裡。','用統一的官方資訊頁更新場地與集合地點。'],
+  ['交通指揮員','散場時捷運站和公車站會擠滿人，最好分批離場。','優先安排安全動線和無障礙通道。'],
+  ['交通指揮員','附近居民需要知道噪音管制時間，不能等到散場才公告。','請現場公開時間與緊急聯絡方式。'],
+  ['活動攝影師','最後這張大合照要拍了，大家要先把舞台前面的線路移開。','請工作人員先檢查設備安全。'],
+  ['活動攝影師','我拍了很多感動瞬間，也想拍到候選人和幕僚一起收拾現場。','我們會留下來完成環境復原。']
+ ]
+};
+const VENUE_POS=[[-5.4,2.1],[-.4,-.9],[6.2,2.2],[-9.3,8.5],[8.5,9.3]];
+let nearVenueNpc=null;
+function venuePeople(){if(SCENE==='hq'||!game||game.phase!=='play')return [];const lines=VENUE_DIALOGUES[SCENE];return lines?VENUE_POS.map((p,i)=>({id:i,name:lines[i*2][0],x:p[0],z:p[1]})):[]}
+function talkVenue(index){if(!game||game.phase!=='play'||!VENUE_DIALOGUES[SCENE])return;
+ const person=venuePeople()[index];if(!person)return;
+ if(Math.hypot(player.x-person.x,player.z-person.z)>4.4){toast('請先走到 '+person.name+' 身旁交談');return}
+ game.venueTalks=game.venueTalks||{};const key=SCENE+'-'+index;
+ const turn=game.venueTalks[key]||0,position=index*2+(turn%2),line=VENUE_DIALOGUES[SCENE][position];
+ game.venueTalks[key]=turn+1;save();
+ modalOpen('外勤交流 · '+SCENE_NAMES[SCENE],line[0],`<p style="font-size:15px;color:#f8e2b3">「${esc(line[1])}」</p><p>你可以回答對方，也可以繼續在現場走訪其他人物。</p>`,
+ `<button class="choice" id="venueReply"><b>主席：「${esc(line[2])}」</b></button><button class="tinyBtn" id="venueLeave" style="margin-top:10px">先離開</button>`);
+ $('venueReply').onclick=()=>{game.history.push({title:SCENE_NAMES[SCENE]+'｜'+line[0],choice:line[2],conversation:true});save();modalOpen('現場人物交流',line[0],`<p>${esc(line[0])}：謝謝主席願意聽我們說，期待後續有具體回應。</p><p class="muted">這段對話已記錄在行程中。</p>`,`<button class="mainBtn" id="venueDone">結束對話</button>`);$('venueDone').onclick=modalClose};
+ $('venueLeave').onclick=modalClose;
+}
+const SCENE_NAMES={hq:'中央競選總部',studio:'政論節目現場',home:'地方仕紳宅邸',market:'傳統市場',rally:'地方造勢廣場',mega:'選前大造勢會場'};
+let SCENE='hq';
+function eventSceneFor(){if(!game||game.day===1)return 'mega';const e=EVENTS[game.eventOrder[game.turn%game.eventOrder.length]],title=e?.[0]||'';
+ if(/石斑|雞蛋|現金|深蹲|水災|颱風|市場/.test(title))return 'market';
+ if(/違建|血統|國籍|企業|募款|仕紳/.test(title))return 'home';
+ if(/打架|棒球場|大造勢|動員|造勢/.test(title))return 'rally';
+ return 'studio';}
+function setScene(name){if(!SCENE_NAMES[name])return;if(game&&(game.phase==='chooseCard'||game.phase==='exitOffice')&&name!=='hq')return;SCENE=name;if(game){game.scene=name;save();}buildScene();player.x=0;player.z=8;player.dir=Math.PI;camera.yaw=.30;camera.pitch=.41;camera.dist=18;updateSceneIndicator();updateGateButton();updatePlaceMarkers();drawMiniMap(performance.now())}
+function updateSceneIndicator(){if(!game)return;$('sceneName').textContent=SCENE_NAMES[SCENE];$('minimapTitle').childNodes[0].textContent=SCENE==='hq'?'總部樓層圖 ':'場景位置圖 ';$('sceneReturn').classList.toggle('hidden',SCENE==='hq'||game.phase!=='play');$('btnTravel').disabled=game.phase!=='play';$('btnFund').disabled=game.phase!=='play';$('btnPoll').disabled=game.phase!=='play';$('btnInfo').disabled=game.phase!=='play'}
+function updateOfficeUI(){if(!game)return;const office=game.phase==='chooseCard'||game.phase==='exitOffice';$('topbar').classList.toggle('hidden',office);$('side').classList.toggle('hidden',office);$('btnTravel').disabled=office;$('btnFund').disabled=office;$('placeMarkers').classList.remove('hidden');updatePlaceMarkers();updateGateButton();}
+function exitChairOffice(){if(!game||game.phase!=='exitOffice')return;if(player.x>7.35||player.z<8.8||player.z>16.6){toast('請先走到主席辦公室左側發光出口');return}game.phase='play';game.scene='hq';player.x=5.5;player.z=11.5;camera.dist=15.8;camera.pitch=.39;buildScene();updateOfficeUI();updateSceneIndicator();updateObjective();save();showPartyIntro();toast('你已離開黨主席辦公室，正式展開百日選戰！')}
+function updatePlaceMarkers(){const root=$('placeMarkers');if(!root||!game||!currProj||!currView)return;const office=game.phase==='chooseCard'||game.phase==='exitOffice';root.innerHTML='';if(SCENE!=='hq')return;
+ const tags=[['黨主席辦公室',11.5,8.7],['財務長辦公室',-11.5,4.6],['組織主任辦公室',-11.5,-4.5]];
+ for(let [label,x,z] of tags){let p=project(x,3.2,z);if(!p?.visible)continue;let el=document.createElement('div');el.className='roomLabel';el.textContent=label;el.style.left=p.x+'px';el.style.top=p.y+'px';root.append(el)}
+ if(!office)return;let place=game.phase==='chooseCard'?[11,12]:[6.6,12.6],p=project(place[0],game.phase==='chooseCard'?1.9:2.7,place[1]);if(!p?.visible)return;let el=document.createElement('button');el.className='placeMark '+(game.phase==='exitOffice'?'exit':'');el.textContent=game.phase==='chooseCard'?'📁 桌上能力卡':'➜ 離開辦公室';el.style.left=p.x+'px';el.style.top=p.y+'px';el.onclick=game.phase==='chooseCard'?openCardFolder:exitChairOffice;root.append(el)}
+function travelMenu(){if(!game||game.phase!=='play')return;const buttons=Object.entries(SCENE_NAMES).map(([id,t])=>`<button class="choice" data-venue="${id}"><b>${id===SCENE?'✓ ':''}${t}</b><em>${id==='hq'?'與財務長、組織主任等幕僚進行選戰會議':'進入該場景，自由行走與觀察現場人物'}</em></button>`).join('');modalOpen('外勤行程','選擇目的地','<p>從競選總部出發，前往各種不同的選戰場合。劇情進行時，也會抵達相對應的場所。</p>',buttons);document.querySelectorAll('[data-venue]').forEach(b=>b.onclick=()=>{modalClose();setScene(b.dataset.venue);toast('抵達：'+SCENE_NAMES[SCENE])})}
+$('btnTravel').onclick=travelMenu;
+const FUND_METHODS=[
+ {name:'小額捐款',desc:'由一般支持者自願小額捐助，低成本、透明募集。',cost:35,low:115,high:235,voice:3,crisis:-2,risk:0},
+ {name:'直播斗內',desc:'主持政策問答直播，扣除平台處理與製作費。',cost:100,low:150,high:450,voice:5,crisis:1,risk:.08},
+ {name:'政治獻金',desc:'依法募集及申報一般政治獻金，需支付會計及查核成本。',cost:135,low:300,high:680,voice:2,crisis:-3,risk:.06},
+ {name:'大財團金主',desc:'接洽企業捐款，需完整查核資格與來源；拒絕附帶政策交換條件。',cost:185,low:480,high:1000,voice:1,crisis:5,risk:.32}
+];
+function openFundraising(){if(!game||game.phase!=='play')return;
+ const used=game.fundraisedAtTurn===game.turn;
+ modalOpen('財務長辦公室 · 經費管理','選戰資金募集',
+ `<p>黨中央現有資金：<b style="color:#f5d58d">${fmt(game.funds)} 萬元</b>。每個選戰階段最多進行一次募款。募集結果依本局機率抽選。</p><p>不同募款方式有不同前置成本、實際收入與查核風險。</p>`,
+ FUND_METHODS.map((m,i)=>`<button class="choice" data-fund="${i}" ${used||game.funds<m.cost?'disabled':''}><b>${m.name}</b><em>${m.desc}<br>作業支出 ${m.cost} 萬／預估收入 ${m.low}～${m.high} 萬${m.risk?`／未達預期機率 ${Math.round(m.risk*100)}%`:''}</em></button>`).join('')+`<button id="fundCancel" class="tinyBtn" style="margin-top:12px">返回遊戲</button>`);
+ $('fundCancel').onclick=modalClose;
+ document.querySelectorAll('[data-fund]').forEach(b=>b.onclick=()=>{
+   if(!game||game.phase!=='play'||game.fundraisedAtTurn===game.turn)return;
+   const m=FUND_METHODS[+b.dataset.fund];if(game.funds<m.cost)return;
+   const auditFail=Math.random()<m.risk;
+   const gross=auditFail?Math.round(m.low*.10):Math.round(m.low+Math.random()*(m.high-m.low));
+   const net=gross-m.cost;
+   game.funds=Math.min(30000,game.funds+net);
+   game.voice=clamp(game.voice+m.voice+(auditFail?-3:0),0,100);
+   game.crisis=clamp(game.crisis+m.crisis+(auditFail?7:0),0,100);
+   game.fundraisedAtTurn=game.turn;
+   game.history.push({title:'募集經費 · '+m.name,choice:(auditFail?'查核未通過／收入不如預期':'查核完成／募款入帳'),fundDelta:net});
+   save();updateHud();updatePoll();
+   if(checkBankruptcy('籌募經費作業費使黨中央破產'))return;
+   modalOpen('財務報告',m.name,`<p>${auditFail?'本次捐款因申報／資格查核問題，部分款項未能入帳。':'財務長已完成收款核對與紀錄。'}</p><div class="ballot">募集收入：${fmt(gross)} 萬元<br>作業支出：${fmt(m.cost)} 萬元<br>本階段資金變動：<b style="color:${net>=0?'#8bdbb3':'#f2acaa'}">${net>=0?'+':''}${fmt(net)} 萬元</b><br>目前黨中央資金：${fmt(game.funds)} 萬元</div>`,`<button class="mainBtn" id="fundDone">完成</button>`);
+   $('fundDone').onclick=modalClose;
+ });
+}
+$('btnFund').onclick=openFundraising;
+
+$('sceneReturn').onclick=()=>{setScene('hq');toast('已返回中央競選總部')};
+// 各種可行走的室內外選戰場景，以 WebGL 基本幾何打造舞台、攤販、攝影棚及群眾。
+function buildVenue(m,name){
+ const outdoors=['market','rally','mega'].includes(name),wood=name==='home';
+ m.box(0,-.18,0,43,.3,43,outdoors?'#696c62':wood?'#9d795b':'#374c5a');m.box(0,-.005,0,37,.03,37,outdoors?'#7e8173':wood?'#966d4f':'#33485b');
+ for(let x=-18;x<=18;x+=2)for(let z=-18;z<=18;z+=2)if((x+z)%4===0)m.box(x,.025,z,1.92,.009,1.92,outdoors?'#858578':wood?'#99775a':'#455a67');
+ if(!outdoors){m.box(0,3.6,-17.5,38,7,.5,'#718797');m.box(-18,3.4,0,.5,6.8,37,'#a7afb0');m.box(18,3.4,0,.5,6.8,37,'#a7b2b5');m.box(0,6.8,0,38,.3,37,'#6b7e8d');for(let x of [-11,-3,5,13])for(let z of [-12,0,12])light(m,x,z)}
+ if(name==='studio'){
+ // 政論節目攝影棚：藍綠白大 LED、U 型談話桌、棚燈、攝影機與座席
+ m.box(0,.22,-10,24,.4,12,'#253e59');m.box(0,3.7,-16.9,25,5.2,.35,'#162b44');m.box(0,3.6,-16.68,23,4.5,.18,'#236181');
+ for(let i=0;i<14;i++){m.box(-10.8+i*1.68,4.7,-16.55,1.48,.12,.2,['#397dd2','#35a97d','#bbc8c8'][i%3]);m.box(-10.8+i*1.68,1.8,-16.53,1.42,.16,.15,'#d7e0de')}
+ m.box(0,.73,-6,14,.45,2.2,'#45657e');m.box(0,1.02,-6,13.4,.11,2.0,'#bbb8ad');for(let x of [-5,-2,1,4])chair(m,x,-3.2,'#57718b');
+ for(let x of [-11.5,11.5]){m.cylinder(x,0,-3,.24,2.2,'#263b4d',12);m.box(x,2.6,-3,1.4,.92,1.2,'#1c2934');m.box(x,2.59,-2.36,.94,.63,.04,'#a6c6d9');m.cylinder(x,0,-2,.09,1.15,'#63717c')}
+ for(let i=0;i<6;i++)m.box(-9+i*3,5.7,-4.5,1.6,.1,.6,'#f7edc9');
+ for(let z=5;z<15;z+=2.8){m.box(0,.31,z,25,.55,1.1,'#435365');for(let x=-11;x<=11;x+=2.7)chair(m,x,z+1,'#667789')}
+ }
+ else if(name==='home'){
+ // 地方仕紳客廳：木質地板、沙發、茶几、窗、裝飾、字畫、植栽
+ m.box(0,.04,-2,20,.06,16,'#81604f');m.box(0,.72,-7.5,7.0,.7,2.4,'#8a8880');m.box(0,1.38,-8.7,7.4,1.3,.45,'#5c6a69');for(let x of [-2.5,0,2.5])m.box(x,.65,-7.2,2,.23,1.7,'#bdac91');
+ m.box(0,.55,-3.1,4,.18,2,'#735342');for(let x of [-1.6,1.6])for(let z of [-3.8,-2.4])m.box(x,.3,z,.15,.52,.15,'#433329');
+ for(let x of [-12,12]){m.box(x,1,-5,3,1.3,2.4,'#5b7781');m.box(x,1.73,-5,3,.25,2.4,'#e4d0a6');pot(m,x,8);m.box(x,2.9,-16.8,3.5,3.4,.1,'#baa287');m.box(x,3.0,-16.65,2.8,2.8,.03,'#587b86')}
+ m.box(0,3.2,-16.75,4.5,3.1,.13,'#9b7759');m.box(0,3.1,-16.58,3.5,2.25,.12,'#d4c2a3');m.box(0,3,-16.48,1.3,1.2,.1,'#526c7b');
+ for(let z=1;z<13;z+=3.4){m.box(-9,.85,z,2.2,.12,.7,'#886c52');m.box(-9,1.37,z,2.3,1.0,.13,'#767b71')}
+ }
+ else if(name==='market'){
+ // 雙排傳統市場攤位與遮陽棚、招牌、收銀與鮮魚蔬菜水果
+ m.box(0,-.04,0,11,.02,38,'#9b9681');for(let i=0;i<7;i++){
+ const z=-14+i*4.65;for(let side of [-1,1]){const x=side*10.7;
+ m.box(x,.72,z,6,.45,2.9,'#6b6961');m.box(x,2.38,z,6.5,.13,3.8,i%2?'#b66b5c':'#567e83');
+ for(let a=-2;a<=2;a++)m.box(x+a*.96,1.02,z,.7,.30,.82,['#cc8e51','#7c9d5e','#cea8a1','#d7bd6c','#98aa6b'][((i+a+5)%5)]);
+ for(let k of [-2.6,2.6]){m.cylinder(x+k,0,z-1.45,.07,2.5,'#61605c');m.cylinder(x+k,0,z+1.45,.07,2.5,'#61605c')}
+ m.box(x,1.9,z+1.57,3,.57,.11,['#a94b4b','#5c8798','#bf8d49'][i%3]);}}
+ for(let x=-2;x<=2;x+=1.5)for(let z of [-13,13])m.box(x,.035,z,.2,.01,2,'#dad4c0');for(let z of [-10,3,13])pot(m,17,z);
+ }
+ else if(name==='rally'||name==='mega'){
+ const huge=name==='mega';m.box(0,.83,-12,huge?29:23,1.65,huge?9:6,'#373c4b');m.box(0,4.4,-16.1,huge?27:21,5.9,.4,'#1c3548');m.box(0,4.55,-15.85,huge?24.5:18.5,5.0,.21,huge?'#27638a':'#396078');
+ for(let x=-15;x<=15;x+=3){m.cylinder(x,0,-16,.19,huge?10:8,'#4b5865');m.sphere(x,huge?9:7,-16,.31,['#d1b36b','#98bee1','#8ac2a2'][Math.abs(x)%3],5,8)}
+ for(let x=-12;x<=12;x+=2.2){m.box(x,2,-6,.14,4,.14,'#a9a6a0');m.box(x,4.3,-6,1.5,.16,.16,['#397dd2','#2cac79','#d6c6a9'][Math.abs(x*10)%3|0])}
+ m.box(0,1.94,-11,2.6,.13,1.2,'#c2a26b');m.box(0,2.5,-11,.75,.95,.24,'#aa8a59');
+ for(let z=-2;z<14;z+=3){for(let x=-13;x<=13;x+=3)m.box(x,.3,z,2.2,.55,1.15,'#4a5562');}
+ for(let x of [-15,15])for(let z of [0,8])pot(m,x,z);
+ }
+ // 場景四周的路燈或柱狀景物
+ for(let x of [-17,17])for(let z of [-13,10]){m.cylinder(x,0,z,.24,5.3,'#586b73');m.cylinder(x,5.3,z,.47,.23,'#c1d4d3')}
+}
+
+function init3D(){try{gl=canvas.getContext('webgl',{antialias:true,alpha:false,depth:true,powerPreference:'high-performance'})||canvas.getContext('experimental-webgl');if(!gl)return;let vs=compile(gl.VERTEX_SHADER,`attribute vec3 aPos;attribute vec3 aCol;uniform mat4 uView;uniform mat4 uProj;varying vec3 vCol;varying float fogVal;void main(){vec4 p=uView*vec4(aPos,1.0);gl_Position=uProj*p;vCol=aCol;fogVal=clamp((-p.z-18.0)/70.0,0.0,0.26);}`);let fs=compile(gl.FRAGMENT_SHADER,`precision mediump float;varying vec3 vCol;varying float fogVal;void main(){vec3 base=mix(vCol,vec3(0.65,0.73,0.77),fogVal);gl_FragColor=vec4(pow(base,vec3(0.94)),1.0);}`);shader=gl.createProgram();gl.attachShader(shader,vs);gl.attachShader(shader,fs);gl.linkProgram(shader);if(!gl.getProgramParameter(shader,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(shader));gl.useProgram(shader);posLoc=gl.getAttribLocation(shader,'aPos');colLoc=gl.getAttribLocation(shader,'aCol');viewLoc=gl.getUniformLocation(shader,'uView');projLoc=gl.getUniformLocation(shader,'uProj');gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.disable(gl.CULL_FACE);buildScene();makeMarkers()}catch(e){console.error('WebGL初始化失敗',e);gl=null}}
+function initFallback(){
+ if(gl)return;ctx2d=canvas.getContext('2d');if(ctx2d){buildScene();console.info('啟用軟體3D場景備援模式')}}
+function softwareTriangles(mesh,list){
+ const v=mesh.v,c=mesh.c;const W=innerWidth,H=innerHeight;
+ for(let i=0;i+8<v.length;i+=9){
+  let a=[],z=0,valid=true;
+  for(let j=0;j<3;j++){
+   let n=i+j*3,view=transform(currView,[v[n],v[n+1],v[n+2],1]);
+   if(view[2]>=-.16){valid=false;break}
+   const projected=transform(currProj,view);if(projected[3]<=.01){valid=false;break}
+   a.push([(.5+.5*projected[0]/projected[3])*W,(.5-.5*projected[1]/projected[3])*H]);z+=view[2]
+  }
+  if(!valid)continue;
+  if(a.every(p=>p[0]<-80)||a.every(p=>p[0]>W+80)||a.every(p=>p[1]<-80)||a.every(p=>p[1]>H+80))continue;
+  const area=Math.abs((a[1][0]-a[0][0])*(a[2][1]-a[0][1])-(a[2][0]-a[0][0])*(a[1][1]-a[0][1]));if(area<.6)continue;
+  const color=`rgb(${Math.round(Math.min(1,c[i])*255)},${Math.round(Math.min(1,c[i+1])*255)},${Math.round(Math.min(1,c[i+2])*255)})`;
+  list.push({a,z:z/3,color})
+ }
+}
+function drawSoftware(time){
+ if(!ctx2d||!staticCPU)return;
+ const w=innerWidth,h=innerHeight,ctx=ctx2d;
+ const gradient=ctx.createLinearGradient(0,0,0,h);gradient.addColorStop(0,'#a0bdcf');gradient.addColorStop(.65,'#7b97a7');gradient.addColorStop(1,'#3d4e5e');ctx.fillStyle=gradient;ctx.fillRect(0,0,w,h);
+ const list=[];
+ // 近距離地板方格在軟體渲染下仍提供空間深度感。
+ for(let x=-17;x<17;x+=4)for(let z=-17;z<17;z+=4){const floor=new Mesh();floor.quad([x,.036,z],[x+4,.036,z],[x+4,.036,z+4],[x,.036,z+4],((x+z)/4)%2?'#405666':'#34495b',1);softwareTriangles(floor,list)}
+ softwareTriangles(staticCPU,list);softwareTriangles(makeDynamic(time),list);
+ list.sort((a,b)=>a.z-b.z);
+ for(const q of list){ctx.fillStyle=q.color;ctx.beginPath();ctx.moveTo(q.a[0][0],q.a[0][1]);ctx.lineTo(q.a[1][0],q.a[1][1]);ctx.lineTo(q.a[2][0],q.a[2][1]);ctx.closePath();ctx.fill()}
+}
+function resize(){let pixel=Math.min(devicePixelRatio||1,1.7),w=Math.floor(innerWidth*pixel),h=Math.floor(innerHeight*pixel);if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px'}if(gl)gl.viewport(0,0,w,h)}
+function movePlayer(dt){if(!game||!['play','chooseCard','exitOffice'].includes(game.phase)||!$('modalLayer').classList.contains('hidden')||!$('setup').classList.contains('hidden')||!$('introBoard').classList.contains('hidden'))return;let ix=input.joyX,iz=-input.joyY;const keys=input.keys;ix+=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0);iz+=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0);const mag=Math.hypot(ix,iz);if(mag>.09){ix/=Math.max(1,mag);iz/=Math.max(1,mag);const dx=(Math.cos(camera.yaw)*ix-Math.sin(camera.yaw)*iz)*dt*4.65,dz=(-Math.sin(camera.yaw)*ix-Math.cos(camera.yaw)*iz)*dt*4.65;let nx=clamp(player.x+dx,-16.4,16.4),nz=clamp(player.z+dz,-15.8,15.7);for(let c of BOXCOLL){let dist=Math.hypot(nx-c.x,nz-c.z);if(dist<c.r+.34){nx=player.x;nz=player.z;break}}player.x=nx;player.z=nz;player.dir=Math.atan2(-dx,-dz);player.walk+=dt*4.2;if(game.phase==='exitOffice'&&SCENE==='hq'&&player.x<7.0&&player.z>9&&player.z<16.2)exitChairOffice()}}
+let last=0,frame=0,lastCountUi=0;function render(ts){requestAnimationFrame(render);let dt=Math.min((ts-last)/1000||0,.05);last=ts;
+if(!$('results').classList.contains('hidden')){
+ if(game&&game.phase==='count'&&!countDone&&ts-lastCountUi>(innerWidth<650?750:420)){lastCountUi=ts;showCount(clamp((ts-countStart)/90000,0,1))}
+ return;
+}
+resize();movePlayer(dt);if(gl){let angle=camera.yaw,pitch=camera.pitch,dist=camera.dist,focus=game?.phase==='chooseCard'?[player.x-.18,1.35,player.z-1.1]:[player.x,1.55,player.z];let eye=[focus[0]+Math.sin(angle)*dist*Math.cos(pitch),2.05+dist*Math.sin(pitch),focus[2]+Math.cos(angle)*dist*Math.cos(pitch)];currView=matLook(eye,focus);currProj=matPerspective(document.body.classList.contains('isMobile')&&innerHeight>innerWidth?Math.PI/2.65:Math.PI/3,canvas.width/canvas.height,.15,120);gl.clearColor(.62,.73,.76,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.useProgram(shader);gl.uniformMatrix4fv(viewLoc,false,currView);gl.uniformMatrix4fv(projLoc,false,currProj);drawMesh(staticGpu);const dynamic=makeDynamic(ts*.001);dynGpu=gpuMesh(dynamic,dynGpu);drawMesh(dynGpu);if(++frame%4===0){updateMarkers();drawMiniMap(ts)}}else if(ctx2d){let angle=camera.yaw,pitch=camera.pitch,dist=camera.dist;let focus=game?.phase==='chooseCard'?[player.x-.18,1.35,player.z-1.1]:[player.x,1.55,player.z];let eye=[focus[0]+Math.sin(angle)*dist*Math.cos(pitch),2.05+dist*Math.sin(pitch),focus[2]+Math.cos(angle)*dist*Math.cos(pitch)];currView=matLook(eye,focus);currProj=matPerspective(document.body.classList.contains('isMobile')&&innerHeight>innerWidth?Math.PI/2.65:Math.PI/3,canvas.width/canvas.height,.15,120);if(ts-softwareLast>55){softwareLast=ts;drawSoftware(ts*.001)}if(++frame%4===0){updateMarkers();drawMiniMap(ts)}}if(game&&game.phase==='count'&&!countDone){const p=(ts-countStart)/90000;if(ts-lastCountUi>145||p>=1){lastCountUi=ts;showCount(clamp(p,0,1))}}}
+function initControls(){let mobile=matchMedia('(pointer:coarse)').matches||innerWidth<720;document.body.classList.toggle('isMobile',mobile);window.addEventListener('resize',()=>document.body.classList.toggle('isMobile',matchMedia('(pointer:coarse)').matches||innerWidth<720));window.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement?.tagName))return;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Space'].includes(e.code))e.preventDefault();input.keys[e.code]=true;if(e.code==='KeyE'&&game&&$('modalLayer').classList.contains('hidden')){if(game.phase==='chooseCard')openCardFolder();else if(game.phase==='exitOffice'&&player.x<=7.4)exitChairOffice();else if(nearNpc)briefOpen(nearNpc.name);else if(nearVenueNpc)talkVenue(nearVenueNpc.id)}});window.addEventListener('keyup',e=>input.keys[e.code]=false);window.addEventListener('blur',()=>{input.keys={};input.joyX=input.joyY=0;$('stick').style.transform='translate(0,0)'});
+canvas.addEventListener('pointerdown',e=>{if(!game||e.target!==canvas)return;input.drag=true;input.pointer=e.pointerId;input.lx=e.clientX;input.ly=e.clientY;canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(!input.drag||e.pointerId!==input.pointer)return;camera.yaw+=(e.clientX-input.lx)*.007;camera.pitch=clamp(camera.pitch+(e.clientY-input.ly)*.005,.21,1.05);input.lx=e.clientX;input.ly=e.clientY});const stopLook=e=>{if(e.pointerId===input.pointer){input.drag=false;input.pointer=null}};canvas.addEventListener('pointerup',stopLook);canvas.addEventListener('pointercancel',stopLook);canvas.addEventListener('wheel',e=>{e.preventDefault();camera.dist=clamp(camera.dist+Math.sign(e.deltaY)*1,7,23)},{passive:false});
+const base=$('joystick'),stick=$('stick');let joyPointer=null;function setJoy(e){const rect=base.getBoundingClientRect(),cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;let dx=e.clientX-cx,dy=e.clientY-cy,mag=Math.hypot(dx,dy),lim=rect.width*.31;if(mag>lim){dx*=lim/mag;dy*=lim/mag}input.joyX=dx/lim;input.joyY=dy/lim;stick.style.transform=`translate(${dx}px,${dy}px)`}base.addEventListener('pointerdown',e=>{e.preventDefault();joyPointer=e.pointerId;base.setPointerCapture(e.pointerId);setJoy(e)});base.addEventListener('pointermove',e=>{if(e.pointerId===joyPointer){e.preventDefault();setJoy(e)}});for(let type of ['pointerup','pointercancel','lostpointercapture'])base.addEventListener(type,e=>{if(e.pointerId===joyPointer){joyPointer=null;input.joyX=input.joyY=0;stick.style.transform='translate(0,0)'}})}
+function doLoading(){const start=performance.now();let hold=0;function update(time){let elapsed=time-start,percentage;if(elapsed<1800)percentage=Math.min(99,Math.floor(99*elapsed/1800));else if(!hold){percentage=99;hold=time}else if(time-hold<5000)percentage=99;else percentage=100;$('loadNumber').textContent=percentage+'%';$('loadBar').style.width=percentage+'%';$('loadText').textContent=percentage===99?'即將出發，準備啟動選戰...':percentage===100?'競選總部已就緒！':percentage>68?'正在載入全台選區與候選人資料...':'正在建立競選總部...';if(percentage<100)requestAnimationFrame(update);else{setTimeout(()=>{if(['count','done','bankrupt'].includes(existingSave()?.phase)){game=existingSave();const previousPhase=game.phase;startWorld();if(previousPhase==='bankrupt')showBankruptcy(game.bankruptReason);else{beginCount();if(previousPhase==='done')showCount(1)}}else showSetup();$('loading').classList.add('hidden')},250)}}requestAnimationFrame(update)}
+init3D();initFallback();initControls();requestAnimationFrame(render);doLoading();
+</script>
+</body>
+</html>
