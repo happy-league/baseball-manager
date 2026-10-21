@@ -193,6 +193,18 @@ jobs:
           campaign_dir.mkdir(parents=True, exist_ok=True)
           (campaign_dir / "index.html").write_bytes(campaign_html)
 
+
+          # Brick Traveler V21, published independently at /brick-traveler/.
+          brick_src = Path("brick-traveler/index.html")
+          if not brick_src.exists():
+              raise SystemExit("Brick Traveler source not found")
+          brick_html = brick_src.read_bytes()
+          if not brick_html.startswith(b"<!DOCTYPE html>") or not brick_html.rstrip().endswith(b"</html>"):
+              raise SystemExit("Unexpected Brick Traveler HTML")
+          brick_dir = out / "brick-traveler"
+          brick_dir.mkdir(parents=True, exist_ok=True)
+          (brick_dir / "index.html").write_bytes(brick_html)
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
