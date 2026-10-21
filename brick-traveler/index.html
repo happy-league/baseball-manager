@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#111e30">
+<title>破磚的旅人｜V20 · 3D 城市冒險</title>
+<style>
+  :root{--glass:rgba(12,25,42,.78);--line:rgba(211,236,255,.30);--mint:#76f2e9;--pink:#ffc4da}
+  *{box-sizing:border-box}
+  html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#90bdd7;font-family:Inter,"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;color:white;overscroll-behavior:none}
+  body{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+  #scene{position:fixed;inset:0;width:100%;height:100%;z-index:2;display:block;touch-action:none}
+  #sky{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 48% 35% at 77% 28%,rgba(255,254,223,.88) 0%,rgba(255,240,205,.28) 43%,transparent 100%),linear-gradient(180deg,#639ac9 0%,#98c8dc 43%,#ffcfaa 76%,#d7a690 100%)}
+  #sky:before{content:"";position:absolute;top:19%;right:24%;width:125px;height:125px;border-radius:50%;background:rgba(255,250,215,.75);box-shadow:0 0 80px 50px rgba(255,247,210,.24);filter:blur(4px)}
+  #sky:after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 45%,rgba(124,176,185,.10) 75%,rgba(20,40,55,.50) 100%)}
+  .vignette{position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 34%,rgba(7,17,27,.22) 100%)}
+  .grain{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.12;background-image:url('data:image/svg+xml,%3Csvg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)" opacity=".25"/%3E%3C/svg%3E')}
+  #hud{position:fixed;z-index:10;left:max(14px,env(safe-area-inset-left));right:max(14px,env(safe-area-inset-right));top:max(14px,env(safe-area-inset-top));display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:10px;pointer-events:none}
+  .hudbox{border:1px solid var(--line);background:linear-gradient(145deg,rgba(10,25,44,.90),rgba(20,40,57,.67));border-radius:15px;padding:11px 16px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 9px 32px rgba(0,0,0,.18);min-height:72px}
+  .hudbox.center{text-align:center}.hudbox.right{text-align:right}
+  .hudlabel{font-size:10px;letter-spacing:.21em;font-weight:750;color:#9cc7dd}
+  .hudvalue{margin-top:4px;font-size:clamp(19px,2.8vw,31px);font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums;font-family:ui-monospace,"Arial Black",monospace;letter-spacing:.02em;text-shadow:0 2px 8px rgba(0,0,0,.25)}
+  #city-small{position:fixed;top:106px;left:max(17px,env(safe-area-inset-left));z-index:7;pointer-events:none;display:flex;align-items:center;gap:8px;font-size:10px;font-weight:800;letter-spacing:.18em;color:#fff;text-shadow:0 2px 5px #173148}
+  #city-small::before{content:"";display:block;width:22px;height:2px;background:var(--mint)}
+  #hud .hearts{letter-spacing:.07em;color:#ff8e9c;font-size:clamp(18px,2.6vw,29px);white-space:nowrap}
+  #actions{position:fixed;right:max(14px,env(safe-area-inset-right));top:110px;z-index:12;display:flex;gap:8px}
+  .mini{background:rgba(12,27,42,.70);border:1px solid rgba(255,255,255,.26);border-radius:11px;color:#fff;backdrop-filter:blur(12px);width:40px;height:40px;font-size:18px;cursor:pointer;display:grid;place-items:center;transition:background .15s}
+  .mini:active{background:#285168}.mini:focus-visible,.arrow:focus-visible,.primary:focus-visible{outline:3px solid #96e7ed;outline-offset:2px}
+  #controls{position:fixed;z-index:14;left:0;right:0;bottom:max(23px,env(safe-area-inset-bottom));pointer-events:none;display:flex;justify-content:space-between;padding:0 max(22px,env(safe-area-inset-left)) 0 max(22px,env(safe-area-inset-right))}
+  .arrow{width:clamp(80px,11vw,116px);height:clamp(76px,10vw,105px);background:linear-gradient(160deg,rgba(30,62,78,.88),rgba(9,27,44,.94));border:2px solid rgba(197,244,254,.66);color:white;cursor:pointer;border-radius:23px;pointer-events:auto;display:grid;place-items:center;font-size:46px;font-weight:950;box-shadow:0 9px 30px #10202a70,inset 0 1px 0 rgba(255,255,255,.28);touch-action:none;transition:transform .08s,background .08s,border-color .08s}
+  .arrow span{transform:translateY(-3px);filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+  .arrow.pressed,.arrow:active{transform:scale(.92);background:linear-gradient(145deg,#31a9b7,#17465a);border-color:#99fdf9;box-shadow:0 0 25px #70e9fa5c}
+  #progress{position:fixed;bottom:max(13px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:9;text-align:center;pointer-events:none;color:#d4faff;text-shadow:0 1px 5px #0a2730;font-size:10px;font-weight:800;letter-spacing:.2em;white-space:nowrap;opacity:.88}
+  #bar{width:130px;height:3px;background:rgba(255,255,255,.24);margin:7px auto 0;overflow:hidden;border-radius:12px}
+  #barfill{width:0%;height:100%;background:linear-gradient(90deg,#78f2f0,#f4f4fe);transition:width .2s}
+  #flash{position:fixed;z-index:8;pointer-events:none;inset:0;opacity:0;background:radial-gradient(ellipse at 50% 55%,rgba(255,255,255,.22),transparent 67%)}
+  #toast{position:fixed;z-index:16;top:30%;left:50%;transform:translate(-50%,10px);font-family:ui-monospace,monospace;font-size:clamp(25px,7vw,48px);font-weight:950;color:#fff;text-shadow:0 4px 0 #154458,0 5px 20px #0c243e;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+  #toast.show{opacity:1;transform:translate(-50%,0)}
+  #overlay{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:linear-gradient(180deg,rgba(4,17,31,.22),rgba(5,16,28,.73));padding:20px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);transition:opacity .25s;}
+  #overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
+  .modal{width:min(460px,100%);padding:37px 30px 30px;background:linear-gradient(150deg,rgba(14,32,49,.94),rgba(15,34,47,.86));border:1px solid rgba(217,245,255,.30);box-shadow:0 28px 100px #020b1ab8,inset 0 1px rgba(255,255,255,.2);border-radius:26px;text-align:center}
+  .eyebrow{font-size:12px;color:#83e5ed;letter-spacing:.35em;font-weight:850;text-transform:uppercase}
+  .title{font-size:clamp(39px,8vw,60px);line-height:1.12;margin:12px 0 11px;font-weight:950;letter-spacing:-.07em}
+  .title b{color:#a2f4f2}.sub{font-size:15px;color:#b7d5e1;letter-spacing:.09em;line-height:1.7}
+  .skyline{height:80px;margin:24px auto 16px;display:flex;gap:3px;align-items:flex-end;justify-content:center;opacity:.85}
+  .building{width:20px;background:linear-gradient(135deg,#73bbc0,#28526d);border:1px solid #a7e4e8;border-bottom:0;border-radius:2px 2px 0 0;position:relative}
+  .building::before{content:"";position:absolute;inset:6px 4px;background:repeating-linear-gradient(180deg,#d8f9f791 0px,#d8f9f791 2px,transparent 2px,transparent 9px)}
+  .building.tower{width:25px;clip-path:polygon(40% 0%,60% 0%,60% 9%,100% 15%,88% 100%,12% 100%,0 15%,40% 9%)}
+  .primary{border:0;border-radius:13px;background:linear-gradient(100deg,#81ebe7,#a6fcdb);color:#0c3245;font-weight:950;font-size:17px;letter-spacing:.07em;padding:17px 32px;min-width:230px;cursor:pointer;box-shadow:0 9px 30px rgba(53,214,219,.23)}
+  .primary:active{transform:scale(.98)}
+  #finalscore{display:none;color:#c8e6eb;font:800 25px ui-monospace,monospace;margin:10px 0 23px}
+  #hint{font-size:11px;color:#92abb9;margin-top:17px;letter-spacing:.05em}
+  #error{position:fixed;inset:0;display:none;z-index:40;background:#16243b;padding:38px 25px;line-height:1.7}
+  @media(max-width:600px){#hud{gap:6px;top:max(9px,env(safe-area-inset-top));left:8px;right:8px}.hudbox{padding:9px 8px;min-height:61px;border-radius:10px}.hudlabel{font-size:9px;letter-spacing:.06em}.hudvalue{font-size:18px;margin-top:6px}#hud .hearts{font-size:17px;letter-spacing:-.05em}#city-small{top:89px;font-size:9px}#actions{top:87px;right:9px}.mini{width:36px;height:36px}.arrow{width:86px;height:86px;border-radius:20px;font-size:45px}#controls{bottom:max(25px,env(safe-area-inset-bottom));padding:0 12px}#progress{bottom:max(20px,env(safe-area-inset-bottom));font-size:8px}#bar{width:85px}.modal{padding:32px 22px}.sub{font-size:13px}}
+  @media(max-height:540px){#city-small{display:none}#actions{top:85px}#controls{bottom:12px}.arrow{width:75px;height:69px}#progress{display:none}.modal{padding:17px}.skyline{display:none}.title{font-size:33px;margin:6px}.sub{font-size:12px}.primary{padding:10px}}
+
+  /* New 3D trip loading and level selection, over the unchanged Taipei scene */
+  #loading{position:fixed;inset:0;z-index:60;background:radial-gradient(ellipse at 75% 12%,#274c67,#0b1b30 57%,#081425 100%);display:grid;place-items:center;padding:20px;text-align:center;overflow:hidden;transition:opacity .5s,visibility .5s}
+  #loading.off{opacity:0;visibility:hidden;pointer-events:none}
+  #loading::before{content:"";position:absolute;inset:-30%;background:repeating-radial-gradient(circle at 50% 40%,transparent 0,transparent 45px,rgba(133,225,222,.065) 46px,transparent 49px);animation:loadingDrift 18s linear infinite}
+  @keyframes loadingDrift{from{transform:rotate(0)}to{transform:rotate(30deg)}}
+  .loadcard{position:relative;width:min(510px,100%);padding:30px 18px;z-index:1}
+  .loadmark{font-size:39px;filter:drop-shadow(0 10px 12px #0007);animation:loadFloat 2.5s ease-in-out infinite}
+  @keyframes loadFloat{50%{transform:translateY(-11px)}}
+  .loadeyebrow{font-size:11px;letter-spacing:.32em;color:#7fdedc;font-weight:850}
+  .loadtitle{font-size:clamp(40px,9vw,68px);font-weight:950;margin:15px 0 8px;letter-spacing:.06em;text-shadow:0 5px 18px #0009}
+  .loadsub{font-size:13px;color:#bad7e4;letter-spacing:.24em;margin-bottom:40px}
+  .loadtrack{height:13px;border:1px solid #8bcfd682;border-radius:999px;overflow:hidden;background:#091a30;box-shadow:inset 0 3px 9px #0008,0 4px 20px #03243573}
+  #loadfill{width:0;height:100%;background:linear-gradient(90deg,#5d9eae,#86f2e6 75%,#d0ffee);border-radius:99px;box-shadow:0 0 24px #7bebdc80;transition:width .16s linear}
+  .loadmeta{display:flex;justify-content:space-between;gap:8px;margin-top:14px;font-size:13px;color:#d1e9ef;font-weight:750}
+  #loadpct{font:900 22px ui-monospace,monospace;color:#8cf3e8}
+  #levelselect{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:clamp(14px,3vw,36px);background:linear-gradient(155deg,#0c2135e0,#0e2941df);backdrop-filter:blur(11px);-webkit-backdrop-filter:blur(11px);overflow-y:auto;transition:opacity .3s,visibility .3s}
+  #levelselect.hidden{opacity:0;visibility:hidden;pointer-events:none}
+  .selectpanel{width:min(780px,100%);margin:auto;border:1px solid rgba(194,233,243,.25);border-radius:26px;padding:clamp(20px,3.5vw,38px);background:linear-gradient(140deg,rgba(15,37,58,.92),rgba(9,24,42,.96));box-shadow:0 22px 90px #0007;text-align:center}
+  .brandtag{font-weight:850;letter-spacing:.24em;font-size:11px;color:#83dedb}
+  .selecttitle{font-weight:950;font-size:clamp(29px,6vw,45px);letter-spacing:.08em;margin:9px 0 4px}
+  .selectsubtitle{font-size:13px;letter-spacing:.17em;color:#b2cfde;margin-bottom:22px}
+  .stagegrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+  .stagecard{position:relative;min-width:0;min-height:118px;border-radius:16px;border:1px solid rgba(179,222,231,.29);background:linear-gradient(145deg,rgba(48,71,96,.65),rgba(13,31,47,.9));color:#b9c9d1;padding:13px 8px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:7px;cursor:pointer;transition:transform .15s,border-color .15s,background .15s;font-family:inherit}
+  .stagecard.active{border:2px solid #7ce7df;color:white;background:linear-gradient(145deg,#246679,#18394b);box-shadow:0 0 26px #7ce4e73b,inset 0 0 18px #99f4ee18}
+  .stagecard.active:hover{transform:translateY(-3px);border-color:#d0fffc}
+  .stage-num{font:900 clamp(20px,3vw,27px) ui-monospace,monospace;letter-spacing:.02em}
+  .stage-city{font-size:12px;font-weight:800}
+  .stage-status{font-size:10px;letter-spacing:.04em;color:#aec2cf}
+  .stagecard.active .stage-status{color:#91f3e9}
+  .stagecard.future{opacity:.73}
+  .stagecard.future:active{transform:scale(.97)}
+  .selectfooter{margin-top:23px;font-size:12px;color:#8bb1bf}
+  .link-button{display:block;margin:13px auto 0;border:0;color:#a2ebef;background:none;font-size:13px;font-weight:800;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+  .link-button:hover{color:#fff}
+  .stagecard:focus-visible,.link-button:focus-visible{outline:3px solid #aaf9f6;outline-offset:3px}
+  @media(max-width:600px){.arrow{width:clamp(67px,19.5vw,78px)!important;height:clamp(68px,19.5vw,78px)!important;border-radius:18px!important;font-size:40px!important}#controls{padding:0 12px;bottom:max(19px,env(safe-area-inset-bottom))}.stagegrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stagecard{min-height:85px;gap:3px;padding:8px}.stage-num{font-size:23px}.stage-city{font-size:12px}.selectpanel{padding:20px 17px}.selecttitle{font-size:29px;margin:6px 0 2px}.selectsubtitle{margin-bottom:15px}.selectfooter{margin-top:15px}.loadsub{margin-bottom:31px}}
+  @media(max-height:620px){#levelselect{align-items:flex-start}.selectpanel{padding:17px}.stagecard{min-height:73px}.selecttitle{font-size:28px}.selectsubtitle{margin-bottom:12px}}
+
+  /* Daylight edition: pale porcelain game controls over the same 3D city. */
+  :root{--glass:rgba(255,255,255,.80);--line:rgba(64,131,155,.22);--mint:#53bbc5;--pink:#f9bbd1}
+  html,body{color:#203f57;background:#bbdff0}
+  #sky{background:radial-gradient(ellipse 55% 40% at 72% 30%,rgba(255,249,227,.91),transparent 64%),linear-gradient(180deg,#a9d8f1 0%,#dcf0f7 50%,#fff4dc 80%,#e7d9c4 100%)}
+  #sky:after{background:linear-gradient(to bottom,transparent 54%,rgba(242,251,251,.14) 79%,rgba(58,123,141,.13) 100%)}
+  .vignette{background:radial-gradient(ellipse at center,transparent 50%,rgba(53,113,149,.10) 100%)}
+  .grain{opacity:.04}
+  .hudbox{background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(231,250,255,.84));border-color:rgba(89,157,176,.37);box-shadow:0 5px 24px #5d93a53b}
+  .hudlabel{color:#577f94}.hudvalue{color:#214c67;text-shadow:none}
+  #hud .hudbox .hudvalue span{color:#4c7c8e!important}
+  #city-small{color:#285d73;text-shadow:0 1px 3px #fff}#city-small::before{background:#3cbac4}
+  .mini{background:rgba(255,255,255,.85);border:1px solid #80bfce;color:#2b637b;box-shadow:0 4px 14px #4180962d}
+  .mini:active{background:#d9f7f8}
+  .arrow{background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(214,244,249,.96));border-color:rgba(74,150,176,.76);color:#235b78;box-shadow:0 7px 24px #517d924a,inset 0 1px 0 #fff}
+  .arrow span{filter:none}
+  .arrow.pressed,.arrow:active{background:linear-gradient(145deg,#adecf1,#d8f8f1);border-color:#249eae;box-shadow:0 3px 14px #67c2ce91}
+  #toast{color:#2f8098;text-shadow:0 2px 8px #ffffff}
+  #overlay{background:linear-gradient(175deg,rgba(238,250,252,.45),rgba(230,249,254,.70));backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+  .modal{background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(230,249,255,.94));border:1px solid #b0dfe9;box-shadow:0 24px 80px #4d8fab50}
+  .eyebrow{color:#3a9ca9}.title{color:#285b75}.title b{color:#269bab}.sub{color:#628797}#finalscore{color:#335f74}#hint{color:#7291a0}
+  .primary{background:linear-gradient(105deg,#75d7e4,#b8f1e3);color:#15415a;box-shadow:0 7px 24px #5dbccc5b}
+  .link-button{color:#347f97}.link-button:hover{color:#1b5572}
+  #loading{background:linear-gradient(160deg,rgba(238,251,255,.31),rgba(248,253,250,.48));backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px)}
+  #loading::before{background:repeating-radial-gradient(circle at 50% 40%,transparent 0,transparent 44px,rgba(67,157,176,.07) 45px,transparent 48px)}
+  .loadcard{background:linear-gradient(155deg,rgba(255,255,255,.92),rgba(235,250,252,.88));border:1px solid rgba(100,168,184,.30);border-radius:27px;box-shadow:0 20px 80px #6196b33d;padding:35px 30px 30px}
+  .loadmark{filter:drop-shadow(0 3px 7px #6db7cb71)}.loadeyebrow{color:#3b90a2}
+  .loadtitle{color:#225c75;text-shadow:0 2px 0 #fff}.loadsub{color:#608da0;margin-bottom:21px}
+  .loadcount{display:flex;align-items:baseline;justify-content:space-between;gap:15px;margin:20px 0 9px}
+  .loadcount-caption{color:#5b879c;font-size:12px;font-weight:800;letter-spacing:.23em}
+  #loadpct{font:900 clamp(27px,6vw,38px) ui-monospace,monospace;color:#2c96a9;font-variant-numeric:tabular-nums;line-height:1.1}
+  .loadtrack{height:15px;background:#d9edf3;border:1px solid #9fcdd7;box-shadow:inset 0 2px 5px #7cabb02d}
+  #loadfill{background:linear-gradient(90deg,#82cfe4,#55bfc6 70%,#80dcc7);box-shadow:none}
+  .loadmeta{color:#4f7c8f;justify-content:center;margin-top:17px}
+  #levelselect{background:linear-gradient(175deg,rgba(233,248,255,.31),rgba(248,252,249,.45));backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px)}
+  .selectpanel{background:linear-gradient(140deg,rgba(255,255,255,.92),rgba(232,247,251,.89));border:1px solid rgba(101,166,186,.41);box-shadow:0 20px 80px #5f9caf3d}
+  .brandtag{color:#398d9f}.selecttitle{color:#245977}.selectsubtitle{color:#6995a5}
+  .stagecard{background:linear-gradient(145deg,rgba(244,251,254,.93),rgba(211,234,241,.80));border:1px solid #9bbfcd;color:#547588}
+  .stagecard.active{background:linear-gradient(140deg,#9cdae7,#d9f9f2);border-color:#46adbb;color:#1e536a;box-shadow:0 3px 15px #70bacc52}
+  .stagecard.active:hover{border-color:#268fa6}
+  .stage-status{color:#7e9bab}.stagecard.active .stage-status{color:#257a90}
+  .selectfooter{color:#6f90a0}
+  #pinktip{position:fixed;inset:0;z-index:48;display:grid;place-items:center;padding:18px;background:rgba(222,245,251,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:opacity .22s,visibility .22s}
+  #pinktip.hidden{opacity:0;visibility:hidden;pointer-events:none}
+  .tipcard{width:min(450px,100%);border-radius:24px;border:1px solid #f2d5e1;background:linear-gradient(150deg,#ffffff,#f2fcff);padding:32px 24px;text-align:center;box-shadow:0 20px 60px #5896b54b}
+  .tip-badge{display:inline-block;border-radius:40px;background:#ffe1ed;color:#af4c76;letter-spacing:.21em;font-size:13px;font-weight:900;padding:8px 21px}
+  .tipvisual{display:flex;justify-content:center;align-items:center;gap:14px;margin:23px 0 16px}
+  .samplebrick{display:block;width:59px;height:32px;border-radius:6px;box-shadow:inset 0 5px #ffffff97,0 5px 0 #95b2ba;border:1px solid #ffffffcf}
+  .pinksample{background:#ffc1da}.bluesample{background:#b4edff}.tiparrow{color:#73a8bb;font-size:22px;font-weight:900}.tipcheck{font-size:31px;font-weight:900;color:#4fb3aa}
+  .tipcard h2{color:#235a75;font-size:24px;margin:5px 0 13px}
+  .tipcard p{font-size:15px;line-height:2;color:#537789;margin:0 0 24px}
+  .tipcard p strong{color:#d4538b}.hlblue{color:#239ac1;font-weight:800}
+  #tipok{width:100%;max-width:320px;min-width:0}
+  @media(max-width:600px){
+    .arrow{width:clamp(60px,17.6vw,71px)!important;height:clamp(62px,17.6vw,71px)!important;border-radius:16px!important;font-size:35px!important}
+    #controls{padding:0 11px;bottom:max(19px,env(safe-area-inset-bottom))}
+    .loadcard{padding:31px 23px}.loadsub{margin-bottom:18px}
+    .hudbox{min-height:58px}.hudvalue{font-size:19px}
+  }
+
+  /* Updating lives is visual-only: no loss toast blocking the play area. */
+  #lives.lose-pulse{animation:lifePulse .42s ease-out}
+  @keyframes lifePulse{0%{transform:scale(1);color:#214c67}35%{transform:scale(1.25);color:#e0758a}100%{transform:scale(1);color:#214c67}}
+  /* Standalone pastel 3D brick-breaker demo, no city landmarks in menus. */
+  #preview{position:fixed;inset:0;width:100%;height:100%;z-index:34;display:block;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease,visibility .35s}
+  body.menu-backdrop #preview{opacity:1;visibility:visible}
+  body.menu-backdrop #scene,body.menu-backdrop #hud,body.menu-backdrop #city-small,
+  body.menu-backdrop #actions,body.menu-backdrop #controls,body.menu-backdrop #toast,
+  body.menu-backdrop #flash,body.menu-backdrop .vignette,body.menu-backdrop .grain{opacity:0;visibility:hidden;pointer-events:none}
+  body.menu-backdrop #sky{opacity:0}
+  #loading{background:linear-gradient(162deg,rgba(238,251,255,.18),rgba(239,250,249,.30));backdrop-filter:none;-webkit-backdrop-filter:none}
+  #levelselect{background:linear-gradient(170deg,rgba(236,251,255,.17),rgba(242,252,248,.31));backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px)}
+  @media(max-width:600px){
+    .selectpanel{background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(235,250,253,.85))}
+  }
+
+ /* V8 · Deep navy theme with a level-dependent night/dusk horizon */
+ :root{--glass:rgba(8,19,39,.86);--line:rgba(137,202,235,.34);--mint:#67d9e3}
+ html,body{background:#081428;color:#eef8ff}
+ #sky{background:radial-gradient(ellipse 40% 30% at 64% 34%,rgba(70,109,166,.12),transparent 70%),linear-gradient(180deg,#050d22 0%,#111f3c 49%,#233a5a 82%,#091222 100%)}
+ #sky::before{top:14%;right:22%;width:95px;height:95px;background:rgba(206,221,255,.12);box-shadow:0 0 85px 30px rgba(152,169,255,.12)}
+ #sky::after{background:linear-gradient(180deg,transparent 55%,rgba(3,12,27,.35))}
+ body.stage-taipei #sky{background:radial-gradient(ellipse 67% 43% at 68% 22%,rgba(255,218,145,.67) 0%,rgba(252,155,111,.39) 42%,transparent 77%),linear-gradient(180deg,#785170 0%,#c37480 22%,#efa97f 42%,#7d5874 55%,#303652 77%,#141d34 100%)}
+ body.stage-taipei #sky::before{top:13%;right:21%;width:114px;height:114px;background:rgba(255,218,150,.81);box-shadow:0 0 93px 48px rgba(255,171,103,.34)}
+ body.stage-taipei #sky::after{background:linear-gradient(180deg,rgba(255,176,114,.11) 0%,transparent 44%,rgba(28,35,62,.12) 65%,rgba(8,16,35,.45) 100%)}
+ body.stage-hongkong #sky{background:radial-gradient(ellipse 50% 34% at 68% 31%,rgba(255,251,215,.92),transparent 74%),linear-gradient(180deg,#5aaddf 0%,#a9d9f0 49%,#e1f5f9 81%,#c8dfd9 100%)}
+ body.stage-hongkong #sky::before{top:17%;right:23%;width:105px;height:105px;background:rgba(255,252,225,.74);box-shadow:0 0 90px 44px rgba(255,245,191,.27)}
+ body.stage-hongkong #sky::after{background:linear-gradient(180deg,transparent 56%,rgba(180,225,231,.06) 76%,rgba(67,117,147,.12) 100%)}
+  body.stage-amsterdam #sky{background:radial-gradient(ellipse 58% 34% at 68% 25%,rgba(255,255,226,.66),transparent 77%),linear-gradient(180deg,#79b8e4 0%,#abd9ed 46%,#e2f0e5 76%,#91b6bc 100%)}
+  body.stage-amsterdam #sky::before{top:14%;right:19%;width:118px;height:118px;background:rgba(255,252,225,.78);box-shadow:0 0 86px 35px rgba(250,242,194,.39)}
+  body.stage-amsterdam #sky::after{background:linear-gradient(180deg,transparent 58%,rgba(69,131,160,.12) 90%)}
+  body.stage-singapore #sky{background:radial-gradient(ellipse 60% 45% at 72% 43%,rgba(255,240,178,.32),transparent 70%),linear-gradient(180deg,#397eaf 0%,#7bbfdd 45%,#c2e5de 80%,#679dac 100%)}
+ body.stage-singapore #sky::before{top:16%;right:17%;width:118px;height:118px;background:rgba(255,247,196,.72);box-shadow:0 0 82px 40px rgba(255,239,178,.20)}
+ body.stage-tokyo #sky{background:radial-gradient(ellipse at 56% 55%,rgba(141,79,178,.24),transparent 61%),linear-gradient(180deg,#0b102e 0%,#252352 49%,#43335e 79%,#0b1835 100%)}
+ body.stage-seoul #sky{background:radial-gradient(ellipse 45% 42% at 78% 47%,rgba(146,185,231,.20),transparent 75%),linear-gradient(180deg,#102340 0%,#244467 42%,#547b98 78%,#1b344c 100%)}
+ body.stage-seoul #sky::before{top:25%;right:17%;background:rgba(235,243,255,.29);box-shadow:0 0 70px 24px rgba(192,224,249,.13)}
+ .vignette{background:radial-gradient(ellipse at center,transparent 37%,rgba(2,5,18,.31) 100%)}
+ .grain{opacity:.07}
+ .hudbox{background:linear-gradient(150deg,rgba(11,25,52,.95),rgba(18,40,65,.90));border-color:rgba(167,216,241,.28);box-shadow:0 7px 24px #020c238f}
+ .hudlabel{color:#9ac9e1}.hudvalue{color:#f1faff;text-shadow:0 2px 7px #0007}
+ #hud .hudbox .hudvalue span{color:#a2deee!important}
+ #city-small{color:#e8f5ff;text-shadow:0 2px 7px #030819}#city-small::before{background:#7ce6e4}
+ .mini{background:rgba(14,36,65,.90);border:1px solid #6598b3;color:#f3fbff;box-shadow:0 4px 18px #040d23aa}
+ .mini:active{background:#31597d}
+ .arrow{background:linear-gradient(150deg,rgba(34,65,97,.96),rgba(12,32,64,.99));border-color:rgba(151,214,238,.80);color:#f4fbff;box-shadow:0 7px 24px #010819aa,inset 0 1px 0 #9fdbf060}
+ .arrow.pressed,.arrow:active{background:linear-gradient(145deg,#227e91,#15365b);border-color:#b0fcff;box-shadow:0 3px 20px #328aab70}
+ #overlay{background:linear-gradient(170deg,rgba(5,12,32,.68),rgba(7,15,33,.80));backdrop-filter:blur(5px)}
+ .modal{background:linear-gradient(150deg,rgba(15,31,55,.98),rgba(8,22,41,.98));border:1px solid #507b9b;box-shadow:0 20px 80px #000b}
+ .eyebrow{color:#8de4ee}.title{color:#f2faff}.title b{color:#9ee6ec}.sub{color:#a7c9db}#finalscore{color:#c9eafa}#hint{color:#a6bbcf}
+ .primary{background:linear-gradient(105deg,#79e1e5,#abf6e4);color:#12334c;box-shadow:0 8px 24px #3da1b350}
+ .link-button{color:#95d8ed}.link-button:hover{color:white}
+ #loading{background:linear-gradient(162deg,rgba(4,12,28,.42),rgba(4,12,27,.64));backdrop-filter:blur(.8px)}
+ #loading::before{background:repeating-radial-gradient(circle at 50% 40%,transparent 0,transparent 44px,rgba(83,169,197,.075) 45px,transparent 48px)}
+ .loadcard{background:linear-gradient(145deg,rgba(8,27,52,.91),rgba(11,31,53,.92));border:1px solid rgba(120,185,212,.38);box-shadow:0 24px 82px #0009}
+ .loadmark{filter:drop-shadow(0 3px 9px #000b)}.loadeyebrow{color:#9cdfe9}
+ .loadtitle{color:#f2fbff;text-shadow:0 5px 17px #000c}.loadsub{color:#a9cddd}
+ .loadcount-caption{color:#b7d1df}#loadpct{color:#95f5e8}
+ .loadtrack{background:#102744;border-color:#4f8da6;box-shadow:inset 0 2px 5px #0009}#loadfill{background:linear-gradient(90deg,#4096bd,#75dcd9,#b2f9dc)}
+ .loadmeta{color:#c6e4ec}
+ #levelselect{background:linear-gradient(170deg,rgba(7,18,38,.41),rgba(8,15,31,.68));backdrop-filter:blur(1px)}
+ .selectpanel{background:linear-gradient(150deg,rgba(9,29,55,.93),rgba(8,24,47,.94));border:1px solid rgba(123,192,219,.38);box-shadow:0 22px 82px #0009}
+ .brandtag{color:#88e3e9}.selecttitle{color:#f3fcff}.selectsubtitle{color:#b1d0df}
+ .stagecard{background:linear-gradient(145deg,rgba(33,57,86,.9),rgba(13,32,54,.95));border:1px solid #456d8a;color:#a8c8d8}
+ .stagecard.active{background:linear-gradient(145deg,#174e69,#203a60);border-color:#76cfdc;color:#f5ffff;box-shadow:0 3px 18px #296b9470}
+ .stagecard.active:hover{border-color:#b1faff}.stage-status{color:#9fb5c3}.stagecard.active .stage-status{color:#9cecea}
+ .selectfooter{color:#a7c4d6}
+ #pinktip,#greentip{background:rgba(5,13,30,.78)!important;backdrop-filter:blur(8px)}
+ .tipcard{background:linear-gradient(145deg,#112847,#0c1e3a);border:1px solid #6e9ab9;box-shadow:0 25px 75px #000a}
+ .tipcard h2{color:#f3fbff}.tipcard p{color:#c2ddec}.tipcard p strong{color:#f1accc}
+ .tip-badge{background:#633855;color:#ffe1ed}.tiparrow{color:#90c2d6}
+ #lives.lose-pulse{animation:lifePulseDark .42s ease-out}
+ @keyframes lifePulseDark{0%{transform:scale(1);color:#f5faff}35%{transform:scale(1.25);color:#ff8192}100%{transform:scale(1);color:#f5faff}}
+ /* Falling orange power-ups appear in world space with an A–D overlay. */
+ #orbLabels{position:fixed;inset:0;z-index:11;pointer-events:none;overflow:hidden}
+ .orb-letter{position:absolute;transform:translate(-50%,-50%);display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:radial-gradient(circle at 30% 23%,#fff4d1,#ffbc52 48%,#e66c21 93%);color:#54240b;font:900 14px ui-monospace,monospace;border:1px solid #fff1cf;box-shadow:0 0 20px #ff9e4188,0 4px 9px #17080d99;will-change:left,top}
+ #effectstatus{position:fixed;z-index:15;top:max(88px,calc(env(safe-area-inset-top) + 75px));left:50%;transform:translateX(-50%);display:flex;gap:6px;justify-content:center;pointer-events:none;white-space:nowrap}
+ .active-effect{padding:6px 9px;background:#162c4cee;border:1px solid #d58b4b;border-radius:22px;box-shadow:0 4px 14px #0007;color:#ffd8a1;font-size:11px;font-weight:850}
+ #greentip{position:fixed;inset:0;z-index:49;display:grid;place-items:center;padding:16px;transition:opacity .22s,visibility .22s}
+ #greentip.hidden{opacity:0;visibility:hidden;pointer-events:none}
+ .power-rules{display:grid;grid-template-columns:32px 1fr;gap:8px 10px;margin:15px auto 20px;max-width:325px;text-align:left;align-items:center;color:#d8ecf5;font-size:14px;line-height:1.35}
+ .power-letter{display:grid;place-items:center;height:32px;width:32px;border-radius:50%;background:linear-gradient(135deg,#ffe4a5,#f19d4e);border:1px solid #fff2d3;color:#633311;font-weight:950}
+ .green-legend{display:flex;justify-content:center;gap:12px;align-items:center;margin:16px 0 8px}
+ .green-cube{width:60px;height:29px;border-radius:6px;border:1px solid #e7fff0;background:linear-gradient(165deg,#c8ffd0,#81dfa6);box-shadow:0 3px 0 #377b55}
+ .orange-dot{width:27px;height:27px;border-radius:50%;background:radial-gradient(circle at 26% 24%,#fff4c8,#ffa543 70%,#c96029);border:1px solid #fff4cc;box-shadow:0 0 12px #ff9e5488}
+ #greentip .tipcard{max-height:min(92dvh,720px);overflow-y:auto}#greentip .tipcard p{margin-bottom:7px}
+ @media(max-width:600px){#effectstatus{top:max(72px,calc(env(safe-area-inset-top) + 67px))}.active-effect{font-size:10px;padding:5px 7px}.orb-letter{width:24px;height:24px}}
+ body.menu-backdrop #orbLabels,body.menu-backdrop #effectstatus{opacity:0;visibility:hidden}
+
+
+  /* Animated 3D breaker behind the loading progress. */
+  #loading{
+    display:flex;align-items:flex-start;justify-content:center;
+    padding:clamp(16px,4.3vh,42px) 14px 14px;
+    background:linear-gradient(180deg,rgba(3,12,29,.72) 0%,rgba(6,19,38,.45) 30%,rgba(5,16,34,.06) 62%,rgba(4,14,31,.10) 100%);
+    backdrop-filter:none;-webkit-backdrop-filter:none;
+  }
+  #loading::before{opacity:.16;pointer-events:none}
+  #loading .loadcard{
+    width:min(500px,100%);padding:18px 24px 23px;
+    background:linear-gradient(145deg,rgba(10,25,47,.90),rgba(10,30,50,.87));
+    border:1px solid rgba(135,218,226,.48);
+    box-shadow:0 13px 35px #0007;
+    border-radius:23px;
+  }
+  #loading .loadmark{font-size:27px}
+  #loading .loadtitle{font-size:clamp(32px,8vw,46px);margin:6px 0 5px}
+  #loading .loadsub{font-size:11px;margin-bottom:9px;letter-spacing:.15em}
+  #loading .loadcount{margin:9px 0 8px}
+  #loading #loadpct{font-size:clamp(24px,5.5vw,32px)}
+  #loading .loadmeta{margin-top:10px;font-size:11px}
+  #loading .loadtrack{height:12px}
+  #preview{image-rendering:auto}
+  @media(max-width:600px){
+    #loading{padding: max(18px,env(safe-area-inset-top)) 13px 12px}
+    #loading .loadcard{padding:17px 18px 19px;border-radius:19px}
+    #loading .loadtitle{font-size:clamp(28px,8.4vw,37px)}
+    #loading .loadmark{font-size:23px}
+    #loading .loadsub{font-size:10px}
+  }
+  @media(max-height:570px){
+    #loading{padding-top:8px}
+    #loading .loadcard{padding:9px 14px 11px}
+    #loading .loadmark{display:none}
+    #loading .loadtitle{font-size:26px;margin:3px}
+    #loading .loadcount{margin:4px 0}
+  }
+
+  /* V12: a light, floating seven-brick rainbow over the loading title. */
+  #loading .loadmark.rainbow-bricks{
+    display:flex;justify-content:center;align-items:center;gap:7px;
+    width:100%;height:42px;margin:0 auto 6px;
+    font-size:initial;filter:none;animation:none;
+  }
+  .rainbow-brick{
+    width:33px;height:21px;flex:none;position:relative;
+    background:linear-gradient(160deg,rgba(255,255,255,.48),transparent 55%),var(--brick);
+    border:1px solid rgba(255,255,255,.78);
+    border-radius:4px 4px 3px 3px;
+    box-shadow:0 5px 0 var(--brick-shadow),0 8px 12px rgba(1,12,28,.29),inset 0 1px rgba(255,255,255,.75);
+    transform:translateY(0) rotate(var(--brick-tilt));
+    animation:floatRainbowBrick var(--brick-duration) ease-in-out infinite;
+    animation-delay:var(--brick-delay);
+  }
+  .rainbow-brick::after{
+    content:"";position:absolute;inset:3px 5px 7px;border:1px solid rgba(255,255,255,.34);
+    border-radius:1px;pointer-events:none;
+  }
+  .rainbow-brick:nth-child(1){--brick:#fa8392;--brick-shadow:#b74e68;--brick-tilt:-12deg;--brick-delay:-.4s;--brick-duration:2.65s}
+  .rainbow-brick:nth-child(2){--brick:#ffb46d;--brick-shadow:#b76e36;--brick-tilt:8deg;--brick-delay:-1.6s;--brick-duration:3.0s}
+  .rainbow-brick:nth-child(3){--brick:#ffe17c;--brick-shadow:#b39a3d;--brick-tilt:-7deg;--brick-delay:-.9s;--brick-duration:2.8s}
+  .rainbow-brick:nth-child(4){--brick:#8eebb7;--brick-shadow:#419e73;--brick-tilt:11deg;--brick-delay:-2.1s;--brick-duration:3.2s}
+  .rainbow-brick:nth-child(5){--brick:#80d9fc;--brick-shadow:#438fae;--brick-tilt:-9deg;--brick-delay:-1.3s;--brick-duration:2.75s}
+  .rainbow-brick:nth-child(6){--brick:#a8b3ff;--brick-shadow:#686bba;--brick-tilt:7deg;--brick-delay:-2.3s;--brick-duration:3.1s}
+  .rainbow-brick:nth-child(7){--brick:#e0a2f4;--brick-shadow:#9a5cac;--brick-tilt:-11deg;--brick-delay:-.65s;--brick-duration:2.9s}
+  @keyframes floatRainbowBrick{
+    0%,100%{transform:translateY(4px) rotate(var(--brick-tilt))}
+    50%{transform:translateY(-10px) rotate(calc(var(--brick-tilt) + 5deg))}
+  }
+  /* Seoul alone changes to a sunny daytime palette; all four city models remain intact. */
+  body.stage-seoul #sky{
+    background:radial-gradient(ellipse 52% 36% at 74% 29%,rgba(255,255,229,.72),transparent 76%),
+      linear-gradient(180deg,#66ade5 0%,#9ad5f4 44%,#def5f9 76%,#b9dfe4 100%);
+  }
+  body.stage-seoul #sky::before{
+    top:17%;right:19%;width:112px;height:112px;
+    background:rgba(255,250,224,.79);
+    box-shadow:0 0 92px 39px rgba(255,245,202,.42);
+  }
+  body.stage-seoul #sky::after{
+    background:linear-gradient(180deg,transparent 51%,rgba(183,227,239,.08) 77%,rgba(94,151,175,.15) 100%);
+  }
+  @media(max-width:600px){
+    #loading .loadmark.rainbow-bricks{display:flex;height:36px;gap:5px;margin-bottom:3px}
+    .rainbow-brick{width:clamp(24px,7.5vw,30px);height:19px}
+  }
+  @media(max-height:570px){#loading .loadmark.rainbow-bricks{display:flex;height:23px;margin-bottom:3px}.rainbow-brick{height:14px;width:23px}}
+  @media(prefers-reduced-motion:reduce){.rainbow-brick{animation:none;transform:none}}
+  /* Berlin: clear afternoon sky; existing cities retain exactly their former backgrounds. */
+  body.stage-berlin #sky{background:radial-gradient(ellipse 46% 31% at 71% 23%,rgba(255,248,194,.63),transparent 84%),linear-gradient(180deg,#76aee1 0%,#a9d4eb 49%,#c7ddea 77%,#96b2cd 100%)}
+  body.stage-berlin #sky::before{top:15%;right:17%;width:106px;height:106px;background:rgba(255,253,230,.77);box-shadow:0 0 76px 39px rgba(255,238,193,.25)}
+  body.stage-berlin #sky::after{background:linear-gradient(180deg,transparent 55%,rgba(66,110,153,.13) 100%)}
+  /* Keep the longer 2-1 city name on one tidy line even on narrow phones. */
+  body.stage-amsterdam #stagevalue{white-space:nowrap;letter-spacing:-.025em}
+  body.stage-amsterdam #stagevalue span{white-space:nowrap}
+  @media(max-width:600px){body.stage-amsterdam #stagevalue{font-size:15px}body.stage-amsterdam #stagevalue span{font-size:.58em!important}}
+
+  /* Amsterdam: pale spring-green atmosphere, no landmark-model modifications. */
+  body.stage-amsterdam #sky{
+    background:radial-gradient(ellipse 55% 36% at 70% 25%,rgba(255,253,205,.61),transparent 78%),
+      linear-gradient(180deg,#9ed8bb 0%,#b9e4c3 41%,#d4efcf 76%,#a2d1af 100%);
+  }
+  body.stage-amsterdam #sky::before{
+    top:14%;right:19%;width:118px;height:118px;
+    background:rgba(250,255,211,.73);
+    box-shadow:0 0 89px 40px rgba(205,246,177,.36);
+  }
+  body.stage-amsterdam #sky::after{
+    background:linear-gradient(180deg,transparent 51%,rgba(111,177,130,.09) 78%,rgba(70,124,106,.16) 100%);
+  }
+  #lives.gain-pulse{animation:gainLife .7s ease-out}
+  @keyframes gainLife{0%{transform:scale(1);color:#f1faff}43%{transform:scale(1.35);color:#9bffcd}100%{transform:scale(1);color:#f1faff}}
+
+  /* Paris, Warsaw and London have independent daylight atmospheres. */
+  body.stage-paris #sky{background:radial-gradient(ellipse 50% 33% at 73% 20%,rgba(255,249,206,.80),transparent 78%),linear-gradient(180deg,#82b6df 0%,#c5dcec 41%,#eadbe7 73%,#a9c1d4 100%)}
+  body.stage-paris #sky::before{top:16%;right:20%;background:rgba(255,246,213,.72);box-shadow:0 0 86px 42px rgba(255,231,198,.22)}
+  body.stage-warsaw #sky{background:radial-gradient(ellipse 52% 34% at 75% 23%,rgba(255,244,206,.75),transparent 78%),linear-gradient(180deg,#7caedb 0%,#bbd9eb 47%,#ecddbe 75%,#8facc9 100%)}
+  body.stage-warsaw #sky::before{top:14%;right:18%;background:rgba(255,246,206,.75);box-shadow:0 0 82px 36px rgba(245,220,155,.28)}
+  body.stage-london #sky{background:radial-gradient(ellipse 59% 42% at 73% 23%,rgba(255,252,213,.82) 0%,rgba(255,247,195,.30) 55%,transparent 84%),linear-gradient(180deg,#fff9d5 0%,#fff4c7 35%,#f9eab8 73%,#e9d69e 100%)}
+  body.stage-london #sky::before{top:16%;right:20%;background:rgba(255,251,217,.74);box-shadow:0 0 90px 50px rgba(255,241,167,.24)}
+</style>
+</head>
+<body>
+<div id="sky"></div><canvas id="preview" aria-hidden="true"></canvas><canvas id="scene" aria-label="破磚的旅人 3D 城市打磚塊"></canvas><div class="vignette"></div><div class="grain"></div><div id="flash"></div>
+<header id="hud" aria-live="polite">
+  <div class="hudbox"><div class="hudlabel">STAGE / 關卡</div><div class="hudvalue" id="stagevalue">1-1 <span style="font-size:.53em;font-weight:600;color:#b4d9e3">台北</span></div></div>
+  <div class="hudbox center"><div class="hudlabel">SCORE / 分數</div><div class="hudvalue" id="score">000000</div></div>
+  <div class="hudbox right"><div class="hudlabel">LIVES / 生命</div><div class="hudvalue" id="lives">3</div></div>
+</header>
+<div id="city-small">TAIPEI CITY · 3D</div>
+<div id="actions"><button class="mini" id="pause" title="暫停" aria-label="暫停遊戲">Ⅱ</button><button class="mini" id="sound" title="音效開關" aria-label="音效開關">♫</button></div>
+<div id="toast"></div><div id="effectstatus" aria-live="polite"></div><div id="orbLabels" aria-hidden="true"></div>
+<div id="controls"><button class="arrow" id="left" aria-label="控制板往左移動"><span>❮</span></button><button class="arrow" id="right" aria-label="控制板往右移動"><span>❯</span></button></div>
+
+<div id="overlay" class="hidden"><div class="modal">
+  <div class="eyebrow" id="overlayeyebrow">3D CITY ARCADE · LEVEL 01</div>
+  <h1 class="title" id="overlaytitle">破磚的旅人</h1>
+  <div class="sub" id="overlaysub">3D CITY BREAKOUT · TAIPEI</div>
+  <div class="skyline" aria-hidden="true"><div class="building" style="height:35px"></div><div class="building" style="height:52px"></div><div class="building tower" style="height:79px"></div><div class="building" style="height:45px"></div><div class="building" style="height:59px"></div><div class="building" style="height:34px"></div><div class="building" style="height:49px"></div></div>
+  <div id="finalscore"></div>
+  <button class="primary" id="mainbutton">▶ 開始遊戲</button>
+  <div id="hint">◀　▶</div>
+  <button class="link-button" id="backselect" type="button">▦ 返回選關</button>
+</div></div>
+
+<div id="loading" role="status" aria-live="polite" aria-label="遊戲載入中">
+  <div class="loadcard">
+    <div class="loadmark rainbow-bricks" aria-hidden="true"><span class="rainbow-brick"></span><span class="rainbow-brick"></span><span class="rainbow-brick"></span><span class="rainbow-brick"></span><span class="rainbow-brick"></span><span class="rainbow-brick"></span><span class="rainbow-brick"></span></div>
+    <div class="loadeyebrow">A CITY BREAKOUT JOURNEY</div>
+    <h1 class="loadtitle">破磚的旅人</h1>
+    <div class="loadsub">THE BRICK TRAVELER · 3D</div>
+    <div class="loadcount"><span class="loadcount-caption">LOADING</span><span id="loadpct">0%</span></div>
+    <div class="loadtrack" role="progressbar" aria-label="遊戲載入進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="loadtrack"><div id="loadfill"></div></div>
+    <div class="loadmeta"><span id="loadtext">正在準備遊戲世界…</span></div>
+  </div>
+</div>
+<div id="levelselect" class="hidden" aria-label="選擇關卡">
+ <section class="selectpanel">
+  <div class="brandtag">THE BRICK TRAVELER</div>
+  <h2 class="selecttitle">破磚的旅人</h2>
+  <div class="selectsubtitle">選擇旅程 · SELECT LEVEL</div>
+  <div class="stagegrid" id="stagegrid"></div>
+  <div class="selectfooter">選擇已開放的關卡，展開旅程。</div>
+ </section>
+</div>
+<div id="pinktip" class="hidden" role="dialog" aria-modal="true" aria-labelledby="pinktiptitle" aria-describedby="pinktipdesc">
+  <div class="tipcard">
+    <div class="tip-badge">TIPS</div>
+    <div class="tipvisual"><span class="samplebrick pinksample"></span><span class="tiparrow">→</span><span class="samplebrick bluesample"></span><span class="tiparrow">→</span><span class="tipcheck">✓</span></div>
+    <h2 id="pinktiptitle">粉紅色磚塊</h2>
+    <p id="pinktipdesc">粉紅色磚塊必須敲擊 <strong>2 次</strong> 才能擊碎。<br>第一次敲擊後會變成<span class="hlblue">淡藍色</span>，再擊中一次即可消除！</p>
+    <button class="primary" type="button" id="tipok">我知道了，繼續遊戲</button>
+  </div>
+</div>
+<div id="greentip" class="hidden" role="dialog" aria-modal="true" aria-labelledby="greentiptitle" aria-describedby="greentipdesc">
+ <div class="tipcard">
+  <div class="tip-badge" style="background:#214d49;color:#9bf4c7">TIPS</div>
+  <div class="green-legend" aria-hidden="true"><span class="green-cube"></span><span class="tiparrow">→</span><span class="orange-dot"></span></div>
+  <h2 id="greentiptitle">綠色磚塊・驚喜道具</h2>
+  <p id="greentipdesc">擊中綠色磚塊後，會掉落標有英文字母的橘色小球；用控制板接住，即可啟動對應效果。</p>
+  <div class="power-rules">
+   <span class="power-letter">A</span><span>球速加快</span>
+   <span class="power-letter">B</span><span>球速減慢</span>
+   <span class="power-letter">C</span><span>控制板移動速度加快</span>
+   <span class="power-letter">D</span><span>控制板移動速度減慢</span>
+  </div>
+  <button type="button" class="primary" id="greenok">我知道了，繼續遊戲</button>
+ </div>
+</div>
+<div id="error"></div>
+<script>
+(()=>{'use strict';
+const canvas=document.getElementById('scene');
+const previewCanvas=document.getElementById('preview');
+const previewCtx=previewCanvas.getContext('2d',{alpha:false});
+const error=document.getElementById('error');
+let gl;
+try{gl=canvas.getContext('webgl',{alpha:true,antialias:true,preserveDrawingBuffer:false,powerPreference:'high-performance'}) || canvas.getContext('experimental-webgl');}catch(e){}
+const hasWebGL=!!gl;const ctx2=hasWebGL?null:canvas.getContext('2d',{alpha:true});
+const $=id=>document.getElementById(id);
+const VS=`attribute vec3 aP;attribute vec3 aN;attribute vec4 aC;uniform mat4 uVP;varying vec3 vP;varying vec3 vN;varying vec4 vC;void main(){vP=aP;vN=aN;vC=aC;gl_Position=uVP*vec4(aP,1.0);}`;
+const FS=`precision mediump float;uniform vec3 uEye;varying vec3 vP;varying vec3 vN;varying vec4 vC;void main(){vec3 N=normalize(vN);vec3 L=normalize(vec3(-.48,.88,.46));float diffuse=max(dot(N,L),0.0);float light=.59+.48*diffuse;float warm=max(dot(N,normalize(vec3(.45,.3,-.65))),0.0)*.07;vec3 col=vC.rgb*(light+warm);col+=vec3(.04,.055,.07)*pow(max(dot(N,normalize(uEye-vP)),0.0),8.0);float fog=clamp((distance(vP,uEye)-87.0)/125.0,0.0,1.0);fog=fog*fog*(3.0-2.0*fog);col=mix(col,vec3(.70,.80,.82),fog*.54);gl_FragColor=vec4(col,vC.a);}`;
+function shader(type,code){const s=gl.createShader(type);gl.shaderSource(s,code);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s;}
+let program;
+if(hasWebGL){try{program=gl.createProgram();gl.attachShader(program,shader(gl.VERTEX_SHADER,VS));gl.attachShader(program,shader(gl.FRAGMENT_SHADER,FS));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));gl.useProgram(program);}catch(e){console.warn('WebGL shader error',e);error.style.display='block';error.textContent='3D 初始化失敗：'+e.message;return;}}
+const loc=hasWebGL?{p:gl.getAttribLocation(program,'aP'),n:gl.getAttribLocation(program,'aN'),c:gl.getAttribLocation(program,'aC'),vp:gl.getUniformLocation(program,'uVP'),eye:gl.getUniformLocation(program,'uEye')}:null;
+if(hasWebGL){gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.disable(gl.CULL_FACE);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);}
+const C={field:'#152f42',fieldedge:'#3baec1',line:'#2d5367',glass:'#64c5c3',glassdark:'#1b7c86',brickBlue:'#a6eafc',brickPink:'#ffb6d2',paddle:'#e7fbff',road:'#394758',mount:'#49756a'};
+const colCache={};function col(v){if(Array.isArray(v))return v;if(colCache[v])return colCache[v];let h=v.replace('#','');if(h.length===3)h=h.split('').map(x=>x+x).join('');return colCache[v]=[parseInt(h.slice(0,2),16)/255,parseInt(h.slice(2,4),16)/255,parseInt(h.slice(4,6),16)/255,1];}
+function darker(c,k){let a=col(c);return [a[0]*k,a[1]*k,a[2]*k,a[3]];}
+const addV=(b,p,n,c)=>{b.push(p[0],p[1],p[2],n[0],n[1],n[2],c[0],c[1],c[2],c[3]??1)};
+function quad(b,p0,p1,p2,p3,color,normal){let c=col(color);let n=normal;if(!n){const u=sub(p1,p0),v=sub(p2,p0);n=norm(cross(u,v));}addV(b,p0,n,c);addV(b,p1,n,c);addV(b,p2,n,c);addV(b,p0,n,c);addV(b,p2,n,c);addV(b,p3,n,c);}
+function tri(b,a,d,e,color,normal){const c=col(color),n=normal||norm(cross(sub(d,a),sub(e,a)));addV(b,a,n,c);addV(b,d,n,c);addV(b,e,n,c);}
+function box(b,x,y,z,w,h,d,color,topColor,sideColor){const X=x-w/2,U=x+w/2,Y=y-h/2,V=y+h/2,Z=z-d/2,W=z+d/2,main=col(color),upper=topColor||main,side=sideColor||main;
+quad(b,[X,Y,W],[U,Y,W],[U,V,W],[X,V,W],main,[0,0,1]);quad(b,[U,Y,Z],[X,Y,Z],[X,V,Z],[U,V,Z],darker(main,.75),[0,0,-1]);
+quad(b,[X,Y,Z],[X,Y,W],[X,V,W],[X,V,Z],darker(side,.85),[-1,0,0]);quad(b,[U,Y,W],[U,Y,Z],[U,V,Z],[U,V,W],side,[1,0,0]);
+quad(b,[X,V,W],[U,V,W],[U,V,Z],[X,V,Z],upper,[0,1,0]);quad(b,[X,Y,Z],[U,Y,Z],[U,Y,W],[X,Y,W],darker(main,.60),[0,-1,0]);}
+function sphere(b,x,y,z,r,color,lat=6,lon=9){const c=col(color);for(let i=0;i<lat;i++){let a=i*Math.PI/lat,a2=(i+1)*Math.PI/lat;for(let j=0;j<lon;j++){let t=j*2*Math.PI/lon,t2=(j+1)*2*Math.PI/lon;let get=(A,T)=>[x+r*Math.sin(A)*Math.cos(T),y+r*Math.cos(A),z+r*Math.sin(A)*Math.sin(T)];let p0=get(a,t),p1=get(a2,t),p2=get(a2,t2),p3=get(a,t2);for(let p of [p0,p1,p2,p0,p2,p3])addV(b,p,norm(sub(p,[x,y,z])),c);}}}
+function cylinder(b,x,y,z,r,h,color,n=8){const c=col(color);for(let i=0;i<n;i++){let t=i*Math.PI*2/n,t2=(i+1)*Math.PI*2/n;const a=[x+Math.cos(t)*r,y,z+Math.sin(t)*r],d=[x+Math.cos(t2)*r,y,z+Math.sin(t2)*r],e=[d[0],y+h,d[2]],f=[a[0],y+h,a[2]];quad(b,a,d,e,f,c,[Math.cos((t+t2)/2),0,Math.sin((t+t2)/2)]);tri(b,[x,y+h,z],f,e,c,[0,1,0]);}}
+function rod(b,a,d,r,color,n=5){const axis=norm(sub(d,a)),base=Math.abs(axis[1])>.95?[1,0,0]:[0,1,0],u=norm(cross(axis,base)),v=norm(cross(axis,u));for(let i=0;i<n;i++){let t=i*2*Math.PI/n,t2=(i+1)*2*Math.PI/n;let ofs=(T)=>add(scale(u,Math.cos(T)*r),scale(v,Math.sin(T)*r));let a0=add(a,ofs(t)),a1=add(a,ofs(t2)),d1=add(d,ofs(t2)),d0=add(d,ofs(t));quad(b,a0,a1,d1,d0,color);}}
+function sub(a,b){return[a[0]-b[0],a[1]-b[1],a[2]-b[2]];}function add(a,b){return[a[0]+b[0],a[1]+b[1],a[2]+b[2]];}function scale(a,v){return[a[0]*v,a[1]*v,a[2]*v];}function cross(a,b){return[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];}function norm(a){let l=Math.hypot(...a)||1;return a.map(x=>x/l);}
+let seed=97321;function random(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;}
+function pyramid(b,x,y,z,rx,rz,h,color){const p=[x,y+h,z],base=[[x-rx,y,z-rz],[x+rx,y,z-rz],[x+rx,y,z+rz],[x-rx,y,z+rz]];for(let i=0;i<4;i++)tri(b,base[i],base[(i+1)%4],p,color);}
+function hill(b,x,z,rx,rz,h,baseHue){const rings=3,N=16;for(let layer=0;layer<rings;layer++){let y0=(layer/rings)*h,y1=((layer+1)/rings)*h;for(let j=0;j<N;j++){let a=j*2*Math.PI/N,d=(j+1)*2*Math.PI/N;let amp=1-layer/rings, amp2=1-(layer+1)/rings;let A=[x+Math.cos(a)*rx*amp,y0,z+Math.sin(a)*rz*amp];let B=[x+Math.cos(d)*rx*amp,y0,z+Math.sin(d)*rz*amp];let E=[x+Math.cos(d)*rx*amp2,y1,z+Math.sin(d)*rz*amp2];let F=[x+Math.cos(a)*rx*amp2,y1,z+Math.sin(a)*rz*amp2];quad(b,A,B,E,F,baseHue[(j+layer)%baseHue.length]);}}}
+function tree(b,x,z,h=4){cylinder(b,x,.2,z,.14,h*.36,'#6b5948',5);let leaf=['#4b8c74','#6ca58a','#417867','#83b88c'][Math.floor(random()*4)];sphere(b,x,h*.74,z,h*.38,leaf,4,6);sphere(b,x-.47*h/4,h*.62,z+.31*h/4,h*.27,leaf,4,6);}
+function building(b,x,z,w,d,h,base){box(b,x,h/2,z,w,h,d,base,'#8bb9c2',darker(base,.85));box(b,x,h+.17,z,w+.3,.32,d+.3,'#708f9b');const cols=Math.max(2,Math.floor(w/2.1)),rows=Math.max(2,Math.floor(h/2.5)),win=['#9fd4dc','#6b9eaf','#f3deab','#426d81','#bddadd'];for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){let wx=x-w/2+(i+.5)*w/cols,wy=1.3+j*(h-2)/rows;if(wy>=h-.8)continue;let color=win[Math.floor(random()*win.length)];box(b,wx,wy,z+d/2+.035,w/cols*.46,.72,.055,color);if(i%2===0)box(b,x+w/2+.032,wy,z-d/2+(i+.5)*d/cols,.05,.7,d/cols*.48,color);}}
+const staticGeo=[];
+// Wide urban plinth and the rooftop arena
+box(staticGeo,0,-1.8,-3.5,23,3.4,39,'#233d58','#385f7c');box(staticGeo,0,.25,-3.4,20.1,.17,36.2,'#2e536d','#3a627e');
+for(let x=-9;x<=9;x+=3){box(staticGeo,x,.355,-3.3,.045,.028,35.8,'#568ba5');}
+for(let z=-20;z<=14;z+=3){box(staticGeo,0,.355,z,19.8,.025,.05,'#568ba5');}
+for(let x of [-10.3,10.3]){box(staticGeo,x,1,-3.5,.16,1.65,36.8,'#4386a8');box(staticGeo,x,1.84,-3.5,.18,.10,37,'#91cadb');}
+box(staticGeo,0,.45,-21.55,20,.12,.3,'#3e9fae');box(staticGeo,0,.5,13.3,20,.12,.32,'#4999ae');
+for(let i=0;i<13;i++){let z=-20.7+i*2.8;for(let x of [-10.3,10.3]){box(staticGeo,x,1.8,z,.34,.25,.34,'#72b7c8');}}
+const arenaEnd=staticGeo.length; // shared rooftop arena, separated from city scenery
+// Tower and city streets behind playfield
+box(staticGeo,0,-4,-52,200,1.0,78,'#637d75');box(staticGeo,0,-3.3,-35,164,.3,12,'#404e55');
+box(staticGeo,0,-3.05,-35,159,.03,.15,'#e5cdaa');
+for(let x=-85;x<=85;x+=8.5){box(staticGeo,x,-2.99,-37.7,3.8,.025,.20,'#e7dcc4');box(staticGeo,x,-2.99,-32.3,3.8,.025,.20,'#e7dcc4');}
+box(staticGeo,0,-3.18,-43,164,.2,2.7,'#adb5a5');box(staticGeo,0,-3.18,-27.2,164,.2,2.3,'#a8b4ac');
+for(let i=0;i<21;i++){let x=-100+i*10;box(staticGeo,x,-2.95,-43,1,.1,2.5,'#8a9999');}
+// Low-rise buildings; avoid blocking 101 & hill
+for(let k=0;k<28;k++){let side=k%2?-1:1;let x=side*(17+random()*66),z=-40-random()*53;if(x<-12&&x>-33&&z< -54&&z>-86)continue;if(x>18&&z<-62&&z>-100)continue;const w=5+random()*6.5,d=5+random()*7,h=5+random()*14;building(staticGeo,x,z,w,d,h,['#71939c','#a0adab','#93a1a9','#788d94','#b3a89e'][k%5]);}
+// Taipei 101: stacked pod segments, tiers, sweeping cap and spire
+const tx=-30,tz=-123,towerStart=staticGeo.length;
+box(staticGeo,tx,4.3,tz,10,8.6,10,'#5b9eaa','#a6d4d3');
+for(let tier=0;tier<8;tier++){let y=8.3+tier*3.40,exp=tier<4?0:-(tier-4)*.11;let width=9.6+exp;box(staticGeo,tx,y+1.70,tz,width,3.22,width,'#4a999d','#85d3d1','#58a8a8');box(staticGeo,tx,y+.32,tz,width+1,.62,width+1,'#cadcd4');box(staticGeo,tx,y+3.16,tz,width+.5,.46,width+.5,'#b7d9d2');for(let i=0;i<4;i++){let h=y+.50+i*.52;for(let dx of [-2.8,-.85,.85,2.8]){box(staticGeo,tx+dx,h,tz+width/2+.07,.42,.12,.10,'#cee7ce');}}}
+const top=8.3+8*3.40;box(staticGeo,tx,top+2.1,tz,7.1,4.3,7.1,'#6db5b6');box(staticGeo,tx,top+4.8,tz,5,.8,5,'#c2ded6');pyramid(staticGeo,tx,top+5.2,tz,3.1,3.1,5.2,'#608d90');rod(staticGeo,[tx,top+10.4,tz],[tx,top+19,tz],.32,'#d6e6de',7);sphere(staticGeo,tx,top+16,tz,.8,'#fff0bb',6,8);
+for(let i=towerStart+1;i<staticGeo.length;i+=10)staticGeo[i]*=.70;
+// Grounded distant mountains and the Xiangshan trail
+const mountainStart=staticGeo.length;
+hill(staticGeo,48,-125,58,43,24,['#527a6d','#648b76','#4b736a','#70947d']);
+hill(staticGeo,92,-133,60,48,29,['#51746e','#678e7b','#527e72','#719b80']);
+hill(staticGeo,-105,-138,64,48,27,['#638d84','#71968c','#597e78']);
+// Zig-zag hiking path on right hillside; stair platforms and railings
+const way=[[25,0,-58],[34,4,-66],[28,7,-77],[41,11,-83],[33,14,-96],[45,17,-106]];
+for(let i=0;i<way.length-1;i++){const a=way[i],d=way[i+1];rod(staticGeo,a.map((q,j)=>j===1?q+.18:q),d.map((q,j)=>j===1?q+.18:q),.36,'#e2cbaa',6);for(let t=0;t<1;t+=.2){let p=a.map((q,j)=>q+(d[j]-q)*t);cylinder(staticGeo,p[0],p[1],p[2],.19,.8,'#e3dbc4',6);}}
+// Scenic wooden viewpoint/pavilion
+box(staticGeo,45,18.1,-106,7,.34,6,'#c49b6c');for(let x of [42.2,47.8])for(let z of [-103.7,-108.3])cylinder(staticGeo,x,18.2,z,.22,3.7,'#715744',7);pyramid(staticGeo,45,21.7,-106,4.3,4,2,'#664b43');
+const mountainEnd=staticGeo.length;
+// Maokong gondola - tall towers and two suspended cables
+const gondolaStart=staticGeo.length;
+const cableA=[24,20,-43],cableB=[74,34,-109];
+for(const p of [cableA,cableB,[46,26,-72]]){cylinder(staticGeo,p[0],-2.8,p[2],.43,p[1]+2.8,'#a5bbc0');box(staticGeo,p[0],p[1],p[2],7.0,.42,1.2,'#c5d3d5');for(const off of [-2.6,2.6])rod(staticGeo,[p[0]+off,p[1],p[2]],[p[0]+off*.82,p[1]-3.1,p[2]],.11,'#91a6ac');}
+for(let i=0;i<20;i++){let t=i/19;let a=[cableA[0]+(cableB[0]-cableA[0])*t,cableA[1]+(cableB[1]-cableA[1])*t-1.65*Math.sin(Math.PI*t),cableA[2]+(cableB[2]-cableA[2])*t];let s=(i+1)/19,d=[cableA[0]+(cableB[0]-cableA[0])*s,cableA[1]+(cableB[1]-cableA[1])*s-1.65*Math.sin(Math.PI*s),cableA[2]+(cableB[2]-cableA[2])*s];for(let off of [-2.6,2.6])rod(staticGeo,add(a,[off,0,0]),add(d,[off,0,0]),.08,'#d4e0e0',4);}
+const gondolaEnd=staticGeo.length;
+// Street trees, lamps, bus shelters and pedestrian sidewalks
+for(let x=-80;x<89;x+=9){if(Math.abs(x)>13){tree(staticGeo,x,-46,3.3+random()*1.6);if(random()>.25)tree(staticGeo,x+1,-24,3.4+random()*1.4);}}
+for(let x=-73;x<80;x+=17){cylinder(staticGeo,x,-2.8,-41,.15,9,'#c5cdbe',6);rod(staticGeo,[x,5.8,-41],[x+1.7,5.8,-41],.13,'#c6ccc2');sphere(staticGeo,x+1.7,5.6,-41,.44,'#ffeac4',5,8);}
+box(staticGeo,55,-.65,-26,14,4.0,1.3,'#d8dfdc');box(staticGeo,55,1.8,-26,15,.45,4,'#3f6571');for(let i=0;i<4;i++)box(staticGeo,50.6+i*3,0,-25.2,.17,3.2,.13,'#4c6a75');
+// Hong Kong: Victoria Harbour, the Peak, BOC Tower, IFC, ICC, and Star Ferry.
+// This is a separately generated 3D city, never visible on loading or stage select.
+// On the Hong Kong level, each of the 4 occupied brick columns has one
+// additional full-width empty lane on either side of the six-column court.
+// Expand the *geometry*, rather than stretching the camera image: physics,
+// paddle reach, and on-screen side rails all use these same dimensions.
+const HK_ARENA_SCALE=1.40;
+const HK_HALF_WALL=10.3*HK_ARENA_SCALE;
+const HK_BALL_LIMIT=HK_HALF_WALL-.9;
+const HK_PADDLE_LIMIT=HK_HALF_WALL-2.45;
+const hkGeo=staticGeo.slice(0,arenaEnd);
+for(let i=0;i<hkGeo.length;i+=10)hkGeo[i]*=HK_ARENA_SCALE;
+box(hkGeo,0,-4.5,-96,208,.8,138,'#66a4bc','#9bcad9'); // Victoria Harbour
+for(let k=0;k<20;k++){
+  const x=-99+k*10.2;
+  box(hkGeo,x,-3.91,-54,.7,.035,2.1,k%2?'#def3e7':'#a8dfe1');
+  box(hkGeo,x+3,-3.91,-67,2.0,.028,.12,'#dcf3f3');
+}
+// The harbour quay & characteristic double-decker pier.
+box(hkGeo,0,-3.7,-44.1,157,.65,6.5,'#c6d7cf','#e6e8d9');
+box(hkGeo,-19,-2.6,-50,11,1.2,13,'#d8f0e6','#e6f6f4');
+box(hkGeo,-19,.15,-50,10,3.5,10,'#b3d9db','#f5f7ec');
+for(let x of [-23,-19,-15])box(hkGeo,x,.50,-44.93,1.4,1.45,.2,'#548fa0');
+// Victoria Peak and layered southern forested hills.
+hill(hkGeo,-65,-150,73,64,43,['#527e70','#618c79','#6d9c83','#4d786f']);
+hill(hkGeo,-118,-150,81,58,34,['#668f7d','#82a48e','#507d73']);
+hill(hkGeo,96,-158,96,59,31,['#628c7c','#6e9984','#527f76']);
+hill(hkGeo,12,-167,84,44,23,['#668f7c','#608778','#7fa58a']);
+// Dense layered Hong Kong waterfront neighbourhood: foreground low-rises, glass facades.
+seed=319920;
+for(let i=0;i<62;i++){
+ let x=-57+random()*114,z=-83-random()*55;
+ if((x>-28&&x<-9&&z<-68&&z>-112)||(x>-1&&x<20&&z<-88&&z>-148)||(x>19&&x<46&&z<-111&&z>-155)||(x>-48&&x<-29&&z<-88&&z>-122))continue;
+ const w=3.4+random()*5.3,d=4+random()*6.5,h=7+random()*18;
+ building(hkGeo,x,z,w,d,h,['#8199b1','#91a9b6','#80a7b1','#6f9dad','#b4afa3','#9ebabb'][i%6]);
+}
+// Bank of China Tower, recognizable criss-cross facade and angular silhouette.
+const hkBOC=[-17,-93],bxhk=hkBOC[0],bzhk=hkBOC[1];
+box(hkGeo,bxhk,22,bzhk,9,44,8,'#4a849b','#b7e2e1','#5394aa');
+pyramid(hkGeo,bxhk,44,bzhk,4.5,4,15,'#79b9cb');
+rod(hkGeo,[bxhk,59,bzhk],[bxhk,68,bzhk],.20,'#e9f3ed');
+for(let side of [-1,1]){
+ const z=bzhk+side*4.09;
+ for(let i=0;i<4;i++){
+  const y0=i*11.0,y1=(i+1)*11.0;
+  rod(hkGeo,[bxhk-4.47,y0,z],[bxhk+4.47,y1,z],.16,'#d2f1ea',5);
+  rod(hkGeo,[bxhk+4.47,y0,z],[bxhk-4.47,y1,z],.16,'#c4e7e5',5);
+ }
+}
+// Two International Finance Centre (IFC), narrow tall glass needle with twin antennas.
+const ifcX=6,ifcZ=-123;
+box(hkGeo,ifcX,31,ifcZ,10.0,62.0,10,'#74a7be','#cbecf0','#638fa8');
+box(hkGeo,ifcX,63.6,ifcZ,8.1,3.2,8.5,'#a6cad2');
+for(let x of [ifcX-2.05,ifcX+2.05]){
+ rod(hkGeo,[x,65,ifcZ],[x,74,ifcZ],.28,'#e4f5ef');
+}
+for(let y=5;y<61;y+=3.3)box(hkGeo,ifcX,y,ifcZ+5.06,7.6,.15,.08,'#d2eeec');
+// ICC on the Kowloon side and Central Plaza — other familiar skyline silhouettes.
+const iccX=30,iccZ=-137;
+box(hkGeo,iccX,36,iccZ,10.8,72,9.6,'#739bb4','#bcd4db','#617d9c');
+box(hkGeo,iccX,72.3,iccZ,8.4,2.7,7.5,'#adc8d7');
+for(let y=5;y<70;y+=3.4)box(hkGeo,iccX,y,iccZ+4.89,9.5,.15,.07,'#d1e9ed');
+const cpX=-37,cpZ=-114;
+box(hkGeo,cpX,22,cpZ,7.4,44,7.4,'#6d9bab','#c7e3dc');
+pyramid(hkGeo,cpX,44,cpZ,3.6,3.6,14,'#b5d5ca');
+rod(hkGeo,[cpX,57,cpZ],[cpX,65,cpZ],.14,'#effaf1');
+// Observation wheel by the waterfront.
+const wheelCenter=[-18,13.5,-65];
+for(let i=0;i<16;i++){
+ let t=i*Math.PI*2/16,t2=(i+1)*Math.PI*2/16;
+ let a=[wheelCenter[0]+Math.cos(t)*10,wheelCenter[1]+Math.sin(t)*10,wheelCenter[2]];
+ let b=[wheelCenter[0]+Math.cos(t2)*10,wheelCenter[1]+Math.sin(t2)*10,wheelCenter[2]];
+ rod(hkGeo,a,b,.18,'#e6f4ef',5);
+ rod(hkGeo,a,wheelCenter,.07,'#eef5eb',4);
+ if(i%2===0)box(hkGeo,a[0],a[1]-.5,a[2],1.5,1.0,1.5,'#e5b3b7');
+}
+rod(hkGeo,[wheelCenter[0]-6,-3,wheelCenter[2]],wheelCenter,.25,'#f5f7e8');
+rod(hkGeo,[wheelCenter[0]+6,-3,wheelCenter[2]],wheelCenter,.25,'#f5f7e8');
+// A red Peak Tram carriage and hillside tracks above the harbour.
+const tramFrom=[-42,1.0,-73],tramTo=[-62,21,-117];
+rod(hkGeo,tramFrom,tramTo,.36,'#d8ddd0');
+rod(hkGeo,add(tramFrom,[2,0,0]),add(tramTo,[2,0,0]),.36,'#d8ddd0');
+const hkTramMid=[-52,10.5,-95];
+box(hkGeo,hkTramMid[0],hkTramMid[1],hkTramMid[2],5.2,2.3,4,'#ba474e','#e6a2a5');
+for(let xx of [-53.7,-52,-50.3])box(hkGeo,xx,11.0,-92.94,.96,.95,.1,'#e8edf3');
+// Tokyo · neon urban night skyline, Tokyo Skytree, Tokyo Tower, Asakusa and Rainbow Bridge.
+// The base court shares the wider six-lane arrangement but has its own architectural 3D meshes.
+const tokyoGeo=hkGeo.slice(0,arenaEnd);
+for(let i=0;i<tokyoGeo.length;i+=10){tokyoGeo[i+6]*=.58;tokyoGeo[i+7]*=.70;tokyoGeo[i+8]*=.95;}
+box(tokyoGeo,0,-4.4,-98,195,.85,140,'#25324b','#364768');
+box(tokyoGeo,0,-3.65,-49,185,.18,15,'#202638','#31374b');
+for(let x=-92;x<=92;x+=10){box(tokyoGeo,x,-3.51,-49,4.2,.04,1.1,'#b8b1a6');}
+// Luminous road stripes in Shibuya crossing.
+for(let z=-58;z<=-43;z+=5.7)for(let x=-28;x<=28;x+=6.2)box(tokyoGeo,x,-3.49,z,3.8,.07,.62,'#e6dbe7');
+seed=20261021;
+for(let k=0;k<72;k++){
+ const x=-88+random()*176,z=-72-random()*95;
+ if((x>-40&&x<-20&&z<-97&&z>-137)||(x>-6&&x<22&&z<-132&&z>-183)||(x>30&&x<59&&z<-68&&z>-105))continue;
+ const w=4.1+random()*7,d=4.0+random()*6.5,h=9+random()*30;
+ building(tokyoGeo,x,z,w,d,h,['#435373','#556a81','#485878','#62657f','#535d7a'][k%5]);
+ if(k%3===0){box(tokyoGeo,x,h*.78,z+d/2+.14,w*.46,.8,.12,['#f18dc5','#88d9ea','#f3c577','#b7a9ff'][k%4]);}
+}
+// Tokyo Tower: tapering red-and-white steel lattice, observation deck and lighted antenna.
+const tokyoTowerX=-30,tokyoTowerZ=-117;
+for(let i=0;i<4;i++){
+ let t=i/4, t2=(i+1)/4,wide=9-t*7,wide2=9-t2*7,Y=1+i*13,Y2=1+(i+1)*13;
+ const tone=i%2?'#f6e7dd':'#d55753';
+ for(let sx of [-1,1])for(let sz of [-1,1])rod(tokyoGeo,[tokyoTowerX+sx*wide,Y,tokyoTowerZ+sz*wide*.58],[tokyoTowerX+sx*wide2,Y2,tokyoTowerZ+sz*wide2*.58],.44,tone,6);
+ for(let sx of [-1,1])for(let sz of [-1,1])rod(tokyoGeo,[tokyoTowerX+sx*wide,Y,tokyoTowerZ+sz*wide*.58],[tokyoTowerX-sx*wide2,Y2,tokyoTowerZ+sz*wide2*.58],.14,tone,4);
+ box(tokyoGeo,tokyoTowerX,Y2-.2,tokyoTowerZ,wide2*2.5,.42,wide2*1.6,i%2?'#cfd5ec':'#ee8a76');
+}
+box(tokyoGeo,tokyoTowerX,39,tokyoTowerZ,9,4.1,8.5,'#ea9c85','#fff0d5');
+rod(tokyoGeo,[tokyoTowerX,53,tokyoTowerZ],[tokyoTowerX,71,tokyoTowerZ],.48,'#ece3df',8);
+for(let k=0;k<4;k++)box(tokyoGeo,tokyoTowerX,58+k*3.6,tokyoTowerZ,1.0,.55,1.0,k%2?'#d95859':'#f0eadd');
+// Tokyo Skytree: slender blue-white mast, circular observation decks and tall spire.
+const skytreeX=8,skytreeZ=-147;
+cylinder(tokyoGeo,skytreeX,0,skytreeZ,4.6,54,'#7b9fb6',12);
+for(let j=0;j<15;j++){
+ let y=3.0+j*3.35,r0=5-j*.18;
+ for(let k=0;k<8;k++){let a=k*Math.PI/4;rod(tokyoGeo,[skytreeX+Math.cos(a)*r0,y,skytreeZ+Math.sin(a)*r0],[skytreeX+Math.cos(a+.27)*(r0-.2),y+3.35,skytreeZ+Math.sin(a+.27)*(r0-.2)],.11,'#c1dff0',4);}
+}
+cylinder(tokyoGeo,skytreeX,51,skytreeZ,5.6,5.2,'#a6c9e0',12);
+cylinder(tokyoGeo,skytreeX,56.2,skytreeZ,4.0,2.9,'#83b9cf',12);
+cylinder(tokyoGeo,skytreeX,65,skytreeZ,3.3,5.5,'#9fc4d8',12);
+rod(tokyoGeo,[skytreeX,70,skytreeZ],[skytreeX,95,skytreeZ],.53,'#b1daf0',9);
+for(let y=73;y<=95;y+=3.4){cylinder(tokyoGeo,skytreeX,y,skytreeZ,.65,.34,'#ddedf5',9);}
+// Sensō-ji temple: red pillars, traditional tiered roof and five-storey pagoda.
+const asakusaX=43,asakusaZ=-88;
+box(tokyoGeo,asakusaX,-1.7,asakusaZ,20,2.1,15,'#b8a6a3');
+for(let x of [asakusaX-8,asakusaX-2.5,asakusaX+2.5,asakusaX+8])for(let z of [asakusaZ-4,asakusaZ+4])box(tokyoGeo,x,3.9,z,1.0,10,1.0,'#d85e63');
+box(tokyoGeo,asakusaX,8.9,asakusaZ,23,2.0,17,'#563552','#8f5360');
+pyramid(tokyoGeo,asakusaX,9.8,asakusaZ,14,10,6.5,'#bd636c');
+for(let j=0;j<4;j++){let y=3.5+j*4.7;box(tokyoGeo,asakusaX+18,y,asakusaZ-9,8-j*.8,1.0,8-j*.8,'#ac4d60');pyramid(tokyoGeo,asakusaX+18,y+.6,asakusaZ-9,6.4-j*.55,6.4-j*.55,3.3,'#df7775');}
+rod(tokyoGeo,[asakusaX+18,23,asakusaZ-9],[asakusaX+18,30,asakusaZ-9],.34,'#eac39a');
+// Rainbow Bridge towers and illuminated suspended arcs, to the right of the skyline.
+for(let x of [38,67]){
+ box(tokyoGeo,x,9,-119,2,26,3,'#a6bacd');box(tokyoGeo,x,22,-119,9,1.3,4,'#cad7dc');
+}
+box(tokyoGeo,52.5,3.3,-119,33,1.9,5,'#b1bac9');
+for(let i=0;i<13;i++){const x=38+i*29/12,y=21.5-9*Math.sin(Math.PI*i/12);rod(tokyoGeo,[x,y,-119],[x,4.5,-119],.12,'#bbd4ea',4);if(i)rod(tokyoGeo,[x,y,-119],[38+(i-1)*29/12,21.5-9*Math.sin(Math.PI*(i-1)/12),-119],.12,'#b4d4ee');}
+// Additional glowing ground trees along the boulevard.
+for(let x=-76;x<72;x+=14){tree(tokyoGeo,x,-72,4+random()*2);}
+// Seoul · 3D skyline: N Seoul Tower on Namsan, Lotte World Tower, Gyeongbokgung,
+// Gwanghwamun Gate, DDP, downtown Seoul and the Hangang River.
+const seoulGeo=hkGeo.slice(0,arenaEnd);
+for(let i=0;i<seoulGeo.length;i+=10){seoulGeo[i+6]*=.87;seoulGeo[i+7]*=.95;seoulGeo[i+8]*=1.04;}
+// Nightfall Hangang River and shimmering waterfront roads.
+box(seoulGeo,0,-4.65,-92,196,.85,149,'#315876','#57839d');
+for(let i=0;i<36;i++){
+ const x=-92+(i*37)%185,z=-55-(i*23)%42;
+ box(seoulGeo,x,-4.10,z,3.3,.024,.12,i%3?'#7da9ba':'#c3d4e0');
+}
+// A bridge spanning the river near the front of the skyline.
+box(seoulGeo,0,-2.75,-57,143,1.3,7.0,'#8c9aa9','#c9d5d3');
+for(let x=-65;x<=65;x+=13){
+ box(seoulGeo,x,-.70,-57,.32,3.5,.38,'#d4e2dd');
+ rod(seoulGeo,[x,1.0,-57],[x+6.4,-2.1,-57],.09,'#c3d8dc');
+}
+for(let x=-70;x<70;x+=8)box(seoulGeo,x,-2.03,-57,3.2,.04,.15,'#e6e3b8');
+// Namsan hillside with winding pedestrian pathways.
+hill(seoulGeo,-45,-139,43,34,21,['#3c635a','#426c64','#517a67','#3e635f']);
+hill(seoulGeo,-79,-150,52,35,16,['#395955','#527769','#476d66']);
+hill(seoulGeo,83,-164,68,46,19,['#446c68','#507974','#476c66']);
+seed=490221;
+for(let i=0;i<68;i++){
+ const x=-87+random()*176,z=-73-random()*95;
+ // Keep landmark sightlines uncluttered.
+ if((x>-62&&x<-18&&z<-109)||(x>13&&x<43&&z<-112)||(x>-12&&x<24&&z>-109&&z<-72)||(x>35&&x<74&&z>-114&&z<-74))continue;
+ const w=4+random()*6.2,d=4+random()*7,h=8+random()*24;
+ building(seoulGeo,x,z,w,d,h,['#687e96','#8099a8','#647a95','#718aa0','#8394a0','#5d7b94'][i%6]);
+}
+// N Seoul Tower: tall slender lookout on top of Namsan, lantern-like ring and a spire.
+const ntX=-40,ntZ=-135;
+box(seoulGeo,ntX,21,ntZ,12,2.5,12,'#8c9c95','#d1cbb3');
+cylinder(seoulGeo,ntX,22.2,ntZ,2.55,34,'#dde9e8',12);
+for(let y=27;y<54;y+=5) cylinder(seoulGeo,ntX,y,ntZ,2.8,.65,'#8cbbca',12);
+cylinder(seoulGeo,ntX,55.3,ntZ,6.2,5.4,'#99b7cb',16);
+cylinder(seoulGeo,ntX,61.0,ntZ,5.5,2.8,'#e3edee',16);
+cylinder(seoulGeo,ntX,64.5,ntZ,3.2,5.0,'#8eafbe',14);
+rod(seoulGeo,[ntX,68.8,ntZ],[ntX,89,ntZ],.46,'#ebeff4',10);
+for(let y=73;y<88;y+=4) cylinder(seoulGeo,ntX,y,ntZ,.76,.35,'#e4a4a7',10);
+// Lotte World Tower: long elegant tapered stacked glass facade and forked roofline.
+const ltX=30,ltZ=-130;
+for(let j=0;j<12;j++){
+ let taper=1-j*.054,w=14*taper,d=11.5*taper,base=j*7.2;
+ box(seoulGeo,ltX,base+3.6,ltZ,w,7.08,d,'#769cb2','#b7e1e9','#6594ae');
+ box(seoulGeo,ltX,base+7.05,ltZ,w+.35,.24,d+.28,'#d4eff4');
+ for(let n=0;n<4;n++)box(seoulGeo,ltX-4.9*taper+n*3.2*taper,base+3.55,ltZ+d/2+.09,.26,5.3,.11,'#b9d9e4');
+}
+for(const sx of [-1,1]){
+ rod(seoulGeo,[ltX+sx*3.0,87,ltZ],[ltX+sx*1.2,101,ltZ],.43,'#cee6eb',8);
+}
+// Gyeongbokgung Palace and Gwanghwamun gates, red pillars with green layered eaves.
+const palaceX=0,palaceZ=-95;
+box(seoulGeo,palaceX,-1.8,palaceZ,40,1.6,23,'#b3b0a2','#d2cbb8');
+for(const yy of [0,9.7]){
+ const px=palaceX,pz=palaceZ+(yy===0?5:-8),scaleFactor=yy===0?1:.76;
+ for(const off of [-10,-5,0,5,10])for(const rz of [-5,5]){
+  box(seoulGeo,px+off*scaleFactor,4.2+yy*.18,pz+rz*scaleFactor,1,9.5,1,'#b84843');
+ }
+ box(seoulGeo,px,10.2+yy*.18,pz,29*scaleFactor,2.0,17*scaleFactor,'#294d51','#598276');
+ pyramid(seoulGeo,px,11.2+yy*.18,pz,17*scaleFactor,11*scaleFactor,6*scaleFactor,'#335d58');
+ box(seoulGeo,px,14.4+yy*.18,pz,12*scaleFactor,1.1,5*scaleFactor,'#a4c1a5');
+}
+for(let i=0;i<10;i++)box(seoulGeo,palaceX,-1.0,-78+i*2.2,3.6,.08,.72,'#dfd1b9');
+// Dongdaemun Design Plaza: smooth metallic curved bulbous roof modules.
+function ellipsoidGeo(b,x,y,z,rx,ry,rz,color){
+ let begin=b.length;sphere(b,x,y,z,1,color,8,14);
+ for(let k=begin;k<b.length;k+=10){b[k]=x+(b[k]-x)*rx;b[k+1]=y+(b[k+1]-y)*ry;b[k+2]=z+(b[k+2]-z)*rz;}
+}
+const ddpX=56,ddpZ=-94;
+box(seoulGeo,ddpX,-2.5,ddpZ,44,.75,25,'#96a2ae','#afb6bb');
+ellipsoidGeo(seoulGeo,ddpX-8,4.6,ddpZ,19,6,12,'#a6b8c3');
+ellipsoidGeo(seoulGeo,ddpX+9,5.3,ddpZ-4,17,7.2,12,'#9fb1c5');
+ellipsoidGeo(seoulGeo,ddpX+13,3.8,ddpZ+8,14,5,8,'#b9ccd4');
+for(let x=35;x<77;x+=6)for(let z=-106;z<-82;z+=7)box(seoulGeo,x,-1.96,z,.4,.08,.4,'#d9e6e3');
+// Historic palace streets, trees, and modern Han River promenades.
+for(let x=-65;x<=69;x+=11){tree(seoulGeo,x,-72,3.8+random()*1.5);}
+// Singapore · tropical Marina Bay panorama, with all landmarks close to center for phones.
+const singaporeGeo=hkGeo.slice(0,arenaEnd);
+for(let i=0;i<singaporeGeo.length;i+=10){singaporeGeo[i+6]*=.96;singaporeGeo[i+7]*=1.04;singaporeGeo[i+8]*=.97;}
+box(singaporeGeo,0,-4.6,-103,189,.85,147,'#398f9f','#66bfca'); // Marina Bay
+for(let k=0;k<36;k++){
+ const x=-83+(k*41)%172,z=-49-(k*29)%87;
+ box(singaporeGeo,x,-4.14,z,1.8,.025,.10,k%3?'#a5edf1':'#e5e4c2');
+}
+// Waterfront promenade and Helix bridge.
+box(singaporeGeo,0,-3.45,-54,150,.9,5.5,'#a2b6a6','#e0ddd0');
+for(let x=-52;x<=59;x+=4){
+ const a=Math.sin((x+52)*.13)*2.1;
+ rod(singaporeGeo,[x,-2.5,-58],[x+1,4.3+a,-58],.15,'#c3e9e5');
+ rod(singaporeGeo,[x,4.3+a,-58],[x+3,-2.5,-58],.12,'#bbdce4');
+}
+seed=128832;
+for(let k=0;k<58;k++){
+ let x=-84+random()*168,z=-82-random()*80;
+ if((x>-57&&x<-9&&z<-93&&z>-145)||(x>5&&x<37&&z<-116&&z>-170)||(x>34&&x<72&&z<-100&&z>-140)||(x>-14&&x<10&&z>-120&&z<-89))continue;
+ building(singaporeGeo,x,z,3.3+random()*6,4+random()*7,8+random()*24,['#7da3aa','#90adb2','#6f9bb1','#abc4c1','#7ca0a6'][k%5]);
+}
+// Marina Bay Sands: three distinct towers topped by a curved skypark vessel.
+const mbZ=-119;
+for(const x of [-43,-32,-21]){
+ box(singaporeGeo,x,27,mbZ,9.0,54,12.5,'#78bcc1','#d5e9e1','#679ba7');
+ for(let y=3;y<52;y+=3.8){
+  box(singaporeGeo,x,y,mbZ+6.30,8.3,.19,.12,'#c1ecec');
+  box(singaporeGeo,x+4.55,y,mbZ,.12,.18,11,'#b6dce0');
+ }
+ box(singaporeGeo,x,54.8,mbZ,10.1,1.1,13.1,'#aacac6');
+}
+box(singaporeGeo,-32,57.1,mbZ,41.5,4.2,15.8,'#c2dcd1','#edf0d9','#92b9af');
+box(singaporeGeo,-32,59.4,mbZ,48,1.0,9.0,'#e8e4d0','#d6eacb');
+for(let x=-51;x<=-12;x+=4)box(singaporeGeo,x,60.13,mbZ,1.8,.55,6.7,'#4daaa0');
+// Gardens by the Bay and signature giant Supertrees.
+for(const [x,z,h] of [[23,-132,38],[39,-146,27],[9,-140,29],[28,-156,22],[48,-131,19]]){
+ cylinder(singaporeGeo,x,0,z,2.4,h*.65,'#6b8274',9);
+ for(let i=0;i<9;i++){
+  let a=2*Math.PI*i/9;
+  rod(singaporeGeo,[x,h*.50,z],[x+Math.cos(a)*(h*.28),h*.88,z+Math.sin(a)*(h*.28)],.49,'#99ad86',5);
+ }
+ ellipsoidGeo(singaporeGeo,x,h*.83,z,h*.28,h*.075,h*.28,'#70bd85');
+ cylinder(singaporeGeo,x,h*.84,z,2.0,1.05,'#b7b67e',12);
+}
+// Singapore Flyer: tall ferris wheel overlooking the bay.
+const flyX=56,flyZ=-114,flyY=31,flyR=27;
+for(let j=0;j<24;j++){
+ const a=2*Math.PI*j/24,b=2*Math.PI*(j+1)/24;
+ const ax=flyX+Math.cos(a)*flyR, ay=flyY+Math.sin(a)*flyR;
+ const bx=flyX+Math.cos(b)*flyR, by=flyY+Math.sin(b)*flyR;
+ rod(singaporeGeo,[ax,ay,flyZ],[bx,by,flyZ],.52,'#d9eeea',6);
+ if(j%2===0)rod(singaporeGeo,[flyX,flyY,flyZ],[ax,ay,flyZ],.22,'#dae4de',5);
+ if(j%2===0)box(singaporeGeo,ax,ay-1.1,flyZ,2.5,2.3,2.5,'#e4f1eb','#9bd0d2');
+}
+rod(singaporeGeo,[flyX,flyY,flyZ],[flyX-13,-2.3,flyZ],1.0,'#b7cbcd',7);
+rod(singaporeGeo,[flyX,flyY,flyZ],[flyX+13,-2.3,flyZ],1.0,'#b7cbcd',7);
+// Esplanade's twin durian-shaped performing arts theatres.
+for(const x of [0,12]){
+ ellipsoidGeo(singaporeGeo,x,4.5,-94,8.2,5.9,7.0,'#d6c5a3');
+ for(let i=0;i<9;i++){
+  const a=2*Math.PI*i/9;
+  rod(singaporeGeo,[x,5.3,-94],[x+Math.cos(a)*7.8,8.5,-94+Math.sin(a)*6.2],.21,'#ab9571',5);
+ }
+}
+// Merlion on the waterfront, stylized sculpture with a flowing water jet.
+box(singaporeGeo,-5,-2.4,-66,12,2.4,9,'#b8d8d0','#e6e5cf');
+cylinder(singaporeGeo,-5,-.9,-66,2.1,7.1,'#f5eee0',12);
+sphere(singaporeGeo,-5,7.0,-66,2.65,'#f6f1e2',9,12);
+for(let i=0;i<6;i++)rod(singaporeGeo,[-7.0+i*.7,7.6,-66],[-6.2+i*.5,10.1,-65],.18,'#d5e5d9',5);
+rod(singaporeGeo,[-3.6,6.5,-65],[-1.0,4.6,-60],.18,'#93deed',6);
+for(let x=-80;x<=80;x+=14)tree(singaporeGeo,x,-76,3.2+random()*1.8);
+
+const MOBILE_SCENERY_SHIFT=-19;
+const MOBILE_ARENA_SHIFT=3.3; // Original Taipei placement — unchanged.
+// Wider cities use a more forward, slightly narrower mobile court projection,
+// matching Taipei's lower visual placement without clipping side rails.
+const MOBILE_WIDE_ARENA_SHIFT=7.45;
+const MOBILE_WIDE_ARENA_X_SCALE=.855;
+function wideStage(){return ['1-2','1-3','1-4','1-5','2-1','2-2','2-3','2-4','2-5'].includes(stage);}
+function courtShift(){return isMobilePortrait()?(wideStage()?MOBILE_WIDE_ARENA_SHIFT:MOBILE_ARENA_SHIFT):0;}
+function courtXScale(){return isMobilePortrait()&&wideStage()?MOBILE_WIDE_ARENA_X_SCALE:1;}
+// Phone camera framed tightly around the playfield, while city background coordinates
+// and viewpoint stay identical to V11.  More width is given to distant bricks so
+// the playable court visually reaches both edges without cropping the near paddle.
+function mobileArenaZoom(x,z){
+ const depth=Math.max(0,Math.min(1,(8.85-z)/30));
+ const stretchX=1.012+depth*.235;
+ return [x*stretchX,8.85+(z-8.85)*.875];
+}
+function mobileCourtPoint(x,z){
+ if(!isMobilePortrait())return [x,z];
+ const p=mobileArenaZoom(x*courtXScale(),z);
+ return [p[0],p[1]+courtShift()];
+}
+// V15: one shared collision + drawing width; all five stages receive a longer paddle.
+function paddleHalfWidth(){return (wideStage()&&isMobilePortrait()?4.32:3.25)*.90;}
+function isMobilePortrait(){return innerWidth<=600 && innerHeight>innerWidth;}
+
+// Amsterdam • canal ring, gabled canal houses, windmills, Rijksmuseum,
+// Centraal Station, Royal Palace and the Westerkerk tower.
+const amsterdamGeo=hkGeo.slice(0,arenaEnd);
+for(let i=0;i<amsterdamGeo.length;i+=10){amsterdamGeo[i+6]*=.91;amsterdamGeo[i+7]*=1.04;amsterdamGeo[i+8]*=.90;}
+// Wide, visibly turquoise canal waters and masonry quays.
+box(amsterdamGeo,0,-4.64,-110,206,.75,132,'#3c8e9b','#76bdbe');
+for(let x=-88;x<=89;x+=7.1){box(amsterdamGeo,x,-4.235,-74,2.9,.022,.10,x%2?'#a4dce0':'#c3e7df');}
+for(const z of [-64,-91,-135]){
+ box(amsterdamGeo,0,-3.56,z,178,1.3,6.1,'#a8ad9f','#d9d7ba');
+ for(let x=-84;x<=86;x+=16){box(amsterdamGeo,x,-2.86,z+2.85,8.5,.22,.36,'#e7dabb');}
+}
+// Three arched Amsterdam bridges, including the Magere Brug over a canal.
+for(const [centerX,z,width] of [[-37,-76,29],[33,-94,30],[6,-126,38]]){
+ box(amsterdamGeo,centerX,-1.75,z,width,1.10,5.2,'#d3cbbb','#f4e6cf');
+ for(const dx of [-width*.32,0,width*.32]){
+  // Three brick arches below the walkway.
+  box(amsterdamGeo,centerX+dx,-2.92,z,1.85,1.9,5.5,'#b99578');
+ }
+ for(let i=-4;i<=4;i++){
+  const x=centerX+i*(width/9);
+  box(amsterdamGeo,x,-.52,z+2.3,.14,1.35,.14,'#ede4c9');
+  box(amsterdamGeo,x,-.52,z-2.3,.14,1.35,.14,'#ede4c9');
+ }
+ for(const dz of [-2.3,2.3])rod(amsterdamGeo,[centerX-width/2,-.06,z+dz],[centerX+width/2,-.06,z+dz],.11,'#f2eddd',5);
+}
+// Tall colorful Dutch gabled houses lining the canals. Every house has a sloped roof.
+seed=20262104;
+const dutchColors=['#b66850','#bf7c5b','#f1c792','#7497a7','#e0a881','#9e6259','#d8d4bf','#b69b79'];
+for(let row=0;row<3;row++){
+ const z=[-79,-113,-154][row];
+ for(let k=0;k<24;k++){
+  const x=-87+k*7.65+(row%2?1.5:0);
+  // Preserve central sight lines toward the main sights.
+  if((row===0&&x>-37&&x<45)||(row===1&&x>-53&&x<37)||(row===2&&x>-38&&x<45))continue;
+  const w=5.6+random()*.80,h=11+random()*9,d=5.4+random()*2.7;
+  const tint=dutchColors[(k+row*3)%dutchColors.length];
+  box(amsterdamGeo,x,h*.50,z,w,h,d,tint,'#f0dbbf');
+  // Triangular stepped facades characteristic of Amsterdam.
+  box(amsterdamGeo,x,h+1.4,z,w*.70,2.5,d*.84,tint);
+  box(amsterdamGeo,x,h+3.0,z,w*.38,.90,d*.68,tint);
+  box(amsterdamGeo,x,h+3.58,z,w*.13,.45,d*.45,'#f5e4bd');
+  for(let j=0;j<3;j++)for(let q of [-1,1])box(amsterdamGeo,x+q*1.2,3.1+j*3.0,z+d/2+.10,.87,1.55,.10,'#b5e4eb','#edf1e7');
+  box(amsterdamGeo,x,h*.25,z+d/2+.15,1.30,2.55,.17,'#334e53');
+ }
+}
+// Rijksmuseum: monumental arched entrance, red sandstone museum and slender twin towers.
+const rx=-39,rz=-112;
+box(amsterdamGeo,rx,11.8,rz,35,23.6,12,'#ad604e','#d29e79','#995c51');
+for(const x of [rx-15.5,rx+15.5]){
+ box(amsterdamGeo,x,21.6,rz,6.8,21.1,7.0,'#ae6f56');
+ pyramid(amsterdamGeo,x,32.2,rz,4.2,4.2,9,'#4b7583');
+ rod(amsterdamGeo,[x,40,rz],[x,44.4,rz],.25,'#d5d3b2');
+}
+box(amsterdamGeo,rx,18.2,rz+6.13,8,9.1,.23,'#e2bd92');
+box(amsterdamGeo,rx,10.3,rz+6.30,5.0,12.5,.14,'#4a5d63');
+for(const x of [rx-10.5,rx-5.2,rx+5.2,rx+10.5])for(let j=0;j<3;j++)
+ box(amsterdamGeo,x,5.3+j*5.8,rz+6.24,1.85,2.8,.1,'#c2dcd4');
+// Amsterdam Centraal Station's twin clock towers and grand orange brick facade.
+const cx=24,cz=-149;
+box(amsterdamGeo,cx,10.5,cz,49,21,13,'#b36f57','#e6bc98');
+for(const x of [cx-16,cx+16]){
+ box(amsterdamGeo,x,20,cz,7.3,23,8,'#c38766');
+ pyramid(amsterdamGeo,x,31.3,cz,5.1,5.0,8.6,'#527b80');
+ sphere(amsterdamGeo,x,21.6,cz+4.14,1.55,'#f3dfb2',7,10);
+}
+box(amsterdamGeo,cx,22.8,cz,14,4,14,'#e0b48c');
+pyramid(amsterdamGeo,cx,25,cz,8.2,7.6,7,'#4c767c');
+for(let x=cx-20;x<=cx+20;x+=5.7)for(let yy of [6,12])
+ box(amsterdamGeo,x,yy,cz+6.57,2.2,3,.13,'#b9e5e4');
+// Royal Palace / Dam Square, classic colonnade and dome.
+const px=28,pz=-101;
+box(amsterdamGeo,px,10.5,pz,26,21,15,'#c7b99c','#e4d4b8');
+box(amsterdamGeo,px,21.7,pz,29,2.1,17,'#eee0c5');
+for(let x=px-11;x<=px+11;x+=4.0){cylinder(amsterdamGeo,x,2.8,pz+8, .48,14.5,'#d8c6a7',8);}
+box(amsterdamGeo,px,11,pz+8.18,28,.6,1.5,'#e7d8ba');
+cylinder(amsterdamGeo,px,22.1,pz,5.6,3.0,'#89a5a4',12);
+pyramid(amsterdamGeo,px,25,pz,5.0,5.0,5,'#5f8181');
+// Westerkerk bell tower, a slender sandstone campanile.
+const wx=-5,wz=-132;
+box(amsterdamGeo,wx,16,wz,8.6,32,8.6,'#d8b78e');
+for(let y=3;y<30;y+=6.4){box(amsterdamGeo,wx,y,wz+4.38,2.4,3.5,.14,'#688b8b');}
+box(amsterdamGeo,wx,33,wz,11,3.2,11,'#71949c');
+rod(amsterdamGeo,[wx,35,wz],[wx,50,wz],1.28,'#8eafab',10);
+sphere(amsterdamGeo,wx,50.9,wz,1.36,'#d5bb72');
+// A pair of traditional windmills on the edge of the canal district.
+function dutchWindmill(b,x,z,h){
+ const y0=-2.9;
+ cylinder(b,x,y0,z,5.2,h,'#d9c6a2',12);
+ cylinder(b,x,y0+h,z,5.8,1.5,'#715448',12);
+ pyramid(b,x,y0+h+1.6,z,6.4,6.4,5.5,'#6c5955');
+ const yy=y0+h*.67,front=z+5.45,span=h*.68;
+ sphere(b,x,yy,front,.85,'#e6c594',6,9);
+ for(let j=0;j<4;j++){
+  const a=j*Math.PI/2+Math.PI/8,ex=x+Math.cos(a)*span,ey=yy+Math.sin(a)*span;
+  rod(b,[x,yy,front],[ex,ey,front],.48,'#e7e2d2',6);
+  rod(b,[x+Math.cos(a)*span*.38,yy+Math.sin(a)*span*.38,front+.10],[ex+Math.cos(a+Math.PI/2)*2.3,ey+Math.sin(a+Math.PI/2)*2.3,front+.10],.18,'#b59670');
+  for(let k=0;k<5;k++){
+   const t=.44+k*.105;
+   const qx=x+Math.cos(a)*span*t,qy=yy+Math.sin(a)*span*t;
+   rod(b,[qx,qy,front+.18],[qx+Math.cos(a+Math.PI/2)*2.1,qy+Math.sin(a+Math.PI/2)*2.1,front+.18],.10,'#c2ad87',4);
+  }
+ }
+ box(b,x,y0+h*.23,z+5.25,2.0,3.7,.20,'#595b52');
+}
+dutchWindmill(amsterdamGeo,57,-110,28);
+dutchWindmill(amsterdamGeo,-68,-142,25);
+// Quiet street canals, bicycle racks and rows of planted trees.
+for(let i=0;i<22;i++){
+ const x=-79+i*7.35,z=i%2===0?-71.5:-86.5;
+ if(Math.abs(x)>19)tree(amsterdamGeo,x,z,3.0+random()*1.8);
+}
+for(let x=-57;x<58;x+=11){
+ const z=-66;
+ for(let j=0;j<2;j++){
+  cylinder(amsterdamGeo,x+j*1.4,-2.85,z,.47,.14,'#384855',8);
+  cylinder(amsterdamGeo,x+j*1.4,-2.85,z+1.1,.47,.14,'#384855',8);
+  rod(amsterdamGeo,[x+j*1.4,-2.70,z],[x+j*1.4,-.95,z+.5],.095,'#789ba1',5);
+ }
+}
+
+const staticGeoMobile=staticGeo.slice();
+for(let i=0;i<arenaEnd;i+=10){
+ const p=mobileArenaZoom(staticGeoMobile[i],staticGeoMobile[i+2]);
+ staticGeoMobile[i]=p[0];staticGeoMobile[i+2]=p[1]+MOBILE_ARENA_SHIFT;
+}
+for(const [start,end] of [[mountainStart,mountainEnd],[gondolaStart,gondolaEnd]]){
+  for(let i=start;i<end;i+=10)staticGeoMobile[i]+=MOBILE_SCENERY_SHIFT;
+}
+const hkGeoMobile=hkGeo.slice();
+const tokyoGeoMobile=tokyoGeo.slice();
+const seoulGeoMobile=seoulGeo.slice();
+const singaporeGeoMobile=singaporeGeo.slice();
+const amsterdamGeoMobile=amsterdamGeo.slice();
+// Keep Dutch canal houses, museum and windmills in the narrower phone field of view.
+for(let i=arenaEnd;i<amsterdamGeoMobile.length;i+=10)amsterdamGeoMobile[i]*=.78;
+// Narrow phone screens still show the main Singapore landmarks.
+for(let i=arenaEnd;i<singaporeGeoMobile.length;i+=10)singaporeGeoMobile[i]*=.66;
+for(const geo of [hkGeoMobile,tokyoGeoMobile,seoulGeoMobile,singaporeGeoMobile,amsterdamGeoMobile]){
+ for(let i=0;i<arenaEnd;i+=10){
+  const p=mobileArenaZoom(geo[i]*MOBILE_WIDE_ARENA_X_SCALE,geo[i+2]);
+  geo[i]=p[0];geo[i+2]=p[1]+MOBILE_WIDE_ARENA_SHIFT;
+ }
+}
+// Berlin · the Brandenburg Gate, Reichstag, Fernsehturm, Berliner Dom,
+// Victory Column, Oberbaum Bridge and a preserved East Side Gallery wall.
+const berlinGeo=hkGeo.slice(0,arenaEnd);
+{
+seed=19891109;
+box(berlinGeo,0,-4.80,-100,218,.75,138,'#8cafa1','#bbd2ba');
+// Unter den Linden and surrounding streets, with subtle pavements and trees.
+for(const z of [-43,-56,-73]){
+ box(berlinGeo,0,-3.60,z,184,.47,6.7,'#656d76','#93989c');
+ box(berlinGeo,0,-3.31,z,184,.033,.13,'#e7dec8');
+ for(let x=-84;x<=84;x+=13){box(berlinGeo,x,-3.30,z-2.45,4,.045,.18,'#e8e4cd');}
+}
+for(let j=0;j<45;j++){
+ const x=-82+random()*164,z=-83-random()*67;
+ // Leave silhouettes of signature monuments unobstructed.
+ if((x>-57&&x<-20&&z>-135&&z<-98)||(x>-16&&x<30&&z>-132&&z<-85)||(x>29&&x<70&&z>-158&&z<-98))continue;
+ const w=3.5+random()*5.0,d=4.5+random()*6,h=8+random()*12;
+ building(berlinGeo,x,z,w,d,h,['#aaa6a0','#bcae9f','#a0b6be','#a4aead','#c3b8a8'][j%5]);
+}
+// Brandenburg Gate: six pairs of Doric columns under stepped sandstone architrave.
+const gateX=-31,gateZ=-107;
+box(berlinGeo,gateX,-2.65,gateZ,33,1.3,12,'#a6a9a5','#d9d4c1');
+for(const xx of [-45.2,-39.5,-33.8,-28.1,-22.4,-16.7])for(const zz of [gateZ-4.45,gateZ+4.45]){
+ cylinder(berlinGeo,xx,-1.9,zz,.90,17.3,'#e4d7b8',10);
+ cylinder(berlinGeo,xx,15.3,zz,1.36,.85,'#c8b99b',10);
+ box(berlinGeo,xx,15.5,zz,2.7,.52,2.9,'#e6d7bd');
+}
+box(berlinGeo,gateX,17.0,gateZ,35,2.5,14,'#e2d2b0','#eee4cc');box(berlinGeo,gateX,19.0,gateZ,37,1.5,14.8,'#c2b18e','#e9d9ba');
+box(berlinGeo,gateX,20.3,gateZ,31,.95,12,'#d4c2a1');
+for(let i=-2;i<=2;i++)box(berlinGeo,gateX+i*3.4,21.45,gateZ+6.5,1.5,1.5,.25,'#ccb995');
+// Stylized quadriga silhouette.
+for(let x of [gateX-2.5,gateX,gateX+2.5]){
+ sphere(berlinGeo,x,24.0,gateZ,.95,'#65896d',6,8);
+ rod(berlinGeo,[x,24.0,gateZ],[x+.7,26.4,gateZ-1.1],.22,'#587d61',6);
+}
+// Reichstag: classical wings, pediment and a ringed glass dome.
+const rx=7,rz=-115;
+box(berlinGeo,rx,8.5,rz,32,18.0,23,'#c0b5a3','#e2dac9');
+box(berlinGeo,rx,18.2,rz,34,1.8,24.4,'#e7dfcf');
+for(let x=-4;x<=18;x+=4.4){
+ cylinder(berlinGeo,x,-1.0,rz+11.7,.67,14,'#e2d8c8',8);
+ box(berlinGeo,x,13.5,rz+11.7,2.15,.60,2.1,'#c9bca9');
+}
+for(let x of [-7,21]){box(berlinGeo,x,18.3,rz,5,4,24,'#aa9e90');pyramid(berlinGeo,x,20.1,rz,3.2,12,3,'#748b98');}
+cylinder(berlinGeo,rx,19.25,rz,9.4,2.0,'#a1b4bd',16);
+for(let i=0;i<5;i++){
+ const r=8.6-i*1.35;
+ cylinder(berlinGeo,rx,21.3+i*2.25,rz,r,1.5,'#8bb1bb',18);
+ cylinder(berlinGeo,rx,22.8+i*2.25,rz,r-.15,.23,'#d3e1dc',18);
+}
+sphere(berlinGeo,rx,32.8,rz,1.1,'#eff5e6',6,9);
+// Fernsehturm at Alexanderplatz with its iconic silver sphere and antenna.
+const fx=44,fz=-147;
+cylinder(berlinGeo,fx,-2.3,fz,2.05,68,'#d3d7d0',12);
+for(let i=0;i<4;i++)cylinder(berlinGeo,fx,12+i*12,fz,2.28,.55,'#97afb4',12);
+sphere(berlinGeo,fx,68,fz,7.3,'#a9c2cb',12,18);
+cylinder(berlinGeo,fx,68,fz,7.5,1.4,'#68899d',20);
+sphere(berlinGeo,fx-2.0,70.3,fz+4.7,1.2,'#e3eff0',7,10);
+rod(berlinGeo,[fx,75.0,fz],[fx,95.0,fz],.47,'#e7ebe7',9);
+rod(berlinGeo,[fx,88.0,fz],[fx,95.0,fz],.18,'#be5857',7);
+// Berliner Dom, four copper-green corner domes and main cupola.
+const dx=-48,dz=-149;
+box(berlinGeo,dx,10,dz,36,20,24,'#b7a99c','#e2d4c2');
+box(berlinGeo,dx,21,dz,38,2.8,26,'#d6c6b7');
+for(let xx of [dx-13,dx+13])for(let zz of [dz-8,dz+8]){
+ cylinder(berlinGeo,xx,22,zz,3.6,5.0,'#718f87',12);
+ pyramid(berlinGeo,xx,26.4,zz,3.9,3.9,7,'#5b897b');
+ sphere(berlinGeo,xx,34.0,zz,.90,'#e6d4a6',6,8);
+}
+cylinder(berlinGeo,dx,23,dz,10.1,5.4,'#769e92',14);
+for(let layer=0;layer<4;layer++){
+ cylinder(berlinGeo,dx,28.4+layer*2.55,dz,9-layer*1.9,1.85,'#6f9d8d',15);
+}
+pyramid(berlinGeo,dx,38,dz,3.4,3.4,5,'#5d847b');
+rod(berlinGeo,[dx,43,dz],[dx,47,dz],.35,'#e4d4ab',7);
+// Siegessäule (Victory Column) and gold statue above the Tiergarten.
+const vx=69,vz=-105;
+box(berlinGeo,vx,-2.3,vz,14,2.4,14,'#d3c1a0');
+box(berlinGeo,vx,1.3,vz,9,3.8,9,'#b5a17f');
+cylinder(berlinGeo,vx,3.0,vz,2.6,36,'#c6b18c',16);
+for(let y=5;y<35;y+=6)cylinder(berlinGeo,vx,y,vz,2.85,.66,'#a18b65',15);
+cylinder(berlinGeo,vx,39,vz,4.9,2.2,'#e2cfad',16);
+sphere(berlinGeo,vx,44.0,vz,2.3,'#e4c15c',9,12);
+for(let off of [-1,1])rod(berlinGeo,[vx,45.0,vz],[vx+off*5,47.2,vz+1],.38,'#e4c15c',7);
+// River Spree, Oberbaum-style twin towers and arch bridge.
+box(berlinGeo,0,-4.18,-71,165,.21,10,'#6aa7bb','#9ccdd3');
+box(berlinGeo,52,-1.95,-70,49,3.2,6,'#ac7164','#db9d84');
+for(let k=0;k<6;k++){
+ box(berlinGeo,32+k*7.7,-.5,-66.8,1.35,5,.7,'#bd8271');
+ box(berlinGeo,32+k*7.7,-.5,-73.2,1.35,5,.7,'#bd8271');
+}
+for(let x of [30,74]){
+ box(berlinGeo,x,7,-70,6.2,15,6.2,'#b27666');
+ pyramid(berlinGeo,x,14.5,-70,4.2,4.2,8.5,'#678785');
+ rod(berlinGeo,[x,23,-70],[x,26,-70],.35,'#ddcbb8',7);
+}
+// East Side Gallery colorful remaining Wall on right edge of Spree.
+box(berlinGeo,82,-1.45,-87,1.0,4.9,28,'#c4bdac','#e1d6c5');
+for(let j=0;j<7;j++)box(berlinGeo,81.38,-.5,-99+j*3.4,.15,2.1,2.5,['#c85c65','#55acb9','#e5bd73','#7aae83','#7f8dbf'][j%5]);
+for(let x=-80;x<=80;x+=11){if(Math.abs(x)>19)tree(berlinGeo,x,-79,3.2+random()*1.4);}
+}
+// On a phone, bring city monuments toward the center while preserving the court geometry.
+const berlinGeoMobile=berlinGeo.slice();
+for(let i=arenaEnd;i<berlinGeoMobile.length;i+=10){berlinGeoMobile[i]*=.76;}
+for(let i=0;i<arenaEnd;i+=10){
+ const p=mobileArenaZoom(berlinGeoMobile[i]*MOBILE_WIDE_ARENA_X_SCALE,berlinGeoMobile[i+2]);
+ berlinGeoMobile[i]=p[0];berlinGeoMobile[i+2]=p[1]+MOBILE_WIDE_ARENA_SHIFT;
+}
+
+
+// THREE ADDITIONAL WORLD CITIES: independent static scenery for stages 2-3, 2-4, 2-5.
+// The court vertices are shared, so gameplay and physics match earlier stages.
+function cityBase(geo,ground,water){
+ box(geo,0,-4.75,-102,218,.82,149,ground,ground);
+ box(geo,0,-4.28,-72,198,.2,17,water,water);
+ for(const z of [-51,-101,-142]){box(geo,0,-3.45,z,190,.34,5.2,'#a8abb0','#d5d6d0');
+  for(let x=-83;x<=85;x+=16)box(geo,x,-3.23,z,5.2,.05,.10,'#e5e0cb');}
+ for(let x=-79;x<=81;x+=13){if(Math.abs(x)>21)tree(geo,x,-58,3.4+random()*1.2);}
+}
+function addTownhouses(geo,rowZ,palette,skip){
+ for(let k=0;k<21;k++){
+  const x=-83+k*8.4;
+  if(Math.abs(x)<skip)continue;
+  const h=10+random()*9,w=6.8,d=6.6;
+  box(geo,x,h*.50-2.5,rowZ,w,h,d,palette[k%palette.length]);
+  box(geo,x,h-2.0,rowZ,w+1,.9,d+1,'#7c858b');
+  for(let j=0;j<3;j++)for(let side of [-1,1])box(geo,x+side*1.5,1.0+j*3.2,rowZ+d/2+.12,.95,1.55,.12,'#b7d5db');
+ }
+}
+// PARIS: Eiffel Tower, Arc de Triomphe, Louvre, Notre-Dame, Sacre-Coeur and Seine.
+const parisGeo=hkGeo.slice(0,arenaEnd);
+{
+ seed=18890331;cityBase(parisGeo,'#8da8a3','#659eb6');
+ addTownhouses(parisGeo,-113,['#d7c8af','#c9bda7','#aeb9b1','#dbd0c2'],28);
+ addTownhouses(parisGeo,-158,['#c3b6a8','#e3d4c3','#b8b9b3'],29);
+ // The Eiffel Tower: four splayed iron legs converge upward to tiered decks.
+ const x=-25,z=-113;
+ for(const sx of [-1,1])for(const sz of [-1,1]){
+  rod(parisGeo,[x+sx*10,-2.6,z+sz*10],[x+sx*5,21,z+sz*5],1.1,'#a28f72',7);
+  rod(parisGeo,[x+sx*5,21,z+sz*5],[x+sx*2,46,z+sz*2],.75,'#9b8769',7);
+  rod(parisGeo,[x+sx*2,46,z+sz*2],[x+sx*.65,69,z+sz*.65],.52,'#a38e6d',6);
+ }
+ for(const [yy,size] of [[20,14],[45,7],[69,3.0]])box(parisGeo,x,yy,z,size,1.8,size,'#b3a184','#d6c2a1');
+ for(const h of [8,14,27,33,39,52,58,64])for(const d of [-1,1]){
+  const w=h<21?8-h*.19:h<45?6-h*.085:3.25-h*.025;
+  rod(parisGeo,[x-w,h,z-2],[x+w,h+3,z+2],.22,'#c2ac85',5);
+  rod(parisGeo,[x+w,h,z-2],[x-w,h+3,z+2],.22,'#968168',5);
+ }
+ rod(parisGeo,[x,70,z],[x,82,z],.32,'#bdac8d');
+ // Arc de Triomphe: two piers with a tall empty central arch.
+ const ax=34,az=-107;
+ for(const dx of [-8,8])box(parisGeo,ax+dx,8.5,az,8.2,21,11,'#d9c7ae','#f2dec0');
+ box(parisGeo,ax,19.2,az,26,5,11,'#d5c2a9','#efe0c6');
+ box(parisGeo,ax,22.1,az,27.5,1.2,12,'#bcaa95');
+ for(let k=0;k<6;k++)box(parisGeo,ax-10.5+k*4.2,20.5,az+5.6,2.1,.7,.16,'#fff1d0');
+ // Louvre pyramid and museum wings.
+ box(parisGeo,0,.15,-82,57,3,16,'#bdbaad','#dad6c6');
+ for(let side of [-1,1]){box(parisGeo,side*24,5.4,-84,12,9.0,16,'#c7bdac');
+  for(let q=0;q<3;q++)box(parisGeo,side*(21+q*2.4),4.9,-75.9,.75,4.1,.13,'#b9d7de');}
+ pyramid(parisGeo,0,1.75,-80,12,9,14,'#96c9d5');
+ for(let xx=-10;xx<=10;xx+=5)rod(parisGeo,[xx,1.75,-71],[0,15.6,-80],.16,'#e8f4e9');
+ // Notre-Dame west towers and rose window.
+ const nx=60,nz=-140;
+ box(parisGeo,nx,9,nz,24,19,12,'#c7bfae');
+ for(const dx of [-9,9])box(parisGeo,nx+dx,20,nz,7,23,10,'#c8c1b5','#e5dfce');
+ sphere(parisGeo,nx,13,nz+6.2,2.5,'#778b9d',8,11);
+ for(let dx of [-7,0,7])box(parisGeo,nx+dx,4,nz+6.05,2.4,6,.18,'#727d7c');
+ rod(parisGeo,[nx,20,nz-2],[nx,37,nz-2],.28,'#c4ba9d');
+ // Sacre-Coeur basilica on a subtle hill at Montmartre.
+ hill(parisGeo,-68,-164,27,19,5,['#7aab8c','#86b397','#9dc2a1']);
+ box(parisGeo,-66,12,-162,23,16,13,'#ebe2d3');
+ cylinder(parisGeo,-66,19,-162,6.3,7,'#eee5d3',12);
+ pyramid(parisGeo,-66,25,-162,6.8,6.8,7,'#d1c2ac');
+ for(const sx of [-9,9])cylinder(parisGeo,-66+sx,18,-162,2.6,11,'#e9dfcb',10);
+}
+// WARSAW: Palace of Culture and Science, Old Town, Royal Castle, National Stadium,
+// Warsaw Spire and the Świętokrzyski Bridge across the Vistula.
+const warsawGeo=hkGeo.slice(0,arenaEnd);
+{
+ seed=19441001;cityBase(warsawGeo,'#93a79a','#79afb5');
+ addTownhouses(warsawGeo,-152,['#f0cf9e','#d5a17c','#cfbca8','#d9c2a2','#cda79d'],25);
+ addTownhouses(warsawGeo,-112,['#a8b0b3','#c1c5bb','#b7b8b7'],32);
+ // Palace of Culture and Science - central Soviet-era tiered skyscraper and spire.
+ const px=-27,pz=-124;
+ box(warsawGeo,px,13,pz,22,29,19,'#c8c0a5');
+ for(let dx of [-9,9]){box(warsawGeo,px+dx,21,pz,7,20,9,'#d4c7a9');
+  box(warsawGeo,px+dx,31.0,pz,9,1.4,9,'#bcae95');}
+ box(warsawGeo,px,32,pz,15,24,15,'#d5c7aa');
+ box(warsawGeo,px,45.0,pz,18,2.3,18,'#b8b19e');
+ box(warsawGeo,px,50.5,pz,10,10,10,'#c3bba3');
+ cylinder(warsawGeo,px,55.5,pz,4.4,6,'#bab3a3',10);
+ rod(warsawGeo,[px,62,pz],[px,86,pz],.55,'#d7c4aa');
+ for(let y=11;y<51;y+=5)for(let dx of [-5,0,5])box(warsawGeo,px+dx,y,pz+10.05,1.4,2.2,.12,'#718a99');
+ // Old Town Market Square with colorful narrow tenement buildings.
+ for(let j=0;j<9;j++){
+  const xx=-65+j*8.7,zz=-82,hh=11+(j%3)*2.4;
+  box(warsawGeo,xx,hh/2-2.6,zz,7.1,hh,7,['#c88072','#e6c890','#bdd4c6','#d29e83','#e8d8af'][j%5]);
+  pyramid(warsawGeo,xx,hh-2.6,zz,4.1,4.0,3.0,'#aa7471');
+  for(let k=0;k<3;k++)box(warsawGeo,xx,1.7+k*3,zz+3.58,1.5,1.9,.14,'#bce1e5');
+ }
+ // Royal Castle and Sigismund's Column.
+ const cx=36,cz=-114;
+ box(warsawGeo,cx,10,cz,32,20,17,'#c48070','#e1a48b');
+ box(warsawGeo,cx-10,21.1,cz,6.5,22.5,8,'#cc9380');
+ pyramid(warsawGeo,cx-10,33,cz,4.4,4.4,7,'#587e8b');
+ cylinder(warsawGeo,cx+18,-3,cz+15,1.45,26,'#c4b393',9);
+ sphere(warsawGeo,cx+18,24,cz+15,1.65,'#a28660',7,9);
+ // Warsaw Spire, modern curved glass skyscraper.
+ const sx=65,sz=-149;
+ for(let j=0;j<2;j++){const xx=sx+(j?7:-7);box(warsawGeo,xx,25,sz,6,51,11,'#6ea6bf','#c9e9e9');}
+ box(warsawGeo,sx,29,sz,14,55,11,'#7baec8','#e0f4f2');
+ pyramid(warsawGeo,sx,56.5,sz,7.5,5.3,12,'#a9d6df');
+ // PGE Narodowy stadium with striped red-and-white facade.
+ const nx=-63,nz=-146;
+ cylinder(warsawGeo,nx,-2.9,nz,19.0,7.8,'#ebebdd',24);
+ cylinder(warsawGeo,nx,5.0,nz,16.7,1.5,'#ba5451',24);
+ for(let i=0;i<20;i++){
+  const t=i*Math.PI*2/20;
+  cylinder(warsawGeo,nx+Math.cos(t)*18.7,-2.0,nz+Math.sin(t)*18.7,.60,7.5,i%2?'#e6e5df':'#c45a5d',5);
+ }
+ // Świętokrzyski bridge and harp-like cable suspension.
+ box(warsawGeo,0,-1.55,-69,118,1.2,6,'#bcced2');
+ rod(warsawGeo,[20,-1,-69],[20,32,-69],1.0,'#dae3e2');
+ for(let i=0;i<11;i++)rod(warsawGeo,[-50+i*8,-1,-69],[20,32,-69],.14,'#ecf5ee');
+}
+// LONDON: Elizabeth Tower & Westminster, Tower Bridge, London Eye, The Shard,
+// St Paul's Cathedral and the Thames waterfront.
+const londonGeo=hkGeo.slice(0,arenaEnd);
+{
+ seed=18590101;cityBase(londonGeo,'#8c9fa0','#669cae');
+ addTownhouses(londonGeo,-157,['#ba9b89','#d2bfb0','#9eaaa8','#c2b0a0'],29);
+ addTownhouses(londonGeo,-111,['#b9b3a9','#c8bdae','#9aafb6'],27);
+ // Elizabeth Tower (Big Ben) with four clocks and Gothic spire.
+ const tx=-38,tz=-113;
+ box(londonGeo,tx,18,tz,11,39,11,'#c9b694');
+ for(const dx of [-4.4,4.4])box(londonGeo,tx+dx,24.0,tz+5.60,.62,26,.16,'#e6d1a5');
+ box(londonGeo,tx,39.8,tz,13,5,13,'#d1bd96');
+ sphere(londonGeo,tx,40.4,tz+6.65,4.1,'#eee7ca',9,12);
+ for(let j=0;j<12;j++){
+  const a=j*Math.PI/6;
+  rod(londonGeo,[tx+Math.sin(a)*3.2,40.4+Math.cos(a)*3.2,tz+6.82],
+   [tx+Math.sin(a)*3.52,40.4+Math.cos(a)*3.52,tz+6.82],.14,'#333c4a',4);
+ }
+ box(londonGeo,tx,45.8,tz,12,2.2,12,'#bdb094');
+ pyramid(londonGeo,tx,47.0,tz,7.3,7.3,14,'#5c827d');
+ rod(londonGeo,[tx,61,tz],[tx,66,tz],.25,'#cfba78');
+ // Westminster Palace beside the clock tower.
+ box(londonGeo,-8,9,-118,56,18,16,'#baa481','#dec9a0');
+ for(let i=0;i<10;i++)box(londonGeo,-32+i*5.2,11,-109.85,1.75,6.5,.15,'#6d8891');
+ for(let i=0;i<8;i++)pyramid(londonGeo,-30+i*6.2,18,-118,2.0,3.3,5.3,'#7c8580');
+ // Tower Bridge's two stone towers and elevated pedestrian walkway.
+ const bz=-82;
+ for(const bx of [20,59]){
+  box(londonGeo,bx,15,bz,12,31,13,'#bdc3bb','#dde2d8');
+  for(let dx of [-4.5,4.5])pyramid(londonGeo,bx+dx,30.5,bz,2.0,2.0,6,'#638e9c');
+  pyramid(londonGeo,bx,31,bz,7.2,7.2,9,'#538799');
+  for(let j=0;j<3;j++)box(londonGeo,bx,7+j*7,bz+6.65,3.3,3.9,.18,'#6d939f');
+ }
+ box(londonGeo,39.5,12,bz,51,2.0,14,'#8fbdc5');
+ box(londonGeo,39.5,23.3,bz,38,2.0,4.5,'#77aab7');
+ for(let xx=22;xx<=57;xx+=6)rod(londonGeo,[xx,12,bz-5],[xx,24,bz-1],.18,'#c2d5d4');
+ // London Eye ferris wheel with capsule pods and A-frame supports.
+ const ex=-65,ez=-95,ey=24,R=23;
+ for(let j=0;j<24;j++){
+  const t=j*Math.PI*2/24,t2=(j+1)*Math.PI*2/24;
+  rod(londonGeo,[ex+R*Math.cos(t),ey+R*Math.sin(t),ez],[ex+R*Math.cos(t2),ey+R*Math.sin(t2),ez],.45,'#cbd9dc',7);
+  if(j%2===0){const x=ex+R*Math.cos(t),y=ey+R*Math.sin(t);
+   box(londonGeo,x,y-.6,ez,2.9,2.1,2.3,'#e0edee');}
+ }
+ for(let j=0;j<12;j++){const t=j*Math.PI*2/12;rod(londonGeo,[ex,ey,ez],[ex+R*Math.cos(t),ey+R*Math.sin(t),ez],.13,'#d9e6e7');}
+ rod(londonGeo,[ex,ey,ez],[ex-14,-2.6,ez+1],1.05,'#d7e0dc');
+ rod(londonGeo,[ex,ey,ez],[ex+14,-2.6,ez+1],1.05,'#d7e0dc');
+ // The Shard, sharply tapering glass shards.
+ const sx=60,sz=-143;
+ box(londonGeo,sx,18,sz,13,38,13,'#7ba9b7','#a8d6dd');
+ pyramid(londonGeo,sx,37,sz,7.3,7.3,66,'#8cc5d4');
+ rod(londonGeo,[sx,75,sz],[sx,105,sz],.3,'#deeff0');
+ // St Paul's Cathedral with its prominent large dome.
+ const cx=-3,cz=-153;
+ box(londonGeo,cx,13,cz,36,25,21,'#c9bdac');
+ for(let xx=-14;xx<=14;xx+=4.6)cylinder(londonGeo,xx,1,cz+10.6,.55,13,'#e0d9ca',7);
+ cylinder(londonGeo,cx,25,cz,11,6,'#d5cabb',16);
+ for(let j=0;j<4;j++)cylinder(londonGeo,cx,31+j*2.3,cz,10-j*1.8,1.7,'#a4b5b5',16);
+ sphere(londonGeo,cx,41,cz,1.3,'#e4dbb9',7,10);
+}
+function mobileCityVertices(original,factor){
+ const m=original.slice();
+ for(let i=arenaEnd;i<m.length;i+=10)m[i]*=factor;
+ for(let i=0;i<arenaEnd;i+=10){
+  const p=mobileArenaZoom(m[i]*MOBILE_WIDE_ARENA_X_SCALE,m[i+2]);
+  m[i]=p[0];m[i+2]=p[1]+MOBILE_WIDE_ARENA_SHIFT;
+ }
+ return m;
+}
+const parisGeoMobile=mobileCityVertices(parisGeo,.69);
+const warsawGeoMobile=mobileCityVertices(warsawGeo,.69);
+const londonGeoMobile=mobileCityVertices(londonGeo,.69);
+
+const NEW_CITY_MESHES={
+ '2-3':{desktop:parisGeo,mobile:parisGeoMobile},
+ '2-4':{desktop:warsawGeo,mobile:warsawGeoMobile},
+ '2-5':{desktop:londonGeo,mobile:londonGeoMobile}
+};
+if(hasWebGL)for(const cfg of Object.values(NEW_CITY_MESHES)){
+ cfg.desktopBuffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,cfg.desktopBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(cfg.desktop),gl.STATIC_DRAW);
+ cfg.mobileBuffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,cfg.mobileBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(cfg.mobile),gl.STATIC_DRAW);
+}
+const STATIC_BUFFER=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_HK=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_HK_MOBILE=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_TOKYO=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_TOKYO_MOBILE=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_SEOUL=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_SEOUL_MOBILE=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_BERLIN=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_BERLIN_MOBILE=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_AMSTERDAM=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_AMSTERDAM_MOBILE=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_SINGAPORE=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_SINGAPORE_MOBILE=hasWebGL?gl.createBuffer():null;
+const STATIC_BUFFER_MOBILE=hasWebGL?gl.createBuffer():null;
+if(hasWebGL){gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(staticGeo),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_MOBILE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(staticGeoMobile),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_HK);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(hkGeo),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_HK_MOBILE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(hkGeoMobile),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_TOKYO);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(tokyoGeo),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_TOKYO_MOBILE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(tokyoGeoMobile),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_SEOUL);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(seoulGeo),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_SEOUL_MOBILE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(seoulGeoMobile),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_BERLIN);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(berlinGeo),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_BERLIN_MOBILE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(berlinGeoMobile),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_AMSTERDAM);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(amsterdamGeo),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_AMSTERDAM_MOBILE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(amsterdamGeoMobile),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_SINGAPORE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(singaporeGeo),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_SINGAPORE_MOBILE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(singaporeGeoMobile),gl.STATIC_DRAW);
+}const STATIC_COUNT=staticGeo.length/10;
+const dynBuf=hasWebGL?gl.createBuffer():null;
+// Core game state
+const LEVEL_SEQUENCE=['1-1','1-2','1-3','1-4','1-5','2-1','2-2','2-3','2-4','2-5'];
+let pendingTransition=null,lostAnyBallThisStage=false;
+let stage='1-1',bricks=[],bonusBalls=[],ballPickups=[],particles=[],gameState='loading',pinkTipShown=false,greenTipShown=false,orbs=[],effects={ball:null,paddle:null},orbSequence=0,score=0,lives=3,paddleX=0,paddleDir=0,heldLeft=false,heldRight=false,ball={x:0,z:6.0,vx:4.45,vz:-16.3,r:.43},time=0,lastTime=0,serveTimer=0,screenW=1,screenH=1,ratio=1,muted=false,flash=0,shake=0,toastTime=0,cameraEye=[0,19,37],vpMatrix=new Float32Array(16),collisionSeq=0;
+const hudScore=$('score'),hudLives=$('lives');
+// All bricks gain noticeable vertical thickness, while stacked tiers remain distinct.
+const BRICK_BASE_Y=1.39,BRICK_HEIGHT=1.90,BRICK_LAYER_STEP=2.10;
+function initBricks(){
+ bricks=[];
+ if(stage==='1-2'){
+  // Four by four stacks, exactly 16 bricks on each of two levels.
+  // Six pink bricks in each layer: total 20 blue and 12 pink.
+  const pink0=new Set([1,4,6,10,12,15]),pink1=new Set([0,3,5,9,11,14]);
+  for(let layer=0;layer<2;layer++)for(let index=0;index<16;index++){
+   let c=index%4,r=Math.floor(index/4);
+   let hp=(layer?pink1:pink0).has(index)?2:1;
+   bricks.push({x:-6.9+c*4.6,z:-19.3+r*3.85,hp,origHp:hp,alive:true,w:3.84,d:3.18,hit:0,
+     layer,slot:index,y:BRICK_BASE_Y+BRICK_LAYER_STEP*layer,dropStartY:BRICK_BASE_Y+BRICK_LAYER_STEP*layer,dropTime:0,dropDuration:.40});
+  }
+ }else if(stage==='1-3'){
+  // Four-by-four staggered wings topped by four separate corner pinnacles.
+  // Totals and durability: 20 blue / 8 pink / 8 green (16 + 16 + 4).
+  const pink0=new Set([0,9,14]),green0=new Set([2,5,10,13]);
+  const pink1=new Set([3,7,8,12]),green1=new Set([1,6,11]);
+  const crestSlots=[0,3,12,15],crestTypes=['green','pink','blue','blue'];
+  const rowShift=[-1.05,.95,-.95,1.05];
+  for(let layer=0;layer<3;layer++){
+   const slots=layer===2?crestSlots:Array.from({length:16},(_,i)=>i);
+   for(const slot of slots){
+    const c=slot%4,r=Math.floor(slot/4);
+    const type=layer===2?crestTypes[crestSlots.indexOf(slot)]:
+     (layer===0?(green0.has(slot)?'green':pink0.has(slot)?'pink':'blue'):(green1.has(slot)?'green':pink1.has(slot)?'pink':'blue'));
+    const hp=type==='pink'?2:1;
+    bricks.push({x:-6.9+c*4.6+rowShift[r],z:-19.3+r*3.85,hp,origHp:hp,type,alive:true,w:3.84,d:3.18,hit:0,
+      layer,slot,y:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropStartY:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropTime:0,dropDuration:.48});
+   }
+  }
+ }else if(stage==='1-5'){
+  // An S-shaped three-deck terrace, keeping 16 + 13 + 10 and the same colors.
+  const tiers=[Array.from({length:16},(_,i)=>i),
+    [0,1,2,3,4,5,7,8,9,11,12,13,15],
+    [0,1,2,3,4,7,8,11,12,15]];
+  const colors=[...Array(23).fill('blue'),...Array(8).fill('pink'),...Array(8).fill('green')];
+  for(let i=colors.length-1;i>0;i--){const j=(i*13+7)%(i+1);[colors[i],colors[j]]=[colors[j],colors[i]];}
+  const bends=[-.75,.80,-.80,.75];
+  let count=0;
+  for(let layer=0;layer<3;layer++)for(const slot of tiers[layer]){
+   const type=colors[count++],c=slot%4,r=Math.floor(slot/4),hp=type==='pink'?2:1;
+   bricks.push({x:-6.9+c*4.6+bends[r],z:-19.3+r*3.85,hp,origHp:hp,type,alive:true,w:3.84,d:3.18,hit:0,
+     layer,slot,y:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropStartY:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropTime:0,dropDuration:.46});
+  }
+  // Two dormant balls on the first deck remain in their original slots.
+  for(const slot of [12,15]){
+   const brick=bricks.find(b=>b.layer===0&&b.slot===slot);
+   ballPickups.push({x:brick.x,z:brick.z+brick.d*.32,active:false,r:1.18,slot});
+  }
+ }else if(stage==='2-2'){
+  // Zigzag stepped tower: seven bricks on each of five distinct offsets.
+  // 35 bricks, 19 blue / 8 pink / 8 green and three dormant balls.
+  const colors=[...Array(19).fill('blue'),...Array(8).fill('pink'),...Array(8).fill('green')];
+  for(let i=colors.length-1;i>0;i--){const j=(i*13+9)%(i+1);[colors[i],colors[j]]=[colors[j],colors[i]];}
+  const xShift=[0,1.05,-.80,1.16,-.58],zShift=[0,-.48,.46,-.39,.62];
+  for(let layer=0;layer<5;layer++)for(let slot=0;slot<7;slot++){
+   const type=colors[layer*7+slot],hp=type==='pink'?2:1;
+   bricks.push({x:-9.45+slot*3.15+xShift[layer],z:-15.9+zShift[layer],hp,origHp:hp,type,alive:true,w:2.88,d:5.35,hit:0,
+    layer,slot,y:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropStartY:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropTime:0,dropDuration:.55});
+  }
+  for(const slot of [1,3,5]){
+   const brick=bricks.find(b=>b.layer===0&&b.slot===slot);
+   ballPickups.push({x:brick.x,z:brick.z+brick.d*.45,active:false,r:1.12,slot});
+  }
+ }else if(stage==='2-1'){
+  // Offset canal-brick courses with alternating eight-block windmill crest.
+  // The three tiers remain 14 + 14 + 8, with unchanged pickup slots.
+  const tiers=[Array.from({length:14},(_,i)=>i),Array.from({length:14},(_,i)=>i),[0,2,4,6,7,9,11,13]];
+  const colors=[...Array(20).fill('blue'),...Array(8).fill('pink'),...Array(8).fill('green')];
+  for(let i=colors.length-1;i>0;i--){const j=(i*11+5)%(i+1);[colors[i],colors[j]]=[colors[j],colors[i]];}
+  const wave=[.35,-.20,-.40,0,.40,.20,-.35];
+  let index=0;
+  for(let layer=0;layer<3;layer++)for(const slot of tiers[layer]){
+   const type=colors[index++],column=slot%7,row=Math.floor(slot/7),hp=type==='pink'?2:1;
+   bricks.push({x:-9.54+column*3.18+(row===1?1.02:0),z:-18.40+row*6.28+wave[column],hp,origHp:hp,type,alive:true,w:2.85,d:5.12,hit:0,
+    layer,slot,y:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropStartY:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropTime:0,dropDuration:.47});
+  }
+  for(const slot of [2,6,10]){
+   const brick=bricks.find(b=>b.layer===0&&b.slot===slot);
+   ballPickups.push({x:brick.x,z:brick.z+brick.d*.62,active:false,r:1.16,slot});
+  }
+ }else if(['2-3','2-4','2-5'].includes(stage)){
+  // The core of EACH city has five tiers of seven bricks.
+  // Paris: tapered Eiffel silhouette. Warsaw: offset city skyline. London: stepped bridge.
+  const variant=stage;
+  const colorCounts=variant==='2-3'?[19,8,8]:variant==='2-4'?[22,8,8]:[24,8,8];
+  const colors=[...Array(colorCounts[0]).fill('blue'),...Array(colorCounts[1]).fill('pink'),...Array(colorCounts[2]).fill('green')];
+  for(let i=colors.length-1;i>0;i--){const j=(i*17+(variant==='2-4'?9:13))%(i+1);[colors[i],colors[j]]=[colors[j],colors[i]];}
+  const centers=variant==='2-3'?[0,0,0,0,0]:variant==='2-4'?[-.9,.55,1.15,-.65,0]:[-.6,.6,0,.6,-.6];
+  const widths=variant==='2-3'?[2.85,2.70,2.48,2.16,1.90]:variant==='2-4'?[2.80,2.92,2.73,2.88,2.68]:[2.88,2.67,2.53,2.88,2.70];
+  const gap=variant==='2-3'?[3.12,2.90,2.64,2.35,2.08]:variant==='2-4'?[3.10,2.99,2.89,3.01,2.90]:[3.12,2.90,2.75,3.12,2.93];
+  for(let layer=0;layer<5;layer++)for(let slot=0;slot<7;slot++){
+    const type=colors[layer*7+slot],hp=type==='pink'?2:1;
+    const x=(slot-3)*gap[layer]+centers[layer];
+    bricks.push({x,z:-17.8,hp,origHp:hp,type,alive:true,w:widths[layer],d:5.10,hit:0,
+      layer,slot,y:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropStartY:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropTime:0,dropDuration:.55});
+  }
+  // Warsaw and London have extra low-profile satellite bricks OUTSIDE the five-by-seven tower.
+  // This resolves 38/40 totals while retaining exactly seven bricks per main tier.
+  const ext=variant==='2-4'?3:variant==='2-5'?5:0;
+  for(let k=0;k<ext;k++){
+    const x=(k-(ext-1)/2)*3.64;
+    const type=variant==='2-4'?(k===1?'pink':'blue'):(k%3===1?'green':'blue');
+    const hp=type==='pink'?2:1;
+    bricks.push({x,z:-10.55,hp,origHp:hp,type,alive:true,w:3.28,d:4.40,hit:0,
+      layer:0,slot:7+k,y:BRICK_BASE_Y,dropStartY:BRICK_BASE_Y,dropTime:0,dropDuration:.55});
+  }
+  // Three independent gold dormant balls on the first tier; none counts as a brick.
+  for(const slot of [1,3,5]){
+    const brick=bricks.find(b=>b.layer===0&&b.slot===slot);
+    ballPickups.push({x:brick.x,z:brick.z+brick.d*.60,active:false,r:1.10,slot});
+  }
+ }else if(stage==='1-4'){
+  // Four triangular decks with nine bricks each: 2 / 3 / 4 front-to-back.
+  // Preserve 18 blue / 8 pink / 8 green / 2 ivory.
+  const colors=[...Array(18).fill('blue'),...Array(8).fill('pink'),...Array(8).fill('green'),...Array(2).fill('ivory')];
+  for(let i=colors.length-1;i>0;i--){const j=(i*17+11)%(i+1);[colors[i],colors[j]]=[colors[j],colors[i]];}
+  const tierPositions=[[-3.1,-19.15],[3.1,-19.15],[-6.05,-13.55],[0,-13.55],[6.05,-13.55],[-8.55,-7.95],[-2.85,-7.95],[2.85,-7.95],[8.55,-7.95]];
+  for(let layer=0;layer<4;layer++)for(let slot=0;slot<9;slot++){
+   const type=colors[layer*9+slot],hp=type==='pink'?2:1,[x,z]=tierPositions[slot];
+   bricks.push({x,z,hp,origHp:hp,type,alive:true,w:4.8,d:4.55,hit:0,
+     layer,slot,y:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropStartY:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropTime:0,dropDuration:.52});
+  }
+ }else{
+  for(let r=0;r<4;r++)for(let c=0;c<6;c++)bricks.push({x:-7.25+c*2.9,z:-19.5+r*3.06,hp:(r+c)%2?2:1,origHp:(r+c)%2?2:1,alive:true,w:2.6,d:2.45,hit:0,layer:0,y:BRICK_BASE_Y,dropTime:0});
+ }
+}
+function stageCity(){return stage==='2-5'?'倫敦':stage==='2-4'?'華沙':stage==='2-3'?'巴黎':stage==='2-2'?'柏林':stage==='2-1'?'阿姆斯特丹':stage==='1-5'?'新加坡':stage==='1-4'?'首爾':stage==='1-3'?'東京':stage==='1-2'?'香港':'台北';}
+function stageEng(){return stage==='2-5'?'LONDON':stage==='2-4'?'WARSAW':stage==='2-3'?'PARIS':stage==='2-2'?'BERLIN':stage==='2-1'?'AMSTERDAM':stage==='1-5'?'SINGAPORE':stage==='1-4'?'SEOUL':stage==='1-3'?'TOKYO':stage==='1-2'?'HONG KONG':'TAIPEI';}
+function stageTag(){return `LEVEL ${stage}`;}
+function updateStageHud(){
+ $('stagevalue').innerHTML=`${stage} <span style="font-size:.53em;font-weight:600;color:#4c7c8e">${stageCity()}</span>`;
+ $('city-small').textContent=`${stageEng()} · 3D`;
+ canvas.setAttribute('aria-label',`${stage} ${stageCity()} 3D 打磚塊`);
+ document.body.classList.remove('stage-taipei','stage-hongkong','stage-tokyo','stage-seoul','stage-singapore','stage-amsterdam','stage-berlin','stage-paris','stage-warsaw','stage-london');
+ document.body.classList.add(stage==='1-1'?'stage-taipei':stage==='1-2'?'stage-hongkong':stage==='1-3'?'stage-tokyo':stage==='1-4'?'stage-seoul':stage==='2-1'?'stage-amsterdam':stage==='2-2'?'stage-berlin':stage==='2-3'?'stage-paris':stage==='2-4'?'stage-warsaw':stage==='2-5'?'stage-london':'stage-singapore');
+ staticCache=null;
+} 
+function updateHud(){hudScore.textContent=String(score).padStart(6,'0');hudLives.textContent=String(lives);}
+function nextUnlockedStage(s){const i=LEVEL_SEQUENCE.indexOf(s);return (i>=0&&i<LEVEL_SEQUENCE.length-1)?LEVEL_SEQUENCE[i+1]:null;}
+function reset(inheritedLives=null){score=0;lives=inheritedLives===null?3:inheritedLives;lostAnyBallThisStage=false;pinkTipShown=false;greenTipShown=false;orbs.forEach(o=>o.el?.remove());orbs=[];effects={ball:null,paddle:null};refreshEffectStatus();$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');paddleX=0;particles=[];bonusBalls=[];ballPickups=[];initBricks();ball={x:0,z:6.4,vx:4.45,vz:-16.3,r:.43,active:true};serveTimer=0;gameState='ready';updateStageHud();updateHud();}
+function start(whichStage=stage,continueJourney=false){
+ const carry=continueJourney&&pendingTransition?.to===whichStage
+   ?pendingTransition.lives+pendingTransition.bonus:null;
+ const earned=continueJourney&&pendingTransition?.to===whichStage
+   ?pendingTransition.bonus:0;
+ pendingTransition=null;stage=whichStage;reset(carry);gameState='playing';
+ ball.x=paddleX;ball.z=6.45;ball.vx=Math.random()>.5?4.65:-4.65;ball.vz=-16.3;
+ document.body.classList.remove('menu-backdrop');hideOverlay();sound(370,.09,'sine',.05);
+ if(earned){hudLives.classList.remove('gain-pulse');void hudLives.offsetWidth;hudLives.classList.add('gain-pulse');}
+}
+function overlay(eyebrow,title,subtitle,buttonName,showScore=false){$('overlayeyebrow').textContent=eyebrow;$('overlaytitle').textContent=title;$('overlaysub').innerHTML=subtitle;$('mainbutton').textContent=buttonName;$('finalscore').style.display=showScore?'block':'none';$('finalscore').textContent=score.toString().padStart(6,'0')+' PTS';$('overlay').classList.remove('hidden');}
+function hideOverlay(){$('overlay').classList.add('hidden');}
+function finish(won){
+ gameState=won?'won':'gameover';heldLeft=heldRight=false;
+ if(won){
+  const next=nextUnlockedStage(stage);
+  // Award once, and only on entering the immediate next unlocked stage.
+  pendingTransition=next?{to:next,lives,bonus:lostAnyBallThisStage?0:1}:null;
+  sound(720,.17,'sine');setTimeout(()=>sound(910,.18,'sine'),140);
+  overlay(`${stageTag()} · CLEAR`,`${stageCity()}通關！`,
+    `${stageEng()} · STAGE CLEAR`,next?'▶ 下一關':'↻ 再玩一次',true);
+ }else{
+  pendingTransition=null;sound(160,.23,'sawtooth',.07);
+  overlay('GAME OVER','遊戲結束',`${stageEng()} · STAGE ${stage}`,'↻ 重新挑戰',true);
+ }
+}
+$('tipok').addEventListener('click',()=>{if(gameState!=='pinktip')return;$('pinktip').classList.add('hidden');gameState='playing';lastTime=performance.now();});
+$('greenok').addEventListener('click',()=>{if(gameState!=='greentip')return;$('greentip').classList.add('hidden');gameState='playing';lastTime=performance.now();});
+function pause(){if(gameState==='playing'){gameState='paused';overlay('PAUSED','暫停遊戲',`${stageEng()} · STAGE ${stage}`,'▶ 繼續遊戲');$('pause').textContent='▶';}else if(gameState==='paused'){gameState='playing';hideOverlay();$('pause').textContent='Ⅱ';}}
+$('mainbutton').addEventListener('click',()=>{if(gameState==='paused')pause();else if(gameState==='won'&&pendingTransition)start(pendingTransition.to,true);else start();});$('pause').addEventListener('click',pause);
+function showSelect(){document.body.classList.add('menu-backdrop');heldLeft=heldRight=false;$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');orbs.forEach(o=>o.el?.remove());orbs=[];gameState='select';$('pause').textContent='Ⅱ';$('overlay').classList.add('hidden');$('levelselect').classList.remove('hidden');}
+function showReserved(){const foot=document.querySelector('.selectfooter');foot.textContent='此關卡尚在規劃中，敬請期待。';clearTimeout(showReserved.timer);showReserved.timer=setTimeout(()=>foot.textContent='選擇已開放的關卡，展開旅程。',2200);}
+function setupStageGrid(){const grid=$('stagegrid');grid.innerHTML='';for(let group=1;group<=2;group++)for(let n=1;n<=5;n++){
+ const level=`${group}-${n}`,city=level==='1-1'?'台北':level==='1-2'?'香港':level==='1-3'?'東京':level==='1-4'?'首爾':level==='1-5'?'新加坡':level==='2-1'?'阿姆斯特丹':level==='2-2'?'柏林':level==='2-3'?'巴黎':level==='2-4'?'華沙':level==='2-5'?'倫敦':'—',available=group===1||group===2,btn=document.createElement('button');
+ btn.type='button';btn.className='stagecard '+(available?'active':'future');btn.setAttribute('aria-label',`${level} ${available?city+'，進入關卡':'待開放'}`);
+ btn.innerHTML=`<span class="stage-num">${level}</span><span class="stage-city">${city}</span><span class="stage-status">${available?'▶ 開始挑戰':'◇ 待開放'}</span>`;
+ btn.addEventListener('click',()=>{if(!available){showReserved();return;}$('levelselect').classList.add('hidden');start(level,!!pendingTransition&&pendingTransition.to===level);});grid.appendChild(btn);
+}}
+$('backselect').addEventListener('click',showSelect);
+setupStageGrid();
+// Reach 99%, stay there for a full five seconds, then show 100% and the level page.
+function startLoading(){let begin=performance.now();const duration=2600;function advance(now){const phase=Math.min(1,(now-begin)/duration);const value=Math.min(99,Math.floor(99*(1-Math.pow(1-phase,1.65))));$('loadfill').style.width=value+'%';$('loadpct').textContent=value+'%';$('loadtrack').setAttribute('aria-valuenow',String(value));
+ if(phase<1){requestAnimationFrame(advance);}else{$('loadfill').style.width='99%';$('loadpct').textContent='99%';$('loadtrack').setAttribute('aria-valuenow','99');$('loadtext').textContent='即將出發，準備踏上旅程…';setTimeout(()=>{$('loadfill').style.width='100%';$('loadpct').textContent='100%';$('loadtrack').setAttribute('aria-valuenow','100');$('loadtext').textContent='冒險開始！';setTimeout(()=>{$('loading').classList.add('off');showSelect();},650);},5000);}}requestAnimationFrame(advance);}
+
+let audioCtx;function sound(freq,duration=.09,type='sine',gain=.045){if(muted)return;try{audioCtx??=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(50,freq*.55),audioCtx.currentTime+duration);g.gain.setValueAtTime(gain,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+duration);o.connect(g).connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration);}catch(e){}}
+$('sound').addEventListener('click',()=>{muted=!muted;$('sound').textContent=muted?'♩':'♫';});
+function bindButton(id,which){const btn=$(id);btn.addEventListener('pointerdown',e=>{e.preventDefault();try{btn.setPointerCapture(e.pointerId)}catch(_){}if(which==='left')heldLeft=true;else heldRight=true;btn.classList.add('pressed');});for(const event of ['pointerup','pointercancel','lostpointercapture'])btn.addEventListener(event,()=>{if(which==='left')heldLeft=false;else heldRight=false;btn.classList.remove('pressed');});}bindButton('left','left');bindButton('right','right');
+window.addEventListener('keydown',e=>{if(e.code==='ArrowLeft'||e.code==='KeyA'){heldLeft=true;e.preventDefault();}if(e.code==='ArrowRight'||e.code==='KeyD'){heldRight=true;e.preventDefault();}if(e.code==='Space'||e.code==='KeyP'){if(!e.repeat){if(gameState==='gameover'||gameState==='won')start();else if(gameState==='playing'||gameState==='paused')pause();}e.preventDefault();}});
+window.addEventListener('keyup',e=>{if(e.code==='ArrowLeft'||e.code==='KeyA')heldLeft=false;if(e.code==='ArrowRight'||e.code==='KeyD')heldRight=false;});
+window.addEventListener('blur',()=>{heldLeft=heldRight=false;if(gameState==='playing')pause();});document.addEventListener('visibilitychange',()=>{if(document.hidden&&gameState==='playing')pause();});
+function toast(str){const t=$('toast');t.textContent=str;t.classList.add('show');toastTime=.85;}
+function burst(x,z,color,count=16){for(let i=0;i<count;i++){const ang=random()*Math.PI*2,s=3+random()*8;particles.push({x,y:1.2+random()*.4,z,vx:Math.cos(ang)*s,vy:2+random()*8,vz:Math.sin(ang)*s,life:.55+random()*.5,initial:1,color,size:.09+random()*.18});}}
+function reflectBallAfterPaddle(b){let off=(b.x-paddleX)/(paddleHalfWidth()+.15);let s=Math.hypot(b.vx,b.vz);let angle=Math.max(-1,Math.min(1,off))*1.00;b.vx=Math.sin(angle)*s*.88;b.vz=-Math.sqrt(Math.max(25,s*s-b.vx*b.vx));b.z=7.65;shake=.08;sound(480,.09,'triangle',.065);}
+function releaseStack(brick){
+ if(!['1-2','1-3','1-4','1-5','2-1','2-2','2-3','2-4','2-5'].includes(stage)||brick.layer!==0)return;
+ // Every surviving level above this slot drops one tier; 3rd -> 2nd -> 1st.
+ for(const b of bricks){
+  if(!b.alive||b.slot!==brick.slot||b.layer<=0)continue;
+  b.dropStartY=b.y;b.layer--;b.dropTime=b.dropDuration;
+ }
+}
+const POWER_DESCRIPTIONS={A:'球速加快',B:'球速減慢',C:'控制板加快',D:'控制板減慢'};
+function refreshEffectStatus(){
+ const active=[effects.ball,effects.paddle].filter(Boolean);
+ $('effectstatus').innerHTML=active.map(e=>`<span class="active-effect">${e.type} · ${POWER_DESCRIPTIONS[e.type]}</span>`).join('');
+}
+function spawnOrb(brick){
+ const type=['A','B','C','D'][orbSequence++%4];
+ const el=document.createElement('span');el.className='orb-letter';el.textContent=type;$('orbLabels').appendChild(el);
+ orbs.push({x:brick.x,z:brick.z,y:2.2,type,el,v:11.2+random()*2.2});
+}
+function collectOrb(orb){
+ const key=(orb.type==='A'||orb.type==='B')?'ball':'paddle';
+ effects[key]={type:orb.type,until:time+13.5};refreshEffectStatus();sound(850,.18,'triangle',.085);
+ burst(orb.x,8.5,'#ffa64f',20);toast(`✦ ${orb.type}`);
+}
+function tickOrbs(dt){
+ for(const kind of ['ball','paddle'])if(effects[kind]&&time>=effects[kind].until){effects[kind]=null;refreshEffectStatus();}
+ for(let i=orbs.length-1;i>=0;i--){const orb=orbs[i];orb.z+=orb.v*dt;
+  if(orb.z>=8.4&&orb.z<=10.3&&Math.abs(orb.x-paddleX)<paddleHalfWidth()+.45){collectOrb(orb);orb.el.remove();orbs.splice(i,1);}
+  else if(orb.z>13.0){orb.el.remove();orbs.splice(i,1);}
+ }
+}
+function hitBrick(brick){
+ brick.hp--;brick.hit=.28;shake=.11;flash=.3;
+ const firstPinkHit=stage==='1-1'&&brick.hp===1&&brick.origHp===2&&!pinkTipShown;
+ const firstGreenHit=stage==='1-3'&&brick.hp===0&&brick.type==='green'&&!greenTipShown;
+ if(brick.hp===0){
+  brick.alive=false;releaseStack(brick);score+=100;
+  const color=brick.type==='green'?'#97efad':brick.origHp===2?'#ffb6d2':'#b6edff';
+  burst(brick.x,brick.z,color,29);sound(310+random()*150,.12,'sine',.075);
+  if(brick.type==='green')spawnOrb(brick);
+ }else{score+=20;burst(brick.x,brick.z,'#ffd1e3',14);sound(600,.08,'triangle',.07);}
+ updateHud();
+ if(bricks.every(b=>!b.alive)){finish(true);return;}
+ if(firstGreenHit){greenTipShown=true;gameState='greentip';heldLeft=heldRight=false;$('left').classList.remove('pressed');$('right').classList.remove('pressed');$('greentip').classList.remove('hidden');$('greenok').focus();}
+ else if(firstPinkHit){pinkTipShown=true;gameState='pinktip';heldLeft=heldRight=false;$('left').classList.remove('pressed');$('right').classList.remove('pressed');$('pinktip').classList.remove('hidden');$('tipok').focus();}
+}
+function tick(dt){time+=dt;if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').classList.remove('show');}flash=Math.max(0,flash-dt*2);shake=Math.max(0,shake-dt*1.9);$('flash').style.opacity=String(flash*.6);
+for(const p of particles){p.life-=dt;p.x+=p.vx*dt;p.z+=p.vz*dt;p.y+=p.vy*dt;p.vy-=13*dt;}particles=particles.filter(p=>p.life>0);if(particles.length>220)particles.splice(0,particles.length-220);
+if(gameState!=='playing')return;
+for(const b of bricks){
+ b.hit=Math.max(0,b.hit-dt);
+ if(b.dropTime>0){
+  b.dropTime=Math.max(0,b.dropTime-dt);
+  const progress=1-b.dropTime/b.dropDuration;
+  const eased=1-Math.pow(1-progress,3);
+  const finalY=BRICK_BASE_Y+BRICK_LAYER_STEP*b.layer;
+  b.y=b.dropStartY+(finalY-b.dropStartY)*eased;
+  if(b.dropTime===0){b.y=finalY;burst(b.x,b.z,'#d1f9ef',6);sound(250,.065,'triangle',.020);}
+ }
+}
+tickOrbs(dt);paddleDir=(heldRight?1:0)-(heldLeft?1:0);const wideCourt=wideStage();const paddleLimit=wideCourt?HK_HALF_WALL-paddleHalfWidth()-.30:9.4-paddleHalfWidth()-.28;
+paddleX=Math.max(-paddleLimit,Math.min(paddleLimit,paddleX+paddleDir*21*dt*(effects.paddle?.type==='C'?1.65:effects.paddle?.type==='D'?.60:1)));
+if(serveTimer>0){serveTimer-=dt;ball.x=paddleX;ball.z=6.35;if(serveTimer<=0){ball.vx=(random()>.5?1:-1)*4.65;ball.vz=-16.3;}return;}
+const speedUp=1+Math.floor((bricks.length-bricks.filter(b=>b.alive).length)/9)*.055;
+const effectBallScale=effects.ball?.type==='A'?1.43:effects.ball?.type==='B'?.68:1;
+const wall=wideCourt?HK_BALL_LIMIT:9.4;
+const moving=[ball,...bonusBalls].filter(b=>b.active!==false);
+for(const b of moving){
+ const oldx=b.x,oldz=b.z;
+ b.x+=b.vx*dt*speedUp*effectBallScale;b.z+=b.vz*dt*speedUp*effectBallScale;
+ if(b.x<-wall+b.r){b.x=-wall+b.r;b.vx=Math.abs(b.vx);sound(220,.05,'triangle',.025);}
+ if(b.x>wall-b.r){b.x=wall-b.r;b.vx=-Math.abs(b.vx);sound(220,.05,'triangle',.025);}
+ if(b.z<-21.55+b.r){b.z=-21.55+b.r;b.vz=Math.abs(b.vz);sound(245,.06,'triangle',.03);}
+ if(b.vz>0&&oldz+b.r<8.18&&b.z+b.r>=8.18&&Math.abs(b.x-paddleX)<=paddleHalfWidth()+.12+b.r){reflectBallAfterPaddle(b);}
+ else if(b.z>12.3){
+   lostAnyBallThisStage=true;
+   b.active=false;burst(b.x,11.3,'#fff6bd',18);sound(160,.09,'sawtooth',.04);continue;
+ }
+ // In Singapore, hitting either of the two dormant balls makes it join the volley.
+ if((stage==='1-5'||stage==='2-1'||stage==='2-2'||stage==='2-3'||stage==='2-4'||stage==='2-5'))for(const pickup of ballPickups){
+  if(pickup.active||Math.abs(b.x-pickup.x)>pickup.r+b.r||Math.abs(b.z-pickup.z)>pickup.r+b.r)continue;
+  pickup.active=true;
+  const s=Math.hypot(b.vx,b.vz),direction=b.vx>0?-1:1;
+  bonusBalls.push({x:pickup.x,z:pickup.z+.55,vx:direction*Math.max(5.2,s*.58),vz:-Math.max(8,s*.81),r:.43,active:true});
+  b.vz*=-1;burst(pickup.x,pickup.z,'#ffe58e',29);sound(920,.18,'triangle',.075);
+  break;
+ }
+ for(const brick of bricks){
+  if(!brick.alive||brick.layer!==0||brick.dropTime>0)continue;
+  if(Math.abs(b.x-brick.x)>brick.w/2+b.r||Math.abs(b.z-brick.z)>brick.d/2+b.r)continue;
+  const fromLeft=oldx+b.r<=brick.x-brick.w/2,fromRight=oldx-b.r>=brick.x+brick.w/2;
+  const fromTop=oldz+b.r<=brick.z-brick.d/2,fromBottom=oldz-b.r>=brick.z+brick.d/2;
+  if(fromLeft||fromRight){b.vx*=-1;b.x=fromLeft?brick.x-brick.w/2-b.r:brick.x+brick.w/2+b.r;}
+  else if(fromTop||fromBottom){b.vz*=-1;b.z=fromTop?brick.z-brick.d/2-b.r:brick.z+brick.d/2+b.r;}
+  else b.vz*=-1;
+  hitBrick(brick);break;
+ }
+ if(gameState!=='playing')break;
+}
+bonusBalls=bonusBalls.filter(b=>b.active!==false);
+// Only an entirely empty court is one lost life, regardless of how many balls fell.
+if(ball.active===false&&bonusBalls.length===0&&gameState==='playing'){
+ lives--;updateHud();shake=.35;sound(140,.24,'sawtooth',.09);
+ if(lives<=0)finish(false);
+ else{serveTimer=1.1;ball={x:paddleX,z:6.45,vx:4.65,vz:-16.3,r:.43,active:true};bonusBalls=[];hudLives.classList.remove('lose-pulse');void hudLives.offsetWidth;hudLives.classList.add('lose-pulse');}
+}
+}
+const mat4={perspective(out,fovy,aspect,near,far){let f=1/Math.tan(fovy/2),nf=1/(near-far);out[0]=f/aspect;out[1]=0;out[2]=0;out[3]=0;out[4]=0;out[5]=f;out[6]=0;out[7]=0;out[8]=0;out[9]=0;out[10]=(far+near)*nf;out[11]=-1;out[12]=0;out[13]=0;out[14]=2*far*near*nf;out[15]=0;return out;},lookAt(out,e,target,up){let z=norm(sub(e,target)),x=norm(cross(up,z)),y=cross(z,x);out[0]=x[0];out[1]=y[0];out[2]=z[0];out[3]=0;out[4]=x[1];out[5]=y[1];out[6]=z[1];out[7]=0;out[8]=x[2];out[9]=y[2];out[10]=z[2];out[11]=0;out[12]=-x[0]*e[0]-x[1]*e[1]-x[2]*e[2];out[13]=-y[0]*e[0]-y[1]*e[1]-y[2]*e[2];out[14]=-z[0]*e[0]-z[1]*e[1]-z[2]*e[2];out[15]=1;return out;},multiply(out,a,b){let t=new Float32Array(16);for(let i=0;i<4;i++)for(let j=0;j<4;j++)t[j*4+i]=a[i]*b[j*4]+a[4+i]*b[j*4+1]+a[8+i]*b[j*4+2]+a[12+i]*b[j*4+3];out.set(t);return out;}};
+function drawBuffer(buffer,array,length,usage){gl.bindBuffer(gl.ARRAY_BUFFER,buffer);if(array)gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(array),usage);const stride=40;gl.enableVertexAttribArray(loc.p);gl.vertexAttribPointer(loc.p,3,gl.FLOAT,false,stride,0);gl.enableVertexAttribArray(loc.n);gl.vertexAttribPointer(loc.n,3,gl.FLOAT,false,stride,12);gl.enableVertexAttribArray(loc.c);gl.vertexAttribPointer(loc.c,4,gl.FLOAT,false,stride,24);gl.drawArrays(gl.TRIANGLES,0,length);}
+// Stage-specific landmark animation, moving vehicles, bricks and ball are live 3D mesh
+function gondola(b,t,offset){const aa=cableA,bb=cableB;let x=aa[0]+(bb[0]-aa[0])*t+offset+(isMobilePortrait()?MOBILE_SCENERY_SHIFT:0),y=aa[1]+(bb[1]-aa[1])*t-1.65*Math.sin(Math.PI*t),z=aa[2]+(bb[2]-aa[2])*t;rod(b,[x,y,z],[x,y-2.0,z],.13,'#d3e0e0',5);box(b,x,y-3.3,z,3.15,2.7,2.8,'#ddf0e6','#ffe2b6');box(b,x,y-3.35,z+1.43,2.72,1.55,.08,'#498c9c');box(b,x,y-3.35,z-1.43,2.72,1.55,.08,'#437e8f');box(b,x-1.59,y-3.35,z,.08,1.5,2.3,'#548c9a');box(b,x+1.59,y-3.35,z,.08,1.5,2.3,'#548c9a');box(b,x,y-4.8,z,3.24,.26,2.93,'#5f7b81');}
+function car(b,x,z,speed,color){let front=speed>0?1:-1;box(b,x,-1.9,z,3.5,.9,1.78,color,'#c4d6d1');box(b,x-.25*front,-1.1,z,1.85,.85,1.58,'#53768c');box(b,x-.22*front,-.79,z,1.35,.1,1.32,'#c7e1e2');for(let i of [-1,1])for(let j of [-1,1])cylinder(b,x+i*1.12,-2.48,z+j*.94,.36,.11,'#202f39',8);for(let j of [-.55,.55])box(b,x+front*1.79,-1.72,z+j,.1,.22,.3,front>0?'#fff3d7':'#ff837e');}
+function person(b,x,z,phase,shirt){const yy=-2.6+Math.sin(phase)*.10;cylinder(b,x,yy,z,.16,.9,'#303a45',6);sphere(b,x,yy+1.6,z,.31,'#e6b393',5,7);box(b,x,yy+1.05,z,.78,.8,.48,shirt);rod(b,[x-.32,yy+.93,z],[x-.42,yy+.28,z+Math.sin(phase)*.25],.095,'#d6a686');rod(b,[x+.32,yy+.93,z],[x+.42,yy+.28,z-Math.sin(phase)*.25],.095,'#d6a686');}
+function brickMesh(b,o){
+ // Original soft pastel brick from the first version: one solid rectangular
+ // body, a small top highlight, and a subtle front glint, without neon or metal.
+ const selected=b.type==='green'?'#aee9ba':b.type==='ivory'?'#f0eee0':b.hp===2?C.brickPink:C.brickBlue;
+ const top=b.type==='green'?'#e6ffeb':b.type==='ivory'?'#fffdf3':b.hp===2?'#ffe9f1':'#e3faff';
+ const face=b.type==='green'?'#e1ffe6':b.type==='ivory'?'#fffbf0':b.hp===2?'#ffe4ee':'#ecfeff';
+ const bounce=b.hit>0?.25*Math.sin((b.hit/.28)*Math.PI):0;
+ const cy=b.y+bounce;
+ // Preserve the later requested brick thickness and all existing collision data.
+ box(o,b.x,cy,b.z,b.w,BRICK_HEIGHT,b.d,selected,darker(selected,1.08),darker(selected,.80));
+ box(o,b.x,cy+BRICK_HEIGHT*.5+.045,b.z,b.w*.76,.05,b.d*.63,top);
+ box(o,b.x,cy+BRICK_HEIGHT*.17,b.z+b.d/2+.035,b.w*.7,.16,.065,face);
+}
+// The pulsing racing-lane effect lives exclusively in the arena, never the background.
+function energizedCourt(o){
+ const wide=wideStage(),edge=wide?HK_HALF_WALL:10.3;
+ for(const side of [-1,1]){
+  const x=side*(edge-.12),head=.5+.5*Math.sin(time*3.0+side*1.4);
+  box(o,x,1.96,-3.5,.14,.12,36.0,head>.50?'#66f7fe':'#4bb7d5');
+  for(let i=0;i<8;i++){
+   const z=-19.5+i*4.2;
+   box(o,x,2.16+Math.sin(time*4+i*.8)*.085,z,.40,.13,.76,i%2?'#bffaff':'#88e9fe');
+  }
+ }
+ for(let i=0;i<5;i++){
+  const z=-18.2+i*6.7,x=(-3.8+((time*2.1+i*2.8)%7.6));
+  box(o,x,.53,z,1.20,.038,.08,i%2?'#89d9ff':'#87f8e4');
+  box(o,-x,.53,z,1.20,.038,.08,i%2?'#87f8e4':'#89d9ff');
+ }
+ const segment=1.55+1.15*Math.sin(time*5);
+ box(o,0,.59,-20.9,segment,.09,.18,'#b8f9ff');
+}
+
+function paddleMesh(b){
+ const k=paddleHalfWidth()/2.10;
+ box(b,paddleX,1.14,8.85,4.2*k,1.0,1.13,'#dcecf1','#fbffff','#719caf');
+ box(b,paddleX,1.69,8.85,3.86*k,.12,.92,'#8bede6');
+ box(b,paddleX,1.80,8.85,3.34*k,.09,.64,'#dcfdff');
+ for(const dx of [-1.25,0,1.25])box(b,paddleX+dx*k,1.82,8.85,.22,.06,.72,'#67b4e8');
+ box(b,paddleX,1.14,9.43,3.46*k,.22,.08,'#397b8d');
+ box(b,paddleX-1.76*k,1.22,8.85,.18,.4,.90,'#86cad3');
+ box(b,paddleX+1.76*k,1.22,8.85,.18,.4,.90,'#86cad3');
+ box(b,paddleX,.52,8.85,4.65*k,.09,1.55,[.10,.33,.4,1]);
+}
+function hkFerry(o,x,z){
+ box(o,x,-2.5,z,8.8,1.0,3.4,'#f2f4e7','#f8f8ed');
+ box(o,x,-1.7,z,7.3,1.25,2.8,'#f4f3ec','#eaf8f1');
+ box(o,x,-.95,z,5.6,.45,2.4,'#579f8d','#c5e4d2');
+ for(let t=-3.0;t<3.2;t+=1.2){box(o,x+t,-1.65,z+1.45,.7,.48,.12,'#71a7ae');box(o,x+t,-1.65,z-1.45,.7,.48,.12,'#71a7ae');}
+ box(o,x,-.45,z,.13,1.05,.13,'#e5e1c2');
+}
+function makeDynamic(){let a=[];energizedCourt(a);for(let b of bricks)if(b.alive)brickMesh(b,a);
+// Ball shadow, flying sphere and afterglow
+for(const b of [ball,...bonusBalls]){
+ if(b.active===false)continue;
+ sphere(a,b.x,.41,b.z,.46,'#294e5d',4,9);
+ let trailDir=norm([b.vx,0,b.vz]);
+ if(serveTimer<=0&&gameState==='playing')for(let i=7;i>=1;i--){let mul=i*.25;sphere(a,b.x-trailDir[0]*mul,1.53,b.z-trailDir[2]*mul,.37-i*.037,['#96fdff','#62e7ff','#86baff','#afd8ff','#b5f9ff','#dffaff','#f2ffff'][i-1],4,6);}
+ sphere(a,b.x,1.53,b.z,.53,'#fff4c0',8,12);sphere(a,b.x,1.53,b.z,.67,'#79eaff',5,8);sphere(a,b.x-.12,1.68,b.z+.09,.13,'#ffffff',5,7);
+}
+for(const p of ballPickups){
+ if(p.active)continue;
+ sphere(a,p.x,BRICK_BASE_Y+BRICK_HEIGHT*.65,p.z,.83,'#ffd36f',9,12);
+ sphere(a,p.x-.24,BRICK_BASE_Y+BRICK_HEIGHT*.88,p.z+.1,.24,'#fff6d5',6,9);
+ rod(a,[p.x-.45,BRICK_BASE_Y+BRICK_HEIGHT*.66,p.z],[p.x+.45,BRICK_BASE_Y+BRICK_HEIGHT*.66,p.z],.12,'#f6f5e9',5);
+}
+paddleMesh(a);
+for(const o of orbs){sphere(a,o.x,2.16+Math.sin(time*7)*.1,o.z,.50,'#ff9b3f',7,10);sphere(a,o.x-.16,2.32,o.z+.11,.16,'#fff2bf',4,7);}
+// Mobile game objects and paddle follow the lowered arena, while Taipei landmarks remain fixed.
+if(isMobilePortrait())for(let i=0;i<a.length;i+=10){
+ const p=mobileCourtPoint(a[i],a[i+2]);a[i]=p[0];a[i+2]=p[1];
+}
+// Landmark animations vary with the level; only Hong Kong shows Star Ferries.
+if(stage==='1-2'){
+ for(let j=0;j<3;j++){
+  const x=((time*(j%2?3.5:-4.3)+(j+1)*31+300)%103)-51.5;
+  hkFerry(a,x,-61-j*8);
+ }
+ for(let j=0;j<8;j++){const x=((j*19+time*(j%2?-2.4:2.0)+250)%106)-53;person(a,x,-44.5,time*3+j,['#c67b7d','#e7b98e','#7fc9b2'][j%3]);}
+}else if(stage==='1-5'){
+ // Singapore bayfront bustle and water taxis.
+ for(let j=0;j<4;j++){
+  let x=((j*29+time*(j%2?4.1:-3.5)+350)%116)-58;
+  hkFerry(a,x,-65-j*11);
+ }
+ for(let j=0;j<9;j++){
+  const x=((j*17+time*(j%2?1.4:-1.8)+270)%130)-65;
+  person(a,x,-52,time*4+j,['#b5d9bd','#e4b4a0','#b7d2e3'][j%3]);
+ }
+}else if(stage==='2-1'){
+ // Canal boats move through the old town, with pedestrians along the quays.
+ for(let j=0;j<4;j++){
+  const x=((time*(j%2?2.5:-3.2)+j*34+450)%128)-64;
+  box(a,x,-3.20,-80-j*10,6.3,.70,2.35,['#e8d7af','#bbd8de','#f1e5d3','#d8eadc'][j%4]);
+  box(a,x,-2.38,-80-j*10,3.4,.75,1.7,'#e9eee8');
+  box(a,x,-1.70,-80-j*10,1.8,.40,1.4,'#6c8993');
+ }
+ for(let j=0;j<9;j++){
+  let x=((j*18+time*(j%2?1.35:-1.15)+320)%138)-69;
+  person(a,x,-65.5,time*4+j,['#b78772','#d5ba83','#8db4ae'][j%3]);
+ }
+}else if(stage==='2-2'){
+ // Berlin traffic and trams along Unter den Linden.
+ for(let j=0;j<6;j++){
+  const x=((j*25+time*(j%2?6.1:-7.2)+360)%160)-80;
+  car(a,x,-51+(j%2?2:-2),j%2?1:-1,['#e5c58c','#568db0','#c96366'][j%3]);
+ }
+ for(let j=0;j<9;j++){
+  const x=((j*18+time*(j%2?1.45:-1.50)+310)%138)-69;
+  person(a,x,-71,time*3.4+j,['#d8b89b','#8cb6b9','#a6a4c9'][j%3]);
+ }
+}else if(stage==='1-3'){
+ // Tokyo night traffic along the Shibuya approach.
+ for(let j=0;j<5;j++){let x=((j*28+time*(j%2?12:-10)+300)%158)-79;car(a,x,-49,j%2?1:-1,['#d8566e','#647ec4','#e1aa77'][j%3]);}
+ for(let j=0;j<11;j++){let x=((j*17+time*(j%2?1.6:-1.2)+260)%150)-75;person(a,x,-72,time*5+j,['#e29ac1','#8bc4e7','#e7ae8e'][j%3]);}
+ }else if(stage==='1-4'){
+ // City commuters, buses crossing the Han River and pedestrian activity.
+ for(let j=0;j<7;j++){
+  const x=((j*25+time*(j%2?8:-10)+310)%155)-77.5;
+  car(a,x,-57+(j%2?1.4:-1.5),j%2?1:-1,['#e0c2a0','#719db1','#b65b58','#6da78c'][j%4]);
+ }
+ for(let j=0;j<10;j++){
+  const x=((j*15+time*(j%2?1.3:-1.5)+270)%140)-70;
+  person(a,x,-70,time*4+j,['#b3d1e1','#e7b7be','#d1d7a8'][j%3]);
+ }
+ }else{
+ const cars=[[-60,1,'#cb5551'],[-30,-1,'#70b5bb'],[6,1,'#d5b063'],[40,-1,'#b1c2be'],[75,1,'#6b8baf']];for(let i=0;i<cars.length;i++){const row=cars[i],x=((row[0]+time*(9+i)*row[1]+280)%180)-90;car(a,x,-35+row[1]*2.2,row[1],row[2]);}
+ for(let i=0;i<10;i++){let x=((i*16+time*(i%2===0?1.2:-1.1)+250)%150)-75;person(a,x,i%2?-43.3:-25.5,time*5+i,['#e4a18c','#86baca','#d5b77d','#b6accd'][i%4]);}
+ for(let i=0;i<5;i++){let t=(i/5+time*(i%2===0?.025:-.022)+10)%1;gondola(a,t,i%2?-2.6:2.6);}
+} 
+for(const p of particles){box(a,p.x,p.y,p.z,p.size,p.size,p.size,p.color);}
+return a;}
+
+// Software 3D renderer. If a browser blocks WebGL, the same 3D coordinates
+// are projected onto a 2D canvas; scoring, physics and touch control still work.
+let staticCache=null,cacheWidth=0,cacheHeight=0,lastSoftwareFrame=0;
+function drawFaces(context,geometry,matrix,screenWidth,screenHeight){
+  const faces=[];let w=screenWidth,h=screenHeight;
+  for(let i=0;i<geometry.length;i+=30){
+    let verts=[],depth=0,valid=true,offLeft=true,offRight=true,offTop=true,offBottom=true;
+    for(let j=0;j<3;j++){
+      const k=i+j*10,x=geometry[k],y=geometry[k+1],z=geometry[k+2];
+      const ww=matrix[3]*x+matrix[7]*y+matrix[11]*z+matrix[15];
+      if(ww<=.05){valid=false;break;}
+      const sx=((matrix[0]*x+matrix[4]*y+matrix[8]*z+matrix[12])/ww*.5+.5)*w;
+      const sy=(.5-(matrix[1]*x+matrix[5]*y+matrix[9]*z+matrix[13])/ww*.5)*h;
+      verts.push(sx,sy);depth+=ww;
+      if(sx>-8)offLeft=false;if(sx<w+8)offRight=false;if(sy>-8)offTop=false;if(sy<h+8)offBottom=false;
+    }
+    if(!valid||offLeft||offRight||offTop||offBottom)continue;
+    const nx=geometry[i+3],ny=geometry[i+4],nz=geometry[i+5];
+    const intensity=.59+.48*Math.max(0,nx*(-.435)+ny*.796+nz*.417);
+    const fog=Math.min(1,Math.max(0,(depth/3-87)/125));const ff=fog*fog*(3-2*fog)*.54;
+    const rgb=[geometry[i+6],geometry[i+7],geometry[i+8]].map((v,idx)=>Math.max(0,Math.min(255,Math.round(255*(v*intensity*(1-ff)+[.70,.80,.82][idx]*ff)))));
+    faces.push({verts,depth,color:'rgb('+rgb.join(',')+')'});
+  }
+  faces.sort((a,b)=>b.depth-a.depth);
+  for(const f of faces){const v=f.verts;context.beginPath();context.moveTo(v[0],v[1]);context.lineTo(v[2],v[3]);context.lineTo(v[4],v[5]);context.closePath();context.fillStyle=f.color;context.fill();}
+}
+
+// Paint one uninterrupted arena floor in the software path, to avoid painter's
+// algorithm artifacts caused by overlapping coplanar 3D roof triangles.
+function projectPoint(a,m,w,h){let x=a[0],y=a[1],z=a[2],den=m[3]*x+m[7]*y+m[11]*z+m[15];return [((m[0]*x+m[4]*y+m[8]*z+m[12])/den*.5+.5)*w,(.5-(m[1]*x+m[5]*y+m[9]*z+m[13])/den*.5)*h];}
+function drawCourt2D(c,m,w,h){
+  const fieldScale=wideStage()?HK_ARENA_SCALE:1;
+  const corners=[[-9.92,.39,-21.25],[9.92,.39,-21.25],[9.92,.39,14.15],[-9.92,.39,14.15]].map(p=>{const q=mobileCourtPoint(p[0]*fieldScale,p[2]);return projectPoint([q[0],p[1],q[1]],m,w,h);});
+  const grad=c.createLinearGradient(0,corners[0][1],0,corners[2][1]);grad.addColorStop(0,'#294761');grad.addColorStop(.55,'#365e78');grad.addColorStop(1,'#486d86');
+  c.beginPath();c.moveTo(...corners[0]);for(let i=1;i<4;i++)c.lineTo(...corners[i]);c.closePath();c.fillStyle=grad;c.fill();
+  c.save();c.strokeStyle='rgba(117,188,208,.35)';c.lineWidth=Math.max(1,w/1000);
+  for(let x=-9;x<=9;x+=3){let p=mobileCourtPoint(x*fieldScale,-20.9),q=mobileCourtPoint(x*fieldScale,13.5);let a=projectPoint([p[0],.41,p[1]],m,w,h),d=projectPoint([q[0],.41,q[1]],m,w,h);c.beginPath();c.moveTo(...a);c.lineTo(...d);c.stroke();}
+  for(let z=-20;z<=13;z+=3){let p=mobileCourtPoint(-9.7*fieldScale,z),q=mobileCourtPoint(9.7*fieldScale,z);let a=projectPoint([p[0],.41,p[1]],m,w,h),d=projectPoint([q[0],.41,q[1]],m,w,h);c.beginPath();c.moveTo(...a);c.lineTo(...d);c.stroke();}
+  c.strokeStyle='rgba(79,175,195,.80)';c.lineWidth=Math.max(2,w/650);c.beginPath();c.moveTo(...corners[3]);c.lineTo(...corners[2]);c.stroke();c.restore();
+}
+
+function render2D(dynamic){
+  const w=canvas.width,h=canvas.height;
+  if(!staticCache||cacheWidth!==w||cacheHeight!==h){
+    staticCache=document.createElement('canvas');staticCache.width=w;staticCache.height=h;
+    cacheWidth=w;cacheHeight=h;
+    const c=staticCache.getContext('2d',{alpha:true});drawFaces(c,(NEW_CITY_MESHES[stage]?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobile:NEW_CITY_MESHES[stage].desktop):stage==='2-2'?(isMobilePortrait()?berlinGeoMobile:berlinGeo):stage==='2-1'?(isMobilePortrait()?amsterdamGeoMobile:amsterdamGeo):stage==='1-5'?(isMobilePortrait()?singaporeGeoMobile:singaporeGeo):stage==='1-4'?(isMobilePortrait()?seoulGeoMobile:seoulGeo):stage==='1-3'?(isMobilePortrait()?tokyoGeoMobile:tokyoGeo):stage==='1-2'?(isMobilePortrait()?hkGeoMobile:hkGeo):(isMobilePortrait()?staticGeoMobile:staticGeo)),vpMatrix,w,h);drawCourt2D(c,vpMatrix,w,h);
+  }
+  ctx2.clearRect(0,0,w,h);ctx2.drawImage(staticCache,0,0);
+  drawFaces(ctx2,dynamic,vpMatrix,w,h);
+}
+
+
+// Generic 3D breakout animation exclusively for the loading/level selection pages.
+// Uses the same 3D geometry primitives as gameplay, with no Taipei skyline, hills or cable cars.
+const demoFloor=[];
+box(demoFloor,0,-1.10,-4.8,22.8,1.30,36.6,'#17324d','#274c65','#1a3451');
+box(demoFloor,0,-.37,-4.8,20.8,.15,34.8,'#1d415d','#306581','#17334c');
+for(let x=-9;x<=9;x+=3)box(demoFloor,x,-.265,-4.8,.035,.032,34.3,'#315f7b');
+for(let z=-20;z<=11;z+=3)box(demoFloor,0,-.264,z,20.3,.032,.038,'#b8e1eb');
+for(const x of [-10.43,10.43]){
+ box(demoFloor,x,.58,-4.8,.22,1.64,35.5,'#448fae','#63b0c0');
+ for(let z=-20;z<=12;z+=4.6)box(demoFloor,x,1.46,z,.55,.25,.50,'#68cfda');
+}
+box(demoFloor,0,-.20,-22.15,20.8,.55,.30,'#4eafbe');
+box(demoFloor,0,-.20,12.55,20.8,.55,.30,'#508fa8');
+// Amorphous abstract columns on the sides establish 3D depth without evoking any city.
+for(let k=0;k<12;k++){
+ const x=(k%2?-1:1)*(15+Math.floor(k/2)*6),z=-31+Math.floor(k/2)*9;
+ box(demoFloor,x,-2.15,z,3.0,2.0+(k%4)*1.0,3.1,['#e4f2ff','#c6eae8','#f7e7f1','#e9ebff'][k%4]);
+}
+// Independent arcade demo. The animation is not a static city backdrop:
+// the preview ball actually bounces against the sides, paddle and bricks.
+let demoBricks=[],demoParticles=[],demoBall={x:0,z:-3.6,vx:5.8,vz:-19.7},demoPaddleX=0;
+let lastPreviewFrame=0,demoT=0,demoStaticCanvas=null,demoStaticW=0,demoStaticH=0;
+function resetDemo(){
+ demoBricks=[];demoParticles=[];demoBall={x:0,z:-3.5,vx:5.8,vz:-19.7};demoPaddleX=0;
+ for(let row=0;row<4;row++)for(let column=0;column<6;column++)demoBricks.push({x:-7.65+column*3.05,z:-18.7+row*3.13,hp:(row+column)%2?1:2,blink:0});
+}
+resetDemo();
+function tickDemo(dt){
+ demoT+=dt;
+ const b=demoBall;
+ demoPaddleX+=(Math.max(-7.4,Math.min(7.4,b.x))-demoPaddleX)*Math.min(1,dt*4);
+ const oldZ=b.z;
+ b.x+=b.vx*dt;b.z+=b.vz*dt;
+ if(b.x<-9.4){b.x=-9.4;b.vx=Math.abs(b.vx)}
+ if(b.x>9.4){b.x=9.4;b.vx=-Math.abs(b.vx)}
+ if(b.z<-20.7){b.z=-20.7;b.vz=Math.abs(b.vz)}
+ if(b.z>9.0){b.z=9.0;b.vz=-Math.abs(b.vz);b.vx+=Math.max(-1.5,Math.min(1.5,(b.x-demoPaddleX)*.4))}
+ for(const brick of demoBricks){
+  brick.blink=Math.max(0,brick.blink-dt);
+  if(brick.hp<=0)continue;
+  if(Math.abs(b.x-brick.x)<1.6 && Math.abs(b.z-brick.z)<1.48){
+    brick.hp--;brick.blink=.27;
+    b.vz=oldZ>brick.z?Math.abs(b.vz):-Math.abs(b.vz);
+    for(let k=0;k<7;k++){
+      const a=k*6.283/7+demoT;
+      demoParticles.push({x:brick.x,z:brick.z,vx:Math.sin(a)*3.2,vz:Math.cos(a)*3.2,life:.5});
+    }
+    break;
+  }
+ }
+ if(demoBricks.every(t=>t.hp<=0))resetDemo();
+ for(const p of demoParticles){p.x+=p.vx*dt;p.z+=p.vz*dt;p.life-=dt;}
+ demoParticles=demoParticles.filter(p=>p.life>0);
+}
+function renderPreview(now){
+ if(now-lastPreviewFrame<32)return;
+ const dt=lastPreviewFrame?Math.min(.07,(now-lastPreviewFrame)/1000):.033;
+ lastPreviewFrame=now;tickDemo(dt);
+ const w=previewCanvas.clientWidth,h=previewCanvas.clientHeight;
+ if(w<1||h<1)return;
+ const pix=Math.min(window.devicePixelRatio||1,1.25),W=Math.round(w*pix),H=Math.round(h*pix);
+ if(previewCanvas.width!==W||previewCanvas.height!==H){previewCanvas.width=W;previewCanvas.height=H;}
+ const c=previewCtx;
+ const g=[];
+ for(const brick of demoBricks){
+  if(brick.hp<=0)continue;
+  const isPink=brick.hp===2;
+  const bob=Math.sin(demoT*1.65+brick.x*.3+brick.z*.12)*.047;
+  const main=isPink?'#ffc6df':'#aeeafa',top=isPink?'#ffe5ef':'#e7f9ff';
+  box(g,brick.x,.56+bob,brick.z,2.68,.94,2.59,main,top,isPink?'#e7a8c4':'#8bd0e3');
+  box(g,brick.x,.99+bob,brick.z+.52,2.24,.06,.14,'#ffffff');
+  if(brick.blink>0)sphere(g,brick.x,1.55,brick.z,brick.blink*2,'#fff8c5',4,6);
+ }
+ box(g,demoPaddleX,.54,9.0,4.35,.93,1.30,'#93dce7','#faffff','#58b7d0');
+ box(g,demoPaddleX,1.06,9.0,3.95,.15,1.17,'#76e6de');
+ const b=demoBall;
+ sphere(g,b.x,.65,b.z,.50,'#9ad7ea',5,8);
+ sphere(g,b.x,2.05,b.z,.69,'#fff4bd',7,12);
+ sphere(g,b.x-.15,2.26,b.z+.1,.14,'#ffffff',4,6);
+ for(const p of demoParticles)sphere(g,p.x,1.5,p.z,.13*(p.life+.1),'#fff3c9',4,5);
+ const view=new Float32Array(16),proj=new Float32Array(16),pv=new Float32Array(16);
+ const portrait=w/h<.78;
+ mat4.perspective(proj,(portrait?72:56)*Math.PI/180,W/H,.1,210);
+ const eye=portrait?[17.5,27,44]:[21,28,46],target=portrait?[0,1,-5]:[0,1,-5];
+ mat4.lookAt(view,eye,target,[0,1,0]);mat4.multiply(pv,proj,view);
+ // Move the visible arcade model toward the lower part of the splash so it
+ // remains visible below the loading title/card, including on tall phones.
+ const verticalShift=portrait?H*.11:H*.055;
+ const scaleX=portrait?1.18:1.16,scaleY=portrait?1.43:1.24;
+ const applyDemoTransform=(c)=>{
+   c.translate(W*.5,H*.65);
+   c.scale(scaleX,scaleY);
+   c.translate(-W*.5,-H*.65+verticalShift);
+ };
+ const makeStaticPreview=()=>{
+   const image=document.createElement('canvas');image.width=W;image.height=H;
+   const back=image.getContext('2d',{alpha:false});
+   const bg=back.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#081930');bg.addColorStop(.50,'#16435f');bg.addColorStop(1,'#06182e');
+   back.fillStyle=bg;back.fillRect(0,0,W,H);
+   back.fillStyle='rgba(89,168,204,.13)';back.beginPath();back.ellipse(W*.6,H*.53,W*.55,H*.39,-.2,0,Math.PI*2);back.fill();
+   back.save();applyDemoTransform(back);
+   drawFaces(back,demoFloor,pv,W,H);
+   // A painted 3D floor prevents coplanar triangle sorting artifacts on mobile.
+   const corners=[[-10.3,-.16,-22.0],[10.3,-.16,-22.0],[10.3,-.16,12.5],[-10.3,-.16,12.5]].map(v=>projectPoint(v,pv,W,H));
+   const floor=back.createLinearGradient(0,corners[0][1],0,corners[2][1]);
+   floor.addColorStop(0,'#356f91');floor.addColorStop(.5,'#2d617f');floor.addColorStop(1,'#244c68');
+   back.fillStyle=floor;back.beginPath();back.moveTo(...corners[0]);for(let i=1;i<4;i++)back.lineTo(...corners[i]);back.closePath();back.fill();
+   back.save();back.strokeStyle='rgba(195,235,248,.23)';back.lineWidth=Math.max(.7,W/740);
+   for(let x=-9;x<=9;x+=3){let a=projectPoint([x,-.145,-22],pv,W,H),b=projectPoint([x,-.145,12.5],pv,W,H);back.beginPath();back.moveTo(...a);back.lineTo(...b);back.stroke();}
+   for(let z=-19.7;z<=12;z+=3.2){let a=projectPoint([-10.3,-.145,z],pv,W,H),b=projectPoint([10.3,-.145,z],pv,W,H);back.beginPath();back.moveTo(...a);back.lineTo(...b);back.stroke();}
+   back.restore();back.restore();
+   return image;
+ };
+ if(!demoStaticCanvas||demoStaticW!==W||demoStaticH!==H){
+   demoStaticW=W;demoStaticH=H;demoStaticCanvas=makeStaticPreview();
+ }
+ c.drawImage(demoStaticCanvas,0,0);
+ c.save();applyDemoTransform(c);drawFaces(c,g,pv,W,H);c.restore();
+ const pos=projectPoint([b.x,2.05,b.z],pv,W,H);
+ // Apply identical 2D transform to the glow location, so it follows the ball.
+ const gx=W*.5+(pos[0]-W*.5)*scaleX;
+ const gy=H*.65+(pos[1]-H*.65+verticalShift)*scaleY;
+ const radius=Math.max(21,W*.052);
+ const glow=c.createRadialGradient(gx,gy,0,gx,gy,radius);
+ glow.addColorStop(0,'rgba(255,251,207,.67)');glow.addColorStop(1,'rgba(255,238,160,0)');
+ c.fillStyle=glow;c.beginPath();c.arc(gx,gy,radius,0,Math.PI*2);c.fill();
+
+}
+
+function updateOrbLabels(){
+ const visible=gameState==='playing'||gameState==='greentip'||gameState==='pinktip'||gameState==='paused';
+ for(const o of orbs){
+  if(!visible){o.el.style.display='none';continue;}
+  const p=mobileCourtPoint(o.x,o.z);
+  const pos=projectPoint([p[0],2.20,p[1]],vpMatrix,canvas.clientWidth,canvas.clientHeight);
+  o.el.style.display='grid';o.el.style.left=pos[0]+'px';o.el.style.top=pos[1]+'px';
+ }
+}
+function resize(){const dpr=Math.min(window.devicePixelRatio||1,2);screenW=canvas.clientWidth;screenH=canvas.clientHeight;canvas.width=Math.max(1,Math.round(screenW*dpr));canvas.height=Math.max(1,Math.round(screenH*dpr));ratio=screenW/screenH;if(hasWebGL)gl.viewport(0,0,canvas.width,canvas.height);else staticCache=null;}
+window.addEventListener('resize',resize,{passive:true});resize();
+function render(){if(hasWebGL){gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);}let r=ratio;let portrait=r<.85;
+const isHK=stage==='1-2',isTokyo=stage==='1-3',isSeoul=stage==='1-4',isSingapore=stage==='1-5',isAmsterdam=stage==='2-1',isBerlin=stage==='2-2',isNew=!!NEW_CITY_MESHES[stage],isWide=isHK||isTokyo||isSeoul||isSingapore||isAmsterdam||isBerlin||isNew;
+// Higher three-quarter viewpoint for all playable levels, including Seoul.
+// Position/physics still share the same local arena coordinate system.
+const distance=portrait?(isWide?49:45):49,camY=portrait?(isWide?32.5:30.8):26.9;
+cameraEye=[Math.sin(time*.16)*.4 + Math.sin(time*75)*shake*.6,camY+Math.sin(time*70)*shake*.35,distance+Math.cos(time*65)*shake*.3];
+const target=[0,portrait?7.3:6.1,portrait?-9.3:-8];
+let p=new Float32Array(16),v=new Float32Array(16);mat4.perspective(p,(portrait?(isWide?74:66):55)*Math.PI/180,r,.1,250);mat4.lookAt(v,cameraEye,target,[0,1,0]);mat4.multiply(vpMatrix,p,v);if(hasWebGL){gl.uniformMatrix4fv(loc.vp,false,vpMatrix);gl.uniform3fv(loc.eye,cameraEye);gl.disable(gl.BLEND);drawBuffer(isNew?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobileBuffer:NEW_CITY_MESHES[stage].desktopBuffer):isBerlin?(isMobilePortrait()?STATIC_BUFFER_BERLIN_MOBILE:STATIC_BUFFER_BERLIN):isAmsterdam?(isMobilePortrait()?STATIC_BUFFER_AMSTERDAM_MOBILE:STATIC_BUFFER_AMSTERDAM):isSingapore?(isMobilePortrait()?STATIC_BUFFER_SINGAPORE_MOBILE:STATIC_BUFFER_SINGAPORE):isSeoul?(isMobilePortrait()?STATIC_BUFFER_SEOUL_MOBILE:STATIC_BUFFER_SEOUL):isTokyo?(isMobilePortrait()?STATIC_BUFFER_TOKYO_MOBILE:STATIC_BUFFER_TOKYO):isHK?(isMobilePortrait()?STATIC_BUFFER_HK_MOBILE:STATIC_BUFFER_HK):(isMobilePortrait()?STATIC_BUFFER_MOBILE:STATIC_BUFFER),null,(isNew?NEW_CITY_MESHES[stage].desktop.length:isBerlin?berlinGeo.length:isAmsterdam?amsterdamGeo.length:isSingapore?singaporeGeo.length:isSeoul?seoulGeo.length:isTokyo?tokyoGeo.length:isHK?hkGeo.length:staticGeo.length)/10,gl.STATIC_DRAW);let dyn=makeDynamic();drawBuffer(dynBuf,dyn,dyn.length/10,gl.DYNAMIC_DRAW);gl.enable(gl.BLEND);}else{render2D(makeDynamic());}
+}
+reset();document.body.classList.add('menu-backdrop');startLoading();
+function frame(now){if(!lastTime)lastTime=now;let dt=Math.min((now-lastTime)/1000,.036);lastTime=now;tick(dt);if(document.body.classList.contains('menu-backdrop'))renderPreview(now);else {render();updateOrbLabels();}requestAnimationFrame(frame);}requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
