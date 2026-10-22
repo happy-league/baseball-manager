@@ -373,6 +373,17 @@
  .stagecard.cleared .stage-num,.stagecard.cleared .stage-city{color:#314a5d}
  .stage-trophy{position:absolute;right:8px;top:7px;width:27px;height:27px;filter:drop-shadow(0 2px 2px rgba(102,68,14,.23));pointer-events:none}
  @media(max-width:600px){.stage-trophy{width:25px;height:25px;right:6px;top:5px}}
+
+/* V23: a matching first-hit steel-block tutorial overlay. */
+#irontip{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;background:rgba(5,13,30,.81);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:opacity .22s,visibility .22s}
+#irontip.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#irontip .tipcard{border-color:#b4cada;box-shadow:0 23px 75px rgba(2,12,35,.78)}
+#irontip .tipcard p{max-width:360px;margin:8px auto 22px}
+.iron-tip-badge{background:linear-gradient(140deg,#b5c8d7,#6b829a)!important;color:#071b32!important}
+.iron-tip-illustration{height:88px;display:flex;align-items:center;justify-content:center;gap:20px}
+.iron-tip-block{display:block;width:89px;height:44px;border-radius:7px;border:2px solid #e4f6ff;background:linear-gradient(155deg,#f1fbff 6%,#a5b6c8 39%,#61778e 75%,#e1eefb);box-shadow:inset 0 5px 0 #ffffffb5,0 8px 0 #485b70,0 11px 20px #57bedf4d}
+.iron-tip-ball{display:block;color:#f7e6a4;text-shadow:0 0 15px #fff8b0;font-size:32px}
+#irontip .tiparrow{font-size:27px;color:#8de5ff}
 </style>
 </head>
 <body>
@@ -440,6 +451,15 @@
    <span class="power-letter">D</span><span>控制板移動速度減慢</span>
   </div>
   <button type="button" class="primary" id="greenok">我知道了，繼續遊戲</button>
+ </div>
+</div>
+<div id="irontip" class="hidden" role="dialog" aria-modal="true" aria-labelledby="irontiptitle" aria-describedby="irontipdesc">
+ <div class="tipcard">
+  <div class="tip-badge iron-tip-badge">TIPS</div>
+  <div class="iron-tip-illustration" aria-hidden="true"><span class="iron-tip-ball">●</span><span class="tiparrow">↗</span><span class="iron-tip-block"></span></div>
+  <h2 id="irontiptitle">銀色鐵塊</h2>
+  <p id="irontipdesc">銀色鐵塊無法擊碎，也不會消失。球碰到鐵塊後會反彈，可以利用反彈角度繼續擊打其他磚塊。</p>
+  <button class="primary" type="button" id="ironok">我知道了，繼續遊戲</button>
  </div>
 </div>
 <div id="error"></div>
@@ -1332,7 +1352,7 @@ function markStageCleared(level){if(clearedStages.has(level))return;clearedStage
  try{localStorage.setItem(STAGE_CLEAR_STORAGE_KEY,JSON.stringify([...clearedStages]));}catch(_){}}
 const TROPHY_SVG='<svg class="stage-trophy" viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10h24v21c0 10-6 17-12 17s-12-7-12-17V10Z" fill="#e8a927" stroke="#9e6811" stroke-width="2.4"/><path d="M20 15H10v9c0 9 6 13 15 13M44 15h10v9c0 9-6 13-15 13" fill="none" stroke="#d39a23" stroke-width="5" stroke-linecap="round"/><path d="M27 48v6h-8v5h26v-5h-8v-6" fill="#b8831b"/><path d="M27 17h10v12c0 5-3 9-7 10" fill="none" stroke="#ffe28b" stroke-width="3.5" stroke-linecap="round"/></svg>';
 let pendingTransition=null,lostAnyBallThisStage=false;
-let stage='1-1',bricks=[],bonusBalls=[],ballPickups=[],particles=[],gameState='loading',pinkTipShown=false,greenTipShown=false,orbs=[],effects={ball:null,paddle:null},orbSequence=0,score=0,lives=3,paddleX=0,paddleDir=0,heldLeft=false,heldRight=false,ball={x:0,z:6.0,vx:4.45,vz:-16.3,r:.43},time=0,lastTime=0,serveTimer=0,screenW=1,screenH=1,ratio=1,muted=false,flash=0,shake=0,toastTime=0,cameraEye=[0,19,37],vpMatrix=new Float32Array(16),collisionSeq=0;
+let stage='1-1',bricks=[],ironBlocks=[],bonusBalls=[],ballPickups=[],particles=[],gameState='loading',pinkTipShown=false,greenTipShown=false,ironTipShown=false,orbs=[],effects={ball:null,paddle:null},orbSequence=0,score=0,lives=3,paddleX=0,paddleDir=0,heldLeft=false,heldRight=false,ball={x:0,z:6.0,vx:4.45,vz:-16.3,r:.43},time=0,lastTime=0,serveTimer=0,screenW=1,screenH=1,ratio=1,muted=false,flash=0,shake=0,toastTime=0,cameraEye=[0,19,37],vpMatrix=new Float32Array(16),collisionSeq=0;
 const hudScore=$('score'),hudLives=$('lives');
 // All bricks gain noticeable vertical thickness, while stacked tiers remain distinct.
 const BRICK_BASE_Y=1.39,BRICK_HEIGHT=1.90,BRICK_LAYER_STEP=2.10;
@@ -1387,6 +1407,46 @@ function alignSquareBrickFormations(){
  }
  for(const orb of ballPickups){const base=bricks.find(b=>b.layer===0&&b.slot===orb.slot);
    if(base){orb.x=base.x;orb.z=base.z+base.d*.53;}}
+}
+// Four permanent silver bumpers in each late-game city. These are never regular
+// bricks, so they are excluded from HP, scores, cascading decks and stage clear.
+function initIronBlocks(){
+ const layouts={
+  '2-3':[[-7.55,-2.00],[-2.48,2.08],[2.48,2.08],[7.55,-2.00]],
+  '2-4':[[-7.42,-1.45],[-2.45,2.50],[2.45,2.50],[7.42,-1.45]],
+  '2-5':[[-7.36,-2.28],[-2.52,1.75],[2.52,1.75],[7.36,-2.28]]
+ };
+ ironBlocks=(layouts[stage]||[]).map(([x,z],i)=>({x,z,w:2.50,d:1.78,y:1.27,id:i,glint:0}));
+}
+function bounceOffIron(b,oldx,oldz,block){
+ const hw=block.w/2+b.r,hd=block.d/2+b.r;
+ if(Math.abs(b.x-block.x)>hw||Math.abs(b.z-block.z)>hd)return false;
+ // Resolve along the approach axis, avoiding repeated hits inside a bumper.
+ const wasLeft=oldx<=block.x-hw,wasRight=oldx>=block.x+hw;
+ const wasFar=oldz<=block.z-hd,wasNear=oldz>=block.z+hd;
+ let axis;
+ if((wasLeft||wasRight)&&!(wasFar||wasNear))axis='x';
+ else if((wasFar||wasNear)&&!(wasLeft||wasRight))axis='z';
+ else{
+  const px=hw-Math.abs(b.x-block.x),pz=hd-Math.abs(b.z-block.z);
+  axis=px<pz?'x':'z';
+ }
+ if(axis==='x'){
+  const side=wasLeft?-1:wasRight?1:(oldx<block.x?-1:1);
+  b.x=block.x+side*(hw+.025);b.vx=side*Math.max(2.7,Math.abs(b.vx));
+ }else{
+  const side=wasFar?-1:wasNear?1:(oldz<block.z?-1:1);
+  b.z=block.z+side*(hd+.025);b.vz=side*Math.max(3.6,Math.abs(b.vz));
+ }
+ block.glint=.36;
+ shake=Math.max(shake,.11);flash=Math.max(flash,.11);
+ burst(block.x,block.z,'#d1f3ff',13);sound(610,.10,'triangle',.055);
+ if(stage==='2-3'&&!ironTipShown){
+  ironTipShown=true;gameState='irontip';heldLeft=heldRight=false;
+  $('left').classList.remove('pressed');$('right').classList.remove('pressed');
+  $('irontip').classList.remove('hidden');$('ironok').focus();
+ }
+ return true;
 }
 function initBricks(){
  bricks=[];
@@ -1515,6 +1575,7 @@ function initBricks(){
   for(let r=0;r<4;r++)for(let c=0;c<6;c++)bricks.push({x:-7.25+c*2.9,z:-19.5+r*3.06,hp:(r+c)%2?2:1,origHp:(r+c)%2?2:1,alive:true,w:2.6,d:2.45,hit:0,layer:0,y:BRICK_BASE_Y,dropTime:0});
  }
  alignSquareBrickFormations();
+ initIronBlocks();
 }
 function stageCity(){return stage==='2-5'?'倫敦':stage==='2-4'?'華沙':stage==='2-3'?'巴黎':stage==='2-2'?'柏林':stage==='2-1'?'阿姆斯特丹':stage==='1-5'?'新加坡':stage==='1-4'?'首爾':stage==='1-3'?'東京':stage==='1-2'?'香港':'台北';}
 function stageEng(){return stage==='2-5'?'LONDON':stage==='2-4'?'WARSAW':stage==='2-3'?'PARIS':stage==='2-2'?'BERLIN':stage==='2-1'?'AMSTERDAM':stage==='1-5'?'SINGAPORE':stage==='1-4'?'SEOUL':stage==='1-3'?'TOKYO':stage==='1-2'?'HONG KONG':'TAIPEI';}
@@ -1529,7 +1590,7 @@ function updateStageHud(){
 } 
 function updateHud(){hudScore.textContent=String(score).padStart(6,'0');hudLives.textContent=String(lives);}
 function nextUnlockedStage(s){const i=LEVEL_SEQUENCE.indexOf(s);return (i>=0&&i<LEVEL_SEQUENCE.length-1)?LEVEL_SEQUENCE[i+1]:null;}
-function reset(inheritedLives=null){score=0;lives=inheritedLives===null?3:inheritedLives;lostAnyBallThisStage=false;pinkTipShown=false;greenTipShown=false;orbs.forEach(o=>o.el?.remove());orbs=[];effects={ball:null,paddle:null};refreshEffectStatus();$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');paddleX=0;particles=[];bonusBalls=[];ballPickups=[];initBricks();ball={x:0,z:6.4,vx:4.45,vz:-16.3,r:.43,active:true};serveTimer=0;gameState='ready';updateStageHud();updateHud();}
+function reset(inheritedLives=null){score=0;lives=inheritedLives===null?3:inheritedLives;lostAnyBallThisStage=false;pinkTipShown=false;greenTipShown=false;ironTipShown=false;orbs.forEach(o=>o.el?.remove());orbs=[];effects={ball:null,paddle:null};refreshEffectStatus();$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');$('irontip').classList.add('hidden');paddleX=0;particles=[];bonusBalls=[];ballPickups=[];initBricks();ball={x:0,z:6.4,vx:4.45,vz:-16.3,r:.43,active:true};serveTimer=0;gameState='ready';updateStageHud();updateHud();}
 function start(whichStage=stage,continueJourney=false){
  const carry=continueJourney&&pendingTransition?.to===whichStage
    ?pendingTransition.lives+pendingTransition.bonus:null;
@@ -1559,9 +1620,10 @@ function finish(won){
 }
 $('tipok').addEventListener('click',()=>{if(gameState!=='pinktip')return;$('pinktip').classList.add('hidden');gameState='playing';lastTime=performance.now();});
 $('greenok').addEventListener('click',()=>{if(gameState!=='greentip')return;$('greentip').classList.add('hidden');gameState='playing';lastTime=performance.now();});
+$('ironok').addEventListener('click',()=>{if(gameState!=='irontip')return;$('irontip').classList.add('hidden');gameState='playing';lastTime=performance.now();});
 function pause(){if(gameState==='playing'){gameState='paused';overlay('PAUSED','暫停遊戲',`${stageEng()} · STAGE ${stage}`,'▶ 繼續遊戲');$('pause').textContent='▶';}else if(gameState==='paused'){gameState='playing';hideOverlay();$('pause').textContent='Ⅱ';}}
 $('mainbutton').addEventListener('click',()=>{if(gameState==='paused')pause();else if(gameState==='won'&&pendingTransition)start(pendingTransition.to,true);else start();});$('pause').addEventListener('click',pause);
-function showSelect(){setupStageGrid();document.body.classList.add('menu-backdrop');heldLeft=heldRight=false;$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');orbs.forEach(o=>o.el?.remove());orbs=[];gameState='select';$('pause').textContent='Ⅱ';$('overlay').classList.add('hidden');$('levelselect').classList.remove('hidden');}
+function showSelect(){setupStageGrid();document.body.classList.add('menu-backdrop');heldLeft=heldRight=false;$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');$('irontip').classList.add('hidden');orbs.forEach(o=>o.el?.remove());orbs=[];gameState='select';$('pause').textContent='Ⅱ';$('overlay').classList.add('hidden');$('levelselect').classList.remove('hidden');}
 function showReserved(){const foot=document.querySelector('.selectfooter');foot.textContent='此關卡尚在規劃中，敬請期待。';clearTimeout(showReserved.timer);showReserved.timer=setTimeout(()=>foot.textContent='選擇已開放的關卡，展開旅程。',2200);}
 function setupStageGrid(){const grid=$('stagegrid');grid.innerHTML='';for(let group=1;group<=2;group++)for(let n=1;n<=5;n++){
  const level=`${group}-${n}`,city=level==='1-1'?'台北':level==='1-2'?'香港':level==='1-3'?'東京':level==='1-4'?'首爾':level==='1-5'?'新加坡':level==='2-1'?'阿姆斯特丹':level==='2-2'?'柏林':level==='2-3'?'巴黎':level==='2-4'?'華沙':level==='2-5'?'倫敦':'—',available=group===1||group===2,btn=document.createElement('button');
@@ -1635,6 +1697,7 @@ function hitBrick(brick){
 function tick(dt){time+=dt;if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').classList.remove('show');}flash=Math.max(0,flash-dt*2);shake=Math.max(0,shake-dt*1.9);$('flash').style.opacity=String(flash*.6);
 for(const p of particles){p.life-=dt;p.x+=p.vx*dt;p.z+=p.vz*dt;p.y+=p.vy*dt;p.vy-=13*dt;}particles=particles.filter(p=>p.life>0);if(particles.length>220)particles.splice(0,particles.length-220);
 if(gameState!=='playing')return;
+for(const block of ironBlocks)block.glint=Math.max(0,block.glint-dt);
 for(const b of bricks){
  b.hit=Math.max(0,b.hit-dt);
  if(b.dropTime>0){
@@ -1673,6 +1736,11 @@ for(const b of moving){
   b.vz*=-1;burst(pickup.x,pickup.z,'#ffe58e',29);sound(920,.18,'triangle',.075);
   break;
  }
+ let hitIron=false;
+ for(const block of ironBlocks){
+  if(bounceOffIron(b,oldx,oldz,block)){hitIron=true;break;}
+ }
+ if(hitIron){if(gameState!=='playing')break;continue;}
  for(const brick of bricks){
   if(!brick.alive||brick.layer!==0||brick.dropTime>0)continue;
   if(Math.abs(b.x-brick.x)>brick.w/2+b.r||Math.abs(b.z-brick.z)>brick.d/2+b.r)continue;
@@ -1711,13 +1779,27 @@ function brickMesh(b,o){
  box(o,b.x,cy,b.z,b.w,BRICK_HEIGHT,b.d,selected,darker(selected,1.08),darker(selected,.80));
  box(o,b.x,cy+BRICK_HEIGHT*.5+.045,b.z,b.w*.76,.05,b.d*.63,top);
  box(o,b.x,cy+BRICK_HEIGHT*.17,b.z+b.d/2+.035,b.w*.7,.16,.065,face);
+ // Animated pearlescent edge highlights, with a separate phase per brick.
+ // Keeps the original single-brick silhouette and the original HP colors.
+ const pulse=.5+.5*Math.sin(time*5.6+b.x*.43+b.z*.29+b.layer*.82);
+ const spark=pulse>.52?'#e6feff':'#73c9e0';
+ const rim=pulse>.68?'#ffffff':'#b2edf8';
+ const hw=b.w/2+.015,hd=b.d/2+.018,topY=cy+BRICK_HEIGHT*.5+.07;
+ box(o,b.x,topY,b.z+hd,.085,.07,.075,rim);
+ box(o,b.x,topY,b.z-hd,.085,.07,.075,spark);
+ for(const side of [-1,1]){
+  box(o,b.x+side*hw,topY,b.z,.090,.085,b.d+.05,rim);
+  box(o,b.x+side*hw,cy,b.z+hd,.08,BRICK_HEIGHT*.92,.085,spark);
+ }
+ box(o,b.x,cy+BRICK_HEIGHT*.31,b.z+hd,.48+pulse*1.35,.09,.072,pulse>.75?'#ffffff':'#8edcee');
 }
 // The pulsing racing-lane effect lives exclusively in the arena, never the background.
 function energizedCourt(o){
  const wide=wideStage(),edge=wide?HK_HALF_WALL:10.3;
  for(const side of [-1,1]){
   const x=side*(edge-.12),head=.5+.5*Math.sin(time*3.0+side*1.4);
-  box(o,x,1.96,-3.5,.14,.12,36.0,head>.50?'#66f7fe':'#4bb7d5');
+  box(o,x,1.96,-3.5,.22,.15,36.0,head>.45?'#e6ffff':'#56b8e4');
+  box(o,x,2.07,-3.5,.09,.10,36.0,head>.66?'#ffffff':'#57d7fa');
   for(let i=0;i<8;i++){
    const z=-19.5+i*4.2;
    box(o,x,2.16+Math.sin(time*4+i*.8)*.085,z,.40,.13,.76,i%2?'#bffaff':'#88e9fe');
@@ -1730,8 +1812,25 @@ function energizedCourt(o){
  }
  const segment=1.55+1.15*Math.sin(time*5);
  box(o,0,.59,-20.9,segment,.09,.18,'#b8f9ff');
+ const linePulse=.5+.5*Math.sin(time*5.2);
+ const edgeGlow=linePulse>.50?'#d3ffff':'#55c4eb';
+ box(o,0,.80,-21.50,wide?23.3:20.0,.12,.19,edgeGlow);
+ box(o,0,.80,13.12,wide?23.3:20.0,.12,.19,linePulse>.75?'#f3ffff':'#6bc9eb');
 }
 
+function ironBlockMesh(o,b){
+ const p=.5+.5*Math.sin(time*6.1+b.id*.93),glow=b.glint>0;
+ const white=glow?'#ffffff':p>.58?'#e0f9ff':'#afc9dc';
+ box(o,b.x,b.y,b.z,b.w,1.60,b.d,'#879bad','#d3e1ee','#5b7188');
+ box(o,b.x,b.y+.81,b.z,b.w*.89,.13,b.d*.83,glow?'#ffffff':'#dceaf4');
+ box(o,b.x,b.y-.05,b.z+b.d/2+.043,b.w*.82,.17,.075,'#d4e7f0');
+ for(const side of [-1,1]){
+  box(o,b.x+side*(b.w/2+.025),b.y+.22,b.z,.105,1.04,b.d+.13,white);
+  box(o,b.x+side*(b.w*.31),b.y+.77,b.z+b.d*.29,.12,.065,.27,'#ffffff');
+ }
+ box(o,b.x,b.y+.83,b.z-b.d/2,.65+.5*p,.075,.085,white);
+ box(o,b.x,b.y+.78,b.z+b.d/2+.04,b.w*.84,.09,.085,p>.50?'#e4fbff':'#98d6ed');
+}
 function paddleMesh(b){
  const k=paddleHalfWidth()/2.10;
  box(b,paddleX,1.14,8.85,4.2*k,1.0,1.13,'#dcecf1','#fbffff','#719caf');
@@ -1751,6 +1850,7 @@ function hkFerry(o,x,z){
  box(o,x,-.45,z,.13,1.05,.13,'#e5e1c2');
 }
 function makeDynamic(){let a=[];energizedCourt(a);for(let b of bricks)if(b.alive)brickMesh(b,a);
+for(const block of ironBlocks)ironBlockMesh(a,block);
 // Ball shadow, flying sphere and afterglow
 for(const b of [ball,...bonusBalls]){
  if(b.active===false)continue;
@@ -2015,7 +2115,7 @@ function renderPreview(now){
 }
 
 function updateOrbLabels(){
- const visible=gameState==='playing'||gameState==='greentip'||gameState==='pinktip'||gameState==='paused';
+ const visible=gameState==='playing'||gameState==='greentip'||gameState==='pinktip'||gameState==='irontip'||gameState==='paused';
  for(const o of orbs){
   if(!visible){o.el.style.display='none';continue;}
   const p=mobileCourtPoint(o.x,o.z);
