@@ -1340,6 +1340,13 @@ if(hasWebGL){gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER);gl.bufferData(gl.ARRAY
   gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_SINGAPORE_MOBILE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(singaporeGeoMobile),gl.STATIC_DRAW);
 }const STATIC_COUNT=staticGeo.length/10;
 const dynBuf=hasWebGL?gl.createBuffer():null;
+// Stationary bricks, steel bumpers and glow borders are cached independently
+// from the moving balls. Their pulsing glow updates periodically, not 60x/s.
+const arenaBuf=hasWebGL?gl.createBuffer():null;
+let arenaVersion=0,arenaGeometry=null,arenaLastBuild=-1e6,arenaCachedStage='',arenaBuiltVersion=-1;
+let arenaGpuGeometry=null,arenaGpuCount=0;
+let arenaCanvas=null,arenaCanvasVersion=-1,arenaCanvasW=0,arenaCanvasH=0;
+
 // Core game state
 const LEVEL_SEQUENCE=['1-1','1-2','1-3','1-4','1-5','2-1','2-2','2-3','2-4','2-5'];
 const STAGE_CLEAR_STORAGE_KEY='brick_traveler_stage_clear_v1';
@@ -1352,6 +1359,10 @@ function markStageCleared(level){if(clearedStages.has(level))return;clearedStage
  try{localStorage.setItem(STAGE_CLEAR_STORAGE_KEY,JSON.stringify([...clearedStages]));}catch(_){}}
 const TROPHY_SVG='<svg class="stage-trophy" viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10h24v21c0 10-6 17-12 17s-12-7-12-17V10Z" fill="#e8a927" stroke="#9e6811" stroke-width="2.4"/><path d="M20 15H10v9c0 9 6 13 15 13M44 15h10v9c0 9-6 13-15 13" fill="none" stroke="#d39a23" stroke-width="5" stroke-linecap="round"/><path d="M27 48v6h-8v5h26v-5h-8v-6" fill="#b8831b"/><path d="M27 17h10v12c0 5-3 9-7 10" fill="none" stroke="#ffe28b" stroke-width="3.5" stroke-linecap="round"/></svg>';
 let pendingTransition=null,lostAnyBallThisStage=false;
+// Fixed-step ball physics keeps rebounds consistent even when a device drops frames.
+const PHYSICS_STEP=1/120,MAX_CATCHUP_STEPS=12;
+let physicsRemainder=0,renderFraction=1;
+
 let stage='1-1',bricks=[],ironBlocks=[],bonusBalls=[],ballPickups=[],particles=[],gameState='loading',pinkTipShown=false,greenTipShown=false,ironTipShown=false,orbs=[],effects={ball:null,paddle:null},orbSequence=0,score=0,lives=3,paddleX=0,paddleDir=0,heldLeft=false,heldRight=false,ball={x:0,z:6.0,vx:4.45,vz:-16.3,r:.43},time=0,lastTime=0,serveTimer=0,screenW=1,screenH=1,ratio=1,muted=false,flash=0,shake=0,toastTime=0,cameraEye=[0,19,37],vpMatrix=new Float32Array(16),collisionSeq=0;
 const hudScore=$('score'),hudLives=$('lives');
 // All bricks gain noticeable vertical thickness, while stacked tiers remain distinct.
@@ -1591,7 +1602,7 @@ function updateStageHud(){
 } 
 function updateHud(){hudScore.textContent=String(score).padStart(6,'0');hudLives.textContent=String(lives);}
 function nextUnlockedStage(s){const i=LEVEL_SEQUENCE.indexOf(s);return (i>=0&&i<LEVEL_SEQUENCE.length-1)?LEVEL_SEQUENCE[i+1]:null;}
-function reset(inheritedLives=null){score=0;lives=inheritedLives===null?3:inheritedLives;lostAnyBallThisStage=false;pinkTipShown=false;greenTipShown=false;ironTipShown=false;orbs.forEach(o=>o.el?.remove());orbs=[];effects={ball:null,paddle:null};refreshEffectStatus();$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');$('irontip').classList.add('hidden');paddleX=0;particles=[];bonusBalls=[];ballPickups=[];initBricks();ball={x:0,z:6.4,vx:4.45,vz:-16.3,r:.43,active:true};serveTimer=0;gameState='ready';updateStageHud();updateHud();}
+function reset(inheritedLives=null){arenaVersion++;physicsRemainder=0;renderFraction=1;score=0;lives=inheritedLives===null?3:inheritedLives;lostAnyBallThisStage=false;pinkTipShown=false;greenTipShown=false;ironTipShown=false;orbs.forEach(o=>o.el?.remove());orbs=[];effects={ball:null,paddle:null};refreshEffectStatus();$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');$('irontip').classList.add('hidden');paddleX=0;particles=[];bonusBalls=[];ballPickups=[];initBricks();ball={x:0,z:6.4,vx:4.45,vz:-16.3,r:.43,active:true};serveTimer=0;gameState='ready';updateStageHud();updateHud();}
 function start(whichStage=stage,continueJourney=false){
  const carry=continueJourney&&pendingTransition?.to===whichStage
    ?pendingTransition.lives+pendingTransition.bonus:null;
@@ -1681,7 +1692,7 @@ function tickOrbs(dt){
  }
 }
 function hitBrick(brick){
- brick.hp--;brick.hit=.28;shake=.11;flash=.3;
+ arenaVersion++;brick.hp--;brick.hit=.28;shake=.11;flash=.3;
  const firstPinkHit=stage==='1-1'&&brick.hp===1&&brick.origHp===2&&!pinkTipShown;
  const firstGreenHit=stage==='1-3'&&brick.hp===0&&brick.type==='green'&&!greenTipShown;
  if(brick.hp===0){
@@ -1719,6 +1730,8 @@ const wall=wideCourt?HK_BALL_LIMIT:9.4;
 const moving=[ball,...bonusBalls].filter(b=>b.active!==false);
 for(const b of moving){
  const oldx=b.x,oldz=b.z;
+ // Retain the preceding fixed-step position for smooth frame interpolation.
+ b.previousX=oldx;b.previousZ=oldz;
  b.x+=b.vx*dt*speedUp*effectBallScale*GAME_BALL_SPEED_FACTOR;b.z+=b.vz*dt*speedUp*effectBallScale*GAME_BALL_SPEED_FACTOR;
  if(b.x<-wall+b.r){b.x=-wall+b.r;b.vx=Math.abs(b.vx);sound(220,.05,'triangle',.025);}
  if(b.x>wall-b.r){b.x=wall-b.r;b.vx=-Math.abs(b.vx);sound(220,.05,'triangle',.025);}
@@ -1850,15 +1863,36 @@ function hkFerry(o,x,z){
  for(let t=-3.0;t<3.2;t+=1.2){box(o,x+t,-1.65,z+1.45,.7,.48,.12,'#71a7ae');box(o,x+t,-1.65,z-1.45,.7,.48,.12,'#71a7ae');}
  box(o,x,-.45,z,.13,1.05,.13,'#e5e1c2');
 }
-function makeDynamic(){let a=[];energizedCourt(a);for(let b of bricks)if(b.alive)brickMesh(b,a);
-for(const block of ironBlocks)ironBlockMesh(a,block);
+function makeFixedArena(){
+ let a=[];energizedCourt(a);
+ for(let b of bricks)if(b.alive)brickMesh(b,a);
+ for(const block of ironBlocks)ironBlockMesh(a,block);
+ if(isMobilePortrait())for(let i=0;i<a.length;i+=10){
+  const p=mobileCourtPoint(a[i],a[i+2]);a[i]=p[0];a[i+2]=p[1];
+ }
+ return a;
+}
+function cachedArenaGeometry(){
+ const activelyFalling=bricks.some(b=>b.dropTime>0);
+ const needsUpdate=!arenaGeometry||arenaCachedStage!==stage||arenaBuiltVersion!==arenaVersion||
+   activelyFalling||time-arenaLastBuild>=.115;
+ if(needsUpdate){
+  arenaGeometry=makeFixedArena();
+  arenaCachedStage=stage;arenaBuiltVersion=arenaVersion;arenaLastBuild=time;
+  arenaCanvasVersion=-1;
+ }
+ return arenaGeometry;
+}
+function makeDynamic(){let a=[];
 // Ball shadow, flying sphere and afterglow
 for(const b of [ball,...bonusBalls]){
  if(b.active===false)continue;
- sphere(a,b.x,.41,b.z,.46,'#294e5d',4,9);
+ const bx=gameState==='playing'&&Number.isFinite(b.previousX)?b.previousX+(b.x-b.previousX)*renderFraction:b.x;
+ const bz=gameState==='playing'&&Number.isFinite(b.previousZ)?b.previousZ+(b.z-b.previousZ)*renderFraction:b.z;
+ sphere(a,bx,.41,bz,.46,'#294e5d',4,9);
  let trailDir=norm([b.vx,0,b.vz]);
- if(serveTimer<=0&&gameState==='playing')for(let i=7;i>=1;i--){let mul=i*.25;sphere(a,b.x-trailDir[0]*mul,1.53,b.z-trailDir[2]*mul,.37-i*.037,['#96fdff','#62e7ff','#86baff','#afd8ff','#b5f9ff','#dffaff','#f2ffff'][i-1],4,6);}
- sphere(a,b.x,1.53,b.z,.53,'#fff4c0',8,12);sphere(a,b.x,1.53,b.z,.67,'#79eaff',5,8);sphere(a,b.x-.12,1.68,b.z+.09,.13,'#ffffff',5,7);
+ if(serveTimer<=0&&gameState==='playing')for(let i=7;i>=1;i--){let mul=i*.25;sphere(a,bx-trailDir[0]*mul,1.53,bz-trailDir[2]*mul,.37-i*.037,['#96fdff','#62e7ff','#86baff','#afd8ff','#b5f9ff','#dffaff','#f2ffff'][i-1],4,6);}
+ sphere(a,bx,1.53,bz,.53,'#fff4c0',8,12);sphere(a,bx,1.53,bz,.67,'#79eaff',5,8);sphere(a,bx-.12,1.68,bz+.09,.13,'#ffffff',5,7);
 }
 for(const p of ballPickups){
  if(p.active)continue;
@@ -1981,7 +2015,16 @@ function render2D(dynamic){
     cacheWidth=w;cacheHeight=h;
     const c=staticCache.getContext('2d',{alpha:true});drawFaces(c,(NEW_CITY_MESHES[stage]?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobile:NEW_CITY_MESHES[stage].desktop):stage==='2-2'?(isMobilePortrait()?berlinGeoMobile:berlinGeo):stage==='2-1'?(isMobilePortrait()?amsterdamGeoMobile:amsterdamGeo):stage==='1-5'?(isMobilePortrait()?singaporeGeoMobile:singaporeGeo):stage==='1-4'?(isMobilePortrait()?seoulGeoMobile:seoulGeo):stage==='1-3'?(isMobilePortrait()?tokyoGeoMobile:tokyoGeo):stage==='1-2'?(isMobilePortrait()?hkGeoMobile:hkGeo):(isMobilePortrait()?staticGeoMobile:staticGeo)),vpMatrix,w,h);drawCourt2D(c,vpMatrix,w,h);
   }
-  ctx2.clearRect(0,0,w,h);ctx2.drawImage(staticCache,0,0);
+  const arena=cachedArenaGeometry();
+  if(!arenaCanvas||arenaCanvasW!==w||arenaCanvasH!==h||arenaCanvasVersion!==arena){
+   arenaCanvas=document.createElement('canvas');arenaCanvas.width=w;arenaCanvas.height=h;
+   arenaCanvasW=w;arenaCanvasH=h;arenaCanvasVersion=arena;
+   const ac=arenaCanvas.getContext('2d',{alpha:true});
+   drawFaces(ac,arena,vpMatrix,w,h);
+  }
+  ctx2.clearRect(0,0,w,h);
+  ctx2.drawImage(staticCache,0,0);
+  ctx2.drawImage(arenaCanvas,0,0);
   drawFaces(ctx2,dynamic,vpMatrix,w,h);
 }
 
@@ -2124,19 +2167,56 @@ function updateOrbLabels(){
   o.el.style.display='grid';o.el.style.left=pos[0]+'px';o.el.style.top=pos[1]+'px';
  }
 }
-function resize(){const dpr=Math.min(window.devicePixelRatio||1,2);screenW=canvas.clientWidth;screenH=canvas.clientHeight;canvas.width=Math.max(1,Math.round(screenW*dpr));canvas.height=Math.max(1,Math.round(screenH*dpr));ratio=screenW/screenH;if(hasWebGL)gl.viewport(0,0,canvas.width,canvas.height);else staticCache=null;}
+function resize(){
+ // High-DPI mobile WebGL used to render at up to 4x CSS pixels per frame.
+ // Preserve crispness while leaving GPU headroom for moving balls and effects.
+ const maxDpr=hasWebGL?(window.innerWidth<=600?1.5:1.85):1;
+ const dpr=Math.min(window.devicePixelRatio||1,maxDpr);screenW=canvas.clientWidth;screenH=canvas.clientHeight;canvas.width=Math.max(1,Math.round(screenW*dpr));canvas.height=Math.max(1,Math.round(screenH*dpr));ratio=screenW/screenH;if(hasWebGL)gl.viewport(0,0,canvas.width,canvas.height);else staticCache=null;}
 window.addEventListener('resize',resize,{passive:true});resize();
 function render(){if(hasWebGL){gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);}let r=ratio;let portrait=r<.85;
 const isHK=stage==='1-2',isTokyo=stage==='1-3',isSeoul=stage==='1-4',isSingapore=stage==='1-5',isAmsterdam=stage==='2-1',isBerlin=stage==='2-2',isNew=!!NEW_CITY_MESHES[stage],isWide=isHK||isTokyo||isSeoul||isSingapore||isAmsterdam||isBerlin||isNew;
 // Higher three-quarter viewpoint for all playable levels, including Seoul.
 // Position/physics still share the same local arena coordinate system.
 const distance=portrait?(isWide?49:45):49,camY=portrait?(isWide?32.5:30.8):26.9;
-cameraEye=[Math.sin(time*.16)*.4 + Math.sin(time*75)*shake*.6,camY+Math.sin(time*70)*shake*.35,distance+Math.cos(time*65)*shake*.3];
+cameraEye=hasWebGL?[Math.sin(time*.16)*.10 + Math.sin(time*24)*shake*.13,camY+Math.sin(time*22)*shake*.07,distance+Math.cos(time*21)*shake*.06]:[0,camY,distance];
 const target=[0,portrait?7.3:6.1,portrait?-9.3:-8];
-let p=new Float32Array(16),v=new Float32Array(16);mat4.perspective(p,(portrait?(isWide?74:66):55)*Math.PI/180,r,.1,250);mat4.lookAt(v,cameraEye,target,[0,1,0]);mat4.multiply(vpMatrix,p,v);if(hasWebGL){gl.uniformMatrix4fv(loc.vp,false,vpMatrix);gl.uniform3fv(loc.eye,cameraEye);gl.disable(gl.BLEND);drawBuffer(isNew?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobileBuffer:NEW_CITY_MESHES[stage].desktopBuffer):isBerlin?(isMobilePortrait()?STATIC_BUFFER_BERLIN_MOBILE:STATIC_BUFFER_BERLIN):isAmsterdam?(isMobilePortrait()?STATIC_BUFFER_AMSTERDAM_MOBILE:STATIC_BUFFER_AMSTERDAM):isSingapore?(isMobilePortrait()?STATIC_BUFFER_SINGAPORE_MOBILE:STATIC_BUFFER_SINGAPORE):isSeoul?(isMobilePortrait()?STATIC_BUFFER_SEOUL_MOBILE:STATIC_BUFFER_SEOUL):isTokyo?(isMobilePortrait()?STATIC_BUFFER_TOKYO_MOBILE:STATIC_BUFFER_TOKYO):isHK?(isMobilePortrait()?STATIC_BUFFER_HK_MOBILE:STATIC_BUFFER_HK):(isMobilePortrait()?STATIC_BUFFER_MOBILE:STATIC_BUFFER),null,(isNew?NEW_CITY_MESHES[stage].desktop.length:isBerlin?berlinGeo.length:isAmsterdam?amsterdamGeo.length:isSingapore?singaporeGeo.length:isSeoul?seoulGeo.length:isTokyo?tokyoGeo.length:isHK?hkGeo.length:staticGeo.length)/10,gl.STATIC_DRAW);let dyn=makeDynamic();drawBuffer(dynBuf,dyn,dyn.length/10,gl.DYNAMIC_DRAW);gl.enable(gl.BLEND);}else{render2D(makeDynamic());}
+let p=new Float32Array(16),v=new Float32Array(16);mat4.perspective(p,(portrait?(isWide?74:66):55)*Math.PI/180,r,.1,250);mat4.lookAt(v,cameraEye,target,[0,1,0]);mat4.multiply(vpMatrix,p,v);if(hasWebGL){gl.uniformMatrix4fv(loc.vp,false,vpMatrix);gl.uniform3fv(loc.eye,cameraEye);gl.disable(gl.BLEND);drawBuffer(isNew?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobileBuffer:NEW_CITY_MESHES[stage].desktopBuffer):isBerlin?(isMobilePortrait()?STATIC_BUFFER_BERLIN_MOBILE:STATIC_BUFFER_BERLIN):isAmsterdam?(isMobilePortrait()?STATIC_BUFFER_AMSTERDAM_MOBILE:STATIC_BUFFER_AMSTERDAM):isSingapore?(isMobilePortrait()?STATIC_BUFFER_SINGAPORE_MOBILE:STATIC_BUFFER_SINGAPORE):isSeoul?(isMobilePortrait()?STATIC_BUFFER_SEOUL_MOBILE:STATIC_BUFFER_SEOUL):isTokyo?(isMobilePortrait()?STATIC_BUFFER_TOKYO_MOBILE:STATIC_BUFFER_TOKYO):isHK?(isMobilePortrait()?STATIC_BUFFER_HK_MOBILE:STATIC_BUFFER_HK):(isMobilePortrait()?STATIC_BUFFER_MOBILE:STATIC_BUFFER),null,(isNew?NEW_CITY_MESHES[stage].desktop.length:isBerlin?berlinGeo.length:isAmsterdam?amsterdamGeo.length:isSingapore?singaporeGeo.length:isSeoul?seoulGeo.length:isTokyo?tokyoGeo.length:isHK?hkGeo.length:staticGeo.length)/10,gl.STATIC_DRAW);const fixed=cachedArenaGeometry();
+if(arenaGpuGeometry!==fixed){
+ gl.bindBuffer(gl.ARRAY_BUFFER,arenaBuf);
+ gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(fixed),gl.DYNAMIC_DRAW);
+ arenaGpuGeometry=fixed;arenaGpuCount=fixed.length/10;
+}
+drawBuffer(arenaBuf,null,arenaGpuCount,gl.DYNAMIC_DRAW);
+let dyn=makeDynamic();drawBuffer(dynBuf,dyn,dyn.length/10,gl.DYNAMIC_DRAW);
+gl.enable(gl.BLEND);}else{render2D(makeDynamic());}
 }
 reset();document.body.classList.add('menu-backdrop');startLoading();
-function frame(now){if(!lastTime)lastTime=now;let dt=Math.min((now-lastTime)/1000,.036);lastTime=now;tick(dt);if(document.body.classList.contains('menu-backdrop'))renderPreview(now);else {render();updateOrbLabels();}requestAnimationFrame(frame);}requestAnimationFrame(frame);
+function frame(now){
+ if(!lastTime)lastTime=now;
+ // Do not discard time at moderate frame drops: catch up in small physics steps.
+ const elapsed=Math.min(Math.max((now-lastTime)/1000,0),.10);
+ lastTime=now;
+ if(gameState==='playing'){
+  physicsRemainder+=elapsed;
+  let count=0;
+  while(physicsRemainder>=PHYSICS_STEP && count<MAX_CATCHUP_STEPS){
+   tick(PHYSICS_STEP);
+   physicsRemainder-=PHYSICS_STEP;
+   count++;
+   if(gameState!=='playing'){physicsRemainder=0;break;}
+  }
+  // A stalled tab must not replay a huge backlog and freeze the game.
+  if(count>=MAX_CATCHUP_STEPS)physicsRemainder=Math.min(physicsRemainder,PHYSICS_STEP);
+  renderFraction=Math.max(0,Math.min(1,physicsRemainder/PHYSICS_STEP));
+ }else{
+  physicsRemainder=0;renderFraction=1;
+  tick(elapsed); // Keep scenery, glow animation, and UI timers moving.
+ }
+ if(document.body.classList.contains('menu-backdrop'))renderPreview(now);
+ else {render();updateOrbLabels();}
+ requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
 })();
 </script>
 </body>
