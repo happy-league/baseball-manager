@@ -1557,14 +1557,31 @@ const VERTICAL_MOVER_LEVELS=new Set(['3-3','3-4','3-5']);
 let movingBricks=[];
 function initMovingBricks(){
  movingBricks=[];
- const count=VERTICAL_MOVER_LEVELS.has(stage)?2:HORIZONTAL_MOVER_LEVELS.has(stage)?1:0;
+ // 2-3 to 3-2: five horizontal movers. 3-3 to 3-5: ten movers,
+ // also oscillating vertically. These remain existing breakable bricks.
+ const count=VERTICAL_MOVER_LEVELS.has(stage)?10:HORIZONTAL_MOVER_LEVELS.has(stage)?5:0;
  if(!count)return;
  const floor=bricks.filter(b=>b.layer===0);
- // Deliberately select existing bricks; never create extra breakable blocks.
- const wanted=count===1?[Math.floor(floor.length*.51)]:
-   [Math.floor(floor.length*.25),Math.floor(floor.length*.72)];
- for(let i=0;i<wanted.length;i++){
-  const tile=floor[wanted[i]];
+ const selected=[];
+ // Spread the chosen moving bricks evenly across the lowest tier.
+ const onFloor=Math.min(count,floor.length);
+ for(let i=0;i<onFloor;i++){
+  const index=Math.floor((i+.5)*floor.length/onFloor);
+  selected.push(floor[index]);
+ }
+ // Some final chapters have fewer than ten bricks in one tier:
+ // choose the remaining moving bricks from the second tier, without
+ // creating any new bricks or changing colors, HP or layer counts.
+ const remaining=count-selected.length;
+ if(remaining>0){
+  const upper=bricks.filter(b=>b.layer===1).sort((a,b)=>a.slot-b.slot);
+  for(let i=0;i<remaining;i++){
+   const index=Math.floor((i+.5)*upper.length/remaining);
+   selected.push(upper[index]);
+  }
+ }
+ for(let i=0;i<selected.length;i++){
+  const tile=selected[i];
   if(!tile)continue;
   tile.moving=true;tile.motionX=tile.x;tile.motionZ=tile.z;
   tile.motionY=tile.y;tile.motionPhase=i*2.4+(Number(stage[2])*.49);
@@ -2006,6 +2023,7 @@ function releaseStack(brick){
  for(const b of bricks){
   if(!b.alive||b.slot!==brick.slot||b.layer<=0)continue;
   b.dropStartY=b.y;b.layer--;b.dropTime=b.dropDuration;
+  if(b.moving)b.motionY=BRICK_BASE_Y+BRICK_LAYER_STEP*b.layer;
  }
 }
 const POWER_DESCRIPTIONS={A:'球速加快',B:'球速減慢',C:'控制板加快',D:'控制板減慢'};
