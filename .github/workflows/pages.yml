@@ -205,6 +205,17 @@ jobs:
           brick_dir.mkdir(parents=True, exist_ok=True)
           (brick_dir / "index.html").write_bytes(brick_html)
 
+          # 3D racing game at /speed-overtaker/.
+          racing_src = Path("speed-overtaker/index.html")
+          if not racing_src.exists():
+              raise SystemExit("Speed Overtaker source not found")
+          racing_html = racing_src.read_bytes()
+          if not racing_html.lstrip().lower().startswith(b"<!doctype html>") or not racing_html.rstrip().lower().endswith(b"</html>"):
+              raise SystemExit("Unexpected Speed Overtaker HTML")
+          racing_dir = out / "speed-overtaker"
+          racing_dir.mkdir(parents=True, exist_ok=True)
+          (racing_dir / "index.html").write_bytes(racing_html)
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
