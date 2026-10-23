@@ -11,6 +11,7 @@
   html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#90bdd7;font-family:Inter,"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;color:white;overscroll-behavior:none}
   body{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
   #scene{position:fixed;inset:0;width:100%;height:100%;z-index:2;display:block;touch-action:none}
+  #fastLayer{position:fixed;inset:0;width:100%;height:100%;z-index:4;display:none;pointer-events:none;touch-action:none}
   #sky{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 48% 35% at 77% 28%,rgba(255,254,223,.88) 0%,rgba(255,240,205,.28) 43%,transparent 100%),linear-gradient(180deg,#639ac9 0%,#98c8dc 43%,#ffcfaa 76%,#d7a690 100%)}
   #sky:before{content:"";position:absolute;top:19%;right:24%;width:125px;height:125px;border-radius:50%;background:rgba(255,250,215,.75);box-shadow:0 0 80px 50px rgba(255,247,210,.24);filter:blur(4px)}
   #sky:after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 45%,rgba(124,176,185,.10) 75%,rgba(20,40,55,.50) 100%)}
@@ -387,7 +388,7 @@
 </style>
 </head>
 <body>
-<div id="sky"></div><canvas id="preview" aria-hidden="true"></canvas><canvas id="scene" aria-label="碰碰磚塊 3D 城市打磚塊"></canvas><div class="vignette"></div><div class="grain"></div><div id="flash"></div>
+<div id="sky"></div><canvas id="preview" aria-hidden="true"></canvas><canvas id="scene" aria-label="碰碰磚塊 3D 城市打磚塊"></canvas><canvas id="fastLayer" aria-hidden="true"></canvas><div class="vignette"></div><div class="grain"></div><div id="flash"></div>
 <header id="hud" aria-live="polite">
   <div class="hudbox"><div class="hudlabel">STAGE / 關卡</div><div class="hudvalue" id="stagevalue">1-1 <span style="font-size:.53em;font-weight:600;color:#b4d9e3">台北</span></div></div>
   <div class="hudbox center"><div class="hudlabel">SCORE / 分數</div><div class="hudvalue" id="score">000000</div></div>
@@ -467,6 +468,14 @@
 (()=>{'use strict';
 const canvas=document.getElementById('scene');
 const previewCanvas=document.getElementById('preview');
+// Mobile rendering uses a separately accelerated 2D overlay for fast-moving
+// balls and the paddle, so heavy 3D landmark meshes never block their frames.
+const fastCanvas=document.getElementById('fastLayer');
+const fastCtx=fastCanvas.getContext('2d',{alpha:true,desynchronized:true});
+let fastDpr=1,fastWidth=0,fastHeight=0;
+let fastStage='',fastArenaVersion=-1,fastStaticAt=-1000,fastInitialized=false;
+function fastMobileEnabled(){return isMobilePortrait() || (navigator.maxTouchPoints>0&&Math.min(innerWidth,innerHeight)<=650);}
+
 const previewCtx=previewCanvas.getContext('2d',{alpha:false});
 const error=document.getElementById('error');
 let gl;
@@ -1718,7 +1727,7 @@ for(const b of bricks){
   const eased=1-Math.pow(1-progress,3);
   const finalY=BRICK_BASE_Y+BRICK_LAYER_STEP*b.layer;
   b.y=b.dropStartY+(finalY-b.dropStartY)*eased;
-  if(b.dropTime===0){b.y=finalY;burst(b.x,b.z,'#d1f9ef',6);sound(250,.065,'triangle',.020);}
+  if(b.dropTime===0){b.y=finalY;arenaVersion++;burst(b.x,b.z,'#d1f9ef',6);sound(250,.065,'triangle',.020);}
  }
 }
 tickOrbs(dt);paddleDir=(heldRight?1:0)-(heldLeft?1:0);const wideCourt=wideStage();const paddleLimit=wideCourt?HK_HALF_WALL-paddleHalfWidth()-.30:9.4-paddleHalfWidth()-.28;
@@ -1744,7 +1753,7 @@ for(const b of moving){
  // In Singapore, hitting either of the two dormant balls makes it join the volley.
  if((stage==='1-5'||stage==='2-1'||stage==='2-2'||stage==='2-3'||stage==='2-4'||stage==='2-5'))for(const pickup of ballPickups){
   if(pickup.active||Math.abs(b.x-pickup.x)>pickup.r+b.r||Math.abs(b.z-pickup.z)>pickup.r+b.r)continue;
-  pickup.active=true;
+  pickup.active=true;arenaVersion++;
   const s=Math.hypot(b.vx,b.vz),direction=b.vx>0?-1:1;
   bonusBalls.push({x:pickup.x,z:pickup.z+.55,vx:direction*Math.max(5.2,s*.58),vz:-Math.max(8,s*.81),r:.43,active:true});
   b.vz*=-1;burst(pickup.x,pickup.z,'#ffe58e',29);sound(920,.18,'triangle',.075);
@@ -1865,7 +1874,7 @@ function hkFerry(o,x,z){
 }
 function makeFixedArena(){
  let a=[];energizedCourt(a);
- for(let b of bricks)if(b.alive)brickMesh(b,a);
+ for(let b of bricks)if(b.alive&&(!fastMobileEnabled()||b.dropTime<=0))brickMesh(b,a);
  for(const block of ironBlocks)ironBlockMesh(a,block);
  if(isMobilePortrait())for(let i=0;i<a.length;i+=10){
   const p=mobileCourtPoint(a[i],a[i+2]);a[i]=p[0];a[i+2]=p[1];
@@ -2170,15 +2179,21 @@ function updateOrbLabels(){
 function resize(){
  // High-DPI mobile WebGL used to render at up to 4x CSS pixels per frame.
  // Preserve crispness while leaving GPU headroom for moving balls and effects.
- const maxDpr=hasWebGL?(window.innerWidth<=600?1.5:1.85):1;
- const dpr=Math.min(window.devicePixelRatio||1,maxDpr);screenW=canvas.clientWidth;screenH=canvas.clientHeight;canvas.width=Math.max(1,Math.round(screenW*dpr));canvas.height=Math.max(1,Math.round(screenH*dpr));ratio=screenW/screenH;if(hasWebGL)gl.viewport(0,0,canvas.width,canvas.height);else staticCache=null;}
+ const maxDpr=hasWebGL?(fastMobileEnabled()?1:1.85):1;
+ const dpr=Math.min(window.devicePixelRatio||1,maxDpr);screenW=canvas.clientWidth;screenH=canvas.clientHeight;canvas.width=Math.max(1,Math.round(screenW*dpr));canvas.height=Math.max(1,Math.round(screenH*dpr));ratio=screenW/screenH;if(hasWebGL)gl.viewport(0,0,canvas.width,canvas.height);else staticCache=null;
+ fastDpr=Math.min(window.devicePixelRatio||1,1.25);
+ fastWidth=canvas.clientWidth;fastHeight=canvas.clientHeight;
+ fastCanvas.width=Math.max(1,Math.round(fastWidth*fastDpr));
+ fastCanvas.height=Math.max(1,Math.round(fastHeight*fastDpr));
+ fastStage='';fastArenaVersion=-1;fastInitialized=false;
+} 
 window.addEventListener('resize',resize,{passive:true});resize();
-function render(){if(hasWebGL){gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);}let r=ratio;let portrait=r<.85;
+function render(staticOnly=false){if(hasWebGL){gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);}let r=ratio;let portrait=r<.85;
 const isHK=stage==='1-2',isTokyo=stage==='1-3',isSeoul=stage==='1-4',isSingapore=stage==='1-5',isAmsterdam=stage==='2-1',isBerlin=stage==='2-2',isNew=!!NEW_CITY_MESHES[stage],isWide=isHK||isTokyo||isSeoul||isSingapore||isAmsterdam||isBerlin||isNew;
 // Higher three-quarter viewpoint for all playable levels, including Seoul.
 // Position/physics still share the same local arena coordinate system.
 const distance=portrait?(isWide?49:45):49,camY=portrait?(isWide?32.5:30.8):26.9;
-cameraEye=hasWebGL?[Math.sin(time*.16)*.10 + Math.sin(time*24)*shake*.13,camY+Math.sin(time*22)*shake*.07,distance+Math.cos(time*21)*shake*.06]:[0,camY,distance];
+cameraEye=hasWebGL&&!fastMobileEnabled()?[Math.sin(time*.16)*.10 + Math.sin(time*24)*shake*.13,camY+Math.sin(time*22)*shake*.07,distance+Math.cos(time*21)*shake*.06]:[0,camY,distance];
 const target=[0,portrait?7.3:6.1,portrait?-9.3:-8];
 let p=new Float32Array(16),v=new Float32Array(16);mat4.perspective(p,(portrait?(isWide?74:66):55)*Math.PI/180,r,.1,250);mat4.lookAt(v,cameraEye,target,[0,1,0]);mat4.multiply(vpMatrix,p,v);if(hasWebGL){gl.uniformMatrix4fv(loc.vp,false,vpMatrix);gl.uniform3fv(loc.eye,cameraEye);gl.disable(gl.BLEND);drawBuffer(isNew?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobileBuffer:NEW_CITY_MESHES[stage].desktopBuffer):isBerlin?(isMobilePortrait()?STATIC_BUFFER_BERLIN_MOBILE:STATIC_BUFFER_BERLIN):isAmsterdam?(isMobilePortrait()?STATIC_BUFFER_AMSTERDAM_MOBILE:STATIC_BUFFER_AMSTERDAM):isSingapore?(isMobilePortrait()?STATIC_BUFFER_SINGAPORE_MOBILE:STATIC_BUFFER_SINGAPORE):isSeoul?(isMobilePortrait()?STATIC_BUFFER_SEOUL_MOBILE:STATIC_BUFFER_SEOUL):isTokyo?(isMobilePortrait()?STATIC_BUFFER_TOKYO_MOBILE:STATIC_BUFFER_TOKYO):isHK?(isMobilePortrait()?STATIC_BUFFER_HK_MOBILE:STATIC_BUFFER_HK):(isMobilePortrait()?STATIC_BUFFER_MOBILE:STATIC_BUFFER),null,(isNew?NEW_CITY_MESHES[stage].desktop.length:isBerlin?berlinGeo.length:isAmsterdam?amsterdamGeo.length:isSingapore?singaporeGeo.length:isSeoul?seoulGeo.length:isTokyo?tokyoGeo.length:isHK?hkGeo.length:staticGeo.length)/10,gl.STATIC_DRAW);const fixed=cachedArenaGeometry();
 if(arenaGpuGeometry!==fixed){
@@ -2187,8 +2202,112 @@ if(arenaGpuGeometry!==fixed){
  arenaGpuGeometry=fixed;arenaGpuCount=fixed.length/10;
 }
 drawBuffer(arenaBuf,null,arenaGpuCount,gl.DYNAMIC_DRAW);
-let dyn=makeDynamic();drawBuffer(dynBuf,dyn,dyn.length/10,gl.DYNAMIC_DRAW);
-gl.enable(gl.BLEND);}else{render2D(makeDynamic());}
+if(!staticOnly){let dyn=makeDynamic();drawBuffer(dynBuf,dyn,dyn.length/10,gl.DYNAMIC_DRAW);}
+gl.enable(gl.BLEND);}else{render2D(staticOnly?[]:makeDynamic());}
+}
+
+// Very light mobile compositor: a full static landmark/brick frame is drawn
+// only when bricks or pickups change. Fast objects redraw in Canvas2D every RAF.
+// This avoids submitting an entire city mesh, neon borders, geometry and
+// dozens of particle boxes to the GPU every 16ms on mobile devices.
+function fastProject(x,y,z){
+ const position=mobileCourtPoint(x,z);
+ return projectPoint([position[0],y,position[1]],vpMatrix,fastWidth,fastHeight);
+}
+function fastPath(context,points){
+ context.beginPath();context.moveTo(points[0][0],points[0][1]);
+ for(let i=1;i<points.length;i++)context.lineTo(points[i][0],points[i][1]);
+ context.closePath();
+}
+function fastOrb(x,z,r,color,glow=12){
+ const context=fastCtx;
+ const p=fastProject(x,1.53,z),edge=fastProject(x+r,1.53,z);
+ const radius=Math.max(3,Math.abs(edge[0]-p[0]));
+ context.save();context.shadowBlur=glow;context.shadowColor=color;
+ const gradient=context.createRadialGradient(p[0]-radius*.35,p[1]-radius*.40,1,p[0],p[1],radius*1.2);
+ gradient.addColorStop(0,'#ffffff');gradient.addColorStop(.38,color);gradient.addColorStop(1,'#4da1bd');
+ context.fillStyle=gradient;context.beginPath();context.arc(p[0],p[1],radius,0,Math.PI*2);context.fill();context.restore();
+}
+function drawFastMobile(){
+ if(!fastWidth||!fastHeight)return;
+ const c=fastCtx,w=fastWidth,h=fastHeight;
+ c.setTransform(fastDpr,0,0,fastDpr,0,0);
+ c.clearRect(0,0,w,h);
+ // Pulsing outlines remain animated even though the underlying 3D stage
+ // is no longer redrawn every frame. Use simple paths instead of 3D boxes.
+ const intensity=.25+.27*(.5+.5*Math.sin(time*5.2));
+ c.save();c.lineWidth=1.25;c.strokeStyle='rgba(161,248,252,'+intensity.toFixed(3)+')';
+ for(const side of [-1,1]){
+  const xx=side*(wideStage()?HK_HALF_WALL:9.65),front=fastProject(xx,1.40,13),back=fastProject(xx,1.40,-21);
+  c.beginPath();c.moveTo(front[0],front[1]);c.lineTo(back[0],back[1]);c.stroke();
+ }
+ // A small number of glowing outlines are enough to retain the game's
+ // neon effect without generating 3D geometry for them each frame.
+ for(const b of bricks){
+  if(!b.alive||b.layer!==0||b.dropTime>0)continue;
+  const y=b.y+BRICK_HEIGHT*.5+.03;
+  const p0=fastProject(b.x-b.w*.5,y,b.z-b.d*.5);
+  const p1=fastProject(b.x+b.w*.5,y,b.z-b.d*.5);
+  const p2=fastProject(b.x+b.w*.5,y,b.z+b.d*.5);
+  const p3=fastProject(b.x-b.w*.5,y,b.z+b.d*.5);
+  fastPath(c,[p0,p1,p2,p3]);c.stroke();
+ }
+ c.restore();
+ // 3D-looking paddle rendered as a layered projected polygon. Collision
+ // geometry and controls are unchanged; only drawing is lighter.
+ const half=paddleHalfWidth(),x=paddleX;
+ const top=[fastProject(x-half,1.75,8.3),fastProject(x+half,1.75,8.3),
+    fastProject(x+half,1.75,9.4),fastProject(x-half,1.75,9.4)];
+ const face=[top[3],top[2],fastProject(x+half,.70,9.4),fastProject(x-half,.70,9.4)];
+ c.save();fastPath(c,face);c.fillStyle='#407f9c';c.fill();
+ c.shadowColor='#80f9f1';c.shadowBlur=12;
+ fastPath(c,top);const paddleGradient=c.createLinearGradient(top[0][0],top[0][1],top[3][0],top[3][1]);
+ paddleGradient.addColorStop(0,'#f4feff');paddleGradient.addColorStop(.5,'#84f1eb');paddleGradient.addColorStop(1,'#c9fcfb');
+ c.fillStyle=paddleGradient;c.fill();c.lineWidth=2;c.strokeStyle='#eaffff';c.stroke();c.restore();
+ // During a stack drop, draw only the moving slab in 2D. It was
+ // excluded from the static WebGL layer, so there is no ghost duplicate.
+ for(const b of bricks){
+  if(!b.alive||b.dropTime<=0)continue;
+  const slab=[fastProject(b.x-b.w*.5,b.y+BRICK_HEIGHT*.5,b.z-b.d*.5),
+    fastProject(b.x+b.w*.5,b.y+BRICK_HEIGHT*.5,b.z-b.d*.5),
+    fastProject(b.x+b.w*.5,b.y+BRICK_HEIGHT*.5,b.z+b.d*.5),
+    fastProject(b.x-b.w*.5,b.y+BRICK_HEIGHT*.5,b.z+b.d*.5)];
+  c.save();fastPath(c,slab);
+  c.fillStyle=b.type==='pink'?'#ffd5e4':b.type==='green'?'#b9ffd0':b.type==='ivory'?'#f4efdf':'#bbf2ff';
+  c.shadowColor='#7efaff';c.shadowBlur=8;c.fill();c.strokeStyle='rgba(255,255,255,.9)';c.stroke();c.restore();
+ }
+ // Catchable orange power-ups; their existing letter labels remain above.
+ for(const o of orbs)fastOrb(o.x,o.z,.38,'#ffad50',6);
+ // Colored impact sparks: limit work on low-end phones.
+ c.save();for(const particle of particles.slice(-70)){
+  const p=fastProject(particle.x,Math.max(.25,particle.y),particle.z);
+  c.globalAlpha=Math.min(.90,Math.max(0,particle.life));
+  c.fillStyle=particle.color;c.fillRect(p[0]-2,p[1]-2,4,4);
+ }c.restore();
+ // Main ball and additional active balls share exactly the original physics.
+ for(const obj of [ball,...bonusBalls]){
+  if(obj.active===false)continue;
+  const bx=gameState==='playing'&&Number.isFinite(obj.previousX)?obj.previousX+(obj.x-obj.previousX)*renderFraction:obj.x;
+  const bz=gameState==='playing'&&Number.isFinite(obj.previousZ)?obj.previousZ+(obj.z-obj.previousZ)*renderFraction:obj.z;
+  const normv=Math.max(1,Math.hypot(obj.vx,obj.vz));
+  for(let j=3;j>0;j--){
+   const p=fastProject(bx-obj.vx/normv*j*.55,1.53,bz-obj.vz/normv*j*.55);
+   c.fillStyle='rgba(108,223,255,'+(.08+(4-j)*.08)+')';
+   c.beginPath();c.arc(p[0],p[1],Math.max(2,5-j),0,Math.PI*2);c.fill();
+  }
+  fastOrb(bx,bz,.53,'#b1f8ff',8);
+ }
+}
+function drawMobileFrame(){
+ const now=time;
+ // City backdrops do not change: redraw only after stage changes,
+ // bricks vanish, pickups activate or a falling brick lands.
+ const needsStatic=!fastInitialized||fastStage!==stage||fastArenaVersion!==arenaVersion;
+ if(needsStatic){
+  render(true);
+  fastInitialized=true;fastStage=stage;fastArenaVersion=arenaVersion;fastStaticAt=now;
+ }
+ drawFastMobile();updateOrbLabels();
 }
 reset();document.body.classList.add('menu-backdrop');startLoading();
 function frame(now){
@@ -2210,10 +2329,15 @@ function frame(now){
   renderFraction=Math.max(0,Math.min(1,physicsRemainder/PHYSICS_STEP));
  }else{
   physicsRemainder=0;renderFraction=1;
-  tick(elapsed); // Keep scenery, glow animation, and UI timers moving.
+  tick(elapsed); // Keep time and UI state moving on menus and pause.
  }
- if(document.body.classList.contains('menu-backdrop'))renderPreview(now);
- else {render();updateOrbLabels();}
+ if(document.body.classList.contains('menu-backdrop')){
+  fastCanvas.style.display='none';renderPreview(now);
+ }else if(fastMobileEnabled()){
+  fastCanvas.style.display='block';drawMobileFrame();
+ }else{
+  fastCanvas.style.display='none';render();updateOrbLabels();
+ }
  requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
