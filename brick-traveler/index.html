@@ -385,6 +385,7 @@
 .iron-tip-block{display:block;width:89px;height:44px;border-radius:7px;border:2px solid #e4f6ff;background:linear-gradient(155deg,#f1fbff 6%,#a5b6c8 39%,#61778e 75%,#e1eefb);box-shadow:inset 0 5px 0 #ffffffb5,0 8px 0 #485b70,0 11px 20px #57bedf4d}
 .iron-tip-ball{display:block;color:#f7e6a4;text-shadow:0 0 15px #fff8b0;font-size:32px}
 #irontip .tiparrow{font-size:27px;color:#8de5ff}
+.iron-tip-ball{color:#bdffe0!important;text-shadow:0 0 15px #8dffd7!important}
 </style>
 </head>
 <body>
@@ -848,7 +849,7 @@ const MOBILE_ARENA_SHIFT=3.3; // Original Taipei placement — unchanged.
 // matching Taipei's lower visual placement without clipping side rails.
 const MOBILE_WIDE_ARENA_SHIFT=7.45;
 const MOBILE_WIDE_ARENA_X_SCALE=.855;
-function wideStage(){return ['1-2','1-3','1-4','1-5','2-1','2-2','2-3','2-4','2-5'].includes(stage);}
+function wideStage(){return true;} // One shared arena width and collision envelope for all ten stages.
 function courtShift(){return isMobilePortrait()?(wideStage()?MOBILE_WIDE_ARENA_SHIFT:MOBILE_ARENA_SHIFT):0;}
 function courtXScale(){return isMobilePortrait()&&wideStage()?MOBILE_WIDE_ARENA_X_SCALE:1;}
 // Phone camera framed tightly around the playfield, while city background coordinates
@@ -1319,6 +1320,20 @@ if(hasWebGL)for(const cfg of Object.values(NEW_CITY_MESHES)){
  cfg.desktopBuffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,cfg.desktopBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(cfg.desktop),gl.STATIC_DRAW);
  cfg.mobileBuffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,cfg.mobileBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(cfg.mobile),gl.STATIC_DRAW);
 }
+// All 10 stages display the same 1.40x court; Taipei previously used the
+// original narrower arena. Clone only its court vertices, preserving every
+// Taipei landmark, skyline, hill, road and original city lighting unchanged.
+const taipeiGeoUnified=staticGeo.slice();
+for(let i=0;i<arenaEnd;i+=10)taipeiGeoUnified[i]*=HK_ARENA_SCALE;
+const taipeiGeoUnifiedMobile=taipeiGeoUnified.slice();
+for(let i=0;i<arenaEnd;i+=10){
+ const pt=mobileArenaZoom(taipeiGeoUnifiedMobile[i]*MOBILE_WIDE_ARENA_X_SCALE,taipeiGeoUnifiedMobile[i+2]);
+ taipeiGeoUnifiedMobile[i]=pt[0];
+ taipeiGeoUnifiedMobile[i+2]=pt[1]+MOBILE_WIDE_ARENA_SHIFT;
+}
+for(const [start,end] of [[mountainStart,mountainEnd],[gondolaStart,gondolaEnd]]){
+ for(let i=start;i<end;i+=10)taipeiGeoUnifiedMobile[i]+=MOBILE_SCENERY_SHIFT;
+}
 const STATIC_BUFFER=hasWebGL?gl.createBuffer():null;
 const STATIC_BUFFER_HK=hasWebGL?gl.createBuffer():null;
 const STATIC_BUFFER_HK_MOBILE=hasWebGL?gl.createBuffer():null;
@@ -1333,8 +1348,8 @@ const STATIC_BUFFER_AMSTERDAM_MOBILE=hasWebGL?gl.createBuffer():null;
 const STATIC_BUFFER_SINGAPORE=hasWebGL?gl.createBuffer():null;
 const STATIC_BUFFER_SINGAPORE_MOBILE=hasWebGL?gl.createBuffer():null;
 const STATIC_BUFFER_MOBILE=hasWebGL?gl.createBuffer():null;
-if(hasWebGL){gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(staticGeo),gl.STATIC_DRAW);
-  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_MOBILE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(staticGeoMobile),gl.STATIC_DRAW);
+if(hasWebGL){gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(taipeiGeoUnified),gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_MOBILE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(taipeiGeoUnifiedMobile),gl.STATIC_DRAW);
   gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_HK);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(hkGeo),gl.STATIC_DRAW);
   gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_HK_MOBILE);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(hkGeoMobile),gl.STATIC_DRAW);
   gl.bindBuffer(gl.ARRAY_BUFFER,STATIC_BUFFER_TOKYO);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(tokyoGeo),gl.STATIC_DRAW);
@@ -1855,15 +1870,33 @@ function ironBlockMesh(o,b){
  box(o,b.x,b.y+.78,b.z+b.d/2+.04,b.w*.84,.09,.085,p>.50?'#e4fbff':'#98d6ed');
 }
 function paddleMesh(b){
- const k=paddleHalfWidth()/2.10;
- box(b,paddleX,1.14,8.85,4.2*k,1.0,1.13,'#dcecf1','#fbffff','#719caf');
- box(b,paddleX,1.69,8.85,3.86*k,.12,.92,'#8bede6');
- box(b,paddleX,1.80,8.85,3.34*k,.09,.64,'#dcfdff');
- for(const dx of [-1.25,0,1.25])box(b,paddleX+dx*k,1.82,8.85,.22,.06,.72,'#67b4e8');
- box(b,paddleX,1.14,9.43,3.46*k,.22,.08,'#397b8d');
- box(b,paddleX-1.76*k,1.22,8.85,.18,.4,.90,'#86cad3');
- box(b,paddleX+1.76*k,1.22,8.85,.18,.4,.90,'#86cad3');
- box(b,paddleX,.52,8.85,4.65*k,.09,1.55,[.10,.33,.4,1]);
+ const h=paddleHalfWidth(),w=h*2,x=paddleX,z=8.85;
+ // Satin dark-metal chassis and layered beveled brushed-chrome surfaces.
+ box(b,x,.58,z,w,.19,1.67,'#1d354b','#7890a5','#132a3d');
+ box(b,x,1.05,z,w*.992,.83,1.29,'#56758f','#eaf5fa','#324b66');
+ box(b,x,1.54,z,w*.965,.20,1.29,'#d9e8f0','#fbffff','#7c9fb1');
+ box(b,x,1.67,z,w*.925,.11,1.09,'#304a66','#b3cada','#193853');
+ // Thin gold trim around a glowing soft-mint central control surface.
+ for(const dz of [-.50,.50])box(b,x,1.733,z+dz,w*.91,.05,.066,'#e8c887','#fff0bb');
+ box(b,x,1.77,z,w*.85,.082,.84,'#284d62','#528295','#183248');
+ box(b,x,1.835,z,w*.78,.048,.63,'#91eed1','#defff2','#338a82');
+ box(b,x,1.874,z,w*.69,.038,.29,'#d8fff0','#ffffff');
+ // Machined end caps, recessed bolt heads and discreet running lights.
+ for(const side of [-1,1]){
+  const ex=x+side*(h-.23);
+  box(b,ex,1.25,z,.39,.79,1.45,'#70869c','#e4f0f9','#253f5a');
+  box(b,ex,1.75,z,.31,.105,1.15,'#eacb90','#fff1c8');
+  sphere(b,ex,1.835,z+.35,.105,'#e7f8ff',4,6);
+ }
+ for(const part of [-2,-1,1,2]){
+  const px=x+part*h*.31;
+  box(b,px,1.89,z-.10,.095,.031,.45,'#c6ffed');
+ }
+ // Small jeweled centerpiece and a polished front badge.
+ box(b,x,1.90,z,.41,.06,.47,'#b8e1ee','#faffff','#5a90a6');
+ box(b,x,1.944,z,.26,.041,.28,'#83eaca','#ecfff4');
+ box(b,x,1.27,z+.665,w*.72,.11,.078,'#e4bd7b','#ffe5af');
+ box(b,x,.47,z,w*.95,.08,1.78,[.10,.24,.28,1]);
 }
 function hkFerry(o,x,z){
  box(o,x,-2.5,z,8.8,1.0,3.4,'#f2f4e7','#f8f8ed');
@@ -1898,10 +1931,10 @@ for(const b of [ball,...bonusBalls]){
  if(b.active===false)continue;
  const bx=gameState==='playing'&&Number.isFinite(b.previousX)?b.previousX+(b.x-b.previousX)*renderFraction:b.x;
  const bz=gameState==='playing'&&Number.isFinite(b.previousZ)?b.previousZ+(b.z-b.previousZ)*renderFraction:b.z;
- sphere(a,bx,.41,bz,.46,'#294e5d',4,9);
+ sphere(a,bx,.41,bz,.46,'#315d4a',4,9);
  let trailDir=norm([b.vx,0,b.vz]);
- if(serveTimer<=0&&gameState==='playing')for(let i=7;i>=1;i--){let mul=i*.25;sphere(a,bx-trailDir[0]*mul,1.53,bz-trailDir[2]*mul,.37-i*.037,['#96fdff','#62e7ff','#86baff','#afd8ff','#b5f9ff','#dffaff','#f2ffff'][i-1],4,6);}
- sphere(a,bx,1.53,bz,.53,'#fff4c0',8,12);sphere(a,bx,1.53,bz,.67,'#79eaff',5,8);sphere(a,bx-.12,1.68,bz+.09,.13,'#ffffff',5,7);
+ if(serveTimer<=0&&gameState==='playing')for(let i=7;i>=1;i--){let mul=i*.25;sphere(a,bx-trailDir[0]*mul,1.53,bz-trailDir[2]*mul,.37-i*.037,['#6be2bd','#83eeca','#a1f6d6','#b9ffe3','#caffe9','#e0fff0','#f3fff9'][i-1],4,6);}
+ sphere(a,bx,1.53,bz,.53,'#bbffe0',8,12);sphere(a,bx,1.53,bz,.67,'#7ae4b9',5,8);sphere(a,bx-.12,1.68,bz+.09,.13,'#f8fffc',5,7);
 }
 for(const p of ballPickups){
  if(p.active)continue;
@@ -2022,7 +2055,7 @@ function render2D(dynamic){
   if(!staticCache||cacheWidth!==w||cacheHeight!==h){
     staticCache=document.createElement('canvas');staticCache.width=w;staticCache.height=h;
     cacheWidth=w;cacheHeight=h;
-    const c=staticCache.getContext('2d',{alpha:true});drawFaces(c,(NEW_CITY_MESHES[stage]?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobile:NEW_CITY_MESHES[stage].desktop):stage==='2-2'?(isMobilePortrait()?berlinGeoMobile:berlinGeo):stage==='2-1'?(isMobilePortrait()?amsterdamGeoMobile:amsterdamGeo):stage==='1-5'?(isMobilePortrait()?singaporeGeoMobile:singaporeGeo):stage==='1-4'?(isMobilePortrait()?seoulGeoMobile:seoulGeo):stage==='1-3'?(isMobilePortrait()?tokyoGeoMobile:tokyoGeo):stage==='1-2'?(isMobilePortrait()?hkGeoMobile:hkGeo):(isMobilePortrait()?staticGeoMobile:staticGeo)),vpMatrix,w,h);drawCourt2D(c,vpMatrix,w,h);
+    const c=staticCache.getContext('2d',{alpha:true});drawFaces(c,(NEW_CITY_MESHES[stage]?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobile:NEW_CITY_MESHES[stage].desktop):stage==='2-2'?(isMobilePortrait()?berlinGeoMobile:berlinGeo):stage==='2-1'?(isMobilePortrait()?amsterdamGeoMobile:amsterdamGeo):stage==='1-5'?(isMobilePortrait()?singaporeGeoMobile:singaporeGeo):stage==='1-4'?(isMobilePortrait()?seoulGeoMobile:seoulGeo):stage==='1-3'?(isMobilePortrait()?tokyoGeoMobile:tokyoGeo):stage==='1-2'?(isMobilePortrait()?hkGeoMobile:hkGeo):(isMobilePortrait()?taipeiGeoUnifiedMobile:taipeiGeoUnified)),vpMatrix,w,h);drawCourt2D(c,vpMatrix,w,h);
   }
   const arena=cachedArenaGeometry();
   if(!arenaCanvas||arenaCanvasW!==w||arenaCanvasH!==h||arenaCanvasVersion!==arena){
@@ -2114,8 +2147,8 @@ function renderPreview(now){
  box(g,demoPaddleX,.54,9.0,4.35,.93,1.30,'#93dce7','#faffff','#58b7d0');
  box(g,demoPaddleX,1.06,9.0,3.95,.15,1.17,'#76e6de');
  const b=demoBall;
- sphere(g,b.x,.65,b.z,.50,'#9ad7ea',5,8);
- sphere(g,b.x,2.05,b.z,.69,'#fff4bd',7,12);
+ sphere(g,b.x,.65,b.z,.50,'#67bc9f',5,8);
+ sphere(g,b.x,2.05,b.z,.69,'#b8ffe0',7,12);
  sphere(g,b.x-.15,2.26,b.z+.1,.14,'#ffffff',4,6);
  for(const p of demoParticles)sphere(g,p.x,1.5,p.z,.13*(p.life+.1),'#fff3c9',4,5);
  const view=new Float32Array(16),proj=new Float32Array(16),pv=new Float32Array(16);
@@ -2162,7 +2195,7 @@ function renderPreview(now){
  const gy=H*.65+(pos[1]-H*.65+verticalShift)*scaleY;
  const radius=Math.max(21,W*.052);
  const glow=c.createRadialGradient(gx,gy,0,gx,gy,radius);
- glow.addColorStop(0,'rgba(255,251,207,.67)');glow.addColorStop(1,'rgba(255,238,160,0)');
+ glow.addColorStop(0,'rgba(204,255,229,.65)');glow.addColorStop(1,'rgba(123,243,186,0)');
  c.fillStyle=glow;c.beginPath();c.arc(gx,gy,radius,0,Math.PI*2);c.fill();
 
 }
@@ -2189,13 +2222,13 @@ function resize(){
 } 
 window.addEventListener('resize',resize,{passive:true});resize();
 function render(staticOnly=false){if(hasWebGL){gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);}let r=ratio;let portrait=r<.85;
-const isHK=stage==='1-2',isTokyo=stage==='1-3',isSeoul=stage==='1-4',isSingapore=stage==='1-5',isAmsterdam=stage==='2-1',isBerlin=stage==='2-2',isNew=!!NEW_CITY_MESHES[stage],isWide=isHK||isTokyo||isSeoul||isSingapore||isAmsterdam||isBerlin||isNew;
+const isHK=stage==='1-2',isTokyo=stage==='1-3',isSeoul=stage==='1-4',isSingapore=stage==='1-5',isAmsterdam=stage==='2-1',isBerlin=stage==='2-2',isNew=!!NEW_CITY_MESHES[stage],isWide=true;
 // Higher three-quarter viewpoint for all playable levels, including Seoul.
 // Position/physics still share the same local arena coordinate system.
-const distance=portrait?(isWide?49:45):49,camY=portrait?(isWide?32.5:30.8):26.9;
-cameraEye=hasWebGL&&!fastMobileEnabled()?[Math.sin(time*.16)*.10 + Math.sin(time*24)*shake*.13,camY+Math.sin(time*22)*shake*.07,distance+Math.cos(time*21)*shake*.06]:[0,camY,distance];
+const distance=49,camY=portrait?32.5:26.9;
+cameraEye=[0,camY,distance]; // Fixed position and angle across every city; no camera jitter.
 const target=[0,portrait?7.3:6.1,portrait?-9.3:-8];
-let p=new Float32Array(16),v=new Float32Array(16);mat4.perspective(p,(portrait?(isWide?74:66):55)*Math.PI/180,r,.1,250);mat4.lookAt(v,cameraEye,target,[0,1,0]);mat4.multiply(vpMatrix,p,v);if(hasWebGL){gl.uniformMatrix4fv(loc.vp,false,vpMatrix);gl.uniform3fv(loc.eye,cameraEye);gl.disable(gl.BLEND);drawBuffer(isNew?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobileBuffer:NEW_CITY_MESHES[stage].desktopBuffer):isBerlin?(isMobilePortrait()?STATIC_BUFFER_BERLIN_MOBILE:STATIC_BUFFER_BERLIN):isAmsterdam?(isMobilePortrait()?STATIC_BUFFER_AMSTERDAM_MOBILE:STATIC_BUFFER_AMSTERDAM):isSingapore?(isMobilePortrait()?STATIC_BUFFER_SINGAPORE_MOBILE:STATIC_BUFFER_SINGAPORE):isSeoul?(isMobilePortrait()?STATIC_BUFFER_SEOUL_MOBILE:STATIC_BUFFER_SEOUL):isTokyo?(isMobilePortrait()?STATIC_BUFFER_TOKYO_MOBILE:STATIC_BUFFER_TOKYO):isHK?(isMobilePortrait()?STATIC_BUFFER_HK_MOBILE:STATIC_BUFFER_HK):(isMobilePortrait()?STATIC_BUFFER_MOBILE:STATIC_BUFFER),null,(isNew?NEW_CITY_MESHES[stage].desktop.length:isBerlin?berlinGeo.length:isAmsterdam?amsterdamGeo.length:isSingapore?singaporeGeo.length:isSeoul?seoulGeo.length:isTokyo?tokyoGeo.length:isHK?hkGeo.length:staticGeo.length)/10,gl.STATIC_DRAW);const fixed=cachedArenaGeometry();
+let p=new Float32Array(16),v=new Float32Array(16);mat4.perspective(p,(portrait?74:55)*Math.PI/180,r,.1,250);mat4.lookAt(v,cameraEye,target,[0,1,0]);mat4.multiply(vpMatrix,p,v);if(hasWebGL){gl.uniformMatrix4fv(loc.vp,false,vpMatrix);gl.uniform3fv(loc.eye,cameraEye);gl.disable(gl.BLEND);drawBuffer(isNew?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobileBuffer:NEW_CITY_MESHES[stage].desktopBuffer):isBerlin?(isMobilePortrait()?STATIC_BUFFER_BERLIN_MOBILE:STATIC_BUFFER_BERLIN):isAmsterdam?(isMobilePortrait()?STATIC_BUFFER_AMSTERDAM_MOBILE:STATIC_BUFFER_AMSTERDAM):isSingapore?(isMobilePortrait()?STATIC_BUFFER_SINGAPORE_MOBILE:STATIC_BUFFER_SINGAPORE):isSeoul?(isMobilePortrait()?STATIC_BUFFER_SEOUL_MOBILE:STATIC_BUFFER_SEOUL):isTokyo?(isMobilePortrait()?STATIC_BUFFER_TOKYO_MOBILE:STATIC_BUFFER_TOKYO):isHK?(isMobilePortrait()?STATIC_BUFFER_HK_MOBILE:STATIC_BUFFER_HK):(isMobilePortrait()?STATIC_BUFFER_MOBILE:STATIC_BUFFER),null,(isNew?NEW_CITY_MESHES[stage].desktop.length:isBerlin?berlinGeo.length:isAmsterdam?amsterdamGeo.length:isSingapore?singaporeGeo.length:isSeoul?seoulGeo.length:isTokyo?tokyoGeo.length:isHK?hkGeo.length:staticGeo.length)/10,gl.STATIC_DRAW);const fixed=cachedArenaGeometry();
 if(arenaGpuGeometry!==fixed){
  gl.bindBuffer(gl.ARRAY_BUFFER,arenaBuf);
  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(fixed),gl.DYNAMIC_DRAW);
@@ -2219,13 +2252,13 @@ function fastPath(context,points){
  for(let i=1;i<points.length;i++)context.lineTo(points[i][0],points[i][1]);
  context.closePath();
 }
-function fastOrb(x,z,r,color,glow=12){
+function fastOrb(x,z,r,color,glow=12,edgeColor='#4da1bd'){
  const context=fastCtx;
  const p=fastProject(x,1.53,z),edge=fastProject(x+r,1.53,z);
  const radius=Math.max(3,Math.abs(edge[0]-p[0]));
  context.save();context.shadowBlur=glow;context.shadowColor=color;
  const gradient=context.createRadialGradient(p[0]-radius*.35,p[1]-radius*.40,1,p[0],p[1],radius*1.2);
- gradient.addColorStop(0,'#ffffff');gradient.addColorStop(.38,color);gradient.addColorStop(1,'#4da1bd');
+ gradient.addColorStop(0,'#ffffff');gradient.addColorStop(.38,color);gradient.addColorStop(1,edgeColor);
  context.fillStyle=gradient;context.beginPath();context.arc(p[0],p[1],radius,0,Math.PI*2);context.fill();context.restore();
 }
 function drawFastMobile(){
@@ -2253,17 +2286,38 @@ function drawFastMobile(){
   fastPath(c,[p0,p1,p2,p3]);c.stroke();
  }
  c.restore();
- // 3D-looking paddle rendered as a layered projected polygon. Collision
- // geometry and controls are unchanged; only drawing is lighter.
+ // The real paddle's collision width is unchanged: premium chrome, gold and
+ // mint inlays are rendered as low-cost 2D projected polygons on phones.
  const half=paddleHalfWidth(),x=paddleX;
- const top=[fastProject(x-half,1.75,8.3),fastProject(x+half,1.75,8.3),
-    fastProject(x+half,1.75,9.4),fastProject(x-half,1.75,9.4)];
- const face=[top[3],top[2],fastProject(x+half,.70,9.4),fastProject(x-half,.70,9.4)];
- c.save();fastPath(c,face);c.fillStyle='#407f9c';c.fill();
- c.shadowColor='#80f9f1';c.shadowBlur=12;
- fastPath(c,top);const paddleGradient=c.createLinearGradient(top[0][0],top[0][1],top[3][0],top[3][1]);
- paddleGradient.addColorStop(0,'#f4feff');paddleGradient.addColorStop(.5,'#84f1eb');paddleGradient.addColorStop(1,'#c9fcfb');
- c.fillStyle=paddleGradient;c.fill();c.lineWidth=2;c.strokeStyle='#eaffff';c.stroke();c.restore();
+ const t=(y,z,edge)=>fastProject(x+edge,y,z);
+ const top=[t(1.66,8.30,-half),t(1.66,8.30,half),
+    t(1.66,9.40,half),t(1.66,9.40,-half)];
+ const face=[top[3],top[2],t(.65,9.4,half),t(.65,9.4,-half)];
+ c.save();fastPath(c,face);
+ const metal=c.createLinearGradient(face[0][0],face[0][1],face[3][0],face[3][1]);
+ metal.addColorStop(0,'#b4c5d3');metal.addColorStop(.35,'#49677f');metal.addColorStop(1,'#182d43');
+ c.fillStyle=metal;c.fill();
+ fastPath(c,top);
+ const chrome=c.createLinearGradient(top[0][0],top[0][1],top[3][0],top[3][1]);
+ chrome.addColorStop(0,'#f5ffff');chrome.addColorStop(.20,'#c3dbe5');chrome.addColorStop(.46,'#45657d');chrome.addColorStop(.69,'#c8e7ec');chrome.addColorStop(1,'#7197aa');
+ c.fillStyle=chrome;c.fill();c.lineWidth=1.4;c.strokeStyle='#f4f6fb';c.stroke();
+ // Gold perimeter strip.
+ const goldZ=9.31,goldA=t(1.73,goldZ,-half*.94),goldB=t(1.73,goldZ,half*.94);
+ c.beginPath();c.moveTo(...goldA);c.lineTo(...goldB);c.strokeStyle='#f7d492';c.lineWidth=2.2;c.stroke();
+ const mint=[t(1.80,8.53,-half*.81),t(1.80,8.53,half*.81),
+   t(1.80,9.11,half*.81),t(1.80,9.11,-half*.81)];
+ fastPath(c,mint);const gloss=c.createLinearGradient(mint[0][0],mint[0][1],mint[3][0],mint[3][1]);
+ gloss.addColorStop(0,'#defff1');gloss.addColorStop(.5,'#6fdfb8');gloss.addColorStop(1,'#b8fce3');
+ c.shadowColor='#96f7d3';c.shadowBlur=8;c.fillStyle=gloss;c.fill();c.shadowBlur=0;
+ c.lineWidth=1;c.strokeStyle='#e7fff6';c.stroke();
+ const center=t(1.89,8.82,0);c.beginPath();c.ellipse(center[0],center[1],Math.max(2,half*1.0),3,0,0,Math.PI*2);
+ c.fillStyle='#f3fff7';c.fill();
+ for(const side of [-1,1]){
+  const endcap=t(1.84,8.82,side*(half-.22));
+  c.beginPath();c.arc(endcap[0],endcap[1],2.5,0,Math.PI*2);
+  c.fillStyle='#f7d692';c.fill();
+ }
+ c.restore();
  // During a stack drop, draw only the moving slab in 2D. It was
  // excluded from the static WebGL layer, so there is no ghost duplicate.
  for(const b of bricks){
@@ -2292,10 +2346,10 @@ function drawFastMobile(){
   const normv=Math.max(1,Math.hypot(obj.vx,obj.vz));
   for(let j=3;j>0;j--){
    const p=fastProject(bx-obj.vx/normv*j*.55,1.53,bz-obj.vz/normv*j*.55);
-   c.fillStyle='rgba(108,223,255,'+(.08+(4-j)*.08)+')';
+   c.fillStyle='rgba(114,238,182,'+(.08+(4-j)*.08)+')';
    c.beginPath();c.arc(p[0],p[1],Math.max(2,5-j),0,Math.PI*2);c.fill();
   }
-  fastOrb(bx,bz,.53,'#b1f8ff',8);
+  fastOrb(bx,bz,.53,'#bfffe0',8,'#46ab82');
  }
 }
 function drawMobileFrame(){
