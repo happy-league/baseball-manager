@@ -1549,6 +1549,42 @@ let arenaVersion=0,arenaGeometry=null,arenaLastBuild=-1e6,arenaCachedStage='',ar
 let arenaGpuGeometry=null,arenaGpuCount=0;
 let arenaCanvas=null,arenaCanvasVersion=-1,arenaCanvasW=0,arenaCanvasH=0;
 
+// Special ordinary bricks that move within their own tier. Their original
+// color, durability and contribution to the stage-clear count are unchanged.
+// Only the moving bricks are rendered each frame; landmarks remain cached.
+const HORIZONTAL_MOVER_LEVELS=new Set(['2-3','2-4','2-5','3-1','3-2']);
+const VERTICAL_MOVER_LEVELS=new Set(['3-3','3-4','3-5']);
+let movingBricks=[];
+function initMovingBricks(){
+ movingBricks=[];
+ const count=VERTICAL_MOVER_LEVELS.has(stage)?2:HORIZONTAL_MOVER_LEVELS.has(stage)?1:0;
+ if(!count)return;
+ const floor=bricks.filter(b=>b.layer===0);
+ // Deliberately select existing bricks; never create extra breakable blocks.
+ const wanted=count===1?[Math.floor(floor.length*.51)]:
+   [Math.floor(floor.length*.25),Math.floor(floor.length*.72)];
+ for(let i=0;i<wanted.length;i++){
+  const tile=floor[wanted[i]];
+  if(!tile)continue;
+  tile.moving=true;tile.motionX=tile.x;tile.motionZ=tile.z;
+  tile.motionY=tile.y;tile.motionPhase=i*2.4+(Number(stage[2])*.49);
+  tile.motionVertical=VERTICAL_MOVER_LEVELS.has(stage);
+  movingBricks.push(tile);
+ }
+}
+function animateMovingBricks(){
+ for(const b of movingBricks){
+  if(!b.alive)continue;
+  const phase=b.motionPhase;
+  b.previousMotionX=b.x;b.previousMotionZ=b.z;
+  b.x=b.motionX+.65*Math.sin(time*1.48+phase);
+  b.z=b.motionZ+.53*Math.sin(time*1.19+phase+.95);
+  // In the final three stages, the blocks also rise and descend visibly.
+  if(b.motionVertical&&b.dropTime<=0){
+   b.y=b.motionY+.80*Math.sin(time*1.28+phase+.37);
+  }
+ }
+}
 // Core game state
 const LEVEL_SEQUENCE=['1-1','1-2','1-3','1-4','1-5','2-1','2-2','2-3','2-4','2-5','3-1','3-2','3-3','3-4','3-5'];
 const STAGE_CLEAR_STORAGE_KEY='brick_traveler_stage_clear_v1';
@@ -1859,6 +1895,13 @@ function initBricks(){
   for(let r=0;r<4;r++)for(let c=0;c<6;c++)bricks.push({x:-7.25+c*2.9,z:-19.5+r*3.06,hp:(r+c)%2?2:1,origHp:(r+c)%2?2:1,alive:true,w:2.6,d:2.45,hit:0,layer:0,y:BRICK_BASE_Y,dropTime:0});
  }
  alignSquareBrickFormations();
+ // Earlier Asian levels now feature two catchable dormant bonus balls each.
+ // Reuse existing first-tier slots and do not change any brick color or HP.
+ const earlyExtraSlots={'1-2':[2,13],'1-3':[4,11],'1-4':[1,7]};
+ for(const slot of earlyExtraSlots[stage]||[]){
+  const tile=bricks.find(b=>b.layer===0&&b.slot===slot);
+  if(tile)ballPickups.push({x:tile.x,z:tile.z+tile.d*.50,active:false,r:1.12,slot});
+ }
  // Keep the back-most/top visible court row empty in every level.
  // Move bricks and their collectible bonus balls one course-row toward the paddle.
  for(const b of bricks)b.z+=4.45;
@@ -1866,6 +1909,7 @@ function initBricks(){
  initIronBlocks();
  for(const iron of ironBlocks)iron.z+=4.45;
  initSpringBlocks();
+ initMovingBricks();
 }
 function stageCity(){return stage==='3-1'?'華盛頓':stage==='3-2'?'渥太華':stage==='3-3'?'墨西哥城':stage==='3-4'?'巴西利亞':stage==='3-5'?'拉斯維加斯':stage==='2-5'?'倫敦':stage==='2-4'?'華沙':stage==='2-3'?'巴黎':stage==='2-2'?'柏林':stage==='2-1'?'阿姆斯特丹':stage==='1-5'?'新加坡':stage==='1-4'?'首爾':stage==='1-3'?'東京':stage==='1-2'?'香港':'台北';}
 function stageEng(){return stage==='3-1'?'WASHINGTON':stage==='3-2'?'OTTAWA':stage==='3-3'?'MEXICO CITY':stage==='3-4'?'BRASILIA':stage==='3-5'?'LAS VEGAS':stage==='2-5'?'LONDON':stage==='2-4'?'WARSAW':stage==='2-3'?'PARIS':stage==='2-2'?'BERLIN':stage==='2-1'?'AMSTERDAM':stage==='1-5'?'SINGAPORE':stage==='1-4'?'SEOUL':stage==='1-3'?'TOKYO':stage==='1-2'?'HONG KONG':'TAIPEI';}
@@ -2004,6 +2048,7 @@ function hitBrick(brick){
 function tick(dt){time+=dt;if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').classList.remove('show');}flash=Math.max(0,flash-dt*2);shake=Math.max(0,shake-dt*1.9);$('flash').style.opacity=String(flash*.6);
 for(const p of particles){p.life-=dt;p.x+=p.vx*dt;p.z+=p.vz*dt;p.y+=p.vy*dt;p.vy-=13*dt;}particles=particles.filter(p=>p.life>0);if(particles.length>220)particles.splice(0,particles.length-220);
 if(gameState!=='playing'&&gameState!=='ready')return;
+animateMovingBricks();
 for(const block of ironBlocks)block.glint=Math.max(0,block.glint-dt);
 for(const block of springBlocks)block.glint=Math.max(0,block.glint-dt);
 for(const b of bricks){
@@ -2049,7 +2094,7 @@ for(const b of moving){
    b.active=false;burst(b.x,11.3,'#fff6bd',18);sound(160,.09,'sawtooth',.04);continue;
  }
  // In Singapore, hitting either of the two dormant balls makes it join the volley.
- if((stage==='1-5'||stage==='2-1'||stage==='2-2'||stage==='2-3'||stage==='2-4'||stage==='2-5'))for(const pickup of ballPickups){
+ if(ballPickups.length)for(const pickup of ballPickups){
   if(pickup.active||Math.abs(b.x-pickup.x)>pickup.r+b.r||Math.abs(b.z-pickup.z)>pickup.r+b.r)continue;
   pickup.active=true;arenaVersion++;
   const s=Math.hypot(b.vx,b.vz),direction=b.vx>0?-1:1;
@@ -2193,7 +2238,7 @@ function hkFerry(o,x,z){
 }
 function makeFixedArena(){
  let a=[];energizedCourt(a);
- for(let b of bricks)if(b.alive&&(!fastMobileEnabled()||b.dropTime<=0))brickMesh(b,a);
+ for(let b of bricks)if(b.alive&&!b.moving&&(!fastMobileEnabled()||b.dropTime<=0))brickMesh(b,a);
  for(const block of ironBlocks)ironBlockMesh(a,block);
  for(const block of springBlocks)springMesh(a,block);
  if(isMobilePortrait())for(let i=0;i<a.length;i+=10){
@@ -2213,6 +2258,7 @@ function cachedArenaGeometry(){
  return arenaGeometry;
 }
 function makeDynamic(){let a=[];
+for(const b of movingBricks)if(b.alive)brickMesh(b,a);
 // Ball shadow, flying sphere and afterglow
 for(const b of [ball,...bonusBalls]){
  if(b.active===false)continue;
@@ -2594,10 +2640,10 @@ function drawFastMobile(){
   c.fillStyle='#f7d692';c.fill();
  }
  c.restore();
- // During a stack drop, draw only the moving slab in 2D. It was
- // excluded from the static WebGL layer, so there is no ghost duplicate.
+ // Moving bricks and descending slabs are drawn live on mobile.
+ // They are excluded from the cached city-and-brick layer to avoid ghosting.
  for(const b of bricks){
-  if(!b.alive||b.dropTime<=0)continue;
+  if(!b.alive||(b.dropTime<=0&&!b.moving))continue;
   const slab=[fastProject(b.x-b.w*.5,b.y+BRICK_HEIGHT*.5,b.z-b.d*.5),
     fastProject(b.x+b.w*.5,b.y+BRICK_HEIGHT*.5,b.z-b.d*.5),
     fastProject(b.x+b.w*.5,b.y+BRICK_HEIGHT*.5,b.z+b.d*.5),
@@ -2605,6 +2651,10 @@ function drawFastMobile(){
   c.save();fastPath(c,slab);
   c.fillStyle=b.type==='pink'?'#ffd5e4':b.type==='green'?'#b9ffd0':b.type==='ivory'?'#f4efdf':'#bbf2ff';
   c.shadowColor='#7efaff';c.shadowBlur=8;c.fill();c.strokeStyle='rgba(255,255,255,.9)';c.stroke();c.restore();
+ }
+ // Dormant bonus balls must also remain visible on the lightweight mobile renderer.
+ for(const p of ballPickups){
+  if(!p.active)fastOrb(p.x,p.z,.67,'#ffe29a',10,'#f7a83c');
  }
  // Catchable orange power-ups; their existing letter labels remain above.
  for(const o of orbs)fastOrb(o.x,o.z,.38,'#ffad50',6);
@@ -2635,7 +2685,7 @@ function recacheFastProjections(){
   fastCachedRails.push([fastProject(xx,1.40,13),fastProject(xx,1.40,-21)]);
  }
  for(const b of bricks){
-  if(!b.alive||b.layer!==0||b.dropTime>0)continue;
+  if(!b.alive||b.layer!==0||b.dropTime>0||b.moving)continue;
   const y=b.y+BRICK_HEIGHT*.5+.03;
   fastCachedOutlines.push([
    fastProject(b.x-b.w*.5,y,b.z-b.d*.5),fastProject(b.x+b.w*.5,y,b.z-b.d*.5),
