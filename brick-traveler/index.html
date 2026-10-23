@@ -371,6 +371,15 @@
  body.stage-vegas #sky::before{top:14%;right:18%;width:66px;height:66px;background:rgba(241,243,255,.80);box-shadow:0 0 67px 25px rgba(144,150,255,.27)}
  body.stage-vegas #sky::after{background:linear-gradient(180deg,transparent 55%,rgba(34,8,67,.43))}
  body.stage-ottawa #sky::before{background:#fff1e2;box-shadow:0 0 76px 30px #ffe4d777}
+
+ body.stage-cairo #sky{background:radial-gradient(circle at 71% 25%,#fff3bd99,transparent 32%),linear-gradient(180deg,#d8a467 0%,#f9d69c 53%,#d9b38d 85%,#a67f64 100%)}
+ body.stage-canberra #sky{background:linear-gradient(180deg,#66ace6,#c4e9f4 62%,#b6d0c0 100%)}
+ body.stage-arctic #sky{background:radial-gradient(ellipse at 55% 35%,#3dbfa655,transparent 62%),linear-gradient(180deg,#061b42,#163a67 48%,#518399 82%,#c3e1e9)}
+ body.stage-space #sky{background:radial-gradient(ellipse at 70% 30%,#5564b250,transparent 50%),radial-gradient(ellipse at 18% 78%,#a5419a50,transparent 45%),linear-gradient(180deg,#030715,#090e27 56%,#171038)}
+ body.stage-taipei4 #sky{background:linear-gradient(180deg,#43588e 0%,#c17f8f 40%,#f6b98d 72%,#a2778e)}
+ body.stage-arctic #sky::before{background:#bfffe0;opacity:.32;box-shadow:0 0 130px 47px #48eac7}
+ body.stage-space #sky::before{background:#f9e6b7;opacity:.5;box-shadow:0 0 100px 30px #a58df1}
+
  #springtip{position:fixed;inset:0;z-index:52;display:grid;place-items:center;padding:16px;background:rgba(8,19,34,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:opacity .20s,visibility .20s}
  #springtip.hidden{opacity:0;visibility:hidden;pointer-events:none}
  #springtip .tipcard{max-height:90dvh;overflow-y:auto}
@@ -406,6 +415,9 @@
 .iron-tip-ball{display:block;color:#f7e6a4;text-shadow:0 0 15px #fff8b0;font-size:32px}
 #irontip .tiparrow{font-size:27px;color:#8de5ff}
 .iron-tip-ball{color:#bdffe0!important;text-shadow:0 0 15px #8dffd7!important}
+
+#wormtip{position:fixed;inset:0;z-index:52;display:grid;place-items:center;padding:16px;background:rgba(11,12,45,.81);backdrop-filter:blur(8px)}
+#wormtip.hidden{opacity:0;visibility:hidden;pointer-events:none}
 </style>
 </head>
 <body>
@@ -452,6 +464,12 @@
   <div class="selectfooter">選擇已開放的關卡，展開旅程。</div>
  </section>
 </div>
+<div id="wormtip" class="hidden" role="dialog" aria-modal="true" aria-labelledby="wormtiptitle">
+ <div class="tipcard"><div class="tip-badge" style="background:#dccffa;color:#5c429a">TIPS</div>
+ <div style="font-size:48px;color:#7560c5;margin:14px auto">◎　↝　◎</div>
+ <h2 id="wormtiptitle">雙向蟲洞</h2>
+ <p>球進入一端後，將在 <strong>2 秒後</strong> 從另一個蟲洞出現。傳送期間球不會消失。</p>
+ <button class="primary" type="button" id="wormok">我知道了，繼續遊戲</button></div></div>
 <div id="pinktip" class="hidden" role="dialog" aria-modal="true" aria-labelledby="pinktiptitle" aria-describedby="pinktipdesc">
   <div class="tipcard">
     <div class="tip-badge">TIPS</div>
@@ -1457,6 +1475,15 @@ function americasCity(name){
   box(g,-12,8,-49,26,11,.7,'#f5e5bf','#fff5d6');
   box(g,-12,14,-49,28,1.6,.9,'#f6ae5d');
   for(let k=0;k<9;k++)sphere(g,-24+k*3,14.9,-48.7,.4,'#fef4a6',5,6);
+  // Several separate resort casinos along the Strip: recognizable marquee,
+  // gold-topped palace, Roman columns and a tall shimmering glass resort.
+  for(const [xx,zz,ww,hh,col] of [[-93,-100,29,29,'#ccb1a4'],[-28,-180,34,33,'#f1d2ab'],[47,-177,31,39,'#73a9cc'],[91,-112,27,33,'#e0c2ad']]){
+   box(g,xx,hh*.5,zz,ww,hh,20,col);
+   box(g,xx,hh+1,zz,ww+4,3,22,'#ffe29e');
+   box(g,xx,hh*.56,zz+10.4,ww*.90,5,.7,'#f05bd2');
+   for(let j=0;j<9;j++)sphere(g,xx-ww*.43+j*(ww*.86/8),hh*.56,zz+11.0,.35,'#fff0a1',5,6);
+  }
+  for(let i=0;i<8;i++)cylinder(g,-28+(i-4)*3,0,-168,.45,15,'#faeedc',6);
   // Miniature Eiffel Tower and Venetian campanile.
   for(let dx of [-6,6])rod(g,[68+dx,0,-94],[68+dx*.26,40,-94],.85,'#caa185');
   rod(g,[68,40,-94],[68,62,-94],.51,'#f7cfa2');
@@ -1465,6 +1492,137 @@ function americasCity(name){
  return g;
 }
 const washingtonGeo=americasCity('3-1'),ottawaGeo=americasCity('3-2'),mexicoGeo=americasCity('3-3'),brasiliaGeo=americasCity('3-4'),vegasGeo=americasCity('3-5');
+
+// Chapter four: independent 3D landmark scenes. Space uses a circular
+// arena instead of the shared rectangular court.
+let spaceArenaEnd=0;
+function fourthChapterCity(name){
+ const space=name==='4-4',arctic=name==='4-3';
+ const g=space?[]:hkGeo.slice(0,arenaEnd);
+ seed=({'4-1':4401001,'4-2':4402001,'4-3':4403001,'4-4':4404001,'4-5':4405001})[name];
+ if(space){
+  cylinder(g,0,-3.15,-4.8,12.5,.38,'#192b52',52);
+  cylinder(g,0,-3.42,-4.8,10.6,.11,'#263b63',52);
+  for(let j=0;j<64;j++){
+   const a=j*Math.PI*2/64,b=(j+1)*Math.PI*2/64;
+   rod(g,[11.7*Math.cos(a),.84,-4.8+11.7*Math.sin(a)],
+         [11.7*Math.cos(b),.84,-4.8+11.7*Math.sin(b)],.16,j%4?'#5b81d3':'#a4eeff',5);
+  }
+  spaceArenaEnd=g.length;
+  // Large colorful planets and scattered orbital rocks in deep space.
+  for(const [x,y,z,r,c] of [[-80,59,-150,23,'#e9aa76'],[80,42,-180,34,'#6196e4'],[17,95,-208,19,'#b7b2f5'],[-114,20,-205,16,'#a4d0b5'],[104,91,-247,24,'#dfc26e']]){
+   sphere(g,x,y,z,r,c,12,18);
+  }
+  // A Saturn-like planet with a tilted sequence of orbital rings.
+  sphere(g,-65,15,-106,17,'#dfc7a0',12,20);
+  for(let j=0;j<44;j++){
+   const a=j*Math.PI*2/44,b=(j+1)*Math.PI*2/44;
+   rod(g,[-65+26*Math.cos(a),14+3*Math.sin(a),-106+10*Math.sin(a)],
+         [-65+26*Math.cos(b),14+3*Math.sin(b),-106+10*Math.sin(b)],.65,'#f6e4bc',5);
+  }
+  for(let i=0;i<45;i++){
+   const x=(random()-.5)*240,y=5+random()*104,z=-90-random()*150,r=.7+random()*3;
+   sphere(g,x,y,z,r,['#908fa7','#c7b2a3','#9b9fae','#c6cbca'][i%4],5,7);
+  }
+  // Station core, solar arrays, docking module and communications spire.
+  cylinder(g,0,33,-141,8.5,26,'#d7e4f7',16);
+  box(g,0,33,-141,44,5.5,9,'#b7c8d8','#f5fcff');
+  for(const dx of [-44,44])for(let j=0;j<4;j++)box(g,dx,33,-150+j*6,27,.58,5.5,'#3168b5','#8ebafb');
+  sphere(g,0,50,-141,10,'#d4e4ed',9,14);
+  rod(g,[0,53,-141],[0,79,-141],.7,'#e8faff');
+  // Distant star glints.
+  for(let i=0;i<80;i++){
+   const x=(random()-.5)*250,y=13+random()*110,z=-89-random()*160;
+   sphere(g,x,y,z,.23+random()*.35,['#f8fffe','#d1e4ff','#ffe6bc'][i%3],4,5);
+  }
+ }else{
+  cityBase(g,arctic?'#afcfdf':name==='4-1'?'#c5ae81':'#8cadb2',arctic?'#b5e2ed':'#6db9c7');
+  if(!arctic)addTownhouses(g,-160,name==='4-1'?['#d5b58b','#e5c99e','#c69e78']:['#c0c5b4','#ddcab2','#9cb9b9'],27);
+  if(name==='4-1'){
+   // Giza three pyramids, Sphinx, Cairo Tower and Nile.
+   for(const [x,z,r,h] of [[-56,-127,37,58],[0,-156,29,46],[58,-130,23,35]]){
+    pyramid(g,x,0,z,r,r,h,'#d7ac6f');
+    box(g,x,-3,z,r*1.80,4,r*1.80,'#b99465');
+   }
+   box(g,-27,-2.8,-66,115,2,16,'#78bdc7','#b8e4db');
+   box(g,68,2,-92,30,7,13,'#d3ba91');
+   sphere(g,80,11,-92,7,'#cba97d',8,12);
+   box(g,72,8,-92,15,7,9,'#e1c39b');
+   cylinder(g,82,34,-164,3.3,76,'#bca88a',14);
+   box(g,82,68,-164,18,7,18,'#d3c8b9','#eee0c7');
+   rod(g,[82,71,-164],[82,102,-164],.38,'#e9d5b3');
+   // Citadel and mosque minarets.
+   box(g,-100,8,-180,40,17,30,'#dec39d');
+   for(let x of [-113,-86]){cylinder(g,x,26,-180,2.0,32,'#dfceb0',12);pyramid(g,x,42,-180,3,3,10,'#a5b3a6');}
+  }else if(name==='4-2'){
+   // Australian Parliament House: sloping grass roof and flagpole.
+   box(g,-20,8,-115,70,17,29,'#dde1d5','#f7f3df');
+   pyramid(g,-20,17,-115,36,16,12,'#8bab84');
+   for(let dx of [-27,27])rod(g,[-20+dx,19,-115],[-20,49,-115],.8,'#d7e3dc');
+   rod(g,[-20,49,-115],[-20,80,-115],.5,'#f0fff4');
+   box(g,-19,74,-115,8,4,.25,'#3276aa');
+   // Lake Burley Griffin and iconic fountain.
+   box(g,-10,-4,-69,156,.28,15,'#6cb4d0','#b1dce4');
+   rod(g,[8,-4,-69],[8,32,-69],.54,'#e2faff');
+   // Australian War Memorial with symmetrical wings.
+   box(g,49,8,-160,51,18,29,'#ccbdaa','#f1e5cf');
+   cylinder(g,49,21,-160,12,5,'#d2c1a9',16);
+   sphere(g,49,32,-160,10,'#b7c8c5',9,16);
+   // Telstra Tower with multiple observation rings.
+   rod(g,[-79,0,-155],[-79,97,-155],1.5,'#d4d6d6');
+   for(let y of [64,71,78])cylinder(g,-79,y,-155,9,3,'#9fb6b8',16);
+   rod(g,[-79,97,-155],[-79,115,-155],.30,'#e5e7e7');
+  }else if(arctic){
+   // Arctic sea ice, polar science camp, icebergs and aurora curtains.
+   for(let i=0;i<39;i++){
+    const x=(random()-.5)*180,z=-44-random()*130,r=3+random()*11;
+    cylinder(g,x,-3.1,z,r,.8,['#e7f8fa','#bddfe9','#f4fffd'][i%3],8);
+    if(i%3===0)pyramid(g,x,0,z,r*.7,r*.6,6+random()*20,'#d7f4f9');
+   }
+   for(let i=0;i<5;i++){
+    const x=-92+i*44,z=-160+(i%2)*30;
+    box(g,x,3,z,17,10,12,'#c7e0e7','#ebf9ff');
+    pyramid(g,x,8,z,9,7,8,'#f4fffc');
+   }
+   sphere(g,58,23,-124,11,'#f7f8f2',10,14);
+   // An icebreaker ship and radar dome.
+   box(g,-11,-1,-91,36,6,10,'#e96e67','#f3ede8');
+   box(g,-11,5,-91,14,9,9,'#e4eef1');
+   sphere(g,-11,13,-91,4,'#c8e4ea',9,11);
+   for(let band=0;band<7;band++)for(let step=0;step<23;step++){
+    const t=step/22,xx=-112+220*t;
+    const yy=45+band*3.3+Math.sin(t*8+band*.63)*8;
+    rod(g,[xx,yy,-195+band*4],[xx+9,yy+3*Math.sin(t*6+band),-195+band*4],.35,band%2?'#80ffe0':'#85c8eb',5);
+   }
+  }else if(name==='4-5'){
+   // Taipei 101; a second Taipei chapter focused on evening skyline.
+   for(let section=0;section<8;section++){
+    const w=22-section*.7;
+    box(g,-22,13+section*11,-135,w,20,w,'#417fa3','#8cd1ce');
+    box(g,-22,22+section*11,-135,w+1,1.5,w+1,'#a5dde0');
+   }
+   rod(g,[-22,101,-135],[-22,131,-135],.9,'#e9fff4');
+   // Chiang Kai-shek Memorial Hall roof and liberty square gate.
+   box(g,49,15,-116,46,30,36,'#f1f2e6');
+   pyramid(g,49,30,-116,26,23,15,'#2b73ab');
+   for(let x of [32,66])for(let z of [-104,-128])cylinder(g,x,0,z,.9,20,'#e6e7e5',8);
+   for(let x of [-78,-53])box(g,x,13,-95,7,28,7,'#d6c9bd');
+   box(g,-65,28,-95,37,5,10,'#ae5366');
+   pyramid(g,-65,31,-95,21,7,9,'#d27d86');
+   // Presidential Office Building and Red House theater.
+   box(g,-65,12,-171,64,23,19,'#bf7169','#e3c6af');
+   box(g,-65,30,-171,12,43,12,'#e0bea7','#f5e1bd');
+   pyramid(g,-65,53,-171,8,8,9,'#a85758');
+   box(g,66,7,-164,29,16,20,'#b65c53','#d98d7b');
+   // Tamsui river and elevated bridge.
+   box(g,0,-3.9,-63,150,.22,12,'#6cb2c2','#a9dbe6');
+   box(g,0,4,-65,144,2.5,6,'#c7c7c4');
+  }
+ }
+ return g;
+}
+const cairoGeo=fourthChapterCity('4-1'),canberraGeo=fourthChapterCity('4-2'),arcticGeo=fourthChapterCity('4-3'),spaceGeo=fourthChapterCity('4-4'),taipei4Geo=fourthChapterCity('4-5');
+
 
 function mobileCityVertices(original,factor){
  const m=original.slice();
@@ -1483,6 +1641,15 @@ const ottawaGeoMobile=mobileCityVertices(ottawaGeo,.69);
 const mexicoGeoMobile=mobileCityVertices(mexicoGeo,.69);
 const brasiliaGeoMobile=mobileCityVertices(brasiliaGeo,.69);
 const vegasGeoMobile=mobileCityVertices(vegasGeo,.69);
+const cairoGeoMobile=mobileCityVertices(cairoGeo,.69);
+const canberraGeoMobile=mobileCityVertices(canberraGeo,.69);
+const arcticGeoMobile=mobileCityVertices(arcticGeo,.69);
+const spaceGeoMobile=spaceGeo.slice();
+for(let i=0;i<spaceGeoMobile.length;i+=10){
+ if(i<spaceArenaEnd){const t=mobileCourtPoint(spaceGeoMobile[i],spaceGeoMobile[i+2]);spaceGeoMobile[i]=t[0];spaceGeoMobile[i+2]=t[1];}
+ else spaceGeoMobile[i]*=.69;
+}
+const taipei4GeoMobile=mobileCityVertices(taipei4Geo,.69);
 
 const NEW_CITY_MESHES={
  '2-3':{desktop:parisGeo,mobile:parisGeoMobile},
@@ -1492,7 +1659,12 @@ const NEW_CITY_MESHES={
  '3-2':{desktop:ottawaGeo,mobile:ottawaGeoMobile},
  '3-3':{desktop:mexicoGeo,mobile:mexicoGeoMobile},
  '3-4':{desktop:brasiliaGeo,mobile:brasiliaGeoMobile},
- '3-5':{desktop:vegasGeo,mobile:vegasGeoMobile}
+ '3-5':{desktop:vegasGeo,mobile:vegasGeoMobile},
+ '4-1':{desktop:cairoGeo,mobile:cairoGeoMobile},
+ '4-2':{desktop:canberraGeo,mobile:canberraGeoMobile},
+ '4-3':{desktop:arcticGeo,mobile:arcticGeoMobile},
+ '4-4':{desktop:spaceGeo,mobile:spaceGeoMobile},
+ '4-5':{desktop:taipei4Geo,mobile:taipei4GeoMobile}
 };
 if(hasWebGL)for(const cfg of Object.values(NEW_CITY_MESHES)){
  cfg.desktopBuffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,cfg.desktopBuffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(cfg.desktop),gl.STATIC_DRAW);
@@ -1603,10 +1775,10 @@ function animateMovingBricks(){
  }
 }
 // Core game state
-const LEVEL_SEQUENCE=['1-1','1-2','1-3','1-4','1-5','2-1','2-2','2-3','2-4','2-5','3-1','3-2','3-3','3-4','3-5'];
+const LEVEL_SEQUENCE=['1-1','1-2','1-3','1-4','1-5','2-1','2-2','2-3','2-4','2-5','3-1','3-2','3-3','3-4','3-5','4-1','4-2','4-3','4-4','4-5'];
 const STAGE_CLEAR_STORAGE_KEY='brick_traveler_stage_clear_v1';
 const STAGE_CLEAR_COLORS={'1-1':'#f8cfd7','1-2':'#ffe0bf','1-3':'#fff0b6','1-4':'#d6efd1','1-5':'#cceafb',
- '2-1':'#e4daf5','2-2':'#e2e4e8','2-3':'#f8cfd7','2-4':'#ffe0bf','2-5':'#fff0b6', '3-1':'#d9ebfa','3-2':'#f8d5db','3-3':'#ffe4c2','3-4':'#d0efd8','3-5':'#e5d8fc'};
+ '2-1':'#e4daf5','2-2':'#e2e4e8','2-3':'#f8cfd7','2-4':'#ffe0bf','2-5':'#fff0b6', '3-1':'#d9ebfa','3-2':'#f8d5db','3-3':'#ffe4c2','3-4':'#d0efd8','3-5':'#e5d8fc', '4-1':'#f8e3bd','4-2':'#cae8f5','4-3':'#d8f3f5','4-4':'#d8d3fc','4-5':'#ffd7cc'};
 function readClearedStages(){try{const saved=JSON.parse(localStorage.getItem(STAGE_CLEAR_STORAGE_KEY)||'[]');
  return new Set(Array.isArray(saved)?saved.filter(v=>LEVEL_SEQUENCE.includes(v)):[]);}catch(_){return new Set();}}
 const clearedStages=readClearedStages();
@@ -1618,7 +1790,7 @@ let pendingTransition=null,lostAnyBallThisStage=false;
 const PHYSICS_STEP=1/120,MAX_CATCHUP_STEPS=12;
 let physicsRemainder=0,renderFraction=1;
 
-let stage='1-1',bricks=[],ironBlocks=[],springBlocks=[],springTipShown=false,bonusBalls=[],ballPickups=[],particles=[],gameState='loading',pinkTipShown=false,greenTipShown=false,ironTipShown=false,orbs=[],effects={ball:null,paddle:null},orbSequence=0,score=0,lives=3,paddleX=0,paddleDir=0,heldLeft=false,heldRight=false,ball={x:0,z:6.0,vx:4.45,vz:-16.3,r:.43},time=0,lastTime=0,serveTimer=0,screenW=1,screenH=1,ratio=1,muted=false,flash=0,shake=0,toastTime=0,cameraEye=[0,19,37],vpMatrix=new Float32Array(16),collisionSeq=0;
+let stage='1-1',wormholes=[],wormTipShown=false,ringAngle=Math.PI/2,ringTwistTime=0,bricks=[],ironBlocks=[],springBlocks=[],springTipShown=false,bonusBalls=[],ballPickups=[],particles=[],gameState='loading',pinkTipShown=false,greenTipShown=false,ironTipShown=false,orbs=[],effects={ball:null,paddle:null},orbSequence=0,score=0,lives=3,paddleX=0,paddleDir=0,heldLeft=false,heldRight=false,ball={x:0,z:6.0,vx:4.45,vz:-16.3,r:.43},time=0,lastTime=0,serveTimer=0,screenW=1,screenH=1,ratio=1,muted=false,flash=0,shake=0,toastTime=0,cameraEye=[0,19,37],vpMatrix=new Float32Array(16),collisionSeq=0;
 const hudScore=$('score'),hudLives=$('lives');
 // All bricks gain noticeable vertical thickness, while stacked tiers remain distinct.
 const BRICK_BASE_Y=1.39,BRICK_HEIGHT=1.90,BRICK_LAYER_STEP=2.10;
@@ -1630,6 +1802,63 @@ const PADDLE_HIT_Z=PADDLE_Z-.67;
 const PADDLE_REBOUND_Z=PADDLE_Z-1.23;
 const BALL_REST_Z=PADDLE_Z-1.24;
 const BALL_LOST_Z=13.25;
+const RING_STAGE='4-4',RING_CENTER_Z=-4.8,RING_RADIUS=11.7;
+const ringStage=()=>stage===RING_STAGE;
+function ringPose(){return {x:11.10*Math.cos(ringAngle),z:RING_CENTER_Z+11.10*Math.sin(ringAngle)};}
+function wrapAngle(a){return Math.atan2(Math.sin(a),Math.cos(a));}
+function initWormholes(){
+ wormholes=stage.startsWith('4-')?(ringStage()?
+  [{x:-9.3,z:-4.8},{x:9.3,z:-4.8}]:[{x:-6.9,z:-1.75},{x:6.9,z:-1.75}]):[];
+ wormholes.forEach((w,i)=>{w.id=i;w.r=1.55;w.glow=0;});
+}
+function transferWormhole(b){
+ if(!wormholes.length||b.teleportUntil||time<(b.wormCooldown||0))return false;
+ for(const w of wormholes){
+  if(Math.hypot(b.x-w.x,b.z-w.z)>w.r+b.r*.3)continue;
+  b.teleportUntil=time+2.0;b.wormExit=1-w.id;
+  b.previousX=b.x;b.previousZ=b.z;
+  burst(w.x,w.z,'#ab92ff',20);sound(660,.16,'sine',.055);
+  w.glow=.7;
+  if(stage==='4-1'&&!wormTipShown){wormTipShown=true;gameState='wormtip';$('wormtip').classList.remove('hidden');heldLeft=heldRight=false;}
+  return true;
+ }
+ return false;
+}
+function updateWormTransit(b){
+ if(!b.teleportUntil)return false;
+ if(time<b.teleportUntil)return true;
+ const dest=wormholes[b.wormExit];
+ b.x=dest.x+(dest.x>0?1:-1)*.25;b.z=dest.z;
+ if(ringStage()){
+  const dir=dest.x>0?-1:1;
+  b.vx=dir*Math.max(8,Math.abs(b.vx));b.vz=(random()-.5)*11;
+ }else{
+  b.vx=dest.x>0?-Math.max(7,Math.abs(b.vx)):Math.max(7,Math.abs(b.vx));
+  b.vz=-Math.max(7,Math.abs(b.vz));
+ }
+ b.teleportUntil=0;b.wormCooldown=time+1.5;
+ b.previousX=b.x;b.previousZ=b.z;
+ burst(dest.x,dest.z,'#c7b2ff',24);sound(970,.14,'triangle',.05);
+ return true;
+}
+function wormholeMesh(out,w){
+ const y=1.52,pulse=.5+.5*Math.sin(time*5+w.id*3);
+ cylinder(out,w.x,.63,w.z,w.r+.23,.12,'#6954b6',18);
+ for(let i=0;i<20;i++){
+  const a=i*Math.PI/10+time*.7,b=(i+1)*Math.PI/10+time*.7;
+  rod(out,[w.x+w.r*Math.cos(a),y,w.z+w.r*Math.sin(a)],
+     [w.x+w.r*Math.cos(b),y,w.z+w.r*Math.sin(b)],.18,i%2?'#ac91fb':'#70e5fd',5);
+ }
+ sphere(out,w.x,y+.07,w.z,.34,pulse>.5?'#e9b9ff':'#a4eeff',6,9);
+}
+function ringPaddleMesh(out){
+ for(let i=0;i<13;i++){
+  const a=ringAngle-.27+i*.54/13,b=ringAngle-.27+(i+1)*.54/13;
+  rod(out,[11.08*Math.cos(a),1.37,RING_CENTER_Z+11.08*Math.sin(a)],
+    [11.08*Math.cos(b),1.37,RING_CENTER_Z+11.08*Math.sin(b)],.47,i%3===0?'#f9e5ad':'#83f7df',6);
+ }
+}
+
 
 // Keep every deck on a single square grid. Only the silhouettes change;
 // color, HP, extra balls, and stage collision rules remain untouched.
@@ -1876,6 +2105,26 @@ function initBricks(){
     const brick=bricks.find(b=>b.layer===0&&b.slot===slot);
     ballPickups.push({x:brick.x,z:brick.z+brick.d*.60,active:false,r:1.10,slot});
   }
+  }else if(stage.startsWith('4-')){
+  // Five distinct silhouettes. Wormholes are separate permanent objects.
+  const cfg={
+   '4-1':{layers:4,cols:6,rows:2,dx:3.70,dz:5.10},
+   '4-2':{layers:4,cols:5,rows:2,dx:4.25,dz:5.10},
+   '4-3':{layers:5,cols:5,rows:2,dx:4.15,dz:5.02},
+   '4-4':{layers:3,cols:4,rows:3,dx:4.72,dz:4.55},
+   '4-5':{layers:4,cols:6,rows:2,dx:3.60,dz:5.15}
+  }[stage];
+  const count=cfg.cols*cfg.rows;
+  for(let layer=0;layer<cfg.layers;layer++)for(let slot=0;slot<count;slot++){
+   const c=slot%cfg.cols,r=Math.floor(slot/cfg.cols);
+   const type=(slot*3+layer*7+Number(stage[2]))%11<6?'blue':(slot*3+layer*7+Number(stage[2]))%11<9?'pink':'green';
+   const hp=type==='pink'?2:1;
+   const x=(c-(cfg.cols-1)/2)*cfg.dx;
+   const z=stage==='4-4'?-10.4+r*cfg.dz:-18.0+r*cfg.dz;
+   bricks.push({x,z,hp,origHp:hp,type,alive:true,w:cfg.dx-.43,d:cfg.dz-.56,hit:0,
+    layer,slot,y:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,
+    dropStartY:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropTime:0,dropDuration:.5});
+  }
  }else if(stage.startsWith('3-')){
   // Aligned decks, individually shaped across 3-1 .. 3-5. 3 orange
   // permanent spring blocks are separate and never counted as breakable bricks.
@@ -1921,42 +2170,45 @@ function initBricks(){
  }
  // Keep the back-most/top visible court row empty in every level.
  // Move bricks and their collectible bonus balls one course-row toward the paddle.
- for(const b of bricks)b.z+=4.45;
+ for(const b of bricks)if(!ringStage())b.z+=4.45;
  for(const pickup of ballPickups)pickup.z+=4.45;
  initIronBlocks();
  for(const iron of ironBlocks)iron.z+=4.45;
  initSpringBlocks();
+ initWormholes();
  initMovingBricks();
 }
-function stageCity(){return stage==='3-1'?'華盛頓':stage==='3-2'?'渥太華':stage==='3-3'?'墨西哥城':stage==='3-4'?'巴西利亞':stage==='3-5'?'拉斯維加斯':stage==='2-5'?'倫敦':stage==='2-4'?'華沙':stage==='2-3'?'巴黎':stage==='2-2'?'柏林':stage==='2-1'?'阿姆斯特丹':stage==='1-5'?'新加坡':stage==='1-4'?'首爾':stage==='1-3'?'東京':stage==='1-2'?'香港':'台北';}
-function stageEng(){return stage==='3-1'?'WASHINGTON':stage==='3-2'?'OTTAWA':stage==='3-3'?'MEXICO CITY':stage==='3-4'?'BRASILIA':stage==='3-5'?'LAS VEGAS':stage==='2-5'?'LONDON':stage==='2-4'?'WARSAW':stage==='2-3'?'PARIS':stage==='2-2'?'BERLIN':stage==='2-1'?'AMSTERDAM':stage==='1-5'?'SINGAPORE':stage==='1-4'?'SEOUL':stage==='1-3'?'TOKYO':stage==='1-2'?'HONG KONG':'TAIPEI';}
+function stageCity(){return stage==='4-1'?'開羅':stage==='4-2'?'坎培拉':stage==='4-3'?'北極':stage==='4-4'?'宇宙空間站':stage==='4-5'?'台北':stage==='3-1'?'華盛頓':stage==='3-2'?'渥太華':stage==='3-3'?'墨西哥城':stage==='3-4'?'巴西利亞':stage==='3-5'?'拉斯維加斯':stage==='2-5'?'倫敦':stage==='2-4'?'華沙':stage==='2-3'?'巴黎':stage==='2-2'?'柏林':stage==='2-1'?'阿姆斯特丹':stage==='1-5'?'新加坡':stage==='1-4'?'首爾':stage==='1-3'?'東京':stage==='1-2'?'香港':'台北';}
+function stageEng(){return stage==='4-1'?'CAIRO':stage==='4-2'?'CANBERRA':stage==='4-3'?'ARCTIC':stage==='4-4'?'SPACE STATION':stage==='4-5'?'TAIPEI':stage==='3-1'?'WASHINGTON':stage==='3-2'?'OTTAWA':stage==='3-3'?'MEXICO CITY':stage==='3-4'?'BRASILIA':stage==='3-5'?'LAS VEGAS':stage==='2-5'?'LONDON':stage==='2-4'?'WARSAW':stage==='2-3'?'PARIS':stage==='2-2'?'BERLIN':stage==='2-1'?'AMSTERDAM':stage==='1-5'?'SINGAPORE':stage==='1-4'?'SEOUL':stage==='1-3'?'TOKYO':stage==='1-2'?'HONG KONG':'TAIPEI';}
 function stageTag(){return `LEVEL ${stage}`;}
 function updateStageHud(){
  $('stagevalue').innerHTML=`${stage} <span style="font-size:.53em;font-weight:600;color:#4c7c8e">${stageCity()}</span>`;
  $('city-small').textContent=`${stageEng()} · 3D`;
  canvas.setAttribute('aria-label',`${stage} ${stageCity()} 3D 打磚塊`);
- document.body.classList.remove('stage-taipei','stage-hongkong','stage-tokyo','stage-seoul','stage-singapore','stage-amsterdam','stage-berlin','stage-paris','stage-warsaw','stage-london','stage-washington','stage-ottawa','stage-mexico','stage-brasilia','stage-vegas');
- document.body.classList.add(stage==='1-1'?'stage-taipei':stage==='1-2'?'stage-hongkong':stage==='1-3'?'stage-tokyo':stage==='1-4'?'stage-seoul':stage==='2-1'?'stage-amsterdam':stage==='2-2'?'stage-berlin':stage==='2-3'?'stage-paris':stage==='2-4'?'stage-warsaw':stage==='2-5'?'stage-london':stage==='3-1'?'stage-washington':stage==='3-2'?'stage-ottawa':stage==='3-3'?'stage-mexico':stage==='3-4'?'stage-brasilia':stage==='3-5'?'stage-vegas':'stage-singapore');
+ document.body.classList.remove('stage-taipei','stage-hongkong','stage-tokyo','stage-seoul','stage-singapore','stage-amsterdam','stage-berlin','stage-paris','stage-warsaw','stage-london','stage-washington','stage-ottawa','stage-mexico','stage-brasilia','stage-vegas','stage-cairo','stage-canberra','stage-arctic','stage-space','stage-taipei4');
+ document.body.classList.add(stage==='1-1'?'stage-taipei':stage==='1-2'?'stage-hongkong':stage==='1-3'?'stage-tokyo':stage==='1-4'?'stage-seoul':stage==='2-1'?'stage-amsterdam':stage==='2-2'?'stage-berlin':stage==='2-3'?'stage-paris':stage==='2-4'?'stage-warsaw':stage==='2-5'?'stage-london':stage==='3-1'?'stage-washington':stage==='3-2'?'stage-ottawa':stage==='3-3'?'stage-mexico':stage==='3-4'?'stage-brasilia':stage==='3-5'?'stage-vegas':stage==='4-1'?'stage-cairo':stage==='4-2'?'stage-canberra':stage==='4-3'?'stage-arctic':stage==='4-4'?'stage-space':stage==='4-5'?'stage-taipei4':'stage-singapore');
  staticCache=null;
 } 
 function updateHud(){hudScore.textContent=String(score).padStart(6,'0');hudLives.textContent=String(lives);}
 function nextUnlockedStage(s){const i=LEVEL_SEQUENCE.indexOf(s);return (i>=0&&i<LEVEL_SEQUENCE.length-1)?LEVEL_SEQUENCE[i+1]:null;}
 function setServePrompt(waiting){$('servePrompt').classList.toggle('hidden',!waiting);}
 function prepareServe(){
- ball={x:paddleX,z:BALL_REST_Z,previousX:paddleX,previousZ:BALL_REST_Z,
+ const ready=ringStage()?ringPose():{x:paddleX,z:BALL_REST_Z};
+ ball={x:ready.x,z:ready.z,previousX:paddleX,previousZ:BALL_REST_Z,
        vx:0,vz:0,r:.43,active:true};
  bonusBalls=[];serveTimer=0;physicsRemainder=0;renderFraction=1;
  gameState='ready';setServePrompt(true);
 }
 function launchBall(){
  if(gameState!=='ready')return;
- ball.x=paddleX;ball.z=BALL_REST_Z;
+ if(ringStage()){const at=ringPose();ball.x=at.x*.89;ball.z=RING_CENTER_Z+(at.z-RING_CENTER_Z)*.89;}else{ball.x=paddleX;ball.z=BALL_REST_Z;}
  ball.previousX=ball.x;ball.previousZ=ball.z;
- ball.vx=(random()>.5?1:-1)*4.65;ball.vz=-16.3;
+ if(ringStage()){ball.vx=-Math.cos(ringAngle)*15.0+(random()-.5)*6;ball.vz=-Math.sin(ringAngle)*15.0+(random()-.5)*6;}
+ else{ball.vx=(random()>.5?1:-1)*4.65;ball.vz=-16.3;}
  gameState='playing';setServePrompt(false);lastTime=performance.now();
  sound(370,.09,'sine',.05);
 }
-function reset(inheritedLives=null){arenaVersion++;physicsRemainder=0;renderFraction=1;score=0;lives=inheritedLives===null?3:inheritedLives;lostAnyBallThisStage=false;pinkTipShown=false;greenTipShown=false;ironTipShown=false;springTipShown=false;orbs.forEach(o=>o.el?.remove());orbs=[];effects={ball:null,paddle:null};refreshEffectStatus();$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');$('irontip').classList.add('hidden');$('springtip').classList.add('hidden');paddleX=0;particles=[];bonusBalls=[];ballPickups=[];initBricks();prepareServe();updateStageHud();updateHud();}
+function reset(inheritedLives=null){arenaVersion++;physicsRemainder=0;renderFraction=1;score=0;lives=inheritedLives===null?3:inheritedLives;lostAnyBallThisStage=false;pinkTipShown=false;greenTipShown=false;ironTipShown=false;springTipShown=false;wormTipShown=false;ringAngle=Math.PI/2;orbs.forEach(o=>o.el?.remove());orbs=[];effects={ball:null,paddle:null};refreshEffectStatus();$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');$('irontip').classList.add('hidden');$('springtip').classList.add('hidden');$('wormtip').classList.add('hidden');paddleX=0;particles=[];bonusBalls=[];ballPickups=[];initBricks();prepareServe();updateStageHud();updateHud();}
 function start(whichStage=stage,continueJourney=false){
  const carry=continueJourney&&pendingTransition?.to===whichStage
    ?pendingTransition.lives+pendingTransition.bonus:null;
@@ -1986,13 +2238,14 @@ function finish(won){
 $('tipok').addEventListener('click',()=>{if(gameState!=='pinktip')return;$('pinktip').classList.add('hidden');gameState='playing';lastTime=performance.now();});
 $('greenok').addEventListener('click',()=>{if(gameState!=='greentip')return;$('greentip').classList.add('hidden');gameState='playing';lastTime=performance.now();});
 $('ironok').addEventListener('click',()=>{if(gameState!=='irontip')return;$('irontip').classList.add('hidden');gameState='playing';lastTime=performance.now();});
-$('springok').addEventListener('click',()=>{if(gameState!=='springtip')return;$('springtip').classList.add('hidden');gameState='playing';lastTime=performance.now();});
+$('wormok').addEventListener('click',()=>{if(gameState!=='wormtip')return;$('wormtip').classList.add('hidden');gameState='playing';lastTime=performance.now();});
+$('springok').addEventListener('click',()=>{if(gameState!=='springtip')return;$('springtip').classList.add('hidden');$('wormtip').classList.add('hidden');gameState='playing';lastTime=performance.now();});
 function pause(){if(gameState==='playing'){gameState='paused';overlay('PAUSED','暫停遊戲',`${stageEng()} · STAGE ${stage}`,'▶ 繼續遊戲');$('pause').textContent='▶';}else if(gameState==='paused'){gameState='playing';hideOverlay();$('pause').textContent='Ⅱ';}}
 $('mainbutton').addEventListener('click',()=>{if(gameState==='paused')pause();else if(gameState==='won'&&pendingTransition)start(pendingTransition.to,true);else start();});$('pause').addEventListener('click',pause);
-function showSelect(){setupStageGrid();document.body.classList.add('menu-backdrop');heldLeft=heldRight=false;$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');$('irontip').classList.add('hidden');$('springtip').classList.add('hidden');orbs.forEach(o=>o.el?.remove());orbs=[];gameState='select';setServePrompt(false);$('pause').textContent='Ⅱ';$('overlay').classList.add('hidden');$('levelselect').classList.remove('hidden');}
+function showSelect(){setupStageGrid();document.body.classList.add('menu-backdrop');heldLeft=heldRight=false;$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');$('irontip').classList.add('hidden');$('springtip').classList.add('hidden');$('wormtip').classList.add('hidden');orbs.forEach(o=>o.el?.remove());orbs=[];gameState='select';setServePrompt(false);$('pause').textContent='Ⅱ';$('overlay').classList.add('hidden');$('levelselect').classList.remove('hidden');}
 function showReserved(){const foot=document.querySelector('.selectfooter');foot.textContent='此關卡尚在規劃中，敬請期待。';clearTimeout(showReserved.timer);showReserved.timer=setTimeout(()=>foot.textContent='選擇已開放的關卡，展開旅程。',2200);}
-function setupStageGrid(){const grid=$('stagegrid');grid.innerHTML='';for(let group=1;group<=3;group++)for(let n=1;n<=5;n++){
- const level=`${group}-${n}`,city=level==='1-1'?'台北':level==='1-2'?'香港':level==='1-3'?'東京':level==='1-4'?'首爾':level==='1-5'?'新加坡':level==='2-1'?'阿姆斯特丹':level==='2-2'?'柏林':level==='2-3'?'巴黎':level==='2-4'?'華沙':level==='2-5'?'倫敦':level==='3-1'?'華盛頓':level==='3-2'?'渥太華':level==='3-3'?'墨西哥城':level==='3-4'?'巴西利亞':level==='3-5'?'拉斯維加斯':'—',available=group>=1&&group<=3,btn=document.createElement('button');
+function setupStageGrid(){const grid=$('stagegrid');grid.innerHTML='';for(let group=1;group<=4;group++)for(let n=1;n<=5;n++){
+ const level=`${group}-${n}`,city=level==='1-1'?'台北':level==='1-2'?'香港':level==='1-3'?'東京':level==='1-4'?'首爾':level==='1-5'?'新加坡':level==='2-1'?'阿姆斯特丹':level==='2-2'?'柏林':level==='2-3'?'巴黎':level==='2-4'?'華沙':level==='2-5'?'倫敦':level==='3-1'?'華盛頓':level==='3-2'?'渥太華':level==='3-3'?'墨西哥城':level==='3-4'?'巴西利亞':level==='3-5'?'拉斯維加斯':level==='4-1'?'開羅':level==='4-2'?'坎培拉':level==='4-3'?'北極':level==='4-4'?'宇宙空間站':level==='4-5'?'台北':'—',available=group>=1&&group<=4,btn=document.createElement('button');
  const cleared=available&&clearedStages.has(level);
  btn.type='button';btn.className='stagecard '+(available?'active':'future')+(cleared?' cleared':'');
  if(cleared)btn.style.setProperty('--cleared-fill',STAGE_CLEAR_COLORS[level]);
@@ -2081,9 +2334,11 @@ for(const b of bricks){
  }
 }
 tickOrbs(dt);paddleDir=(heldRight?1:0)-(heldLeft?1:0);const wideCourt=wideStage();const paddleLimit=wideCourt?HK_HALF_WALL-paddleHalfWidth()-.30:9.4-paddleHalfWidth()-.28;
-paddleX=Math.max(-paddleLimit,Math.min(paddleLimit,paddleX+paddleDir*21*dt*(effects.paddle?.type==='C'?1.65:effects.paddle?.type==='D'?.60:1)));
+if(ringStage())ringAngle=wrapAngle(ringAngle+paddleDir*2.85*dt);
+else paddleX=Math.max(-paddleLimit,Math.min(paddleLimit,paddleX+paddleDir*21*dt*(effects.paddle?.type==='C'?1.65:effects.paddle?.type==='D'?.60:1)));
 if(gameState==='ready'){
- ball.x=paddleX;ball.z=BALL_REST_Z;
+ if(ringStage()){const at=ringPose();ball.x=at.x*.89;ball.z=RING_CENTER_Z+(at.z-RING_CENTER_Z)*.89;}
+ else{ball.x=paddleX;ball.z=BALL_REST_Z;}
  ball.previousX=ball.x;ball.previousZ=ball.z;
  return;
 }
@@ -2092,7 +2347,12 @@ const effectBallScale=effects.ball?.type==='A'?1.43:effects.ball?.type==='B'?.68
 const wall=wideCourt?HK_BALL_LIMIT:9.4;
 const moving=[ball,...bonusBalls].filter(b=>b.active!==false);
 for(const b of moving){
+ if(updateWormTransit(b))continue;
  const oldx=b.x,oldz=b.z;
+ if(ringStage()&&time>=(b.nextRingTwist||0)){
+  const vel=Math.max(12,Math.hypot(b.vx,b.vz));const a=Math.atan2(b.vz,b.vx)+(random()-.5)*.67;
+  b.vx=Math.cos(a)*vel;b.vz=Math.sin(a)*vel;b.nextRingTwist=time+.25+random()*.35;
+ }
  if(b.springUntil>time&&time>=(b.nextSpringTwist||0)){
   const speed=Math.max(12,Math.hypot(b.vx,b.vz));
   const turn=(random()-.5)*2.25;
@@ -2103,6 +2363,18 @@ for(const b of moving){
  // Retain the preceding fixed-step position for smooth frame interpolation.
  b.previousX=oldx;b.previousZ=oldz;
  b.x+=b.vx*dt*speedUp*effectBallScale*GAME_BALL_SPEED_FACTOR;b.z+=b.vz*dt*speedUp*effectBallScale*GAME_BALL_SPEED_FACTOR;
+ if(ringStage()){
+   const dx=b.x,dz=b.z-RING_CENTER_Z,rad=Math.hypot(dx,dz),theta=Math.atan2(dz,dx);
+   if(rad>=RING_RADIUS-b.r){
+    if(Math.abs(wrapAngle(theta-ringAngle))<.28){
+     const nx=dx/rad,nz=dz/rad,dot=b.vx*nx+b.vz*nz;
+     b.vx-=2*Math.max(0,dot)*nx;b.vz-=2*Math.max(0,dot)*nz;
+     b.vx+=-nz*1.35*(random()-.5);b.vz+=nx*1.35*(random()-.5);
+     b.x=nx*(RING_RADIUS-b.r-.14);b.z=RING_CENTER_Z+nz*(RING_RADIUS-b.r-.14);
+     sound(540,.08,'triangle',.055);
+    }else{lostAnyBallThisStage=true;b.active=false;burst(b.x,b.z,'#ffd4a5',18);continue;}
+   }
+ }else{
  if(b.x<-wall+b.r){b.x=-wall+b.r;b.vx=Math.abs(b.vx);sound(220,.05,'triangle',.025);}
  if(b.x>wall-b.r){b.x=wall-b.r;b.vx=-Math.abs(b.vx);sound(220,.05,'triangle',.025);}
  if(b.z<-21.55+b.r){b.z=-21.55+b.r;b.vz=Math.abs(b.vz);sound(245,.06,'triangle',.03);}
@@ -2111,6 +2383,7 @@ for(const b of moving){
    lostAnyBallThisStage=true;
    b.active=false;burst(b.x,11.3,'#fff6bd',18);sound(160,.09,'sawtooth',.04);continue;
  }
+ } // end of normal rectangular court boundary and paddle tests
  // In Singapore, hitting either of the two dormant balls makes it join the volley.
  if(ballPickups.length)for(const pickup of ballPickups){
   if(pickup.active||Math.abs(b.x-pickup.x)>pickup.r+b.r||Math.abs(b.z-pickup.z)>pickup.r+b.r)continue;
@@ -2120,6 +2393,7 @@ for(const b of moving){
   b.vz*=-1;burst(pickup.x,pickup.z,'#ffe58e',29);sound(920,.18,'triangle',.075);
   break;
  }
+ if(transferWormhole(b)){if(gameState!=='playing')break;continue;}
  let hitIron=false;
  for(const block of ironBlocks){
   if(bounceOffIron(b,oldx,oldz,block)){hitIron=true;break;}
@@ -2183,7 +2457,7 @@ function brickMesh(b,o){
 // The pulsing racing-lane effect lives exclusively in the arena, never the background.
 function energizedCourt(o){
  const wide=wideStage(),edge=wide?HK_HALF_WALL:10.3;
- for(const side of [-1,1]){
+ for(const side of (ringStage()?[]:[-1,1])){
   const x=side*(edge-.12),head=.5+.5*Math.sin(time*3.0+side*1.4);
   box(o,x,1.96,-3.5,.22,.15,36.0,head>.45?'#e6ffff':'#56b8e4');
   box(o,x,2.07,-3.5,.09,.10,36.0,head>.66?'#ffffff':'#57d7fa');
@@ -2201,8 +2475,8 @@ function energizedCourt(o){
  box(o,0,.59,-20.9,segment,.09,.18,'#b8f9ff');
  const linePulse=.5+.5*Math.sin(time*5.2);
  const edgeGlow=linePulse>.50?'#d3ffff':'#55c4eb';
- box(o,0,.80,-21.50,wide?23.3:20.0,.12,.19,edgeGlow);
- box(o,0,.80,13.12,wide?23.3:20.0,.12,.19,linePulse>.75?'#f3ffff':'#6bc9eb');
+ if(!ringStage())box(o,0,.80,-21.50,wide?23.3:20.0,.12,.19,edgeGlow);
+ if(!ringStage())box(o,0,.80,13.12,wide?23.3:20.0,.12,.19,linePulse>.75?'#f3ffff':'#6bc9eb');
 }
 
 function ironBlockMesh(o,b){
@@ -2259,6 +2533,7 @@ function makeFixedArena(){
  for(let b of bricks)if(b.alive&&!b.moving&&(!fastMobileEnabled()||b.dropTime<=0))brickMesh(b,a);
  for(const block of ironBlocks)ironBlockMesh(a,block);
  for(const block of springBlocks)springMesh(a,block);
+ for(const w of wormholes)wormholeMesh(a,w);
  if(isMobilePortrait())for(let i=0;i<a.length;i+=10){
   const p=mobileCourtPoint(a[i],a[i+2]);a[i]=p[0];a[i+2]=p[1];
  }
@@ -2279,7 +2554,7 @@ function makeDynamic(){let a=[];
 for(const b of movingBricks)if(b.alive)brickMesh(b,a);
 // Ball shadow, flying sphere and afterglow
 for(const b of [ball,...bonusBalls]){
- if(b.active===false)continue;
+ if(b.active===false||b.teleportUntil>time)continue;
  const bx=gameState==='playing'&&Number.isFinite(b.previousX)?b.previousX+(b.x-b.previousX)*renderFraction:b.x;
  const bz=gameState==='playing'&&Number.isFinite(b.previousZ)?b.previousZ+(b.z-b.previousZ)*renderFraction:b.z;
  sphere(a,bx,.41,bz,.46,'#315d4a',4,9);
@@ -2293,7 +2568,7 @@ for(const p of ballPickups){
  sphere(a,p.x-.24,BRICK_BASE_Y+BRICK_HEIGHT*.88,p.z+.1,.24,'#fff6d5',6,9);
  rod(a,[p.x-.45,BRICK_BASE_Y+BRICK_HEIGHT*.66,p.z],[p.x+.45,BRICK_BASE_Y+BRICK_HEIGHT*.66,p.z],.12,'#f6f5e9',5);
 }
-paddleMesh(a);
+if(ringStage())ringPaddleMesh(a);else paddleMesh(a);
 for(const o of orbs){sphere(a,o.x,2.16+Math.sin(time*7)*.1,o.z,.50,'#ff9b3f',7,10);sphere(a,o.x-.16,2.32,o.z+.11,.16,'#fff2bf',4,7);}
 // Mobile game objects and paddle follow the lowered arena, while Taipei landmarks remain fixed.
 if(isMobilePortrait())for(let i=0;i<a.length;i+=10){
@@ -2352,6 +2627,8 @@ if(stage==='1-2'){
   const x=((j*15+time*(j%2?1.3:-1.5)+270)%140)-70;
   person(a,x,-70,time*4+j,['#b3d1e1','#e7b7be','#d1d7a8'][j%3]);
  }
+ }else if(stage.startsWith('4-')){
+  // Scenic chapter: no unrelated city traffic in space or polar wilderness.
  }else{
  const cars=[[-60,1,'#cb5551'],[-30,-1,'#70b5bb'],[6,1,'#d5b063'],[40,-1,'#b1c2be'],[75,1,'#6b8baf']];for(let i=0;i<cars.length;i++){const row=cars[i],x=((row[0]+time*(9+i)*row[1]+280)%180)-90;car(a,x,-35+row[1]*2.2,row[1],row[2]);}
  for(let i=0;i<10;i++){let x=((i*16+time*(i%2===0?1.2:-1.1)+250)%150)-75;person(a,x,i%2?-43.3:-25.5,time*5+i,['#e4a18c','#86baca','#d5b77d','#b6accd'][i%4]);}
@@ -2391,6 +2668,20 @@ function drawFaces(context,geometry,matrix,screenWidth,screenHeight){
 // algorithm artifacts caused by overlapping coplanar 3D roof triangles.
 function projectPoint(a,m,w,h){let x=a[0],y=a[1],z=a[2],den=m[3]*x+m[7]*y+m[11]*z+m[15];return [((m[0]*x+m[4]*y+m[8]*z+m[12])/den*.5+.5)*w,(.5-(m[1]*x+m[5]*y+m[9]*z+m[13])/den*.5)*h];}
 function drawCourt2D(c,m,w,h){
+  if(ringStage()){
+   const point=(angle,r=RING_RADIUS)=>{const x=r*Math.cos(angle),z=RING_CENTER_Z+r*Math.sin(angle);
+    const v=mobileCourtPoint(x,z);return projectPoint([v[0],.41,v[1]],m,w,h);};
+   const pts=[];for(let i=0;i<=72;i++)pts.push(point(i*Math.PI*2/72));
+   c.save();c.beginPath();pts.forEach((p,i)=>i?c.lineTo(...p):c.moveTo(...p));c.closePath();
+   const grad=c.createLinearGradient(0,pts[18][1],0,pts[54][1]);
+   grad.addColorStop(0,'#25345f');grad.addColorStop(.55,'#1e496a');grad.addColorStop(1,'#394b73');
+   c.fillStyle=grad;c.fill();c.strokeStyle='#91eaf5';c.lineWidth=Math.max(2,w/500);c.stroke();
+   for(let j=1;j<=4;j++){
+    const rr=j*RING_RADIUS/5;c.beginPath();for(let i=0;i<=72;i++){const p=point(i*Math.PI*2/72,rr);i?c.lineTo(...p):c.moveTo(...p);}
+    c.strokeStyle='rgba(96,159,224,.17)';c.lineWidth=1;c.stroke();
+   }
+   c.restore();return;
+  }
   const fieldScale=wideStage()?HK_ARENA_SCALE:1;
   const corners=[[-9.92,.39,-21.25],[9.92,.39,-21.25],[9.92,.39,14.15],[-9.92,.39,14.15]].map(p=>{const q=mobileCourtPoint(p[0]*fieldScale,p[2]);return projectPoint([q[0],p[1],q[1]],m,w,h);});
   const grad=c.createLinearGradient(0,corners[0][1],0,corners[2][1]);grad.addColorStop(0,'#294761');grad.addColorStop(.55,'#365e78');grad.addColorStop(1,'#486d86');
@@ -2628,6 +2919,10 @@ function drawFastMobile(){
  c.restore();
  // The real paddle's collision width is unchanged: premium chrome, gold and
  // mint inlays are rendered as low-cost 2D projected polygons on phones.
+ if(ringStage()){
+  const arc=[];for(let k=0;k<=28;k++){const a=ringAngle-.27+k*.54/28;arc.push(fastProject(11.08*Math.cos(a),1.62,RING_CENTER_Z+11.08*Math.sin(a)));}
+  c.save();c.lineWidth=8;c.lineCap='round';c.strokeStyle='#f0d48a';c.shadowBlur=12;c.shadowColor='#93f7dc';c.beginPath();arc.forEach((p,i)=>i?c.lineTo(...p):c.moveTo(...p));c.stroke();c.lineWidth=4;c.strokeStyle='#89ffe0';c.stroke();c.restore();
+ }else{
  const half=paddleHalfWidth(),x=paddleX;
  const t=(y,z,edge)=>fastProject(x+edge,y,z);
  const top=[t(1.66,PADDLE_Z-.55,-half),t(1.66,PADDLE_Z-.55,half),
@@ -2658,6 +2953,7 @@ function drawFastMobile(){
   c.fillStyle='#f7d692';c.fill();
  }
  c.restore();
+ } // circular vs. straight mobile paddle
  // Moving bricks and descending slabs are drawn live on mobile.
  // They are excluded from the cached city-and-brick layer to avoid ghosting.
  for(const b of bricks){
@@ -2670,6 +2966,7 @@ function drawFastMobile(){
   c.fillStyle=b.type==='pink'?'#ffd5e4':b.type==='green'?'#b9ffd0':b.type==='ivory'?'#f4efdf':'#bbf2ff';
   c.shadowColor='#7efaff';c.shadowBlur=8;c.fill();c.strokeStyle='rgba(255,255,255,.9)';c.stroke();c.restore();
  }
+ for(const w of wormholes){const p=fastProject(w.x,1.5,w.z),e=fastProject(w.x+w.r,1.5,w.z);const r=Math.max(8,Math.abs(e[0]-p[0]));c.save();c.beginPath();c.arc(p[0],p[1],r,0,Math.PI*2);c.lineWidth=3;c.strokeStyle='#bba4ff';c.shadowColor='#8c83ff';c.shadowBlur=12;c.stroke();c.fillStyle='#51469a99';c.fill();c.restore();}
  // Dormant bonus balls must also remain visible on the lightweight mobile renderer.
  for(const p of ballPickups){
   if(!p.active)fastOrb(p.x,p.z,.67,'#ffe29a',10,'#f7a83c');
@@ -2684,7 +2981,7 @@ function drawFastMobile(){
  }c.restore();
  // Main ball and additional active balls share exactly the original physics.
  for(const obj of [ball,...bonusBalls]){
-  if(obj.active===false)continue;
+  if(obj.active===false||obj.teleportUntil>time)continue;
   const bx=gameState==='playing'&&Number.isFinite(obj.previousX)?obj.previousX+(obj.x-obj.previousX)*renderFraction:obj.x;
   const bz=gameState==='playing'&&Number.isFinite(obj.previousZ)?obj.previousZ+(obj.z-obj.previousZ)*renderFraction:obj.z;
   const normv=Math.max(1,Math.hypot(obj.vx,obj.vz));
@@ -2698,7 +2995,7 @@ function drawFastMobile(){
 }
 function recacheFastProjections(){
  fastCachedRails=[];fastCachedOutlines=[];
- for(const side of [-1,1]){
+ for(const side of (ringStage()?[]:[-1,1])){
   const xx=side*HK_HALF_WALL;
   fastCachedRails.push([fastProject(xx,1.40,13),fastProject(xx,1.40,-21)]);
  }
