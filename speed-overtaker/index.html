@@ -249,7 +249,17 @@ function addCrossingCourse(track,index){
   raw.push([x*C-z*S,x*S+z*C]);
  }
  const currentLength=sampledPathLength(raw),factor=previousLength*1.2/currentLength;
- track.points=raw.map(p=>[p[0]*factor,p[1]*factor]);
+ // Two added S-curve bend groups, safely distant from the grade-separated junction.
+ track.points=raw.map((p,k)=>{
+  const t=k/N,prev=raw[mod(k-1,N)],next=raw[(k+1)%N];
+  const dx=next[0]-prev[0],dz=next[1]-prev[1],len=Math.hypot(dx,dz)||1;
+  const bend=(center,width,amount)=>{
+   const d=mod(t-center+.5,1)-.5;
+   return amount*Math.exp(-.5*(d/width)**2);
+  };
+  const lateral=bend(.195,.033,48+index*2)-bend(.635,.038,54+index*2.5);
+  return [p[0]*factor-dz/len*lateral,p[1]*factor+dx/len*lateral];
+ });
  track.previousLength=previousLength;
  track.courseLength=sampledPathLength(track.points);
  // Faster rolling gradients, suppressed automatically in the two-layer bridge junction.
@@ -259,6 +269,14 @@ function addCrossingCourse(track,index){
  track.crossing={upperIndex:36,lowerIndex:84,pointCount:N,rise:29.0,span:142};
 }
 TRACKS.forEach(addCrossingCourse);
+// Three distinct raised ramp groups per course, each with sharp uphill and downhill faces.
+TRACKS.forEach((track,index)=>{
+ track.ramps=[
+  {center:.115,halfWidth:102,rise:37+index*1.8},
+  {center:.535,halfWidth:110,rise:42+index*1.6},
+  {center:.730,halfWidth:98,rise:39+index*2.1}
+ ];
+});
 const SAVE_PROGRESS_KEY='extreme-racer-cleared-v17';
 let completedTracks=[false,false,false,false];
 try{const saved=JSON.parse(localStorage.getItem(SAVE_PROGRESS_KEY)||'null');if(Array.isArray(saved))completedTracks=completedTracks.map((_,i)=>saved[i]===true)}catch(_){}
@@ -492,7 +510,7 @@ const ID=new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);function matModel(p
 // Track interpolation with measured distance, so steering and mini-map follow true curves.
 function cat(a,b,c,d,t){let t2=t*t,t3=t2*t;return [0,1,2].map(j=>.5*((2*b[j])+(-a[j]+c[j])*t+(2*a[j]-5*b[j]+4*c[j]-d[j])*t2+(-a[j]+3*b[j]-3*c[j]+d[j])*t3))}
 function hillProfile(t,hills=[]){let y=0;for(const h of hills)y+=Math.sin(t*Math.PI*2*h[1]+h[2])*h[0];return y}
-function trackMake(raw,hills=[],crossing=null){
+function trackMake(raw,hills=[],crossing=null,ramps=[]){
  const pts=raw.map(([x,z])=>[x,0,z]),N=1050,coords=[],dists=[0];
  for(let k=0;k<=N;k++){
   const u=k/N*pts.length,i=Math.floor(u)%pts.length,t=u-Math.floor(u);
@@ -505,11 +523,18 @@ function trackMake(raw,hills=[],crossing=null){
  const gaussian=(s,center,span)=>{const d=wrappedDistance(s,center)/span;return Math.exp(-.5*d*d)};
  function heightAt(s){
   const t=mod(s,length)/length;
-  if(!crossing)return ROAD_BASE+hillProfile(t,hills);
+  // Cosine crests avoid sudden vertical steps at the top or foot of a ramp.
+  let rampHeight=0;
+  for(const ramp of ramps){
+   const center=length*ramp.center,d=wrappedDistance(s,center);
+   if(d<ramp.halfWidth)rampHeight+=ramp.rise*.5*(1+Math.cos(Math.PI*d/ramp.halfWidth));
+  }
+  if(!crossing)return ROAD_BASE+hillProfile(t,hills)+rampHeight;
   const top=gaussian(s,upperS,crossing.span),bottom=gaussian(s,lowerS,90);
-  // Nearly level where the two lanes cross, preventing a road surface piercing the bridge.
-  const natural=hillProfile(t,hills)*Math.max(0,1-.94*Math.max(top,bottom));
-  return ROAD_BASE+natural+crossing.rise*top;
+  // Keep the bridge clearance unchanged at the elevated figure-eight crossover.
+  const guard=Math.max(top,bottom);
+  const natural=hillProfile(t,hills)*Math.max(0,1-.94*guard);
+  return ROAD_BASE+natural+rampHeight*Math.max(0,1-.99*guard)+crossing.rise*top;
  }
  function at(s){
   s=mod(s,length);let low=0,high=N;
@@ -666,7 +691,7 @@ function buildOrbitalStation(m,L,r){
   m.box([x,60,z],[3,22,3],'#a2b6c9');m.pyramid([x,71,z],11,11,glass);
  }
 }
-function buildTrack(index){trackData=trackMake(TRACKS[index].points,TRACKS[index].hills||[],TRACKS[index].crossing);const theme=TRACKS[index].theme;const m=new Mesh(),r=rng(48+index*81),L=trackData.length;signQuads=[];
+function buildTrack(index){trackData=trackMake(TRACKS[index].points,TRACKS[index].hills||[],TRACKS[index].crossing,TRACKS[index].ramps||[]);const theme=TRACKS[index].theme;const m=new Mesh(),r=rng(48+index*81),L=trackData.length;signQuads=[];
 // Ground, water/terrain patches, horizon ridges.
 m.quad([-1200,-.22,-1200],[1200,-.22,-1200],[1200,-.22,1200],[-1200,-.22,1200],TRACKS[index].ground);
 if(theme==='coast'){m.quad([-1200,-.18,-1200],[1200,-.18,-1200],[1200,-.18,-340],[-1200,-.18,-340],'#3eabc2');m.quad([-1200,-.19,360],[1200,-.19,360],[1200,-.19,1200],[-1200,-.19,1200],'#59b7d0');for(let j=0;j<65;j++){let x=(r()-.5)*930,z=(r()<.55?-1:1)*(350+r()*260);m.box([x,-.12,z],[3+r()*16,.03,.1+r()*2],'#a8e4e2')}}
@@ -721,6 +746,8 @@ gantry(m,0);
 // Barricades, lamp posts, traffic lights, signs and roadside objects.
 for(let s=0;s<L;s+=14){for(const side of [-1,1]){if(Math.floor(s/14)%3!==1)roadBarrier(m,s,side*21.0,theme==='city'?'#73838e':'#c8c9c6')}}
 for(let s=28;s<L;s+=54){for(const side of [-1,1])lampPost(m,s,side*26.5,theme)}
+// No roadside arrow signs are installed on the hidden orbital station circuit.
+if(index!==4){
 for(let s=32;s<L;s+=30){const section=Math.floor(s/30),k=(section+index)%5;
  // Roadside directional, speed-limit and caution signs: kept outside the guardrails.
  signBoard(m,s,(section%2? -1:1)*27.8,k,3.8,2.35);
@@ -753,6 +780,7 @@ for(let s=25;s<L;s+=20){const side=(Math.floor(s/20)%2?1:-1),p=onRoad(s,side*25.
  m.box([p[0],p[1]+1.62,p[2]],[1.65,.47,.13],(Math.floor(s/20)%2)?'#f3e4b3':'#fff5e1',f.heading);
  m.box([p[0],p[1]+1.62,p[2]-.085],[.93,.11,.03],'#d99a43',f.heading);
 }
+}
 if(theme!=='space')for(let s=82;s<L;s+=104){for(const off of [-28.5,28.5]){const p=onRoad(s,off),f=trackData.at(s);m.box([p[0],p[1]+3.3,p[2]],[.23,6.5,.23],'#3a444e');m.box([p[0],p[1]+6.15,p[2]],[1.1,2.3,.40],'#191f29',f.heading);for(let n=0;n<3;n++){const lamp=onRoad(s,off,6.95-.79*n);m.box([lamp[0],lamp[1],lamp[2]-.27],[.48,.48,.12],['#f73e48','#ffcf46','#44dc88'][n],f.heading)}}}
 // Buildings and site-specific vegetation: orbital raceways are intentionally free of Earth-like buildings.
 if(theme!=='space')for(let s=26;s<L;s+=25){for(const side of [-1,1]){if(r()<.18)continue;let f=trackData.at(s+r()*9),dist=(theme==='city'?73:77)+r()*(theme==='city'?85:84),base=plus(f.p,scale(f.right,side*dist));const [x,,z]=base;if(!sceneryClear(x,z,theme==='city'?65:67))continue;if(theme==='city'){
@@ -781,7 +809,7 @@ function changeCamera(delta){cameraIndex=clamp(cameraIndex+delta,0,CAMERA_VIEWS.
 function cycleCamera(){cameraIndex=(cameraIndex+1)%CAMERA_VIEWS.length;showCameraChoice()}
 let software=null,softProps=[];
 function initFallback(){software=canvas.getContext('2d',{alpha:true});resize()}
-function setupSoftProps(){let t=TRACKS[selectedTrack],r=rng(987+selectedTrack*23),L=trackData.length;softProps=[];for(let s=10;s<L;s+=24){for(let side of [-1,1]){let f=trackData.at(s),far=46+r()*69,pos=plus(f.p,scale(f.right,side*far)),kind=selectedTrack===4?'station':selectedTrack===0?(r()<.65?'house':'building'):selectedTrack===2?(r()<.85?'building':'house'):'building';if(!sceneryClear(pos[0],pos[2],41))continue;softProps.push({s,x:pos[0],z:pos[2],kind,h:kind==='station'?17+r()*13:kind==='building'?26+r()*63:kind==='house'?7+r()*9:10+r()*13,w:kind==='station'?27+r()*15:kind==='building'?13+r()*11:8+r()*9,seed:r()})}if(Math.floor(s/24)%3===0){for(let side of [-1,1]){let f=trackData.at(s),p=plus(f.p,scale(f.right,side*18));softProps.push({s,x:p[0],z:p[2],kind:'lamp',h:11,w:1})}}}for(let s=46;s<L;s+=41){const f=trackData.at(s),side=(Math.floor(s/41)%2?1:-1),p=plus(f.p,scale(f.right,side*27));softProps.push({s,x:p[0],z:p[2],kind:'sign',h:6.8,w:3.2})}}
+function setupSoftProps(){let t=TRACKS[selectedTrack],r=rng(987+selectedTrack*23),L=trackData.length;softProps=[];for(let s=10;s<L;s+=24){for(let side of [-1,1]){let f=trackData.at(s),far=46+r()*69,pos=plus(f.p,scale(f.right,side*far)),kind=selectedTrack===4?'station':selectedTrack===0?(r()<.65?'house':'building'):selectedTrack===2?(r()<.85?'building':'house'):'building';if(!sceneryClear(pos[0],pos[2],41))continue;softProps.push({s,x:pos[0],z:pos[2],kind,h:kind==='station'?17+r()*13:kind==='building'?26+r()*63:kind==='house'?7+r()*9:10+r()*13,w:kind==='station'?27+r()*15:kind==='building'?13+r()*11:8+r()*9,seed:r()})}if(Math.floor(s/24)%3===0){for(let side of [-1,1]){let f=trackData.at(s),p=plus(f.p,scale(f.right,side*18));softProps.push({s,x:p[0],z:p[2],kind:'lamp',h:11,w:1})}}}if(selectedTrack!==4)for(let s=46;s<L;s+=41){const f=trackData.at(s),side=(Math.floor(s/41)%2?1:-1),p=plus(f.p,scale(f.right,side*27));softProps.push({s,x:p[0],z:p[2],kind:'sign',h:6.8,w:3.2})}}
 // A self-contained multi-layer atmosphere, rendered once per map rather than loaded from external images.
 const skyCache={};
 function getDetailedSky(index){
@@ -953,7 +981,7 @@ function makeSignTexture(){const cvs=document.createElement('canvas');cvs.width=
 signAtlas={w:cvs.width,h:cvs.height};signTexture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,signTexture);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,cvs);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE)}
 function uploadSigns(){if(signBuffer)gl.deleteBuffer(signBuffer);let vals=[];for(const ob of signQuads){let col=ob.id%3,row=Math.floor(ob.id/3),u0=(col*256+6)/768,u1=((col+1)*256-6)/768,yt=(row*192+5)/384,yb=((row+1)*192-5)/384; // texture flipped by WebGL. map bottom-left to larger v
 const verts=ob.verts;let uv=[[u0,1-yb],[u1,1-yb],[u1,1-yt],[u0,1-yt]];for(const j of [0,1,2,0,2,3])vals.push(...verts[j],...uv[j])}let arr=new Float32Array(vals);signBuffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,signBuffer);gl.bufferData(gl.ARRAY_BUFFER,arr,gl.STATIC_DRAW);signCount=arr.length/5}
-function loadTrack(index){if(!gl){trackData=trackMake(TRACKS[index].points,TRACKS[index].hills||[],TRACKS[index].crossing);setupSoftProps();document.querySelector('#trackTitle').textContent=TRACKS[index].name;$('#sky').className=TRACKS[index].sky;lastCamera=null;setupPreviewCars();return}const m=buildTrack(index),v=upload(m);if(worldBuffer)gl.deleteBuffer(worldBuffer);worldBuffer=v.buf;worldCount=v.count;uploadSigns();document.querySelector('#trackTitle').textContent=TRACKS[index].name;$('#sky').className=TRACKS[index].sky;lastCamera=null;setupPreviewCars()}
+function loadTrack(index){if(!gl){trackData=trackMake(TRACKS[index].points,TRACKS[index].hills||[],TRACKS[index].crossing,TRACKS[index].ramps||[]);setupSoftProps();document.querySelector('#trackTitle').textContent=TRACKS[index].name;$('#sky').className=TRACKS[index].sky;lastCamera=null;setupPreviewCars();return}const m=buildTrack(index),v=upload(m);if(worldBuffer)gl.deleteBuffer(worldBuffer);worldBuffer=v.buf;worldCount=v.count;uploadSigns();document.querySelector('#trackTitle').textContent=TRACKS[index].name;$('#sky').className=TRACKS[index].sky;lastCamera=null;setupPreviewCars()}
 function carAt(s,offset){let f=trackData.at(s);return {pos:plus(plus(f.p,scale(f.right,offset)),[0,.11,0]),forward:f.forward,heading:f.heading}}
 function setupPreviewCars(){opponents=[];for(let i=0;i<7;i++){opponents.push({s:22+i*16,offset:i%2?2.8:-3.4,speed:170+i*5+((i*11)%25),color:i===selectedCar?(i+1)%8:i,drift:0})}player={s:0,offset:2.9,speed:0,yaw:0};}
 function showMenu(){hideAudioSettings();playerMarker.hidden=true;state='select';document.body.className='menu';$('#overlay').hidden=false;$('#loadingPanel').hidden=true;$('#selectPanel').hidden=false;$('#resultPanel').hidden=true;$('#hud').hidden=true;$('#touchControls').hidden=true;$('#swipeStatus').hidden=true;$('#countdown').textContent='';$('#toast').textContent='';hideStartLights();resetMobileControls();populateUI()}
