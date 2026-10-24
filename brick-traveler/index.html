@@ -490,6 +490,8 @@
    <span class="power-letter">B</span><span>球速減慢</span>
    <span class="power-letter">C</span><span>控制板移動速度加快</span>
    <span class="power-letter">D</span><span>控制板移動速度減慢</span>
+   <span class="power-letter">E</span><span>兩層控制板同步移動</span>
+   <span class="power-letter">F</span><span>全寬防護控制板・15 秒</span>
   </div>
   <button type="button" class="primary" id="greenok">我知道了，繼續遊戲</button>
  </div>
@@ -1721,59 +1723,8 @@ let arenaVersion=0,arenaGeometry=null,arenaLastBuild=-1e6,arenaCachedStage='',ar
 let arenaGpuGeometry=null,arenaGpuCount=0;
 let arenaCanvas=null,arenaCanvasVersion=-1,arenaCanvasW=0,arenaCanvasH=0;
 
-// Special ordinary bricks that move within their own tier. Their original
-// color, durability and contribution to the stage-clear count are unchanged.
-// Only the moving bricks are rendered each frame; landmarks remain cached.
-const HORIZONTAL_MOVER_LEVELS=new Set(['2-3','2-4','2-5','3-1','3-2']);
-const VERTICAL_MOVER_LEVELS=new Set(['3-3','3-4','3-5']);
-let movingBricks=[];
-function initMovingBricks(){
- movingBricks=[];
- // 2-3 to 3-2: five horizontal movers. 3-3 to 3-5: ten movers,
- // also oscillating vertically. These remain existing breakable bricks.
- const count=VERTICAL_MOVER_LEVELS.has(stage)?10:HORIZONTAL_MOVER_LEVELS.has(stage)?5:0;
- if(!count)return;
- const floor=bricks.filter(b=>b.layer===0);
- const selected=[];
- // Spread the chosen moving bricks evenly across the lowest tier.
- const onFloor=Math.min(count,floor.length);
- for(let i=0;i<onFloor;i++){
-  const index=Math.floor((i+.5)*floor.length/onFloor);
-  selected.push(floor[index]);
- }
- // Some final chapters have fewer than ten bricks in one tier:
- // choose the remaining moving bricks from the second tier, without
- // creating any new bricks or changing colors, HP or layer counts.
- const remaining=count-selected.length;
- if(remaining>0){
-  const upper=bricks.filter(b=>b.layer===1).sort((a,b)=>a.slot-b.slot);
-  for(let i=0;i<remaining;i++){
-   const index=Math.floor((i+.5)*upper.length/remaining);
-   selected.push(upper[index]);
-  }
- }
- for(let i=0;i<selected.length;i++){
-  const tile=selected[i];
-  if(!tile)continue;
-  tile.moving=true;tile.motionX=tile.x;tile.motionZ=tile.z;
-  tile.motionY=tile.y;tile.motionPhase=i*2.4+(Number(stage[2])*.49);
-  tile.motionVertical=VERTICAL_MOVER_LEVELS.has(stage);
-  movingBricks.push(tile);
- }
-}
-function animateMovingBricks(){
- for(const b of movingBricks){
-  if(!b.alive)continue;
-  const phase=b.motionPhase;
-  b.previousMotionX=b.x;b.previousMotionZ=b.z;
-  b.x=b.motionX+.65*Math.sin(time*1.48+phase);
-  b.z=b.motionZ+.53*Math.sin(time*1.19+phase+.95);
-  // In the final three stages, the blocks also rise and descend visibly.
-  if(b.motionVertical&&b.dropTime<=0){
-   b.y=b.motionY+.80*Math.sin(time*1.28+phase+.37);
-  }
- }
-}
+// All breakable bricks now stay at their fixed grid coordinates.
+// Their existing color, HP, slot and breakable-count remain unchanged.
 // Core game state
 const LEVEL_SEQUENCE=['1-1','1-2','1-3','1-4','1-5','2-1','2-2','2-3','2-4','2-5','3-1','3-2','3-3','3-4','3-5','4-1','4-2','4-3','4-4','4-5'];
 const STAGE_CLEAR_STORAGE_KEY='brick_traveler_stage_clear_v1';
@@ -1804,6 +1755,11 @@ const PADDLE_REBOUND_Z=PADDLE_Z-1.23;
 const BALL_REST_Z=PADDLE_Z-1.24;
 const BALL_LOST_Z=13.25;
 const RING_STAGE='4-4',RING_CENTER_Z=-4.8,RING_RADIUS=16.10,RING_PADDLE_RADIUS=15.32;
+const UPPER_PADDLE_Z=PADDLE_Z-3.05,UPPER_PADDLE_HIT_Z=PADDLE_HIT_Z-3.05;
+const RING_UPPER_PADDLE_RADIUS=RING_PADDLE_RADIUS-2.80;
+const doublePaddleActive=()=>effects.paddle?.type==='E';
+const fullShieldActive=()=>effects.paddle?.type==='F';
+const hasWidePaddleHit=x=>fullShieldActive()||Math.abs(x-paddleX)<=paddleHalfWidth()+.12+.43;
 const ringStage=()=>stage===RING_STAGE;
 function ringPose(){return {x:RING_PADDLE_RADIUS*Math.cos(ringAngle),z:RING_CENTER_Z+RING_PADDLE_RADIUS*Math.sin(ringAngle)};}
 function wrapAngle(a){return Math.atan2(Math.sin(a),Math.cos(a));}
@@ -1853,11 +1809,18 @@ function wormholeMesh(out,w){
  sphere(out,w.x,y+.07,w.z,.34,pulse>.5?'#e9b9ff':'#a4eeff',6,9);
 }
 function ringPaddleMesh(out){
- for(let i=0;i<13;i++){
-  const a=ringAngle-.27+i*.54/13,b=ringAngle-.27+(i+1)*.54/13;
-  rod(out,[RING_PADDLE_RADIUS*Math.cos(a),1.37,RING_CENTER_Z+RING_PADDLE_RADIUS*Math.sin(a)],
-    [RING_PADDLE_RADIUS*Math.cos(b),1.37,RING_CENTER_Z+RING_PADDLE_RADIUS*Math.sin(b)],.47,i%3===0?'#f9e5ad':'#83f7df',6);
- }
+ const full=fullShieldActive(),n=full?92:13;
+ const ringStrip=(radius,height,thickness,second=false)=>{
+  for(let i=0;i<n;i++){
+   const a=full?i*2*Math.PI/n:ringAngle-.27+i*.54/n;
+   const b=full?(i+1)*2*Math.PI/n:ringAngle-.27+(i+1)*.54/n;
+   rod(out,[radius*Math.cos(a),height,RING_CENTER_Z+radius*Math.sin(a)],
+     [radius*Math.cos(b),height,RING_CENTER_Z+radius*Math.sin(b)],thickness,
+     i%3===0?'#f9e5ad':second?'#a4c5ff':'#83f7df',6);
+  }
+ };
+ ringStrip(RING_PADDLE_RADIUS,1.37,.47);
+ if(doublePaddleActive())ringStrip(RING_UPPER_PADDLE_RADIUS,1.62,.42,true);
 }
 
 
@@ -2120,9 +2083,10 @@ function initBricks(){
    const c=slot%cfg.cols,r=Math.floor(slot/cfg.cols);
    const type=(slot*3+layer*7+Number(stage[2]))%11<6?'blue':(slot*3+layer*7+Number(stage[2]))%11<9?'pink':'green';
    const hp=type==='pink'?2:1;
-   const x=(c-(cfg.cols-1)/2)*cfg.dx;
-   const z=stage==='4-4'?-12.5+r*cfg.dz:-18.0+r*cfg.dz;
-   bricks.push({x,z,hp,origHp:hp,type,alive:true,w:cfg.dx-.43,d:cfg.dz-.56,hit:0,
+   const spaceScale=stage==='4-4'?.64:1;
+   const x=(c-(cfg.cols-1)/2)*cfg.dx*spaceScale;
+   const z=stage==='4-4'?RING_CENTER_Z+(-12.5+r*cfg.dz-RING_CENTER_Z)*spaceScale:-18.0+r*cfg.dz;
+   bricks.push({x,z,hp,origHp:hp,type,alive:true,w:(cfg.dx-.43)*spaceScale,d:(cfg.dz-.56)*spaceScale,hit:0,
     layer,slot,y:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,
     dropStartY:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropTime:0,dropDuration:.5});
   }
@@ -2165,7 +2129,7 @@ function initBricks(){
  // Earlier Asian levels now feature two catchable dormant bonus balls each.
  // Reuse existing first-tier slots and do not change any brick color or HP.
  const earlyExtraSlots={'1-2':[2,13],'1-3':[4,11],'1-4':[1,7]};
- for(const slot of earlyExtraSlots[stage]||[]){
+ for(const slot of (ringStage()?[]:(earlyExtraSlots[stage]||[]))){
   const tile=bricks.find(b=>b.layer===0&&b.slot===slot);
   if(tile)ballPickups.push({x:tile.x,z:tile.z+tile.d*.50,active:false,r:1.12,slot});
  }
@@ -2173,11 +2137,11 @@ function initBricks(){
  // Move bricks and their collectible bonus balls one course-row toward the paddle.
  for(const b of bricks)if(!ringStage())b.z+=4.45;
  for(const pickup of ballPickups)pickup.z+=4.45;
+ if(ringStage())ballPickups.length=0;
  initIronBlocks();
  for(const iron of ironBlocks)iron.z+=4.45;
  initSpringBlocks();
  initWormholes();
- initMovingBricks();
 }
 function stageCity(){return stage==='4-1'?'開羅':stage==='4-2'?'坎培拉':stage==='4-3'?'北極':stage==='4-4'?'宇宙空間站':stage==='4-5'?'台北':stage==='3-1'?'華盛頓':stage==='3-2'?'渥太華':stage==='3-3'?'墨西哥城':stage==='3-4'?'巴西利亞':stage==='3-5'?'拉斯維加斯':stage==='2-5'?'倫敦':stage==='2-4'?'華沙':stage==='2-3'?'巴黎':stage==='2-2'?'柏林':stage==='2-1'?'阿姆斯特丹':stage==='1-5'?'新加坡':stage==='1-4'?'首爾':stage==='1-3'?'東京':stage==='1-2'?'香港':'台北';}
 function stageEng(){return stage==='4-1'?'CAIRO':stage==='4-2'?'CANBERRA':stage==='4-3'?'ARCTIC':stage==='4-4'?'SPACE STATION':stage==='4-5'?'TAIPEI':stage==='3-1'?'WASHINGTON':stage==='3-2'?'OTTAWA':stage==='3-3'?'MEXICO CITY':stage==='3-4'?'BRASILIA':stage==='3-5'?'LAS VEGAS':stage==='2-5'?'LONDON':stage==='2-4'?'WARSAW':stage==='2-3'?'PARIS':stage==='2-2'?'BERLIN':stage==='2-1'?'AMSTERDAM':stage==='1-5'?'SINGAPORE':stage==='1-4'?'SEOUL':stage==='1-3'?'TOKYO':stage==='1-2'?'HONG KONG':'TAIPEI';}
@@ -2209,7 +2173,7 @@ function launchBall(){
  gameState='playing';setServePrompt(false);lastTime=performance.now();
  sound(370,.09,'sine',.05);
 }
-function reset(inheritedLives=null){arenaVersion++;physicsRemainder=0;renderFraction=1;score=0;lives=inheritedLives===null?3:inheritedLives;lostAnyBallThisStage=false;pinkTipShown=false;greenTipShown=false;ironTipShown=false;springTipShown=false;wormTipShown=false;ringAngle=Math.PI/2;orbs.forEach(o=>o.el?.remove());orbs=[];effects={ball:null,paddle:null};refreshEffectStatus();$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');$('irontip').classList.add('hidden');$('springtip').classList.add('hidden');$('wormtip').classList.add('hidden');paddleX=0;particles=[];bonusBalls=[];ballPickups=[];initBricks();prepareServe();updateStageHud();updateHud();}
+function reset(inheritedLives=null){arenaVersion++;physicsRemainder=0;renderFraction=1;score=0;lives=inheritedLives===null?3:inheritedLives;lostAnyBallThisStage=false;pinkTipShown=false;greenTipShown=false;ironTipShown=false;springTipShown=false;wormTipShown=false;ringAngle=Math.PI/2;orbs.forEach(o=>o.el?.remove());orbs=[];effects={ball:null,paddle:null};orbSequence=0;refreshEffectStatus();$('pinktip').classList.add('hidden');$('greentip').classList.add('hidden');$('irontip').classList.add('hidden');$('springtip').classList.add('hidden');$('wormtip').classList.add('hidden');paddleX=0;particles=[];bonusBalls=[];ballPickups=[];initBricks();prepareServe();updateStageHud();updateHud();}
 function start(whichStage=stage,continueJourney=false){
  const carry=continueJourney&&pendingTransition?.to===whichStage
    ?pendingTransition.lives+pendingTransition.bonus:null;
@@ -2270,36 +2234,48 @@ window.addEventListener('keyup',e=>{if(e.code==='ArrowLeft'||e.code==='KeyA')hel
 window.addEventListener('blur',()=>{heldLeft=heldRight=false;if(gameState==='playing')pause();});document.addEventListener('visibilitychange',()=>{if(document.hidden&&gameState==='playing')pause();});
 function toast(str){const t=$('toast');t.textContent=str;t.classList.add('show');toastTime=.85;}
 function burst(x,z,color,count=16){for(let i=0;i<count;i++){const ang=random()*Math.PI*2,s=3+random()*8;particles.push({x,y:1.2+random()*.4,z,vx:Math.cos(ang)*s,vy:2+random()*8,vz:Math.sin(ang)*s,life:.55+random()*.5,initial:1,color,size:.09+random()*.18});}}
-function reflectBallAfterPaddle(b){let off=(b.x-paddleX)/(paddleHalfWidth()+.15);let s=Math.hypot(b.vx,b.vz);let angle=Math.max(-1,Math.min(1,off))*1.00;b.vx=Math.sin(angle)*s*.88;b.vz=-Math.sqrt(Math.max(25,s*s-b.vx*b.vx));b.z=PADDLE_REBOUND_Z;shake=.08;sound(480,.09,'triangle',.065);}
+function reflectBallAfterPaddle(b,upper=false){
+ let off=fullShieldActive()?((b.x/(HK_BALL_LIMIT||11.2))*.65):(b.x-paddleX)/(paddleHalfWidth()+.15);
+ let s=Math.hypot(b.vx,b.vz),angle=Math.max(-1,Math.min(1,off))*1.00;
+ b.vx=Math.sin(angle)*s*.88;b.vz=-Math.sqrt(Math.max(25,s*s-b.vx*b.vx));
+ b.z=upper?UPPER_PADDLE_HIT_Z-b.r-.16:PADDLE_REBOUND_Z;
+ shake=.08;sound(upper?620:480,.09,'triangle',.065);
+}
 function releaseStack(brick){
  if(!['1-2','1-3','1-4','1-5','2-1','2-2','2-3','2-4','2-5','3-1','3-2','3-3','3-4','3-5'].includes(stage)||brick.layer!==0)return;
  // Every surviving level above this slot drops one tier; 3rd -> 2nd -> 1st.
  for(const b of bricks){
   if(!b.alive||b.slot!==brick.slot||b.layer<=0)continue;
   b.dropStartY=b.y;b.layer--;b.dropTime=b.dropDuration;
-  if(b.moving)b.motionY=BRICK_BASE_Y+BRICK_LAYER_STEP*b.layer;
  }
 }
-const POWER_DESCRIPTIONS={A:'球速加快',B:'球速減慢',C:'控制板加快',D:'控制板減慢'};
+const POWER_DESCRIPTIONS={A:'球速加快',B:'球速減慢',C:'控制板加快',D:'控制板減慢',E:'上下雙層控制板',F:'全寬防護板'};
 function refreshEffectStatus(){
  const active=[effects.ball,effects.paddle].filter(Boolean);
  $('effectstatus').innerHTML=active.map(e=>`<span class="active-effect">${e.type} · ${POWER_DESCRIPTIONS[e.type]}</span>`).join('');
 }
 function spawnOrb(brick){
- const type=['A','B','C','D'][orbSequence++%4];
+ const available=stage.startsWith('1-')?['A','B','C','D']:
+  stage.startsWith('2-')?['A','B','C','D','E']:['A','B','C','D','E','F'];
+ const type=available[orbSequence++%available.length];
  const el=document.createElement('span');el.className='orb-letter';el.textContent=type;$('orbLabels').appendChild(el);
  orbs.push({x:brick.x,z:brick.z,y:2.2,type,el,v:11.2+random()*2.2});
 }
 function collectOrb(orb){
  const key=(orb.type==='A'||orb.type==='B')?'ball':'paddle';
- effects[key]={type:orb.type,until:time+13.5};refreshEffectStatus();sound(850,.18,'triangle',.085);
+ effects[key]={type:orb.type,until:time+(orb.type==='F'?15:13.5)};refreshEffectStatus();sound(850,.18,'triangle',.085);
  burst(orb.x,PADDLE_Z,'#ffa64f',20);toast(`✦ ${orb.type}`);
 }
 function tickOrbs(dt){
  for(const kind of ['ball','paddle'])if(effects[kind]&&time>=effects[kind].until){effects[kind]=null;refreshEffectStatus();}
  for(let i=orbs.length-1;i>=0;i--){const orb=orbs[i];orb.z+=orb.v*dt;
-  if(orb.z>=PADDLE_Z-.60&&orb.z<=PADDLE_Z+.85&&Math.abs(orb.x-paddleX)<paddleHalfWidth()+.45){collectOrb(orb);orb.el.remove();orbs.splice(i,1);}
-  else if(orb.z>13.0){orb.el.remove();orbs.splice(i,1);}
+  const caught=ringStage()
+    ?(Math.hypot(orb.x,orb.z-RING_CENTER_Z)>=RING_PADDLE_RADIUS-.75&&
+      (fullShieldActive()||Math.abs(wrapAngle(Math.atan2(orb.z-RING_CENTER_Z,orb.x)-ringAngle))<.32))
+    :(orb.z>=PADDLE_Z-.60&&orb.z<=PADDLE_Z+.85&&
+      (fullShieldActive()||Math.abs(orb.x-paddleX)<paddleHalfWidth()+.45));
+  if(caught){collectOrb(orb);orb.el.remove();orbs.splice(i,1);}
+  else if(orb.z>(ringStage()?RING_CENTER_Z+RING_RADIUS+1:13.0)){orb.el.remove();orbs.splice(i,1);}
  }
 }
 function hitBrick(brick){
@@ -2320,7 +2296,6 @@ function hitBrick(brick){
 function tick(dt){time+=dt;if(toastTime>0){toastTime-=dt;if(toastTime<=0)$('toast').classList.remove('show');}flash=Math.max(0,flash-dt*2);shake=Math.max(0,shake-dt*1.9);$('flash').style.opacity=String(flash*.6);
 for(const p of particles){p.life-=dt;p.x+=p.vx*dt;p.z+=p.vz*dt;p.y+=p.vy*dt;p.vy-=13*dt;}particles=particles.filter(p=>p.life>0);if(particles.length>220)particles.splice(0,particles.length-220);
 if(gameState!=='playing'&&gameState!=='ready')return;
-animateMovingBricks();
 for(const block of ironBlocks)block.glint=Math.max(0,block.glint-dt);
 for(const block of springBlocks)block.glint=Math.max(0,block.glint-dt);
 for(const b of bricks){
@@ -2366,8 +2341,16 @@ for(const b of moving){
  b.x+=b.vx*dt*speedUp*effectBallScale*GAME_BALL_SPEED_FACTOR;b.z+=b.vz*dt*speedUp*effectBallScale*GAME_BALL_SPEED_FACTOR;
  if(ringStage()){
    const dx=b.x,dz=b.z-RING_CENTER_Z,rad=Math.hypot(dx,dz),theta=Math.atan2(dz,dx);
+   const outerShield=fullShieldActive();
+   if(doublePaddleActive()&&rad>=RING_UPPER_PADDLE_RADIUS-b.r&&
+      Math.hypot(oldx,oldz-RING_CENTER_Z)<RING_UPPER_PADDLE_RADIUS-b.r&&
+      Math.abs(wrapAngle(theta-ringAngle))<.28){
+      const nx=dx/rad,nz=dz/rad,normal=b.vx*nx+b.vz*nz;
+      if(normal>0){b.vx-=2*normal*nx;b.vz-=2*normal*nz;
+       b.x=nx*(RING_UPPER_PADDLE_RADIUS-b.r-.13);b.z=RING_CENTER_Z+nz*(RING_UPPER_PADDLE_RADIUS-b.r-.13);sound(650,.08,'triangle',.06);}
+   }
    if(rad>=RING_RADIUS-b.r){
-    if(Math.abs(wrapAngle(theta-ringAngle))<.28){
+    if(outerShield||Math.abs(wrapAngle(theta-ringAngle))<.28){
      const nx=dx/rad,nz=dz/rad,dot=b.vx*nx+b.vz*nz;
      b.vx-=2*Math.max(0,dot)*nx;b.vz-=2*Math.max(0,dot)*nz;
      b.vx+=-nz*1.35*(random()-.5);b.vz+=nx*1.35*(random()-.5);
@@ -2379,14 +2362,17 @@ for(const b of moving){
  if(b.x<-wall+b.r){b.x=-wall+b.r;b.vx=Math.abs(b.vx);sound(220,.05,'triangle',.025);}
  if(b.x>wall-b.r){b.x=wall-b.r;b.vx=-Math.abs(b.vx);sound(220,.05,'triangle',.025);}
  if(b.z<-21.55+b.r){b.z=-21.55+b.r;b.vz=Math.abs(b.vz);sound(245,.06,'triangle',.03);}
- if(b.vz>0&&oldz+b.r<PADDLE_HIT_Z&&b.z+b.r>=PADDLE_HIT_Z&&Math.abs(b.x-paddleX)<=paddleHalfWidth()+.12+b.r){reflectBallAfterPaddle(b);}
+ if(doublePaddleActive()&&b.vz>0&&oldz+b.r<UPPER_PADDLE_HIT_Z&&
+    b.z+b.r>=UPPER_PADDLE_HIT_Z&&Math.abs(b.x-paddleX)<=paddleHalfWidth()+.12+b.r){reflectBallAfterPaddle(b,true);}
+ else if(b.vz>0&&oldz+b.r<PADDLE_HIT_Z&&b.z+b.r>=PADDLE_HIT_Z&&
+    (fullShieldActive()||Math.abs(b.x-paddleX)<=paddleHalfWidth()+.12+b.r)){reflectBallAfterPaddle(b);}
  else if(b.z>BALL_LOST_Z){
    lostAnyBallThisStage=true;
    b.active=false;burst(b.x,11.3,'#fff6bd',18);sound(160,.09,'sawtooth',.04);continue;
  }
  } // end of normal rectangular court boundary and paddle tests
  // In Singapore, hitting either of the two dormant balls makes it join the volley.
- if(ballPickups.length)for(const pickup of ballPickups){
+ if(ballPickups.length&&!ringStage())for(const pickup of ballPickups){
   if(pickup.active||Math.abs(b.x-pickup.x)>pickup.r+b.r||Math.abs(b.z-pickup.z)>pickup.r+b.r)continue;
   pickup.active=true;arenaVersion++;
   const s=Math.hypot(b.vx,b.vz),direction=b.vx>0?-1:1;
@@ -2493,8 +2479,8 @@ function ironBlockMesh(o,b){
  box(o,b.x,b.y+.83,b.z-b.d/2,.65+.5*p,.075,.085,white);
  box(o,b.x,b.y+.78,b.z+b.d/2+.04,b.w*.84,.09,.085,p>.50?'#e4fbff':'#98d6ed');
 }
-function paddleMesh(b){
- const h=paddleHalfWidth(),w=h*2,x=paddleX,z=PADDLE_Z;
+function paddleMesh(b,upper=false){
+ const h=fullShieldActive()?HK_HALF_WALL-.20:paddleHalfWidth(),w=h*2,x=fullShieldActive()?0:paddleX,z=upper?UPPER_PADDLE_Z:PADDLE_Z;
  // Satin dark-metal chassis and layered beveled brushed-chrome surfaces.
  box(b,x,.58,z,w,.19,1.67,'#1d354b','#7890a5','#132a3d');
  box(b,x,1.05,z,w*.992,.83,1.29,'#56758f','#eaf5fa','#324b66');
@@ -2531,7 +2517,7 @@ function hkFerry(o,x,z){
 }
 function makeFixedArena(){
  let a=[];energizedCourt(a);
- for(let b of bricks)if(b.alive&&!b.moving&&(!fastMobileEnabled()||b.dropTime<=0))brickMesh(b,a);
+ for(let b of bricks)if(b.alive&&(!fastMobileEnabled()||b.dropTime<=0))brickMesh(b,a);
  for(const block of ironBlocks)ironBlockMesh(a,block);
  for(const block of springBlocks)springMesh(a,block);
  for(const w of wormholes)wormholeMesh(a,w);
@@ -2552,7 +2538,6 @@ function cachedArenaGeometry(){
  return arenaGeometry;
 }
 function makeDynamic(){let a=[];
-for(const b of movingBricks)if(b.alive)brickMesh(b,a);
 // Ball shadow, flying sphere and afterglow
 for(const b of [ball,...bonusBalls]){
  if(b.active===false||b.teleportUntil>time)continue;
@@ -2569,7 +2554,7 @@ for(const p of ballPickups){
  sphere(a,p.x-.24,BRICK_BASE_Y+BRICK_HEIGHT*.88,p.z+.1,.24,'#fff6d5',6,9);
  rod(a,[p.x-.45,BRICK_BASE_Y+BRICK_HEIGHT*.66,p.z],[p.x+.45,BRICK_BASE_Y+BRICK_HEIGHT*.66,p.z],.12,'#f6f5e9',5);
 }
-if(ringStage())ringPaddleMesh(a);else paddleMesh(a);
+if(ringStage())ringPaddleMesh(a);else{paddleMesh(a);if(doublePaddleActive())paddleMesh(a,true);}
 for(const o of orbs){sphere(a,o.x,2.16+Math.sin(time*7)*.1,o.z,.50,'#ff9b3f',7,10);sphere(a,o.x-.16,2.32,o.z+.11,.16,'#fff2bf',4,7);}
 // Mobile game objects and paddle follow the lowered arena, while Taipei landmarks remain fixed.
 if(isMobilePortrait())for(let i=0;i<a.length;i+=10){
@@ -2922,14 +2907,25 @@ function drawFastMobile(){
  // The real paddle's collision width is unchanged: premium chrome, gold and
  // mint inlays are rendered as low-cost 2D projected polygons on phones.
  if(ringStage()){
-  const arc=[];for(let k=0;k<=28;k++){const a=ringAngle-.27+k*.54/28;arc.push(fastProject(RING_PADDLE_RADIUS*Math.cos(a),1.62,RING_CENTER_Z+RING_PADDLE_RADIUS*Math.sin(a)));}
-  c.save();c.lineWidth=8;c.lineCap='round';c.strokeStyle='#f0d48a';c.shadowBlur=12;c.shadowColor='#93f7dc';c.beginPath();arc.forEach((p,i)=>i?c.lineTo(...p):c.moveTo(...p));c.stroke();c.lineWidth=4;c.strokeStyle='#89ffe0';c.stroke();c.restore();
+  const drawRingArc=(radius,secondary=false)=>{
+   const isShield=fullShieldActive(),arc=[],points=isShield?96:28;
+   for(let k=0;k<=points;k++){
+    const a=isShield?k*Math.PI*2/points:ringAngle-.27+k*.54/points;
+    arc.push(fastProject(radius*Math.cos(a),secondary?1.85:1.62,RING_CENTER_Z+radius*Math.sin(a)));
+   }
+   c.save();c.lineWidth=secondary?6:8;c.lineCap='round';c.strokeStyle=secondary?'#d1bcff':'#f0d48a';
+   c.shadowBlur=12;c.shadowColor=secondary?'#a3a4ff':'#93f7dc';c.beginPath();arc.forEach((p,i)=>i?c.lineTo(...p):c.moveTo(...p));c.stroke();
+   c.lineWidth=3;c.strokeStyle='#89ffe0';c.stroke();c.restore();
+  };
+  drawRingArc(RING_PADDLE_RADIUS);
+  if(doublePaddleActive())drawRingArc(RING_UPPER_PADDLE_RADIUS,true);
  }else{
- const half=paddleHalfWidth(),x=paddleX;
- const t=(y,z,edge)=>fastProject(x+edge,y,z);
- const top=[t(1.66,PADDLE_Z-.55,-half),t(1.66,PADDLE_Z-.55,half),
-    t(1.66,PADDLE_Z+.55,half),t(1.66,PADDLE_Z+.55,-half)];
- const face=[top[3],top[2],t(.65,PADDLE_Z+.55,half),t(.65,PADDLE_Z+.55,-half)];
+ const drawStraightPaddle=(z,upper=false)=>{
+ const half=fullShieldActive()?HK_HALF_WALL-.20:paddleHalfWidth(),x=fullShieldActive()?0:paddleX;
+ const t=(y,zz,edge)=>fastProject(x+edge,y,zz);
+ const top=[t(1.66,z-.55,-half),t(1.66,z-.55,half),
+    t(1.66,z+.55,half),t(1.66,z+.55,-half)];
+ const face=[top[3],top[2],t(.65,z+.55,half),t(.65,z+.55,-half)];
  c.save();fastPath(c,face);
  const metal=c.createLinearGradient(face[0][0],face[0][1],face[3][0],face[3][1]);
  metal.addColorStop(0,'#b4c5d3');metal.addColorStop(.35,'#49677f');metal.addColorStop(1,'#182d43');
@@ -2939,27 +2935,29 @@ function drawFastMobile(){
  chrome.addColorStop(0,'#f5ffff');chrome.addColorStop(.20,'#c3dbe5');chrome.addColorStop(.46,'#45657d');chrome.addColorStop(.69,'#c8e7ec');chrome.addColorStop(1,'#7197aa');
  c.fillStyle=chrome;c.fill();c.lineWidth=1.4;c.strokeStyle='#f4f6fb';c.stroke();
  // Gold perimeter strip.
- const goldZ=PADDLE_Z+.46,goldA=t(1.73,goldZ,-half*.94),goldB=t(1.73,goldZ,half*.94);
+ const goldZ=z+.46,goldA=t(1.73,goldZ,-half*.94),goldB=t(1.73,goldZ,half*.94);
  c.beginPath();c.moveTo(...goldA);c.lineTo(...goldB);c.strokeStyle='#f7d492';c.lineWidth=2.2;c.stroke();
- const mint=[t(1.80,PADDLE_Z-.32,-half*.81),t(1.80,PADDLE_Z-.32,half*.81),
-   t(1.80,PADDLE_Z+.26,half*.81),t(1.80,PADDLE_Z+.26,-half*.81)];
+ const mint=[t(1.80,z-.32,-half*.81),t(1.80,z-.32,half*.81),
+   t(1.80,z+.26,half*.81),t(1.80,z+.26,-half*.81)];
  fastPath(c,mint);const gloss=c.createLinearGradient(mint[0][0],mint[0][1],mint[3][0],mint[3][1]);
  gloss.addColorStop(0,'#defff1');gloss.addColorStop(.5,'#6fdfb8');gloss.addColorStop(1,'#b8fce3');
  c.shadowColor='#96f7d3';c.shadowBlur=8;c.fillStyle=gloss;c.fill();c.shadowBlur=0;
  c.lineWidth=1;c.strokeStyle='#e7fff6';c.stroke();
- const center=t(1.89,PADDLE_Z-.03,0);c.beginPath();c.ellipse(center[0],center[1],Math.max(2,half*1.0),3,0,0,Math.PI*2);
+ const center=t(1.89,z-.03,0);c.beginPath();c.ellipse(center[0],center[1],Math.max(2,half*1.0),3,0,0,Math.PI*2);
  c.fillStyle='#f3fff7';c.fill();
  for(const side of [-1,1]){
-  const endcap=t(1.84,PADDLE_Z-.03,side*(half-.22));
+  const endcap=t(1.84,z-.03,side*(half-.22));
   c.beginPath();c.arc(endcap[0],endcap[1],2.5,0,Math.PI*2);
   c.fillStyle='#f7d692';c.fill();
  }
  c.restore();
+ };
+ drawStraightPaddle(PADDLE_Z);
+ if(doublePaddleActive())drawStraightPaddle(UPPER_PADDLE_Z,true);
  } // circular vs. straight mobile paddle
- // Moving bricks and descending slabs are drawn live on mobile.
- // They are excluded from the cached city-and-brick layer to avoid ghosting.
+ // Descending slabs alone render live; stationary bricks use the cached scene.
  for(const b of bricks){
-  if(!b.alive||(b.dropTime<=0&&!b.moving))continue;
+  if(!b.alive||b.dropTime<=0)continue;
   const slab=[fastProject(b.x-b.w*.5,b.y+BRICK_HEIGHT*.5,b.z-b.d*.5),
     fastProject(b.x+b.w*.5,b.y+BRICK_HEIGHT*.5,b.z-b.d*.5),
     fastProject(b.x+b.w*.5,b.y+BRICK_HEIGHT*.5,b.z+b.d*.5),
@@ -3002,7 +3000,7 @@ function recacheFastProjections(){
   fastCachedRails.push([fastProject(xx,1.40,13),fastProject(xx,1.40,-21)]);
  }
  for(const b of bricks){
-  if(!b.alive||b.layer!==0||b.dropTime>0||b.moving)continue;
+  if(!b.alive||b.layer!==0||b.dropTime>0)continue;
   const y=b.y+BRICK_HEIGHT*.5+.03;
   fastCachedOutlines.push([
    fastProject(b.x-b.w*.5,y,b.z-b.d*.5),fastProject(b.x+b.w*.5,y,b.z-b.d*.5),
