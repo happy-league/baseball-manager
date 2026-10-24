@@ -1501,12 +1501,12 @@ function fourthChapterCity(name){
  const g=space?[]:hkGeo.slice(0,arenaEnd);
  seed=({'4-1':4401001,'4-2':4402001,'4-3':4403001,'4-4':4404001,'4-5':4405001})[name];
  if(space){
-  cylinder(g,0,-3.15,-4.8,12.5,.38,'#192b52',52);
-  cylinder(g,0,-3.42,-4.8,10.6,.11,'#263b63',52);
+  cylinder(g,0,-3.15,-4.8,17.05,.38,'#192b52',64);
+  cylinder(g,0,-3.42,-4.8,15.20,.11,'#263b63',64);
   for(let j=0;j<64;j++){
    const a=j*Math.PI*2/64,b=(j+1)*Math.PI*2/64;
-   rod(g,[11.7*Math.cos(a),.84,-4.8+11.7*Math.sin(a)],
-         [11.7*Math.cos(b),.84,-4.8+11.7*Math.sin(b)],.16,j%4?'#5b81d3':'#a4eeff',5);
+   rod(g,[16.10*Math.cos(a),.84,-4.8+16.10*Math.sin(a)],
+         [16.10*Math.cos(b),.84,-4.8+16.10*Math.sin(b)],.16,j%4?'#5b81d3':'#a4eeff',5);
   }
   spaceArenaEnd=g.length;
   // Large colorful planets and scattered orbital rocks in deep space.
@@ -1802,13 +1802,13 @@ const PADDLE_HIT_Z=PADDLE_Z-.67;
 const PADDLE_REBOUND_Z=PADDLE_Z-1.23;
 const BALL_REST_Z=PADDLE_Z-1.24;
 const BALL_LOST_Z=13.25;
-const RING_STAGE='4-4',RING_CENTER_Z=-4.8,RING_RADIUS=11.7;
+const RING_STAGE='4-4',RING_CENTER_Z=-4.8,RING_RADIUS=16.10,RING_PADDLE_RADIUS=15.32;
 const ringStage=()=>stage===RING_STAGE;
-function ringPose(){return {x:11.10*Math.cos(ringAngle),z:RING_CENTER_Z+11.10*Math.sin(ringAngle)};}
+function ringPose(){return {x:RING_PADDLE_RADIUS*Math.cos(ringAngle),z:RING_CENTER_Z+RING_PADDLE_RADIUS*Math.sin(ringAngle)};}
 function wrapAngle(a){return Math.atan2(Math.sin(a),Math.cos(a));}
 function initWormholes(){
  wormholes=stage.startsWith('4-')?(ringStage()?
-  [{x:-9.3,z:-4.8},{x:9.3,z:-4.8}]:[{x:-6.9,z:-1.75},{x:6.9,z:-1.75}]):[];
+  [{x:-13.55,z:-4.8},{x:13.55,z:-4.8}]:[{x:-6.9,z:-1.75},{x:6.9,z:-1.75}]):[];
  wormholes.forEach((w,i)=>{w.id=i;w.r=1.55;w.glow=0;});
 }
 function transferWormhole(b){
@@ -1854,8 +1854,8 @@ function wormholeMesh(out,w){
 function ringPaddleMesh(out){
  for(let i=0;i<13;i++){
   const a=ringAngle-.27+i*.54/13,b=ringAngle-.27+(i+1)*.54/13;
-  rod(out,[11.08*Math.cos(a),1.37,RING_CENTER_Z+11.08*Math.sin(a)],
-    [11.08*Math.cos(b),1.37,RING_CENTER_Z+11.08*Math.sin(b)],.47,i%3===0?'#f9e5ad':'#83f7df',6);
+  rod(out,[RING_PADDLE_RADIUS*Math.cos(a),1.37,RING_CENTER_Z+RING_PADDLE_RADIUS*Math.sin(a)],
+    [RING_PADDLE_RADIUS*Math.cos(b),1.37,RING_CENTER_Z+RING_PADDLE_RADIUS*Math.sin(b)],.47,i%3===0?'#f9e5ad':'#83f7df',6);
  }
 }
 
@@ -2111,7 +2111,7 @@ function initBricks(){
    '4-1':{layers:4,cols:6,rows:2,dx:3.70,dz:5.10},
    '4-2':{layers:4,cols:5,rows:2,dx:4.25,dz:5.10},
    '4-3':{layers:5,cols:5,rows:2,dx:4.15,dz:5.02},
-   '4-4':{layers:3,cols:4,rows:3,dx:4.72,dz:4.55},
+   '4-4':{layers:3,cols:4,rows:3,dx:5.80,dz:6.20},
    '4-5':{layers:4,cols:6,rows:2,dx:3.60,dz:5.15}
   }[stage];
   const count=cfg.cols*cfg.rows;
@@ -2120,7 +2120,7 @@ function initBricks(){
    const type=(slot*3+layer*7+Number(stage[2]))%11<6?'blue':(slot*3+layer*7+Number(stage[2]))%11<9?'pink':'green';
    const hp=type==='pink'?2:1;
    const x=(c-(cfg.cols-1)/2)*cfg.dx;
-   const z=stage==='4-4'?-10.4+r*cfg.dz:-18.0+r*cfg.dz;
+   const z=stage==='4-4'?-12.5+r*cfg.dz:-18.0+r*cfg.dz;
    bricks.push({x,z,hp,origHp:hp,type,alive:true,w:cfg.dx-.43,d:cfg.dz-.56,hit:0,
     layer,slot,y:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,
     dropStartY:BRICK_BASE_Y+layer*BRICK_LAYER_STEP,dropTime:0,dropDuration:.5});
@@ -2201,7 +2201,7 @@ function prepareServe(){
 }
 function launchBall(){
  if(gameState!=='ready')return;
- if(ringStage()){const at=ringPose();ball.x=at.x*.89;ball.z=RING_CENTER_Z+(at.z-RING_CENTER_Z)*.89;}else{ball.x=paddleX;ball.z=BALL_REST_Z;}
+ if(ringStage()){const at=ringPose();ball.x=at.x*.915;ball.z=RING_CENTER_Z+(at.z-RING_CENTER_Z)*.915;}else{ball.x=paddleX;ball.z=BALL_REST_Z;}
  ball.previousX=ball.x;ball.previousZ=ball.z;
  if(ringStage()){ball.vx=-Math.cos(ringAngle)*15.0+(random()-.5)*6;ball.vz=-Math.sin(ringAngle)*15.0+(random()-.5)*6;}
  else{ball.vx=(random()>.5?1:-1)*4.65;ball.vz=-16.3;}
@@ -2334,10 +2334,10 @@ for(const b of bricks){
  }
 }
 tickOrbs(dt);paddleDir=(heldRight?1:0)-(heldLeft?1:0);const wideCourt=wideStage();const paddleLimit=wideCourt?HK_HALF_WALL-paddleHalfWidth()-.30:9.4-paddleHalfWidth()-.28;
-if(ringStage())ringAngle=wrapAngle(ringAngle+paddleDir*2.85*dt);
+if(ringStage())ringAngle=wrapAngle(ringAngle-paddleDir*2.85*dt);
 else paddleX=Math.max(-paddleLimit,Math.min(paddleLimit,paddleX+paddleDir*21*dt*(effects.paddle?.type==='C'?1.65:effects.paddle?.type==='D'?.60:1)));
 if(gameState==='ready'){
- if(ringStage()){const at=ringPose();ball.x=at.x*.89;ball.z=RING_CENTER_Z+(at.z-RING_CENTER_Z)*.89;}
+ if(ringStage()){const at=ringPose();ball.x=at.x*.915;ball.z=RING_CENTER_Z+(at.z-RING_CENTER_Z)*.915;}
  else{ball.x=paddleX;ball.z=BALL_REST_Z;}
  ball.previousX=ball.x;ball.previousZ=ball.z;
  return;
@@ -2867,10 +2867,11 @@ function render(staticOnly=false){if(hasWebGL){gl.clearColor(0,0,0,0);gl.clear(g
 const isHK=stage==='1-2',isTokyo=stage==='1-3',isSeoul=stage==='1-4',isSingapore=stage==='1-5',isAmsterdam=stage==='2-1',isBerlin=stage==='2-2',isNew=!!NEW_CITY_MESHES[stage],isWide=true;
 // Higher three-quarter viewpoint for all playable levels, including Seoul.
 // Position/physics still share the same local arena coordinate system.
-const distance=49,camY=portrait?32.5:26.9;
-cameraEye=[0,camY,distance]; // Fixed position and angle across every city; no camera jitter.
-const target=[0,portrait?7.3:6.1,portrait?-9.3:-8];
-let p=new Float32Array(16),v=new Float32Array(16);mat4.perspective(p,(portrait?74:55)*Math.PI/180,r,.1,250);mat4.lookAt(v,cameraEye,target,[0,1,0]);mat4.multiply(vpMatrix,p,v);if(hasWebGL){gl.uniformMatrix4fv(loc.vp,false,vpMatrix);gl.uniform3fv(loc.eye,cameraEye);gl.disable(gl.BLEND);drawBuffer(isNew?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobileBuffer:NEW_CITY_MESHES[stage].desktopBuffer):isBerlin?(isMobilePortrait()?STATIC_BUFFER_BERLIN_MOBILE:STATIC_BUFFER_BERLIN):isAmsterdam?(isMobilePortrait()?STATIC_BUFFER_AMSTERDAM_MOBILE:STATIC_BUFFER_AMSTERDAM):isSingapore?(isMobilePortrait()?STATIC_BUFFER_SINGAPORE_MOBILE:STATIC_BUFFER_SINGAPORE):isSeoul?(isMobilePortrait()?STATIC_BUFFER_SEOUL_MOBILE:STATIC_BUFFER_SEOUL):isTokyo?(isMobilePortrait()?STATIC_BUFFER_TOKYO_MOBILE:STATIC_BUFFER_TOKYO):isHK?(isMobilePortrait()?STATIC_BUFFER_HK_MOBILE:STATIC_BUFFER_HK):(isMobilePortrait()?STATIC_BUFFER_MOBILE:STATIC_BUFFER),null,(isNew?NEW_CITY_MESHES[stage].desktop.length:isBerlin?berlinGeo.length:isAmsterdam?amsterdamGeo.length:isSingapore?singaporeGeo.length:isSeoul?seoulGeo.length:isTokyo?tokyoGeo.length:isHK?hkGeo.length:staticGeo.length)/10,gl.STATIC_DRAW);const fixed=cachedArenaGeometry();
+const distance=ringStage()?(portrait?46:38):49,camY=ringStage()?(portrait?49:36):(portrait?32.5:26.9);
+cameraEye=[0,camY,distance]; // Space ring has a close, overhead camera; other stages are unchanged.
+const target=ringStage()?[0,portrait?3:2,RING_CENTER_Z]:[0,portrait?7.3:6.1,portrait?-9.3:-8];
+const cameraFov=ringStage()?(portrait?65:47):(portrait?74:55);
+let p=new Float32Array(16),v=new Float32Array(16);mat4.perspective(p,cameraFov*Math.PI/180,r,.1,250);mat4.lookAt(v,cameraEye,target,[0,1,0]);mat4.multiply(vpMatrix,p,v);if(hasWebGL){gl.uniformMatrix4fv(loc.vp,false,vpMatrix);gl.uniform3fv(loc.eye,cameraEye);gl.disable(gl.BLEND);drawBuffer(isNew?(isMobilePortrait()?NEW_CITY_MESHES[stage].mobileBuffer:NEW_CITY_MESHES[stage].desktopBuffer):isBerlin?(isMobilePortrait()?STATIC_BUFFER_BERLIN_MOBILE:STATIC_BUFFER_BERLIN):isAmsterdam?(isMobilePortrait()?STATIC_BUFFER_AMSTERDAM_MOBILE:STATIC_BUFFER_AMSTERDAM):isSingapore?(isMobilePortrait()?STATIC_BUFFER_SINGAPORE_MOBILE:STATIC_BUFFER_SINGAPORE):isSeoul?(isMobilePortrait()?STATIC_BUFFER_SEOUL_MOBILE:STATIC_BUFFER_SEOUL):isTokyo?(isMobilePortrait()?STATIC_BUFFER_TOKYO_MOBILE:STATIC_BUFFER_TOKYO):isHK?(isMobilePortrait()?STATIC_BUFFER_HK_MOBILE:STATIC_BUFFER_HK):(isMobilePortrait()?STATIC_BUFFER_MOBILE:STATIC_BUFFER),null,(isNew?NEW_CITY_MESHES[stage].desktop.length:isBerlin?berlinGeo.length:isAmsterdam?amsterdamGeo.length:isSingapore?singaporeGeo.length:isSeoul?seoulGeo.length:isTokyo?tokyoGeo.length:isHK?hkGeo.length:staticGeo.length)/10,gl.STATIC_DRAW);const fixed=cachedArenaGeometry();
 if(arenaGpuGeometry!==fixed){
  gl.bindBuffer(gl.ARRAY_BUFFER,arenaBuf);
  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(fixed),gl.DYNAMIC_DRAW);
@@ -2920,7 +2921,7 @@ function drawFastMobile(){
  // The real paddle's collision width is unchanged: premium chrome, gold and
  // mint inlays are rendered as low-cost 2D projected polygons on phones.
  if(ringStage()){
-  const arc=[];for(let k=0;k<=28;k++){const a=ringAngle-.27+k*.54/28;arc.push(fastProject(11.08*Math.cos(a),1.62,RING_CENTER_Z+11.08*Math.sin(a)));}
+  const arc=[];for(let k=0;k<=28;k++){const a=ringAngle-.27+k*.54/28;arc.push(fastProject(RING_PADDLE_RADIUS*Math.cos(a),1.62,RING_CENTER_Z+RING_PADDLE_RADIUS*Math.sin(a)));}
   c.save();c.lineWidth=8;c.lineCap='round';c.strokeStyle='#f0d48a';c.shadowBlur=12;c.shadowColor='#93f7dc';c.beginPath();arc.forEach((p,i)=>i?c.lineTo(...p):c.moveTo(...p));c.stroke();c.lineWidth=4;c.strokeStyle='#89ffe0';c.stroke();c.restore();
  }else{
  const half=paddleHalfWidth(),x=paddleX;
