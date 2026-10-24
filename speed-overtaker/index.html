@@ -252,47 +252,74 @@ function extendRaceCourse(track,index){
  track.hills=[...track.hills,...extra];
 }
 TRACKS.forEach(extendRaceCourse);
-// A single continuous, grade-separated figure-eight route for each circuit.
-// Preserve the previous v15 measured lap length and extend it by exactly 20%.
+// Six individually shaped circuits: different coastal sweeps, elevated curves,
+// industrial hairpins, neon chicanes, orbital turns and underwater bends.
+// All six retain one precisely aligned, grade-separated crossing (nodes 36/84).
+// Track identity, unlocks, lap timing, steering, UI and saved progress remain unchanged.
+const RACE_LAYOUTS=[
+ {label:'coastal sweeps',rotation:.16,sx:412,sz:185,asym:.12,bulge:.10,ripple:.04,cross:.13,curl:.06,skew:.02,
+  bends:[[.07,.035,30],[.21,.027,-38],[.59,.037,33],[.73,.029,-28]],
+  ramps:[[.105,160,30],[.255,140,38],[.495,155,34],[.665,130,42],[.795,165,32]],
+  rolling:[[3.4,5,.23],[2.3,9,1.35],[1.5,14,.6]]},
+ {label:'twilight viaduct climbs',rotation:-.56,sx:278,sz:277,asym:-.08,bulge:.05,ripple:.02,cross:-.19,curl:-.08,skew:.03,
+  bends:[[.13,.038,-38],[.27,.031,35],[.53,.038,-30],[.69,.029,42]],
+  ramps:[[.075,170,45],[.235,145,36],[.495,170,49],[.675,155,40],[.955,150,43]],
+  rolling:[[3.2,4,.55],[3.1,8,2.1],[1.9,13,.35]]},
+ {label:'rusted factory switchbacks',rotation:.57,sx:354,sz:238,asym:.08,bulge:-.09,ripple:.105,cross:.02,curl:.12,skew:-.01,
+  bends:[[.07,.026,40],[.19,.024,-49],[.53,.03,39],[.66,.026,-40],[.98,.03,27]],
+  ramps:[[.095,132,37],[.225,125,32],[.485,138,43],[.635,142,36],[.765,133,39]],
+  rolling:[[3.4,7,.22],[2.5,12,1.85],[2.0,16,.45]]},
+ {label:'midnight neon street chicanes',rotation:-.92,sx:328,sz:212,asym:-.035,bulge:-.06,ripple:.14,cross:.11,curl:-.11,skew:.055,
+  bends:[[.06,.026,-32],[.18,.026,47],[.27,.025,-37],[.52,.029,45],[.66,.024,-37],[.98,.03,27]],
+  ramps:[[.065,130,31],[.205,127,38],[.505,142,41],[.685,130,35],[.965,133,33]],
+  rolling:[[2.8,6,.8],[2.9,11,2.3],[1.6,17,.6]]},
+ {label:'orbital switchback bridges',rotation:1.02,sx:310,sz:266,asym:.20,bulge:.08,ripple:-.07,cross:-.18,curl:.13,skew:.06,
+  bends:[[.09,.034,-42],[.23,.03,38],[.50,.032,-32],[.63,.028,33],[.78,.037,-33]],
+  ramps:[[.115,170,43],[.275,158,37],[.495,165,48],[.665,160,45],[.795,170,39]],
+  rolling:[[3.7,5,.32],[3.0,10,1.8],[2.2,15,1.2]]},
+ {label:'undersea winding tunnel',rotation:-.19,sx:432,sz:166,asym:-.18,bulge:-.08,ripple:.032,cross:.14,curl:.075,skew:.01,
+  bends:[[.13,.037,32],[.29,.038,-32],[.56,.033,33],[.71,.037,-38]],
+  ramps:[[.095,163,34],[.255,155,40],[.495,170,36],[.645,165,44],[.765,173,37]],
+  rolling:[[3.1,5,.72],[2.6,9,2.05],[1.8,14,.5]]}
+];
 function addCrossingCourse(track,index){
- const previousLength=sampledPathLength(track.points),N=96,phase=12/N;
- const rotations=[.20,-.62,.47,.89,-.24,.42],shape=[.56,.62,.52,.59,.53,.58][index],rotation=rotations[index];
- const C=Math.cos(rotation),S=Math.sin(rotation),raw=[];
+ const spec=RACE_LAYOUTS[index],N=96,phase=12/N;
+ const previousLength=sampledPathLength(track.points);
+ const C=Math.cos(spec.rotation),S=Math.sin(spec.rotation),raw=[];
+ // Each side of the bridge follows its own lobe, with asymmetric width and curvature.
+ // Every analytic term vanishes at theta=PI and theta=2PI: bridge lanes truly align.
  for(let k=0;k<N;k++){
-  const a=Math.PI*2*(k/N+phase);
-  const x=345*(Math.sin(a)+.112*Math.sin(3*a)+.048*Math.sin(7*a));
-  const z=345*(shape*Math.sin(2*a)+.085*Math.sin(4*a)+.034*Math.sin(8*a));
+  const theta=2*Math.PI*(k/N+phase),si=Math.sin(theta),co=Math.cos(theta);
+  const x=spec.sx*(si*(1+spec.asym*si+spec.bulge*Math.cos(2*theta)+spec.ripple*Math.sin(4*theta))
+        +spec.skew*Math.sin(2*theta));
+  const z=spec.sz*(Math.sin(2*theta)*(1+spec.cross*co)
+        +spec.curl*si*si*Math.sin(3*theta+.15));
   raw.push([x*C-z*S,x*S+z*C]);
  }
- const currentLength=sampledPathLength(raw),factor=previousLength*1.2/currentLength;
- // Two added S-curve bend groups, safely distant from the grade-separated junction.
- track.points=raw.map((p,k)=>{
+ // Localized left/right S-bends make the maps noticeably different to drive.
+ // Multiplying by sin²(theta) guarantees that crossover bridge ends never drift.
+ const varied=raw.map((p,k)=>{
   const t=k/N,prev=raw[mod(k-1,N)],next=raw[(k+1)%N];
-  const dx=next[0]-prev[0],dz=next[1]-prev[1],len=Math.hypot(dx,dz)||1;
-  const bend=(center,width,amount)=>{
+  const dx=next[0]-prev[0],dz=next[1]-prev[1],length=Math.hypot(dx,dz)||1;
+  let lateral=0;
+  for(const [center,width,amount] of spec.bends){
    const d=mod(t-center+.5,1)-.5;
-   return amount*Math.exp(-.5*(d/width)**2);
-  };
-  const lateral=bend(.195,.033,48+index*2)-bend(.635,.038,54+index*2.5);
-  return [p[0]*factor-dz/len*lateral,p[1]*factor+dx/len*lateral];
+   lateral+=amount*Math.exp(-.5*(d/width)**2);
+  }
+  lateral*=Math.sin(2*Math.PI*(t+phase))**2;
+  return [p[0]-dz/length*lateral,p[1]+dx/length*lateral];
  });
+ // Calibrate lap length to the existing published version (+20%), not to map size.
+ const factor=previousLength*1.2/sampledPathLength(varied);
+ track.points=varied.map(p=>[p[0]*factor,p[1]*factor]);
  track.previousLength=previousLength;
  track.courseLength=sampledPathLength(track.points);
- // Faster rolling gradients, suppressed automatically in the two-layer bridge junction.
- track.hills.push([2.8,12,.35+index*.34],[1.7,17,.86+index*.31]);
- // θ=π and 2π are the same geographic point on opposite traversals.
- // Their roadway elevations differ by at least 24 metres at the crossover.
+ track.hills.push(...spec.rolling);
+ // Five real continuous uphill/downhill ramps per map, not mere scenery.
+ track.ramps=spec.ramps.map(([center,halfWidth,rise])=>({center,halfWidth,rise}));
  track.crossing={upperIndex:36,lowerIndex:84,pointCount:N,rise:29.0,span:142};
 }
 TRACKS.forEach(addCrossingCourse);
-// Three distinct raised ramp groups per course, each with sharp uphill and downhill faces.
-TRACKS.forEach((track,index)=>{
- track.ramps=[
-  {center:.115,halfWidth:102,rise:37+index*1.8},
-  {center:.535,halfWidth:110,rise:42+index*1.6},
-  {center:.730,halfWidth:98,rise:39+index*2.1}
- ];
-});
 const SAVE_PROGRESS_KEY='extreme-racer-cleared-v17';
 let completedTracks=[false,false,false,false];
 try{const saved=JSON.parse(localStorage.getItem(SAVE_PROGRESS_KEY)||'null');if(Array.isArray(saved))completedTracks=completedTracks.map((_,i)=>saved[i]===true)}catch(_){}
