@@ -2416,45 +2416,92 @@ function gondola(b,t,offset){const aa=cableA,bb=cableB;let x=aa[0]+(bb[0]-aa[0])
 function car(b,x,z,speed,color){let front=speed>0?1:-1;box(b,x,-1.9,z,3.5,.9,1.78,color,'#c4d6d1');box(b,x-.25*front,-1.1,z,1.85,.85,1.58,'#53768c');box(b,x-.22*front,-.79,z,1.35,.1,1.32,'#c7e1e2');for(let i of [-1,1])for(let j of [-1,1])cylinder(b,x+i*1.12,-2.48,z+j*.94,.36,.11,'#202f39',8);for(let j of [-.55,.55])box(b,x+front*1.79,-1.72,z+j,.1,.22,.3,front>0?'#fff3d7':'#ff837e');}
 function person(b,x,z,phase,shirt){const yy=-2.6+Math.sin(phase)*.10;cylinder(b,x,yy,z,.16,.9,'#303a45',6);sphere(b,x,yy+1.6,z,.31,'#e6b393',5,7);box(b,x,yy+1.05,z,.78,.8,.48,shirt);rod(b,[x-.32,yy+.93,z],[x-.42,yy+.28,z+Math.sin(phase)*.25],.095,'#d6a686');rod(b,[x+.32,yy+.93,z],[x+.42,yy+.28,z-Math.sin(phase)*.25],.095,'#d6a686');}
 
+// Lightweight live city details, deliberately separated from static landmark meshes.
+// These props never participate in ball physics, collision, or brick counts.
 function activeScenery3D(g){
  const t=time,pi=Math.PI;
- const xmove=(j,speed,span=156)=>((j*28+t*speed+3000)%span)-span/2;
+ const lane=(j,speed,span=160)=>((j*27+t*speed+3000)%span)-span*.5;
  if(stage==='3-5'){
-   // Animated marquee colors, Bellagio fountains, cars and orbiting High Roller light.
-   for(let j=0;j<10;j++){
-      const x=-82+j*18,y=25+(j*13)%32,z=-129-(j%3)*10;
-      box(g,x,y,z+7,7,.45,.3,Math.sin(t*4+j*1.7)>0?'#ff6cce':'#89eaff');
-   }
-   for(let j=0;j<9;j++){let x=-22+j*7;rod(g,[x,-3.6,-64],[x,3.3+6*Math.abs(Math.sin(t*2.5+j*.67)),-64],.13,'#b5faff',4);}
-   for(let j=0;j<5;j++)car(g,xmove(j,j%2?12:-10),-54+j%2*2,j%2?1:-1,['#e8b8ad','#88c7e1','#e7a0da'][j%3]);
-   sphere(g,30+25*Math.cos(t*.4),28+25*Math.sin(t*.4),-92,1.0,'#fff2bd',5,6);
+  // Multiple casino marquees pulse independently; Bellagio-style jets dance.
+  for(let j=0;j<8;j++){
+   const x=-82+j*23,z=-109-(j%3)*16,y=24+(j*11)%30;
+   const glow=.5+.5*Math.sin(t*3.4+j*1.4);
+   box(g,x,y,z+7,8.2,.48,.25,glow>.5?'#fff3b4':'#fa65d5');
+   for(let k=-1;k<=1;k++)box(g,x+k*2.6,y+1.3,z+7.2,.48,.58,.29,glow>.7?'#a8faff':'#e88eea');
+  }
+  for(let j=0;j<9;j++){
+   const x=-21+j*7.2,jet=3.2+(4.4+2.2*Math.sin(t*3.1+j*.73))*(.7+.3*Math.sin(t*2+j));
+   rod(g,[x,-3.5,-64],[x,-3.5+jet,-64],.14,'#b4ffff',4);
+  }
+  for(let j=0;j<5;j++)car(g,lane(j,j%2?13:-15),-53+(j%2?1.8:-1.8),j%2?1:-1,['#f6c8a8','#ed72b8','#85ddf0'][j%3]);
+  // A slow orbiting wheel marker shows the High Roller is not a static sculpture.
+  const a=t*.34; sphere(g,30+25*Math.cos(a),28+25*Math.sin(a),-91,1.10,'#fff1ae',5,7);
  }
  if(stage==='4-1'){
-   for(let j=0;j<4;j++){let x=((j*34+t*(j%2?-3.3:3.9)+420)%125)-77;box(g,x,-1.7,-66,6,.7,2.6,'#f9e9c7');rod(g,[x,-1.2,-66],[x,6,-66],.14,'#f7e6c5',4);}
-   for(let j=0;j<5;j++)car(g,xmove(j,j%2?7:-7),-48,j%2?1:-1,'#e4c7a1');
+  // Feluccas glide along the Nile while a tourist tram crosses the riverfront.
+  for(let j=0;j<4;j++){
+   const x=((j*29+t*(j%2?-3.8:4.1)+380)%115)-85;
+   box(g,x,-1.8,-65+(j%2?3:-3),6,.62,2.6,'#f8e9cd');
+   rod(g,[x,-1.5,-65],[x,5.5,-65],.17,'#c9b49a');
+   rod(g,[x,5.0,-65],[x+2.5,-.8,-65],.21,'#f1dfb6');
+  }
+  for(let j=0;j<5;j++)car(g,lane(j,j%2?6.2:-7.3),-49+(j%2?2:-2),j%2?1:-1,['#e6c394','#b8b2a1','#b48b6e'][j%3]);
  }
  if(stage==='4-2'){
-   for(let j=0;j<4;j++){let x=((j*34+t*(j%2?-2.9:3.6)+420)%130)-79;box(g,x,-3.2,-69,7,1,2.7,'#e1f6f6');box(g,x,-2.2,-69,3,1,2.0,'#9dcbdc');}
-   for(let j=0;j<4;j++)car(g,xmove(j,j%2?6:-7),-54,j%2?1:-1,'#a8d5d9');
-   box(g,-19+Math.sin(t*3)*.8,75,-115,8,3,.2,'#458bd1');
+  // Lakeside sightseeing launches and commuter traffic by Parliament House.
+  for(let j=0;j<3;j++){
+   const x=((j*39+t*(j%2?-4:3.3)+400)%134)-78;
+   box(g,x,-3.25,-69+(j%2?1.8:-1.8),6.7,.9,2.6,'#eaf7e9');
+   box(g,x,-2.35,-69,3.5,1.0,2,'#a6d7db');
+  }
+  for(let j=0;j<4;j++)car(g,lane(j,j%2?7.8:-7),-55+(j%2?1.5:-1.5),j%2?1:-1,['#e9d5ad','#77b1c2','#bf7976'][j%3]);
+  const flap=.3*Math.sin(t*3);box(g,-19+flap,75,-114,6,3,.20,'#2b7ecb');
  }
  if(stage==='4-3'){
-   for(let j=0;j<11;j++){const x=-105+j*19,y=67+7*Math.sin(t*.64+j*.55);rod(g,[x,y,-176],[x+8,y+13+Math.sin(t+j)*4,-176],.3,j%2?'#85ffe0':'#86c8f6',4);}
-   for(let j=0;j<22;j++){const x=((j*19+t*(j%2?1.3:-1.1)+310)%188)-94;box(g,x,8+(j*13%37)+Math.sin(t+j),-72-(j*21%105),.35,.35,.35,'#f4ffff');}
+  // Aurora curtains ripple and snowy ice crystals drift sideways.
+  for(let j=0;j<11;j++){
+   const x=-104+j*19,y=66+9*Math.sin(t*.72+j*.64);
+   rod(g,[x,y,-174+j*.4],[x+9,y+13+4*Math.sin(t+j),-174+j*.4],.32,j%2?'#83ecca':'#8ed4f6',4);
+  }
+  for(let j=0;j<21;j++){
+   const x=((j*17+t*(j%2?-.8:1.2)+250)%175)-87.5;
+   const y=8+(j*9%38)+2.3*Math.sin(t*.6+j);
+   box(g,x,y,-69-(j*19%105),.36,.36,.36,'#f4ffff');
+  }
  }
  if(stage==='4-4'){
-   for(let j=0;j<10;j++){let a=t*(.095+j*.01)+j*pi/5;
-     sphere(g,65*Math.cos(a),27+(j%4)*13+7*Math.sin(a),-153+43*Math.sin(a),1.6+(j%3)*.6,['#adb9ca','#d8c2a6','#9db7c8'][j%3],4,6);}
-   for(let j=0;j<10;j++){let a=t*.5+j*pi/5;sphere(g,-40+48*Math.cos(a),71+15*Math.sin(a),-141,.4,'#fbffff',4,5);}
-   let a=t*.35;box(g,35*Math.cos(a),38+5*Math.sin(t),-141+25*Math.sin(a),3.8,2.5,3.5,'#d9f4ff');
+  // A few orbiting asteroids and star flashes are animated; original planets stay.
+  for(let j=0;j<9;j++){
+   const phase=t*(.10+j*.011)+j*pi*2/9;
+   const x=35+67*Math.cos(phase),z=-154+41*Math.sin(phase);
+   sphere(g,x,21+(j%4)*9+8*Math.sin(phase*.81),z,1.5+(j%3)*.57,['#b9b1c6','#d8c4b1','#869cac'][j%3],4,6);
+  }
+  for(let j=0;j<7;j++){
+   const a=t*.52+j*pi*2/7;
+   sphere(g,-35+46*Math.cos(a),67+19*Math.sin(a),-143,0.36+(Math.sin(t*3+j)+1)*.24,'#e7f7ff',4,6);
+  }
+  // Autonomous probe gently circling the station.
+  const a=t*.37;
+  const x=36*Math.cos(a),z=-136+24*Math.sin(a);
+  box(g,x,38+5*Math.sin(t*.8),z,3.6,2,3.4,'#d1e9fb');
+  box(g,x-5,38+5*Math.sin(t*.8),z,6.0,.20,3,'#3884b9');
+  box(g,x+5,38+5*Math.sin(t*.8),z,6.0,.20,3,'#3884b9');
  }
  if(stage==='4-5'){
-   for(let j=0;j<7;j++)car(g,xmove(j,j%2?11:-10),-53+(j%2?2:-2),j%2?1:-1,['#f9d58e','#98d5e5','#db828d'][j%3]);
-   for(let j=0;j<3;j++){const x=((j*46+t*(j%2?-4:4)+400)%143)-72;box(g,x,-3.1,-64,8,.85,3,'#e9e6d8');box(g,x,-2.2,-64,4,1,2,'#6dcad9');}
-   box(g,-22,108+Math.sin(t*2)*.1,-135,5,.55,5,Math.sin(t*3)>0?'#f5ffe4':'#8de7e2');
+  // Taipei night streets, moving Tamsui sightseeing boats and 101 crown light.
+  for(let j=0;j<7;j++)car(g,lane(j,j%2?10:-11),-52+(j%2?2:-2),j%2?1:-1,['#efce9b','#83b6d1','#db797e'][j%3]);
+  for(let j=0;j<3;j++){
+   const x=((j*44+t*(j%2?-3.7:4.4)+400)%145)-74;
+   box(g,x,-3.1,-64+(j%2?2:-2),8,.85,3,'#eadbce');
+   box(g,x,-2.1,-64,4,1,2,'#7ec8dc');
+  }
+  box(g,-22,105+Math.sin(t*2)*.12,-135,5.8,.65,5.8,Math.sin(t*2.7)>.1?'#e9ffca':'#9ce6e1');
+  for(let j=0;j<6;j++){
+   const x=-68+j*23;
+   box(g,x,17+Math.sin(t*3+j)*.2,-105,.50,.55,.25,'#fff4b7');
+  }
  }
 }
-
 function brickMesh(b,o){
  // Original soft pastel brick from the first version: one solid rectangular
  // body, a small top highlight, and a subtle front glint, without neon or metal.
@@ -2607,17 +2654,21 @@ if(stage==='1-2'){
   hkFerry(a,x,-61-j*8);
  }
  for(let j=0;j<8;j++){const x=((j*19+time*(j%2?-2.4:2.0)+250)%106)-53;person(a,x,-44.5,time*3+j,['#c67b7d','#e7b98e','#7fc9b2'][j%3]);}
- }else if(stage==='1-1'){
- // Taipei: running traffic and cabins physically travel along the original Maokong ropes.
- for(let j=0;j<8;j++){
-   const dir=j%2?1:-1,x=((j*25+time*(9+j)*dir+420)%174)-87;
-   car(a,x,-35+dir*2,dir,['#f0c27f','#ec7677','#b1dcea','#b2bbc9'][j%4]);
+}else if(stage==='1-1'){
+ // Taipei's actual Maokong cables and the roadway below never stop moving.
+ for(let j=0;j<7;j++){
+  const dir=j%2?1:-1;
+  const x=((j*28+time*(9.5+j*.8)*dir+420)%174)-87;
+  car(a,x,-35+dir*2.2,dir,['#ee7d72','#f6d28b','#9ccad6','#8fadb2'][j%4]);
+ }
+ for(let j=0;j<4;j++){
+  const f=(.18+j*.23+(j%2?-.032:.032)*time+100)%1;
+  gondola(a,f,j%2?2.6:-2.6);
  }
  for(let j=0;j<5;j++){
-   const v=(.09+j*.18+time*(j%2?-.032:.032)+100)%1;
-   gondola(a,v,j%2?2.6:-2.6);
+  const x=((j*30+time*(j%2?1.10:-1.35)+200)%146)-73;
+  person(a,x,-46,time*4+j,['#a6ced1','#edb7a3','#ead9a4'][j%3]);
  }
- for(let j=0;j<5;j++)person(a,((j*32+time*(j%2?1.2:-1.1)+210)%150)-75,-44,time*5+j,'#d4b7a1');
 }else if(stage==='1-5'){
  // Singapore bayfront bustle and water taxis.
  for(let j=0;j<4;j++){
@@ -2664,8 +2715,84 @@ if(stage==='1-2'){
   const x=((j*15+time*(j%2?1.3:-1.5)+270)%140)-70;
   person(a,x,-70,time*4+j,['#b3d1e1','#e7b7be','#d1d7a8'][j%3]);
  }
- }else if(stage.startsWith('4-')){
-  // Scenic chapter: no unrelated city traffic in space or polar wilderness.
+ }else if(stage==='4-1'){
+  // Cairo: drifting river boats, road traffic and tourists.
+  for(let j=0;j<4;j++){
+   const x=((time*(j%2?2.4:-2.9)+j*31+410)%128)-64;
+   box(a,x,-3.05,-79-j*9,6.6,.72,2.5,['#e6d1a6','#d5e5dd','#eedcbf','#c8d9e8'][j%4]);
+   box(a,x,-2.28,-79-j*9,3.5,.70,1.8,'#f7f0dd');
+   box(a,x,-1.68,-79-j*9,1.9,.40,1.4,'#90784f');
+  }
+  for(let j=0;j<5;j++){
+   const x=((j*27+time*(j%2?7.0:-6.2)+340)%160)-80;
+   car(a,x,-56+(j%2?1.8:-1.8),j%2?1:-1,['#c57a61','#d9c08e','#7ca9b0','#947c61'][j%4]);
+  }
+  for(let j=0;j<8;j++){
+   const x=((j*17+time*(j%2?1.15:-1.25)+240)%140)-70;
+   person(a,x,-67,time*4+j,['#d6b386','#b8c99b','#9cc4d4'][j%3]);
+  }
+ }else if(stage==='4-2'){
+  // Canberra: lake craft, passing vehicles and flag/visitor movement.
+  for(let j=0;j<4;j++){
+   const x=((time*(j%2?2.8:-2.2)+j*33+380)%126)-63;
+   hkFerry(a,x,-73-j*7);
+  }
+  for(let j=0;j<6;j++){
+   const x=((j*23+time*(j%2?6.2:-7.0)+320)%156)-78;
+   car(a,x,-54+(j%2?1.5:-1.6),j%2?1:-1,['#a6bcc4','#dbb88c','#9dc5a0','#c8a7a2'][j%4]);
+  }
+  for(let j=0;j<8;j++){
+   const x=((j*16+time*(j%2?1.2:-1.05)+260)%136)-68;
+   person(a,x,-63,time*4+j,['#e3c2b4','#b2d1d6','#d9d0a2'][j%3]);
+  }
+ }else if(stage==='4-3'){
+  // Arctic: drifting floes, research sleds and blowing snow.
+  for(let j=0;j<5;j++){
+   const x=((time*(j%2?1.4:-1.2)+j*28+260)%130)-65;
+   box(a,x,-2.55,-74-j*6,6.8,.44,3.9,['#eef8ff','#d7f4ff','#f8fbff'][j%3]);
+  }
+  for(let j=0;j<3;j++){
+   const x=((j*38+time*(j%2?5.0:-5.8)+280)%150)-75;
+   car(a,x,-52+(j%2?1.0:-1.1),j%2?1:-1,['#d26f64','#8cb6c4','#dac27d'][j%3]);
+  }
+  for(let j=0;j<18;j++){
+   const sx=((j*13+time*(7+j*.5)+220)%160)-80;
+   const sz=-25-((j*17+time*(10+j*.3))%75);
+   box(a,sx,6.0+Math.sin(time*2+j)*1.7,sz,.16,.16,.16,'rgba(240,248,255,.9)');
+  }
+ }else if(stage==='4-4'){
+  // Space station: satellites, asteroids and drones moving around the arena.
+  for(let j=0;j<6;j++){
+   const ang=time*(.35+.05*j)+j*1.05;
+   const rr=31+j*3.8;
+   sphere(a,Math.cos(ang)*rr,8+Math.sin(time+j)*2,RING_CENTER_Z+Math.sin(ang)*rr,0.9+(j%3)*0.16,['#d7d9f4','#f4ddaa','#b7dfff'][j%3],5,7);
+  }
+  for(let j=0;j<3;j++){
+   const ang=-time*(.65+.07*j)+j*2.1;
+   const x=Math.cos(ang)*26,z=RING_CENTER_Z+Math.sin(ang)*26;
+   box(a,x,7.6+Math.sin(time*2+j)*.8,z,1.8,.46,1.4,['#c8d4ea','#f0d48a','#c1ffc3'][j%3]);
+   rod(a,[x-1.4,7.6+Math.sin(time*2+j)*.8,z],[x+1.4,7.6+Math.sin(time*2+j)*.8,z],.08,'#91a7c4',5);
+  }
+  for(let j=0;j<22;j++){
+   const x=((j*19+time*(j%2?1.7:-1.5)+300)%180)-90;
+   const z=-15-((j*23+time*(j%2?2.1:1.8))%95);
+   sphere(a,x,14+Math.sin(time*1.4+j)*4,z,.18,'#f9fbff',3,4);
+  }
+ }else if(stage==='4-5'){
+  // Final Taipei chapter: stronger city traffic, boats and tower light rhythm.
+  for(let j=0;j<7;j++){
+   const dir=j%2?1:-1;
+   const x=((j*24+time*(8.3+j*.55)*dir+360)%170)-85;
+   car(a,x,-37+dir*2.1,dir,['#e77973','#f0cb83','#7eb2c4','#a0b4bf'][j%4]);
+  }
+  for(let j=0;j<4;j++){
+   const x=((time*(j%2?3.0:-3.5)+j*36+300)%132)-66;
+   hkFerry(a,x,-78-j*8);
+  }
+  for(let j=0;j<9;j++){
+   const x=((j*16+time*(j%2?1.35:-1.10)+240)%142)-71;
+   person(a,x,-59,time*4.5+j,['#b6d0d8','#e7bea6','#e7d89a'][j%3]);
+  }
  }else{
  const cars=[[-60,1,'#cb5551'],[-30,-1,'#70b5bb'],[6,1,'#d5b063'],[40,-1,'#b1c2be'],[75,1,'#6b8baf']];for(let i=0;i<cars.length;i++){const row=cars[i],x=((row[0]+time*(9+i)*row[1]+280)%180)-90;car(a,x,-35+row[1]*2.2,row[1],row[2]);}
  for(let i=0;i<10;i++){let x=((i*16+time*(i%2===0?1.2:-1.1)+250)%150)-75;person(a,x,i%2?-43.3:-25.5,time*5+i,['#e4a18c','#86baca','#d5b77d','#b6accd'][i%4]);}
@@ -2943,102 +3070,144 @@ function fastOrb(x,z,r,color,glow=12,edgeColor='#4da1bd'){
  context.fillStyle=gradient;context.beginPath();context.arc(p[0],p[1],radius,0,Math.PI*2);context.fill();context.restore();
 }
 
-const LIVELY_STAGES=new Set(['1-1','3-5','4-1','4-2','4-3','4-4','4-5']);
-function drawLivelyMobile(c){
- if(!LIVELY_STAGES.has(stage))return;
- const t=time,pi=Math.PI,ww=fastWidth,hh=fastHeight;
- const point=(x,y,z,cable=false)=>{
-   if(isMobilePortrait()){
-     if(stage==='1-1'&&cable)x+=MOBILE_SCENERY_SHIFT;
-     else if(stage!=='1-1')x*=.69;
-   }
-   return projectPoint([x,y,z],vpMatrix,ww,hh);
+// Continuously repaint only *moving* background subjects. The full 3D city and
+// arcade floor remain cached; rendering about 10-40 vector shapes costs little.
+const LIVE_SCENE_STAGES=new Set(['1-1','3-5','4-1','4-2','4-3','4-4','4-5']);
+function sceneProject(x,y,z,shiftCable=false){
+ if(isMobilePortrait()){
+  if(stage==='1-1' && shiftCable)x+=MOBILE_SCENERY_SHIFT;
+  else if(stage!=='1-1')x*=.69;
+ }
+ return projectPoint([x,y,z],vpMatrix,fastWidth,fastHeight);
+}
+function drawMobileScenery(c){
+ if(!LIVE_SCENE_STAGES.has(stage))return;
+ const t=time,pi=Math.PI;
+ const visible=(p,margin=40)=>Number.isFinite(p[0])&&Number.isFinite(p[1])&&p[0]>-margin&&p[0]<fastWidth+margin&&p[1]>-margin&&p[1]<fastHeight+margin;
+ const car2=(x,y,z,color)=>{
+  const p=sceneProject(x,y,z),q=sceneProject(x+4,y,z);
+  if(!visible(p))return;
+  const w=Math.max(5,Math.min(25,Math.abs(q[0]-p[0]))),h=Math.max(3.5,w*.38);
+  c.save();c.shadowBlur=5;c.shadowColor=color;c.fillStyle=color;
+  c.fillRect(p[0]-w*.5,p[1]-h*.64,w,h*.69);
+  c.fillStyle='#a8dce7';c.fillRect(p[0]-w*.30,p[1]-h*.96,w*.54,h*.35);
+  c.shadowBlur=0;c.fillStyle='#25374c';
+  c.beginPath();c.arc(p[0]-w*.30,p[1]+h*.1,Math.max(1.2,h*.12),0,pi*2);c.arc(p[0]+w*.30,p[1]+h*.1,Math.max(1.2,h*.12),0,pi*2);c.fill();c.restore();
  };
- const visible=p=>Number.isFinite(p[0])&&Number.isFinite(p[1])&&p[0]>-30&&p[0]<ww+30&&p[1]>-30&&p[1]<hh+30;
- const spot=(x,y,z,color,r=2)=>{
-   const p=point(x,y,z);if(!visible(p))return;
-   c.save();c.shadowBlur=7;c.shadowColor=color;c.fillStyle=color;
-   c.beginPath();c.arc(p[0],p[1],Math.max(.7,r),0,pi*2);c.fill();c.restore();
+ const boat2=(x,y,z,color)=>{
+  const p=sceneProject(x,y,z),q=sceneProject(x+9,y,z);
+  if(!visible(p))return;
+  const w=Math.max(8,Math.min(36,Math.abs(q[0]-p[0])));
+  c.save();c.fillStyle=color;c.strokeStyle='rgba(235,255,255,.9)';c.lineWidth=1.1;
+  c.beginPath();c.moveTo(p[0]-w*.5,p[1]-2);c.lineTo(p[0]+w*.5,p[1]-2);c.lineTo(p[0]+w*.36,p[1]+3);c.lineTo(p[0]-w*.36,p[1]+3);c.closePath();c.fill();c.stroke();
+  c.fillStyle='#edfaff';c.fillRect(p[0]-w*.17,p[1]-8,w*.34,6);
+  c.strokeStyle='rgba(174,238,253,.70)';c.beginPath();c.moveTo(p[0]-w*.9,p[1]+5);c.lineTo(p[0]+w*.6,p[1]+5);c.stroke();c.restore();
  };
- const roadcar=(x,z,col)=>{
-    const p=point(x,-1.4,z),e=point(x+4,-1.4,z);if(!visible(p))return;
-    const w=Math.max(7,Math.min(23,Math.abs(e[0]-p[0]))),h=Math.max(4,w*.38);
-    c.save();c.shadowColor=col;c.shadowBlur=4;c.fillStyle=col;
-    c.fillRect(p[0]-w/2,p[1]-h*.60,w,h*.62);
-    c.fillStyle='#b5e4f4';c.fillRect(p[0]-w*.27,p[1]-h*.94,w*.54,h*.36);
-    c.fillStyle='#29343f';c.fillRect(p[0]-w*.33,p[1],3,2);c.fillRect(p[0]+w*.26,p[1],3,2);c.restore();
- };
- const boat=(x,z,col)=>{
-    const p=point(x,-2.3,z),e=point(x+8,-2.3,z);if(!visible(p))return;
-    const w=Math.max(9,Math.min(34,Math.abs(e[0]-p[0])));
-    c.save();c.fillStyle=col;c.strokeStyle='#d9f9ff';c.beginPath();
-    c.moveTo(p[0]-w/2,p[1]-3);c.lineTo(p[0]+w/2,p[1]-3);
-    c.lineTo(p[0]+w*.33,p[1]+3);c.lineTo(p[0]-w*.33,p[1]+3);
-    c.closePath();c.fill();c.stroke();c.fillStyle='#c4ffff';c.fillRect(p[0]-w*.16,p[1]-8,w*.32,5);c.restore();
+ const glow2=(x,y,z,color,rad=3)=>{
+  const p=sceneProject(x,y,z);if(!visible(p))return;
+  c.save();c.shadowColor=color;c.shadowBlur=8;c.fillStyle=color;
+  c.beginPath();c.arc(p[0],p[1],rad,0,pi*2);c.fill();c.restore();
  };
  if(stage==='1-1'){
-   for(let j=0;j<5;j++){
-     const k=(.12+j*.19+t*(j%2?-.036:.036)+400)%1;
-     const x=cableA[0]+(cableB[0]-cableA[0])*k+(j%2?2.6:-2.6);
-     const y=cableA[1]+(cableB[1]-cableA[1])*k-1.65*Math.sin(pi*k),z=cableA[2]+(cableB[2]-cableA[2])*k;
-     const p=point(x,y-3.3,z,true),a=point(x,y,z,true);if(!visible(p))continue;
-     c.save();c.strokeStyle='#ddf8fb';c.beginPath();c.moveTo(...a);c.lineTo(p[0],p[1]-5);c.stroke();
-     c.fillStyle='#f5e6cd';c.fillRect(p[0]-7,p[1]-6,14,12);c.fillStyle='#66a2b6';c.fillRect(p[0]-6,p[1]-4,12,7);c.restore();
-   }
-   for(let j=0;j<8;j++)roadcar(((j*24+t*(j%2?9:-10)+410)%170)-85,-35+(j%2?2:-2),['#e9767d','#f6d188','#b2e4ee'][j%3]);
+  // Maokong cables stay at their original mountain coordinates on both layouts.
+  for(let j=0;j<5;j++){
+   const v=(.11+j*.185+t*(j%2?-.037:.037)+500)%1;
+   const x=cableA[0]+(cableB[0]-cableA[0])*v+(j%2?2.6:-2.6);
+   const y=cableA[1]+(cableB[1]-cableA[1])*v-1.65*Math.sin(pi*v);
+   const z=cableA[2]+(cableB[2]-cableA[2])*v;
+   const p=sceneProject(x,y-3.3,z,true),top=sceneProject(x,y,z,true);
+   if(!visible(p))continue;
+   const edge=sceneProject(x+3.1,y-3.3,z,true);
+   const w=Math.max(8,Math.min(28,Math.abs(edge[0]-p[0]))),h=w*.73;
+   c.save();c.strokeStyle='#d9e9e9';c.lineWidth=1.4;c.beginPath();c.moveTo(...top);c.lineTo(p[0],p[1]-h*.5);c.stroke();
+   c.shadowColor='#d5fff6';c.shadowBlur=4;c.fillStyle='#f3dfbe';
+   c.fillRect(p[0]-w*.5,p[1]-h*.5,w,h);
+   c.fillStyle='#5f9fb2';c.fillRect(p[0]-w*.42,p[1]-h*.31,w*.84,h*.51);
+   c.strokeStyle='#f3ffef';c.strokeRect(p[0]-w*.5,p[1]-h*.5,w,h);c.restore();
+  }
+  for(let j=0;j<8;j++){
+   const x=((j*27+t*(j%2?8.7:-10)+370)%164)-82;
+   car2(x,-1.25,-35+(j%2?2.2:-2.2),['#ed777a','#f2cd82','#b1e4ee','#acc2d5'][j%4]);
+  }
+  for(let j=0;j<6;j++)glow2(-30+(j-3)*.95,32+j*.87,-119,'#f3efc2',1.25+.6*Math.sin(t*2+j));
  }
  if(stage==='3-5'){
-   for(let j=0;j<12;j++)spot(-91+j*17,26+(j*11%25),-126-(j%3)*7,Math.sin(t*4+j)>.15?'#ff80d8':'#85f4ff',2.3);
-   for(let j=0;j<8;j++){
-     const p=point(-22+j*8,-3.3,-64);if(!visible(p))continue;
-     c.save();c.strokeStyle='#a2fcff';c.shadowColor='#a2fcff';c.shadowBlur=6;
-     c.beginPath();c.moveTo(...p);c.lineTo(p[0],p[1]-5-13*Math.abs(Math.sin(t*2+j*.77)));c.stroke();c.restore();
-   }
-   for(let j=0;j<6;j++)roadcar(((j*27+t*(j%2?11:-10)+400)%164)-82,-53,['#eeabc6','#e7c78a','#9fdaf1'][j%3]);
-   spot(30+25*Math.cos(t*.4),28+25*Math.sin(t*.4),-92,'#fff4bb',3);
+  // Casino signs flicker, car lights move, fountains pulse, ferris wheel rotates.
+  for(let j=0;j<9;j++){
+   const x=-92+j*22,z=-112-(j%3)*13,y=24+(j*11)%28;
+   glow2(x,y,z,(Math.sin(t*4.1+j*1.4)>.1)?'#ff63c7':'#91ffff',2.5);
+  }
+  for(let j=0;j<8;j++){
+   const x=-20+j*7.1,p=sceneProject(x,-3.2,-64),height=5+13*(.5+.5*Math.sin(t*3.0+j*.77));
+   if(!visible(p))continue;
+   c.save();c.strokeStyle='rgba(144,247,255,.89)';c.shadowBlur=5;c.shadowColor='#8bfcff';c.lineWidth=1.2;
+   c.beginPath();c.moveTo(p[0],p[1]);c.lineTo(p[0],p[1]-height);c.stroke();c.restore();
+  }
+  for(let j=0;j<7;j++){
+   const x=((j*27+t*(j%2?10:-12)+390)%167)-83.5;
+   car2(x,-1.5,-52+(j%2?1.9:-1.9),['#f6c0b7','#90ddec','#eb83d4'][j%3]);
+  }
+  const a=t*.41;glow2(30+25*Math.cos(a),28+25*Math.sin(a),-92,'#f7eaba',3.3);
  }
  if(stage==='4-1'){
-   for(let j=0;j<4;j++)boat(((j*31+t*(j%2?-3:4)+380)%123)-78,-66,'#f4e4cc');
-   for(let j=0;j<5;j++)roadcar(((j*30+t*(j%2?6:-7)+360)%160)-80,-48,'#f3c89b');
+  for(let j=0;j<4;j++){
+   const x=((j*34+t*(j%2?-3.9:3.2)+290)%116)-79;
+   boat2(x,-2.1,-66+(j%2?2:-2),'#e8d8b7');
+  }
+  for(let j=0;j<5;j++)car2(((j*32+t*(j%2?5.4:-6)+390)%155)-77.5,-2,-49,'#d8b995');
  }
  if(stage==='4-2'){
-   for(let j=0;j<4;j++)boat(((j*35+t*(j%2?-3:3.7)+350)%132)-79,-69,'#d1edf3');
-   for(let j=0;j<4;j++)roadcar(((j*36+t*(j%2?7:-8)+340)%159)-79,-55,'#a6dadd');
-   spot(-19+2*Math.sin(t*2),75,-114,'#e1faff',2);
+  for(let j=0;j<4;j++){
+   const x=((j*41+t*(j%2?-2.8:3.8)+360)%149)-84;
+   boat2(x,-3.0,-69+(j%2?2:-2),'#e8f3e9');
+  }
+  for(let j=0;j<5;j++)car2(((j*30+t*(j%2?7:-8)+310)%154)-77,-1.6,-56,'#a5d9da');
+  glow2(-19+2*Math.sin(t*2),75,-114,'#8dcaf6',2.7);
  }
  if(stage==='4-3'){
-   for(let band=0;band<6;band++){
-     c.save();c.strokeStyle=band%2?'rgba(106,246,195,.58)':'rgba(130,210,255,.59)';
-     c.shadowColor='#84ffe1';c.shadowBlur=8;c.lineWidth=3.2;c.beginPath();
-     for(let j=0;j<17;j++){
-       const p=point(-114+j*14,73+band*4+10*Math.sin(t*.58+j*.52+band),-175+band*3);
-       if(j)c.lineTo(...p);else c.moveTo(...p);
-     }
-     c.stroke();c.restore();
+  // Multiple animated aurora bands and drifting snowflakes over polar ice.
+  for(let band=0;band<5;band++){
+   c.save();c.strokeStyle=['rgba(91,255,200,.58)','rgba(140,235,255,.54)','rgba(174,210,255,.53)'][band%3];
+   c.lineWidth=3.5;c.shadowBlur=7;c.shadowColor='#86ffd9';c.beginPath();
+   for(let j=0;j<=16;j++){
+    const x=-116+j*15,y=75+band*5+10*Math.sin(j*.46+t*.66+band);
+    const p=sceneProject(x,y,-184+band*3);
+    j?c.lineTo(...p):c.moveTo(...p);
    }
-   for(let j=0;j<18;j++)spot(((j*31+t*(j%2?1.7:-1.4)+400)%190)-95,16+(j*13%43),-77-(j*13%95),'#ecffff',1);
+   c.stroke();c.restore();
+  }
+  for(let j=0;j<22;j++){
+   const x=((j*23+t*(j%2?-1.6:1.8)+410)%194)-97;
+   glow2(x,14+(j*9%38)+Math.sin(t*.8+j),-60-(j*13%104),'#eafaff',1.0);
+  }
  }
  if(stage==='4-4'){
-   for(let j=0;j<11;j++){
-     const a=t*(.1+j*.007)+j*pi/5.5;spot(67*Math.cos(a),29+(j%4)*15+Math.sin(a)*7,-149+39*Math.sin(a),j%2?'#a9d8ff':'#e9d6ae',2.0);
-   }
-   for(let j=0;j<10;j++)spot(-98+(j*39%196),30+(j*17%70),-115-(j*23%104),'#ffffff',1.5+Math.sin(t*2+j));
-   const a=t*.35,p=point(36*Math.cos(a),38,-141+26*Math.sin(a));
-   if(visible(p)){c.fillStyle='#d5f6ff';c.fillRect(p[0]-4,p[1]-2,8,4);c.fillStyle='#5997d9';c.fillRect(p[0]-10,p[1]-1,6,2);c.fillRect(p[0]+4,p[1]-1,6,2);}
+  // Glittering orbits, moving asteroids and a slowly touring satellite.
+  for(let j=0;j<12;j++){
+   const a=t*(.08+j*.007)+j*pi/6;
+   const x=55*Math.cos(a),z=-157+34*Math.sin(a),y=37+(j%3)*15;
+   glow2(x,y,z,j%2?'#eee4cf':'#abdbf5',1.7+(j%3));
+  }
+  for(let j=0;j<13;j++){
+   const x=-109+(j*37%218),y=28+(j*17%62),z=-105-(j*31%103);
+   glow2(x,y,z,'#fbffff',1.4+(Math.sin(t*2+j)+1)*1.1);
+  }
+  const a=t*.35,p=sceneProject(37*Math.cos(a),38+4*Math.sin(t),-137+27*Math.sin(a));
+  if(visible(p)){c.save();c.fillStyle='#d1eaff';c.fillRect(p[0]-4,p[1]-2,8,4);c.fillStyle='#5489d8';c.fillRect(p[0]-12,p[1]-1,7,2);c.fillRect(p[0]+5,p[1]-1,7,2);c.restore();}
  }
  if(stage==='4-5'){
-   for(let j=0;j<7;j++)roadcar(((j*26+t*(j%2?10:-10)+390)%167)-84,-53,['#f3c993','#84c4e3','#eb9ba3'][j%3]);
-   for(let j=0;j<3;j++)boat(((j*43+t*(j%2?-3.6:4.1)+410)%150)-75,-64,'#f0dbbe');
-   spot(-22,115,-135,Math.sin(t*3)>.1?'#e8ffcf':'#b4ffff',3);
+  for(let j=0;j<7;j++)car2(((j*28+t*(j%2?10:-10)+410)%172)-86,-1.8,-53+(j%2?2:-2),['#f4d8b2','#a3cbde','#f29d9e'][j%3]);
+  for(let j=0;j<4;j++)boat2(((j*43+t*(j%2?-3.6:4.0)+380)%146)-73,-3.6,-63+(j%2?2:-2),'#f0e2cf');
+  glow2(-22,114,-135,(Math.sin(t*3.3)>.15)?'#e1fff5':'#fff1ba',3.5);
+  for(let j=0;j<5;j++)glow2(-22+(j-2)*4,23+(j%2)*12,-122,'#fff3b4',1.4);
  }
 }
-
 function drawFastMobile(){
  if(!fastWidth||!fastHeight)return;
  const c=fastCtx,w=fastWidth,h=fastHeight;
  c.setTransform(fastDpr,0,0,fastDpr,0,0);
  c.clearRect(0,0,w,h);
- drawLivelyMobile(c);
+ drawMobileScenery(c);
  // Pulsing outlines remain animated even though the underlying 3D stage
  // is no longer redrawn every frame. Use simple paths instead of 3D boxes.
  const intensity=.25+.27*(.5+.5*Math.sin(time*5.2));
