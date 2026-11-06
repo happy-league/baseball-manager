@@ -216,6 +216,14 @@ jobs:
           racing_dir.mkdir(parents=True, exist_ok=True)
           (racing_dir / "index.html").write_bytes(racing_html)
 
+          # NEON PUCK 3D air hockey at /neon-puck-3d/.
+          puck_src = Path("neon-puck-3d/index.html")
+          if not puck_src.is_file():
+              raise SystemExit("NEON PUCK 3D source not found")
+          puck_dir = out / "neon-puck-3d"
+          puck_dir.mkdir(parents=True, exist_ok=True)
+          (puck_dir / "index.html").write_bytes(puck_src.read_bytes())
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
