@@ -224,6 +224,18 @@ jobs:
           puck_dir.mkdir(parents=True, exist_ok=True)
           (puck_dir / "index.html").write_bytes(puck_src.read_bytes())
 
+
+          # Little Detective game is published in its own /little-detective/ directory.
+          detective_src = Path("little-detective/index.html")
+          if not detective_src.is_file():
+              raise SystemExit("Little Detective source not found")
+          detective_html = detective_src.read_bytes()
+          if not detective_html.lstrip().lower().startswith(b"<!doctype html>") or not detective_html.rstrip().lower().endswith(b"</html>"):
+              raise SystemExit("Unexpected Little Detective HTML")
+          detective_dir = out / "little-detective"
+          detective_dir.mkdir(parents=True, exist_ok=True)
+          (detective_dir / "index.html").write_bytes(detective_html)
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
