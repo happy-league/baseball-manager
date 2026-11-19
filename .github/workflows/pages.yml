@@ -236,6 +236,15 @@ jobs:
           detective_dir.mkdir(parents=True, exist_ok=True)
           (detective_dir / "index.html").write_bytes(detective_html)
 
+          # Capybara Big Adventure, published independently at /capybara-adventure/.
+          capy_src = Path("capybara-adventure/index.html")
+          capy_html = capy_src.read_bytes()
+          if not capy_html.lstrip().lower().startswith(b"<!doctype html>") or not capy_html.rstrip().lower().endswith(b"</html>"):
+              raise SystemExit("Unexpected Capybara Adventure HTML")
+          capy_dir = out / "capybara-adventure"
+          capy_dir.mkdir(parents=True, exist_ok=True)
+          (capy_dir / "index.html").write_bytes(capy_html)
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 
