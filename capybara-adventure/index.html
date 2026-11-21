@@ -220,6 +220,8 @@ $('cancelResetProgress').addEventListener('click',closeResetProgress);
 $('confirmResetProgress').addEventListener('click',()=>{
   $('resetProgressConfirm').classList.remove('open');
   records={};
+  firstGrassTipSeen=false;
+  try{localStorage.removeItem('capyMazeFirstGrassTipV1')}catch(e){}
   load(0,true);
   menu();
   $('restartProgress').focus();
