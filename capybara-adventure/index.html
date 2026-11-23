@@ -240,7 +240,7 @@ function refresh(){
   const stars=recordStars(records[i]);
   const rating=`<span class="stars" aria-hidden="true">${[1,2,3].map(n=>`<span class="${n<=stars?'filled':''}">${n<=stars?'★':'☆'}</span>`).join('')}</span>`;
   if(isSecret){
-   b.innerHTML=`<span class="lv-label">隱藏關卡</span><span class="challenge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.6" cy="7.6" r="4.5"/><path d="m11 11 10 10m-4.3-4.3 2.1-2.1m-4.9.7 2.1-2.1"/></svg><span>${locked?'尚未開啟':'點擊挑戰'}</span></span>${rating}`;
+   b.innerHTML=`<span class="lv-label">隱藏關卡</span><span class="challenge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.6" cy="7.6" r="4.5"/><path d="m11 11 10 10m-4.3-4.3 2.1-2.1m-4.9.7 2.1-2.1"/></svg><span>${locked?'':'點擊挑戰'}</span></span>${rating}`;
    b.setAttribute('aria-label',locked?'隱藏關卡，尚未解鎖':`隱藏關卡，${stars} 顆星`);
   }else{
    b.innerHTML=`<span class="lv-label">LV${String(i+1).padStart(2,'0')}</span><span class="challenge">${challengeIcon(i)}<span>點擊挑戰</span></span>${rating}`;
