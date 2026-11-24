@@ -916,7 +916,7 @@ const REGION_VOTE_BANDS={
  '嘉義市':{surname:'張',low:.45,high:.52,reference:.43},
   '新竹市':{surname:'高',low:.46,high:.53,reference:.45},
   '新竹縣':{name:'鄭朝芳',surname:'鄭',low:.44,high:.54,reference:.37},
-  '彰化縣':{name:'陳素玥',surname:'陳',low:.47,high:.55,reference:.39},
+  '彰化縣':{name:'陳素玥',surname:'陳',low:.47,high:.52,reference:.39},
   '基隆市':{name:'謝國粱',surname:'謝',low:.48,high:.58,reference:.53}
 };
 function adjustRegionVotes(county,people,shares,randomValue){
@@ -955,6 +955,29 @@ function ensureRegionBand(name,people,shares){
  const others=shares.reduce((sum,v,i)=>sum+(idx===i?0:v),0);
  return shares.map((v,i)=>i===idx?desired:(others>0?v/others*(1-desired):(1-desired)/Math.max(1,shares.length-1)));
 }
+// Additional fixed ranges for independent candidates. Keep the principal candidate's
+// share unchanged so that several candidates in one county can satisfy their bands.
+const SECONDARY_VOTE_BANDS={
+ '彰化縣':{name:'邱建福',low:.12,high:.14,reference:.08},
+ '澎湖縣':{name:'葉竹琳',low:.10,high:.15,reference:.06},
+ '金門縣':{name:'李文亮',low:.15,high:.20,reference:.08}
+};
+function ensureMinorBand(name,people,shares){
+ const band=SECONDARY_VOTE_BANDS[name];if(!band)return shares;
+ const idx=people.findIndex(p=>p.name===band.name);if(idx<0)return shares;
+ const countyIndex=COUNTY_NAMES.indexOf(name);
+ const mid=(band.low+band.high)/2,half=(band.high-band.low)/2;
+ const variation=Math.tanh((shares[idx]-band.reference)/.095+(rand2(countyIndex,418)-.5)*1.2);
+ const target=clamp(mid+half*.94*variation,band.low+.0002,band.high-.0002);
+ const primary=REGION_VOTE_BANDS[name];
+ const primaryIdx=primary?people.findIndex(p=>primary.name?p.name===primary.name:p.name.startsWith(primary.surname)):-1;
+ const locked=new Set([idx]);if(primaryIdx>=0&&primaryIdx!==idx)locked.add(primaryIdx);
+ const fixedTotal=target+(primaryIdx>=0&&primaryIdx!==idx?shares[primaryIdx]:0);
+ const remaining=Math.max(0,1-fixedTotal);
+ const openTotal=shares.reduce((sum,part,i)=>sum+(locked.has(i)?0:part),0);
+ const openCount=people.length-locked.size;
+ return normalizeVotes(shares.map((part,i)=>i===idx?target:(primaryIdx>=0&&i===primaryIdx?part:(openTotal>0?part/openTotal*remaining:remaining/Math.max(1,openCount)))));
+}
 function adjustHualienVotes(name,people,shares){
  if(name!=='花蓮縣')return shares;
  const positions=['游','魏','張'].map(ch=>people.findIndex(p=>p.name.startsWith(ch)));
@@ -981,7 +1004,7 @@ function predictedVoteShares(name){
  scores=normalizeVotes(scores);
  scores=adjustRegionVotes(name,people,scores,rand2(i,32));
  scores=minorTierShares(people,scores);
- return adjustHualienVotes(name,people,ensureRegionBand(name,people,scores));
+ return adjustHualienVotes(name,people,ensureMinorBand(name,people,ensureRegionBand(name,people,scores)));
 }
 // 以城市投票開出順序的差異實現自然逆轉：所有人的累計票數必須單調遞增。
 // 各縣市由多個投票區依序開票：每人的累計票數只增加，候選人得票率則會在每批次略為擺動。
@@ -1067,7 +1090,7 @@ function electionPlan(){election=COUNTY_DATA.map((c,i)=>{
  // 模擬最後未表態選民的極小幅度變化。
  final=normalizeVotes(final.map((s,j)=>Math.max(.00001,s+(rand2(i,j+95)-.5)*.005)));
  final=minorTierShares(people,final);
- final=adjustHualienVotes(c[0],people,ensureRegionBand(c[0],people,final));
+ final=adjustHualienVotes(c[0],people,ensureMinorBand(c[0],people,ensureRegionBand(c[0],people,final)));
  const votes=final.map(x=>Math.floor(cityTotal*x));
  votes[final.indexOf(Math.max(...final))]+=cityTotal-votes.reduce((x,y)=>x+y,0);
  // 極小得票的獨立候選人也不得同票，保持段落差。
